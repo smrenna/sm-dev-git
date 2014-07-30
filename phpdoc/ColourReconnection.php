@@ -55,12 +55,14 @@ scheme that tries to incorporate more of the colour knowledge from QCD.
 The original PYTHIA scheme relies on the PS-like colour configuration of the
 beam remnant. This is combined with an additional step, wherein the gluons 
 of a lower-<i>pT</i> MPI system are merged with the ones in a higher-pT MPI.
-A more detailed description of the merging can be found below.
- 
+A more detailed description of the merging can be found below. 
+Relative to the other models it tests fewer reconnection possibilities, 
+and therefore tends to be reasonably fast.
+
 <p/>
 The new scheme [<a href="Bibliography.php" target="page">Chr14a</a>]relies on the full QCD colour configuration 
 in the beam remnant. This is followed up by a colour reconnection, where the 
-potential string energy is minimized (ie. the <i>lambda</i> measure is 
+potential string energy is minimized (i.e. the <i>lambda</i> measure is 
 minimized). The QCD colour rules are also incorporated in the colour 
 reconnection, and determine the probability that a reconnection is allowed. 
 The model also allows the creation of junction structures.
@@ -73,7 +75,7 @@ to study potential colour reconnection effects e.g. on top mass
 [<a href="Bibliography.php" target="page">Arg14</a>], not from the point of view of having the most realistic 
 description, but in order to probe the potential worst-case spread of 
 predictions. All of these models are made available separately in 
-<code>examples/mainXX.cc</code>, but only the gluon-move one is sufficiently 
+<code>examples/main29.cc</code>, but only the gluon-move one is sufficiently 
 general and realistic that it has been included among the standard options 
 here. 
 
@@ -84,11 +86,12 @@ Allow or not a system to be merged with another one.
    
 
 <br/><br/><table><tr><td><strong>ColourReconnection:mode  </td><td>  &nbsp;&nbsp;(<code>default = <strong>0</strong></code>; <code>minimum = 0</code>; <code>maximum = 2</code>)</td></tr></table>
-Determine which model is used for colour reconnection. Beware that different 
-should be used for different reconnection schemes.
+Determine which model is used for colour reconnection. Beware that 
+different <code>BeamRemnants:remnantMode</code> should be used for 
+different reconnection schemes. 
 <br/>
-<input type="radio" name="2" value="0" checked="checked"><strong>0 </strong>:  The MPI-based original Pythia 8 scheme. <br/>
-<input type="radio" name="2" value="1"><strong>1 </strong>:  The new more QCD based scheme. <br/>
+<input type="radio" name="2" value="0" checked="checked"><strong>0 </strong>:  The MPI-based original Pythia 8 model. <br/>
+<input type="radio" name="2" value="1"><strong>1 </strong>:  The new more QCD-based model. <br/>
 <input type="radio" name="2" value="2"><strong>2 </strong>:  The new gluon-move model. <br/>
 
 <h3>The MPI-based scheme</h3> 

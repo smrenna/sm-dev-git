@@ -176,6 +176,10 @@ states in TeV-sized extra dimensions. </li>
 are forced to decay at a separate vertices and possibly with changed 
 momenta.</li> 
  
+<li><code>main29.cc</code> : colour reconnection models studied for
+top production. Contains user hooks with several models not found in
+the standard PYTHIA library.</li> 
+ 
 <li><code>main31.cc</code> : exemplifies an improved matching of 
 parton showers to LHEF-style input based on the 
 <?php $filepath = $_GET["filepath"];

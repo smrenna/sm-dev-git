@@ -195,6 +195,9 @@ LU TP 14-02, MCnet-14-01, arXiv:1401.5238 [hep-ph]</dd>
 <dt>Cio08</dt> 
 <dd>C. Ciobanu et al., FERMILAB-FN-0773, CDF/PHYS/PUBLIC/7755 (2008)</dd> 
  
+<dt>CMS14</dt> 
+<dd>CMS Collaboration, CMS PAS GEN-14-001</dd> 
+ 
 <dt>Cor09</dt> 
 <dd>R. Corke and T. Sj&ouml;strand, JHEP 1001 (2010) 035 
 [arXiv:0911.1909 [hep-ph]]</dd> 

@@ -107,6 +107,7 @@ Several ATLAS tunes have also been included, obtained with different PDFs
 and with different emphasis on minimum-bias and underlying-event data 
 [<a href="Bibliography.php" target="page">ATL12</a>]. These typically require LHAPDF to be linked, but this 
 can be avoided in cases where the same PDF set is implemented internally. 
+Also two CMS underlying-event tunes are implemented [<a href="Bibliography.php" target="page">CMS14</a>].
  
 <p/> 
 Central diffraction is a recent addition to the "soft QCD" process palette, 
@@ -235,13 +236,18 @@ set <code>Tune:preferLHAPDF = off</code> <i>before</i> the
 <code>Tune:pp</code> choice. 
    
  
-<br/><br/><table><tr><td><strong>Tune:pp  </td><td>  &nbsp;&nbsp;(<code>default = <strong>14</strong></code>; <code>minimum = -1</code>; <code>maximum = 14</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>Tune:pp  </td><td>  &nbsp;&nbsp;(<code>default = <strong>14</strong></code>; <code>minimum = -1</code>; <code>maximum = 16</code>)</td></tr></table>
 Choice of tune to <ei>pp/ppbar</ei> data, mainly for the 
 initial-state-radiation, multiparton-interactions and  beam-remnants 
 aspects of PYTHIA. Note that the previous crude (non-)tunes 
 3C and 3M are removed as of 8.145, superseded by the 4C tune. 
 You should study the <code>Settings::initTunePP(...)</code> method 
 to find exactly which are the settings for the respective tune. 
+Also note that, with the exception of the Monash tune, all tunes were
+obtained starting from <code>Tune:ee = 3</code>, so you should also
+change accordingly if you change to a non-Monash tune for <ei>pp</ei>.
+(If not, nothing bad will happen, since the <ei>e^+ e^-</ie> tunes are 
+not all that different, but you will not be fully consistent.)
 <br/>
 <input type="radio" name="3" value="-1"><strong>-1 </strong>: reset all values that are affected by any of the  <ei>pp/ppbar</ei> tunes to the default values. This option can be used  on its own, but is also automatically used as a first step for either  of the positive tune values below, to undo the effect of previous tune  settings.  <br/>
 <input type="radio" name="3" value="0"><strong>0 </strong>: no values are overwritten during the initial setup,  step 2 above. Note that changing to <code>0</code> in the user code  has no effect; if you want to restore the individual settings you  should instead use <code>-1</code>.  <br/>
@@ -251,7 +257,7 @@ to find exactly which are the settings for the respective tune.
 <input type="radio" name="3" value="4"><strong>4 </strong>: "Tune 2M", introduced with 8.140 <ref>Cor10a</ref>.  It is uses the MRST LO** PDF, which has a momentum sum somewhat above  unity, which is compensated by a smaller <ei>alpha_s</ei> than in the  previous tune. Again it is intended to give good agreement with much of  the published CDF data.  <br/>
 <input type="radio" name="3" value="5"><strong>5 </strong>: "Tune 4C", newer tune, introduced with 8.145  <ref>Cor10a</ref>. Starts out from tune 2C, but with a reduced cross  section for diffraction, plus modified multiparton interactions parameters  to give a higher and more rapidly increasing charged pseudorapidity  plateau, for better agreement with some early key LHC numbers.  See also the comparative study in <ref>Buc11</ref>.  <br/>
 <input type="radio" name="3" value="6"><strong>6 </strong>: "Tune 4Cx", based on tune 4C, but using the x-dependent  matter profile, <code>MultipartonInteractions:bProfile = 4</code> and an  increased <code>MultipartonInteractions:pT0Ref</code> <ref>Cor11</ref>.  <br/>
-<input type="radio" name="3" value="7"><strong>7 </strong>: "ATLAS MB Tune A2-CTEQ6L1", a minimum-bias tune based  on tune 4Cx, but without rapidity-ordered spacelike emissions  <ref>ATL12</ref>. Uses CTEQ 6L1, by default  from LHAPDF.  <br/>
+<input type="radio" name="3" value="7"><strong>7 </strong>: "ATLAS MB Tune A2-CTEQ6L1", a minimum-bias tune based  on tune 4Cx, but without rapidity-ordered spacelike emissions  <ref>ATL12</ref>. Uses CTEQ 6L1, by default from LHAPDF.  <br/>
 <input type="radio" name="3" value="8"><strong>8 </strong>: "ATLAS MB Tune A2-MSTW2008LO", as above,  but uses MSTW 2008 LO, by default from LHAPDF.  <br/>
 <input type="radio" name="3" value="9"><strong>9 </strong>: "ATLAS UE Tune AU2-CTEQ6L1", an underlying-event tune  based on tune 4Cx, but without rapidity-ordered spacelike emissions  <ref>ATL12</ref>. Uses CTEQ 6L1, by default from LHAPDF.  <br/>
 <input type="radio" name="3" value="10"><strong>10 </strong>: "ATLAS UE Tune AU2-MSTW2008LO", as above,  but uses MSTW 2008 LO, by default from LHAPDF.  <br/>
@@ -259,6 +265,9 @@ to find exactly which are the settings for the respective tune.
 <input type="radio" name="3" value="12"><strong>12 </strong>: "ATLAS UE Tune AU2-MRST2007LO*", as above,  but uses MRST 2007 LO*, by default from LHAPDF.  <br/>
 <input type="radio" name="3" value="13"><strong>13 </strong>: "ATLAS UE Tune AU2-MRST2007LO**", as above,  but uses MRST 2007 LO**, by default from LHAPDF.  <br/>
 <input type="radio" name="3" value="14" checked="checked"><strong>14 </strong>: the Monash 2013 tune by Peter Skands at al. <ref>Ska14</ref>, to both <ei>e^+e^-</ei> and <ei>pp/pbarp</ei> data.  Should be combined with <code>Tune:ee = 7</code>. <br/>
+<input type="radio" name="3" value="15"><strong>15 </strong>: "CMS UE Tune CUETP8S1-CTEQ6L1", an underlying-event  tune based on tune 4C <ref>CMS14</ref>. Uses CTEQ 6L1, by default  from LHAPDF. <br/>
+<input type="radio" name="3" value="16"><strong>16 </strong>: "CMS UE Tune CUETP8S1-HERAPDF1.5LO", an underlying-event  tune based on tune 4C <ref>CMS14</ref>. Uses HERAPDF1.5LO, which is not  currently implemented in PYTHIA, so you must link LHAPDF.  <br/>
+
  
 <input type="hidden" name="saved" value="1"/>
 

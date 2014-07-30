@@ -1930,6 +1930,61 @@ void Settings::initTunePP( int ppTune) {
     parm("ColourReconnection:range",            1.80  );
   }
  
+  // The CMS UE tunes CUETP8S1-CTEQ6L1 and CUETP8S1-HERAPDF1.5LO, based on 4C,
+  // see the note CMS PAS GEN-14-001 (April 2014).
+  else if (ppTune == 15 || ppTune == 16) {
+    parm("SigmaProcess:alphaSvalue",            0.135 );
+    flag("SigmaTotal:zeroAXB",                  true  );
+    flag("SigmaDiffractive:dampen",             true  );
+    parm("SigmaDiffractive:maxXB",              65.0  );
+    parm("SigmaDiffractive:maxAX",              65.0  );
+    parm("SigmaDiffractive:maxXX",              65.0  );
+    parm("Diffraction:largeMassSuppress",       2.0   );
+    flag("TimeShower:dampenBeamRecoil",         true  );
+    flag("TimeShower:phiPolAsym",               true  );
+    parm("SpaceShower:alphaSvalue",             0.137 );
+    mode("SpaceShower:alphaSorder",             1     );
+    flag("SpaceShower:alphaSuseCMW",            false );
+    flag("SpaceShower:samePTasMPI",             false );
+    parm("SpaceShower:pT0Ref",                  2.0   );
+    parm("SpaceShower:ecmRef",                  1800.0);
+    parm("SpaceShower:ecmPow",                  0.0   );
+    flag("SpaceShower:rapidityOrder",           true  );
+    flag("SpaceShower:phiPolAsym",              true  );
+    flag("SpaceShower:phiIntAsym",              true  );
+    parm("MultipartonInteractions:alphaSvalue", 0.135 );
+    parm("MultipartonInteractions:ecmRef",      1800. );
+    mode("MultipartonInteractions:bProfile",    3     );
+    parm("MultipartonInteractions:a1",          0.00  );
+    parm("BeamRemnants:primordialKTsoft",       0.5   );
+    parm("BeamRemnants:primordialKThard",       2.0   );
+    parm("BeamRemnants:halfScaleForKT",         1.0   );
+    parm("BeamRemnants:halfMassForKT",          1.0   );
+    mode("ColourReconnection:mode",             0     );
+
+    // CMS UE tune CUETP8S1-CTEQ6L1.
+    if (ppTune == 15) {
+      if (preferLHAPDF) {
+        flag("PDF:useLHAPDF",                   true  );
+        word("PDF:LHAPDFset",          "cteq6ll.LHpdf");
+      } else mode("PDF:pSet",                   8     );
+      parm("MultipartonInteractions:pT0Ref",    3.1006);
+      parm("MultipartonInteractions:ecmPow",    0.2106);
+      parm("MultipartonInteractions:expPow",    1.6089);
+      parm("ColourReconnection:range",          3.3126);
+    }
+
+    // CMS UE tune CUETP8S1-HERAPDF1.5LO.
+    else if (ppTune == 16) {
+      flag("PDF:useLHAPDF",                     true  );
+      word("PDF:LHAPDFset",  "HERAPDF1.5LO_EIG.LHgrid");
+      parm("MultipartonInteractions:pT0Ref",    2.0001);
+      parm("MultipartonInteractions:ecmPow",    0.2499);
+      parm("MultipartonInteractions:expPow",    1.6905);
+      parm("ColourReconnection:range",          6.0964);
+    }
+  }
+ 
 }
 
 //--------------------------------------------------------------------------

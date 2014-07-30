@@ -18,7 +18,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.200: 17 July 2014 
+<li>8.200: 30 July 2014 
 <ul> 
  
 <li>A new <code>pdfdoc</code> directory collects pdf documents
@@ -85,6 +85,9 @@ tune that was default in 8.1 can be recovered with
 Also most other older tunes are based on <code>Tune:ee = 3</code>.
 </li> 
  
+<li>Two new CMS underlying-event tunes [<a href="Bibliography.html" target="page">CMS14</a>] have been added 
+as options.</li> 
+ 
 <li>Christine Rasmussen joins as new PYTHIA collaboration member.</li> 
  
 <li>A new model for the handling of <a href="BeamRemnants.html" target="page">beam 
@@ -103,6 +106,14 @@ model has been renamed <code>ColourReconnection:range</code>, and several
 new settigns have been introduced, notably 
 <code>ColourReconnection:mode</code> to switch among the three models.
 </li> 
+
+<li>A new <code>examples/main29.cc</code> makes available an even 
+larger selection of colour reconnection models, via user hooks.
+Some of them are only intended for top decays, for top mass uncertainty
+studies, whereas others can be used more generally.</li> 
+ 
+<li>Bug fix in the two-loop running <i>alpha_s</i>, for the matching 
+to six flavours at the top mass.</li> 
  
 <li></li> 
  

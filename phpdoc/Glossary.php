@@ -33,11 +33,14 @@ echo "<font color='red'>NO FILE SELECTED YET.. PLEASE DO SO </font><a href='Save
  
 <dt>BR</dt> 
 <dd>Beam Remnants; not much used since it may be confused with 
-Branching Ratio</dd> 
+Branching Ratio; sometimes called beam-beam remnants, BBR</dd> 
  
 <dt>BSM</dt> 
 <dd>Beyond-the-Standard-Model physics, as a generic term for anything 
 not contained within the SM</dd> 
+
+<dt>CR</dt> 
+<dd>Colour Reconnection</dd> 
  
 <dt>FSR</dt> 
 <dd>Final-State Radiation, implemented in terms of timelike showers</dd> 

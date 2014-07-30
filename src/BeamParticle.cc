@@ -1266,7 +1266,7 @@ void BeamParticle::findColSetup(Event& event) {
 // Add required extra remnant flavour content. Also initial colours.
 
 bool BeamParticle::remnantFlavoursNew(Event& event) {
-  
+
   // A baryon will have a junction, unless a diquark is formed later.
   hasJunctionBeam = (isBaryon());
 
@@ -1282,7 +1282,7 @@ bool BeamParticle::remnantFlavoursNew(Event& event) {
     for (int k = 0; k < nValLeft[i]; ++k) append(0, idVal[i], 0., -3);
   }
   int nInitPlusVal = size();
-  
+
   // Find companion quarks to unmatched sea quarks.
   for (int i = 0; i < nInit; ++i)
   if (resolved[i].isUnmatched()) {
@@ -1294,12 +1294,12 @@ bool BeamParticle::remnantFlavoursNew(Event& event) {
   int beamJunc = 0;
   if (isBaryon()) beamJunc = 1;
   if (id() < 0)   beamJunc = -1;
-  
+
   // Count the number of gluons that needs to be added.
   int nGluons =  (colSetup.first + colSetup.second - (size() - nInit) 
 		  +abs( (nJuncs - nAjuncs) - beamJunc)) / 2;
   for (int i = 0; i < nGluons; i++) append(0,21,0.,-1);
- 
+
   // If no other remnants found, add a light q-qbar pair or a photon 
   // to carry momentum.
   if (size() == nInit) {
@@ -1313,7 +1313,7 @@ bool BeamParticle::remnantFlavoursNew(Event& event) {
       resolved[size()-1].companion(size() - 2);
     }
   }
-  
+
   usedCol =  vector<bool>(size(),false);
   usedAcol = vector<bool>(size(),false);
   
@@ -1377,16 +1377,16 @@ bool BeamParticle::remnantFlavoursNew(Event& event) {
 
     // Form diquark.
     } else { 
-    
+
     // Pick spin 0 or 1 according to SU(6) wave function factors.
       int idDq = flavSelPtr->makeDiquark( resolved[iQ1].id(),
         resolved[iQ2].id(), idBeam);
 
       // Overwrite with diquark flavour and remove one slot. No more junction.
-      resolved[iQ1].id(idDq);
-      if (nInitPlusVal - nInit == 3 && iQ2 == nInit + 1)
-        resolved[nInit + 1].id( resolved[nInit + 2].id() );
-      resolved.erase(resolved.begin() + nInit + 2);
+      if (nInitPlusVal - nInit == 3)
+        resolved[nInit + 2].id( resolved[3 * nInit + 3 - iQ2 - iQ1].id() );
+      resolved[nInit].id(idDq);
+      resolved.erase(resolved.begin() + nInit + 1);
       hasJunctionBeam = false;
       
       // Di-quark changes the baryon number.
