@@ -47,14 +47,6 @@ else
   targets+=$(LIBDIRARCH)/liblhapdfdummy.a
 endif
 
-ifneq (x$(HEPMCLOCATION),x)
- targets+=$(LIBDIRARCH)/libpythia8tohepmc.a
- ifeq ($(SHAREDLIBS),yes)
-  targets+=$(LIBDIR)/libpythia8tohepmc.$(SHAREDSUFFIX)
- endif
-endif
-
-
 all: $(targets) config.mk
 
 # This default run of configure should only happen if configure 
@@ -138,68 +130,6 @@ ifeq (,$(findstring clean, $(MAKECMDGOALS)))
 -include $(deps)
 -include $(depsarch)
 endif
-
-# Build HepMC interface part if HepMC location is set.
-
-ifneq (x$(HEPMCLOCATION),x)
- HEPMCINCLUDE=-I$(HEPMCLOCATION)/include
-
- ifeq (x$(HEPMCERROR),x)
-
-   $(MYTMPDIR)/%.o : pythia8tohepmc/%.cc config.mk
-	@mkdir -p $(MYTMPDIR)
-	$(CXX) $(CXXFLAGS) $(CXXFLAGSSHARED) $(HEPMCVFLAG) -c -I$(INCDIR) $(HEPMCINCLUDE) $< -o $@
-
-   $(MYTMPDIR)/archive/%.o : pythia8tohepmc/%.cc config.mk
-	@mkdir -p $(MYTMPDIR)/archive
-	$(CXX) $(CXXFLAGS) $(HEPMCVFLAG) -c -I$(INCDIR) $(HEPMCINCLUDE) $< -o $@
-
-   $(MYTMPDIR)/%.d : pythia8tohepmc/%.cc
-	@echo Making dependency for file $<; \
-	mkdir -p $(MYTMPDIR); \
-	$(CC) -M -I$(INCDIR) $(HEPMCINCLUDE) $< | \
-	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' | \
-	sed 's/$*.o/$(MYTMPDIR)\/$*.o/' > $@; \
-	[ -s $@ ] || rm -f $@
-
-   $(MYTMPDIR)/archive/%.d : pythia8tohepmc/%.cc
-	@echo Making dependency for file $<; \
-	mkdir -p $(MYTMPDIR)/archive; \
-	$(CC) -M -I$(INCDIR) $(HEPMCINCLUDE) $< | \
-	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' | \
-	sed 's/$*.o/$(MYTMPDIR)\/archive\/$*.o/' > $@; \
-	[ -s $@ ] || rm -f $@
-
-   objectsI := $(patsubst pythia8tohepmc/%.cc,$(MYTMPDIR)/%.o,$(wildcard pythia8tohepmc/*.cc))
-   objectsIarch := $(patsubst pythia8tohepmc/%.cc,$(MYTMPDIR)/archive/%.o,$(wildcard pythia8tohepmc/*.cc))
-
-   $(LIBDIR)/libpythia8tohepmc.$(SHAREDSUFFIX) : $(objectsI)
-	@mkdir -p $(LIBDIR)
-	$(CXX) $(LDFLAGSSHARED) $(objectsI) -o $@ $(LDFLAGLIBNAME),$(notdir $@)
-
-   $(LIBDIRARCH)/libpythia8tohepmc.a : $(objectsIarch)
-	@mkdir -p $(LIBDIRARCH)
-	ar cru $(LIBDIRARCH)/libpythia8tohepmc.a $(objectsIarch)
-
-   depsI := $(patsubst pythia8tohepmc/%.cc,$(MYTMPDIR)/%.d,$(wildcard pythia8tohepmc/*.cc))
-   depsIarch := $(patsubst pythia8tohepmc/%.cc,$(MYTMPDIR)/archive/%.d,$(wildcard pythia8tohepmc/*.cc))
-
-   ifeq (,$(findstring clean, $(MAKECMDGOALS)))
-   -include $(depsI)
-   -include $(depsIarch)
-   endif
-
- else
-
-   $(LIBDIRARCH)/libpythia8tohepmc.a $(LIBDIR)/libpythia8tohepmc.$(SHAREDSUFFIX) :
-	@echo $(HEPMCERROR)
-
-
-
- endif
-
-endif
-
 
 # Install targets:
 

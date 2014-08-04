@@ -46,12 +46,11 @@ main00  main01 main02 main03 main04 main05 main06 main07 main08 main09 main10 \
 # Owing to excessive warning output -Wshadow is not used for HepMC.
 ifneq (x$(HEPMCLOCATION),x)
   main41 main42: \
-	$(PYTHIA8LOCATION)/$(LIBDIRARCH)/libpythia8.a $(PYTHIA8LOCATION)/$(LIBDIRARCH)/libpythia8tohepmc.a
+	$(PYTHIA8LOCATION)/$(LIBDIRARCH)/libpythia8.a
 	@mkdir -p $(BINDIR)
 	$(CXX) $(CXXFLAGS) -Wno-shadow -I$(PYTHIA8LOCATION)/$(INCDIR) -I$(HEPMCLOCATION)/include \
 	$@.cc -o $(BINDIR)/$@.exe \
 	-L$(PYTHIA8LOCATION)/$(LIBDIRARCH) -lpythia8 -llhapdfdummy $(LIBGZIP) \
-	-lpythia8tohepmc \
 	-L$(HEPMCLOCATION)/lib -lHepMC
 	@ln -fs $(BINDIR)/$@.exe $@.exe
 else
@@ -70,11 +69,11 @@ main51 main52 main53 main54: $(PYTHIA8LOCATION)/$(LIBDIRARCH)/libpythia8.a
 
 # Create an executable that links to LHAPDF and HepMC
 main61 main62 main85 main86 main87 main88: \
-	$(PYTHIA8LOCATION)/$(LIBDIRARCH)/libpythia8.a $(PYTHIA8LOCATION)/$(LIBDIRARCH)/libpythia8tohepmc.a
+	$(PYTHIA8LOCATION)/$(LIBDIRARCH)/libpythia8.a 
 	@mkdir -p $(BINDIR)
 	$(CXX) $(CXXFLAGS) -Wno-shadow -I$(PYTHIA8LOCATION)/$(INCDIR) -I$(HEPMCLOCATION)/include \
 	$@.cc -o $(BINDIR)/$@.exe \
-	-L$(PYTHIA8LOCATION)/$(LIBDIRARCH) -lpythia8 -lpythia8tohepmc $(LIBGZIP) \
+	-L$(PYTHIA8LOCATION)/$(LIBDIRARCH) -lpythia8 $(LIBGZIP) \
 	-L$(LHAPDFLOCATION) $(LHAPDFLIBNAME) \
 	-L$(HEPMCLOCATION)/lib -lHepMC \
 	$(FLIBS)
@@ -107,7 +106,7 @@ endif
 # (Fixed as of Fastjet 3.0.1, so will be modified eventually.)
 ifneq (x$(FASTJETLOCATION),x)
   main81 main82 main83 main84: \
-	$(PYTHIA8LOCATION)/$(LIBDIRARCH)/libpythia8.a  $(PYTHIA8LOCATION)/$(LIBDIRARCH)/libpythia8tohepmc.a
+	$(PYTHIA8LOCATION)/$(LIBDIRARCH)/libpythia8.a
 	@mkdir -p $(BINDIR)
     # Note: $(CXXFLAGS) is after Fastjet flags as Fastjet includes
     #       optimisation/debug flags which may be unwanted (e.g. -g -O2)
@@ -118,7 +117,6 @@ ifneq (x$(FASTJETLOCATION),x)
 	-o $(BINDIR)/$@.exe \
 	-L$(PYTHIA8LOCATION)/$(LIBDIRARCH) -lpythia8 \
 	-L$(LHAPDFLOCATION) $(LHAPDFLIBNAME) \
-	-lpythia8tohepmc \
 	-L$(HEPMCLOCATION)/lib -lHepMC \
 	-L$(FASTJETLOCATION)/lib \
 	-L$(LHAPDFLOCATION)/lib \

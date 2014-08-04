@@ -75,9 +75,10 @@ to study potential colour reconnection effects e.g. on top mass
 [<a href="Bibliography.php" target="page">Arg14</a>], not from the point of view of having the most realistic 
 description, but in order to probe the potential worst-case spread of 
 predictions. All of these models are made available separately in 
-<code>examples/main29.cc</code>, but only the gluon-move one is sufficiently 
-general and realistic that it has been included among the standard options 
-here. 
+<code>include/Pythia8Plugins/ColourReconnectionHooks.h</code>, with the
+setup illustrated in <code>examples/main29.cc</code>, but only the 
+gluon-move one is sufficiently general and realistic that it has been 
+included among the standard options here. 
 
 <br/><br/><strong>ColourReconnection:reconnect</strong>  <input type="radio" name="1" value="on" checked="checked"><strong>On</strong>
 <input type="radio" name="1" value="off"><strong>Off</strong>

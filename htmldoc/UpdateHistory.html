@@ -18,7 +18,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.200: 30 July 2014 
+<li>8.200: 4 August 2014 
 <ul> 
  
 <li>A new <code>pdfdoc</code> directory collects pdf documents
@@ -107,10 +107,18 @@ new settigns have been introduced, notably
 <code>ColourReconnection:mode</code> to switch among the three models.
 </li> 
 
-<li>A new <code>examples/main29.cc</code> makes available an even 
-larger selection of colour reconnection models, via user hooks.
-Some of them are only intended for top decays, for top mass uncertainty
-studies, whereas others can be used more generally.</li> 
+<li>A new <code>include/Pythia8Plugins/ColourReconnectionHooks.h</code> 
+makes available an even larger selection of toy colour reconnection 
+models, via user hooks. Some of them are only intended for top decays, 
+for top mass uncertainty studies, whereas others can be used more 
+generally. The <code>examples/main29.cc</code> program illustrated how 
+the different options should be set up.</li> 
+
+<li>Improved capability for the <code>LHAup</code> Les Houches interface 
+to read SLHA information embedded in the input file or stream.</li> 
+
+<li>The <code>Makefile</code>s have been updated to take into account
+the changed structure of the HepMC interface.</li> 
  
 <li>Bug fix in the two-loop running <i>alpha_s</i>, for the matching 
 to six flavours at the top mass.</li> 
