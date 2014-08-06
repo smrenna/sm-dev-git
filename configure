@@ -3,6 +3,7 @@
 # Copyright (C) 2014 Torbjorn Sjostrand.
 # PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 # Please respect the MCnet Guidelines, see GUIDELINES for details.
+# Author: Philip Ilten, August 2014.
 #
 # This is is the configuration script which should be run prior to building
 # PYTHIA. Example usage is:
@@ -54,14 +55,14 @@ Optional external packages.
   gzip     : Enable reading of GZIPPED files using BOOST and the libz library.
 
 Installation directories.
---prefix=DIR           : Directory to install PYTHIA [./].
+--prefix=DIR           : Directory to install PYTHIA [/usr].
 --prefix-COMPONENT=DIR : Set the installation directory for each PYTHIA 
                          COMPONENT from the following list.
   bin     : Binaries, including the configuration script [PREFIX/bin].
   lib     : Libraries, both shared and static [PREFIX/lib].
   include : Source headers [PREFIX/include/Pythia8].
   share   : Shared data, including configuration, READMEs, documentation, and
-            examples.
+            examples [PREFIX/share/Pythia8].
 
 Advanced options.
 --arch=ARCH          : Architecture of the system. When not set, this
@@ -193,7 +194,7 @@ if [ -z "$LIB_SUFFIX" ]; then
     if [ "$ARCH" = "Darwin" ]; then LIB_SUFFIX=".dylib"; fi; fi
 
 # Configure the installation directories (order matters).
-if [ "$PREFIX_SET" != true ]; then PREFIX=$PWD; fi
+if [ "$PREFIX_SET" != true ]; then PREFIX=/usr; fi
 if [ -z "$PREFIX_BIN" ];      then PREFIX_BIN=$PREFIX/bin; fi
 if [ -z "$PREFIX_INCLUDE" ];  then PREFIX_INCLUDE=$PREFIX/include; fi
 if [ -z "$PREFIX_LIB" ];      then PREFIX_LIB=$PREFIX/lib; fi
@@ -277,3 +278,4 @@ ${PKG}_INCLUDE=$PKG_INC
 ${PKG}_LIB=$PKG_LIB
 BLOCKTEXT
 done
+echo ""

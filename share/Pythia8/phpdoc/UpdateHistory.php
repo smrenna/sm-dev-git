@@ -81,10 +81,6 @@ previously in <code>lhapdfdummy/LHAPDFDummy.cc</code>, to be linked
 when LHAPDF is not, in order to avoid unresolved references.</li> 
 </ul>
 
-<li>The <code>rootexamples</code> directory has been removed, and the
-two programs <code>examples/main91</code> and <code>examples/main92</code>
-now illustrate how ROOT can be used in conjunction with PYTHIA.</li> 
-
 <li>The configure/make structure has been considerably rewritten. 
 Now all external libraries to be linked are specified in the 
 main-directory <code>configure</code> step, along with other options,
@@ -106,6 +102,14 @@ as follows:
   <tr> <td>pythia-config</td> <td>&rarr;&nbsp;</td> <td>/usr/bin/</td> </tr> 
 </table> 
 </li> 
+
+<li>The <code>rootexamples</code> directory has been removed, and the
+two programs <code>examples/main91</code> and <code>examples/main92</code>
+now illustrate how ROOT can be used in conjunction with PYTHIA.</li> 
+
+<li>The executable built from <code>examples/mainxx.cc</code> is now 
+named <code>examples/mainxx</code>, while previously it was named
+<code>examples/mainxx.exe</code>.</li> 
 
 <li>The rudimentary support for compilation on Windows platforms,
 present in PYTHIA 8.1, has not yet been updated for 8.2 and so is omitted.

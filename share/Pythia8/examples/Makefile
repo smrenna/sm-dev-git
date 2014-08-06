@@ -2,6 +2,7 @@
 # Copyright (C) 2014 Torbjorn Sjostrand.
 # PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 # Please respect the MCnet Guidelines, see GUIDELINES for details.
+# Author: Philip Ilten, August 2014.
 #
 # This is is the Makefile used to build PYTHIA examples on POSIX systems.
 # Example usage is:
@@ -13,10 +14,19 @@
 # VARIABLES: Definition of the relevant variables from the configuration script.
 ################################################################################
 
-# Include the configuration and handle GZIP support.
+# Include the configuration.
 -include Makefile.inc
+
+# Handle GZIP support.
 ifeq ($(GZIP_USE),true)
-  CXX_COMMON+=-L$(BOOST_LIB) -L$(GZIP_LIB) -lboost_iostreams -lz
+  CXX_COMMON+= -L$(BOOST_LIB) -Wl,-rpath $(BOOST_LIB) -lboost_iostreams
+  CXX_COMMON+= -L$(GZIP_LIB) -Wl,-rpath $(GZIP_LIB) -lz
+endif
+
+# Check if local distribution (use local version first, then installed version).
+ifneq ("$(wildcard ../../../lib/libpythia8.a)","")
+  PREFIX_LIB=../../../lib
+  PREFIX_INCLUDE=../../../include
 endif
 
 ################################################################################
@@ -33,7 +43,12 @@ all:
 
 # The Makefile configuration.
 Makefile.inc:
-	$(error Error: PYTHIA must be installed, please run "make install" \
+	$(error Error: PYTHIA must be configured, please run "./configure" \
+                in the top PYTHIA directory)
+
+# PYTHIA libraries.
+$(PREFIX_LIB)/libpythia8.a $(PREFIX_LIB)/libpythia8lhapdf5.a:
+	$(error Error: PYTHIA must be built, please run "make" \
                 in the top PYTHIA directory)
 
 # Examples without external dependencies.

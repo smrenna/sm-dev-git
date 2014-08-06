@@ -2,6 +2,7 @@
 # Copyright (C) 2014 Torbjorn Sjostrand.
 # PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 # Please respect the MCnet Guidelines, see GUIDELINES for details.
+# Author: Philip Ilten, August 2014.
 #
 # This is is the Makefile used to build PYTHIA on POSIX systems. Example usage 
 # is:
@@ -19,15 +20,12 @@ ifeq (,$(findstring clean, $(MAKECMDGOALS)))
   -include Makefile.inc
 endif
 LOCAL_BIN=bin
-LOCAL_EXAMPLES=examples
-LOCAL_HTMLDOC=htmldoc
+LOCAL_DOCS=AUTHORS COPYING GUIDELINES examples/Makefile.inc README
 LOCAL_INCLUDE=include
 LOCAL_LIB=lib
-LOCAL_PDFDOC=pdfdoc
-LOCAL_PHPDOC=phpdoc
+LOCAL_SHARE=share/Pythia8
 LOCAL_SRC=src
 LOCAL_TMP=tmp
-LOCAL_XMLDOC=xmldoc
 LOCAL_MKDIRS:=$(shell mkdir -p $(LOCAL_TMP) $(LOCAL_LIB))
 
 # PYTHIA.
@@ -48,11 +46,16 @@ endif
 # RULES: Definition of the rules used to build PYTHIA.
 ################################################################################
 
-# Rules without physical targets.
-.PHONY: all install clean fullclean
+# Rules without physical targets (secondary expansion for documentation).
+.SECONDEXPANSION:
+.PHONY: all install clean distclean
 
 # All targets.
-all: Makefile.inc $(TARGETS)
+all: $(TARGETS) $(addprefix $(LOCAL_SHARE)/, $(LOCAL_DOCS))
+
+# The documentation.
+$(addprefix $(LOCAL_SHARE)/, $(LOCAL_DOCS)): $$(notdir $$@)
+	cp $^ $@
 
 # The Makefile configuration.
 Makefile.inc:
@@ -84,28 +87,21 @@ $(LOCAL_LIB)/libpythia8lhapdf5$(LIB_SUFFIX): $(LOCAL_TMP)/LHAPDF5.o
 
 # Install (rsync is used for finer control).
 install: all
-	@mkdir -p $(PREFIX_BIN) $(PREFIX_INCLUDE) $(PREFIX_LIB) $(PREFIX_SHARE)
-	@mkdir -p $(PREFIX_SHARE)/doc
-	@rsync -a pythia8-config.in $(LOCAL_BIN)
-	@rsync -a $(LOCAL_BIN)/* $(PREFIX_BIN) --exclude .svn
-	@rsync -a $(LOCAL_INCLUDE)/* $(PREFIX_INCLUDE) --exclude .svn
-	@rsync -a $(LOCAL_LIB)/* $(PREFIX_LIB) --exclude .svn
-	@rsync -a  Makefile.inc $(LOCAL_EXAMPLES)
-	@rsync -a $(LOCAL_EXAMPLES) $(PREFIX_SHARE) --exclude .svn
-	@rsync -a README $(PREFIX_SHARE)/doc
-	@rsync -a $(LOCAL_HTMLDOC) $(PREFIX_SHARE)/doc --exclude .svn
-	@rsync -a $(LOCAL_PDFDOC) $(PREFIX_SHARE)/doc --exclude .svn
-	@rsync -a $(LOCAL_PHPDOC) $(PREFIX_SHARE)/doc --exclude .svn
-	@rsync -a $(LOCAL_XMLDOC) $(PREFIX_SHARE)/doc --exclude .svn
+	mkdir -p $(PREFIX_BIN) $(PREFIX_INCLUDE) $(PREFIX_LIB) $(PREFIX_SHARE)
+	rsync -a pythia8-config.in $(LOCAL_BIN)/
+	rsync -a $(LOCAL_BIN)/* $(PREFIX_BIN) --exclude .svn
+	rsync -a $(LOCAL_INCLUDE)/* $(PREFIX_INCLUDE) --exclude .svn
+	rsync -a $(LOCAL_LIB)/* $(PREFIX_LIB) --exclude .svn
+	rsync -a $(LOCAL_SHARE)/* $(PREFIX_SHARE) --exclude .svn
 
 # Clean.
 clean:
-	@rm -rf $(LOCAL_TMP) $(LOCAL_LIB)
-	@rm -f $(LOCAL_EXAMPLES)/*Dct.*
-	@rm -f $(LOCAL_EXAMPLES)/main[0-9][0-9]
+	rm -rf $(LOCAL_TMP) $(LOCAL_LIB)
+	rm -f $(LOCAL_SHARE)/examples/*Dct.*
+	rm -f $(LOCAL_SHARE)/examples/main[0-9][0-9]
 
 # Clean all temporary and generated files.
-fullclean: clean
-	@find . -type f -name Makefile.inc -print0 | xargs -0 rm -f
-	@find . -type f -name "*~" -print0 | xargs -0 rm -f
-	@find . -type f -name "#*" -print0 | xargs -0 rm -f
+distclean: clean
+	find . -type f -name Makefile.inc -print0 | xargs -0 rm -f
+	find . -type f -name "*~" -print0 | xargs -0 rm -f
+	find . -type f -name "#*" -print0 | xargs -0 rm -f

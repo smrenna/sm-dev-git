@@ -23,7 +23,7 @@ int main() {
   int mode = 5;
 
   // Number of events to generate per bin.
-  int nEvent = 100000;
+  int nEvent = 10000;
 
   // One does not need complete events to study pThard spectrum only.
   bool completeEvents = false;
