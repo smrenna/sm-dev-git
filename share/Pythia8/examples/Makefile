@@ -128,4 +128,5 @@ endif
 
 # Clean.
 clean:
-	@rm -f main[0-9][0-9]; rm -f *~; rm -f \#*; rm -f core*; rm -f *Dct.*
+	@rm -f main[0-9][0-9]; rm -f out[0-9][0-9]; rm -f weakbosons.lhe; \
+	rm -f *~; rm -f \#*; rm -f core*; rm -f *Dct.*

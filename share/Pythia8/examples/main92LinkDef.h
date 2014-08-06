@@ -4,9 +4,8 @@
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
 // Header used to generate a ROOT dictionary for the PYTHIA classes.
-// Modified by Rene Brun and Axcel Naumann to put the Pythia::event
+// Modified by Rene Brun and Axel Naumann to put the Pythia::event
 // into a TTree.
-// Copyright (C) 2014 Torbjorn Sjostrand
 
 #ifdef __CINT__
 #pragma link off all globals;

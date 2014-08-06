@@ -99,9 +99,15 @@ clean:
 	rm -rf $(LOCAL_TMP) $(LOCAL_LIB)
 	rm -f $(LOCAL_SHARE)/examples/*Dct.*
 	rm -f $(LOCAL_SHARE)/examples/main[0-9][0-9]
+	rm -f $(LOCAL_SHARE)/examples/out[0-9][0-9]
+	rm -f $(LOCAL_SHARE)/examples/weakbosons.lhe 
 
 # Clean all temporary and generated files.
 distclean: clean
 	find . -type f -name Makefile.inc -print0 | xargs -0 rm -f
 	find . -type f -name "*~" -print0 | xargs -0 rm -f
 	find . -type f -name "#*" -print0 | xargs -0 rm -f
+	rm -f $(LOCAL_SHARE)/AUTHORS
+	rm -f $(LOCAL_SHARE)/COPYING
+	rm -f $(LOCAL_SHARE)/GUIDELINES
+	rm -f $(LOCAL_SHARE)/README
