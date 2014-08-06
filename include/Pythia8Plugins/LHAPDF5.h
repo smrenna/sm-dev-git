@@ -1,9 +1,12 @@
-// LHAPDFDummy.cc is a part of the PYTHIA event generator.
+// LHAPDF5.h is a part of the PYTHIA event generator.
 // Copyright (C) 2014 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
 // Dummy routines to link when LHAPDF not linked.
+
+#ifndef Pythia8_LHAPDF5_H
+#define Pythia8_LHAPDF5_H
 
 extern "C" {
 
@@ -21,3 +24,5 @@ extern "C" {
   void setlhaparm_(const char*, int) {}
 
 }
+
+#endif // end Pythia8_LHAPDF5_H

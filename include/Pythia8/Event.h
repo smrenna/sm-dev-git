@@ -471,9 +471,6 @@ public:
     entry.erase( entry.begin() + iFirst, entry.begin() + iLast + 1);
   }
 
-  // Undo the decay of a single particle (where daughters well-defined).
-  bool undoDecay(int i);
-
   // Restore all ParticleDataEntry* pointers in the Particle vector.
   // Useful when a persistent copy of the event record is read back in.
   void restorePtrs() { for (int i = 0; i < size(); ++i) setEvtPtr(i); }

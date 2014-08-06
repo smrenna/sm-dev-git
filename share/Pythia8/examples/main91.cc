@@ -1,9 +1,12 @@
-// File: hist.cc
+// main91.cc is a part of the PYTHIA event generator.
+// Copyright (C) 2014 Torbjorn Sjostrand.
+// PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
+// Please respect the MCnet Guidelines, see GUIDELINES for details.
+
 // This is a simple test program.
 // It studies the charged multiplicity distribution at the LHC.
 // Modified by Rene Brun, Axel Naumann and Bernhard Meirose
 // to use ROOT for histogramming.
-// Copyright (C) 2014 Torbjorn Sjostrand
 
 // Stdlib header file for input and output.
 #include <iostream>

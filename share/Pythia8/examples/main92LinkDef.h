@@ -1,18 +1,22 @@
+// main92LinkDef.h is a part of the PYTHIA event generator.
+// Copyright (C) 2014 Torbjorn Sjostrand.
+// PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
+// Please respect the MCnet Guidelines, see GUIDELINES for details.
+
+// Header used to generate a ROOT dictionary for the PYTHIA classes.
+// Modified by Rene Brun and Axcel Naumann to put the Pythia::event
+// into a TTree.
+// Copyright (C) 2014 Torbjorn Sjostrand
+
 #ifdef __CINT__
- 
 #pragma link off all globals;
 #pragma link off all classes;
 #pragma link off all functions;
- 
 #pragma link C++ namespace Pythia8;
 #pragma link C++ class Pythia8::Event+;
 #pragma link C++ class Pythia8::Particle+;
 #pragma link C++ class Pythia8::Junction+;
 #pragma link C++ class Pythia8::Vec4+;
-
-#ifdef PYTHIA8_COMPLETE_ROOT_DICTIONARY
-// For tree.cc, none of the following (generator-internal)
-// classes is needed. Thus excluded from the default Linkdef.h.
 #pragma link C++ class Pythia8::ParticleData+;
 #pragma link C++ class Pythia8::ParticleDataEntry+;
 #pragma link C++ class Pythia8::DecayChannel+;
@@ -49,5 +53,4 @@
 #pragma link C++ class Pythia8::SigmaProcess+;
 #pragma link C++ class std::vector<ResonanceWidths>+;
 #pragma link C++ class std::pair<int,ParticleDataEntry>+;
-#endif
 #endif
