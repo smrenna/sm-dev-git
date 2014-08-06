@@ -8,7 +8,7 @@
 // see the Matrix Element Merging page in the online manual.
 
 #include "Pythia8/Pythia.h"
-#include "Pythia8Plugins/Pythia8ToHepMC.h"
+#include "Pythia8Plugins/HepMC2.h"
 #include <unistd.h>
 
 using namespace Pythia8;

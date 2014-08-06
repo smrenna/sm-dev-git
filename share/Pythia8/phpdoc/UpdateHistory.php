@@ -39,20 +39,28 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.200: 4 August 2014 
+<li>8.200: 6 August 2014 
 <ul> 
+
+<li>A new <code>share/Pythia8</code> directory collects all 
+documentation and example code. The <code>examples</code>,
+<code>htmldoc</code>, <code>phpdoc</code> and <code>xmldoc</code> 
+directories have been moved here. The main-directory files
+<code>AUTHORS</code>, <code>COPYING</code>, <code>GUIDELINE</code> 
+and <code>README</code> are also copied here during installation.
+</li> 
  
-<li>A new <code>pdfdoc</code> directory collects pdf documents
-that are linked from the <code>htmldoc</code> and <code>phpdoc</code>
-directories. Over time it will  provide more in-depth descriptions of 
-various physics aspects than offered in the html/php-formatted 
-documentation.</li> 
+<li>A new <code>share/Pythia8/pdfdoc</code> directory collects pdf 
+documents that are linked from the <code>htmldoc</code> and 
+<code>phpdoc</code> directories. Over time it will  provide more 
+in-depth descriptions of various physics aspects than offered in 
+the html/php-formatted documentation.</li> 
  
 <li>A new <code>include/Pythia8Plugins</code> directory collects
 code that does not form part of the core PYTHIA functionality but
 still has a general usefulness. Code in this directory will not be
 compiled as part of the Pythia library, but can be linked where needed.
-This new directory currently contains
+This new directory contains
 <ul>
 <li>the jet matching classes in <code>CombineMatchingInput.h</code>,
 <code>GeneratorInput.h</code> and <code>JetMatching.h</code>, moved
@@ -60,15 +68,49 @@ from the <code>examples</code> directory;</li>
 <li>the <code>PowhegHooks</code> user hook, to veto shower emissions 
 above the POWHEG scale, formerly found in <code>examples/main31.cc</code>;
 </li>
-<li>the <code>Pythia8ToHepMC</code> interfoace for output of PYTHIA events 
+<li>the <code>Pythia8ToHepMC</code> interface for output of PYTHIA events 
 into the HepMC format, combining the code previously in 
 <code>include/Pythia8ToHepMC.h</code> and
-<code>pythia8tohepmc/Pythia8ToHepMC.cc</code>; and</li>
+<code>pythia8tohepmc/Pythia8ToHepMC.cc</code> into a new 
+<code>HepMC2.h</code> file;</li>
 <li>the <code>FastJet3.h</code> interface of PYTHIA particles to the
 FastJet 3 library of jet finders, formerly found in 
-<code>include/FastJet3.h</code>.</li> 
+<code>include/FastJet3.h</code>; and</li> 
+<li>the <code>LHAPDF5.h</code> file that contains the dummy code 
+previously in <code>lhapdfdummy/LHAPDFDummy.cc</code>, to be linked
+when LHAPDF is not, in order to avoid unresolved references.</li> 
 </ul>
- 
+
+<li>The <code>rootexamples</code> directory has been removed, and the
+two programs <code>examples/main91</code> and <code>examples/main92</code>
+now illustrate how ROOT can be used in conjunction with PYTHIA.</li> 
+
+<li>The configure/make structure has been considerably rewritten. 
+Now all external libraries to be linked are specified in the 
+main-directory <code>configure</code> step, along with other options,
+so there is no longer an <code>examples/configure</code>. The 
+<code>make</code> step will, as before, compile and install libraries
+inside the current directory, such that the main programs in the
+<code>examples</code> directory can be run. One small difference is that
+also the archive libraries are installed in <code>lib</code> and not in
+<code>lib/archive</code>.
+<br/>A new optional <code>make install</code> step allows you to copy
+files to more convenient locations. The default option, with no directories
+specified in the <code>configure</code> step, requires you to have 
+superuser privileges. Then files will be copied to standard locations
+as follows:
+<table border="0">
+  <tr> <td>lib/</td> <td>&rarr;&nbsp;</td> <td>/usr/lib/</td> </tr> 
+  <tr> <td>include/</td> <td>&rarr;&nbsp;</td> <td>/usr/include/</td> </tr> 
+  <tr> <td>share/</td> <td>&rarr;&nbsp;</td> <td>/usr/share/</td> </tr> 
+  <tr> <td>pythia-config</td> <td>&rarr;&nbsp;</td> <td>/usr/bin/</td> </tr> 
+</table> 
+</li> 
+
+<li>The rudimentary support for compilation on Windows platforms,
+present in PYTHIA 8.1, has not yet been updated for 8.2 and so is omitted.
+Also the README.HepMC file is omitted for now.</li> 
+
 <li>Several methods have been removed from the <code>Event</code> class
 since the properties now instead can be accessed from the individual 
 <code>Particle</code> instance, if this particle belongs to an event.

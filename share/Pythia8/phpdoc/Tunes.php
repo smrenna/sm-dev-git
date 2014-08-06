@@ -246,7 +246,7 @@ to find exactly which are the settings for the respective tune.
 Also note that, with the exception of the Monash tune, all tunes were
 obtained starting from <code>Tune:ee = 3</code>, so you should also
 change accordingly if you change to a non-Monash tune for <ei>pp</ei>.
-(If not, nothing bad will happen, since the <ei>e^+ e^-</ie> tunes are 
+(If not, nothing bad will happen, since the <ei>e^+ e^-</ei> tunes are 
 not all that different, but you will not be fully consistent.)
 <br/>
 <input type="radio" name="3" value="-1"><strong>-1 </strong>: reset all values that are affected by any of the  <ei>pp/ppbar</ei> tunes to the default values. This option can be used  on its own, but is also automatically used as a first step for either  of the positive tune values below, to undo the effect of previous tune  settings.  <br/>

@@ -134,10 +134,11 @@ from this ratio, i.e. the philosophy introduced in [<a href="Bibliography.php" t
 <br/>While POWHEG is a generic strategy, the POWHEG BOX 
 [<a href="Bibliography.php" target="page">Ali10</a>] is an explicit framework, within which several 
 processes are available. The code required for merging the PYTHIA 
-showers with POWHEG input can be found in <code>examples/main31</code>,
-and is further described on a 
-<?php $filepath = $_GET["filepath"];
-echo "<a href='POWHEGMerging.php?filepath=".$filepath."' target='page'>";?>separate page</a>. 
+showers with POWHEG input can be found in 
+<code>include/Pythia8Plugins/PowHegHooks.h</code>, and is further 
+described on a <?php $filepath = $_GET["filepath"];
+echo "<a href='POWHEGMerging.php?filepath=".$filepath."' target='page'>";?>separate page</a>.
+A user example is found in <code>examples/main31</code>. 
 </li> 
  
 <li>The other traditional approach for NLO calculations is the 

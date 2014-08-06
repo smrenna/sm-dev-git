@@ -4,9 +4,8 @@
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
 // This is a simple test program.
-// Modified by Rene Brun and Axcel Naumann to put the Pythia::event
+// Modified by Rene Brun and Axel Naumann to put the Pythia::event
 // into a TTree.
-// Copyright (C) 2014 Torbjorn Sjostrand
 
 // Header file to access Pythia 8 program elements.
 #include "Pythia8/Pythia.h"

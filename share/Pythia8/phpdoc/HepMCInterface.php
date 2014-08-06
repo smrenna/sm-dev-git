@@ -31,9 +31,9 @@ echo "<font color='red'>NO FILE SELECTED YET.. PLEASE DO SO </font><a href='Save
  
 An interface to the HepMC [<a href="Bibliography.php" target="page">Dob01</a>] standard event record 
 format has been provided by M. Kirsanov. The code is stored in 
-<code>include/Pythia8Plugins/Pythia8ToHepMC.h</code>. To use it, 
+<code>include/Pythia8Plugins/HepMC2.h</code>. To use it, 
 the relevant libraries need to be linked, as explained in the 
-<code>README</code> and <code>README.HepMC</code> files. 
+<code>README</code> file. 
 Only version 2.06 (or later) of HepMC is supported, by agreement 
 with the LHC experimental community. 
  

@@ -313,26 +313,13 @@ The program will produce positively and negatively weighted events.
 See <aloc href="NLOMerging">NLO Merging</aloc> (UNLOPS section) for further 
 details. 
 </li> 
- 
-</ul> 
- 
-In addition two main program illustrating the use of ROOT are available 
-in the <code>rootexamples</code> subdirectory: 
-  
-<ul> 
- 
-<li><code>hist.cc</code> : shows how ROOT can be used for histogramming 
+
+<li><code>main91.cc</code> : shows how ROOT can be used for histogramming 
 in a program that for the rest is structured like a normal PYTHIA run. 
 </li> 
  
-<li><code>tree.cc</code> : shows how PYTHIA events can be stored as 
+<li><code>main92.cc</code> : shows how PYTHIA events can be stored as 
 ROOT trees.</li> 
- 
-</ul> 
- 
-This subdirectory also contains a special Makefile and related 
-documentation. 
- 
  
 </chapter> 
  

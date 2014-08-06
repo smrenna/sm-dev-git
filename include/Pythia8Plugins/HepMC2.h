@@ -1,4 +1,4 @@
-// Pythia8ToHepMC.h is a part of the PYTHIA event generator.
+// HepMC2.h is a part of the PYTHIA event generator.
 // Copyright (C) 2014 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
@@ -7,8 +7,8 @@
 // Header file and function definitions for the Pythia8ToHepMC class,
 // which converts a PYTHIA event record to the standard HepMC format.
 
-#ifndef Pythia8_Pythia8ToHepMC_H
-#define Pythia8_Pythia8ToHepMC_H
+#ifndef Pythia8_HepMC2_H
+#define Pythia8_HepMC2_H
 
 #include <vector>
 #include "HepMC/IO_BaseClass.h"
@@ -269,4 +269,4 @@ bool Pythia8ToHepMC::fill_next_event( Pythia8::Event& pyev, GenEvent* evt,
 
 } // end namespace HepMC
 
-#endif  // end Pythia8_Pythia8ToHepMC_H
+#endif  // end Pythia8_HepMC2_H

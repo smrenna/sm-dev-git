@@ -7,7 +7,7 @@ task. Each file typically contains one main class, but often
 with a few related helper classes that are not used elsewhere in 
 the program. Normally the files come in pairs. 
 <ul> 
-<li>A header file, <code>.h</code> in the <code>include</code> 
+<li>A header file, <code>.h</code> in the <code>include/Pythia8</code> 
 subdirectory, where the public interface of the class is declared, 
 and inline methods are defined.</li> 
 <li>A source code file, <code>.cc</code> in the <code>src</code> 
@@ -71,6 +71,15 @@ provides a simple method to impose Bose-Einstein correlations on
 pairs of identical mesons. 
 </file> 
  
+<file name="ColourReconnection"> 
+implements several models that describe how the colour flow between
+outgoing partons can be changed by nonperturbative effects.
+</file> 
+ 
+<file name="ColourTracing"> 
+finds out how partons are colour-connected in (more or less long) chains.
+</file> 
+ 
 <file name="Event"> 
 contains the event record, which basically is a vector of particles. 
 This file also contains the <code>Particle</code> class, used by 
@@ -130,6 +139,12 @@ is a simple container that gives access to some information on the
 nature of the current process, such as Mandelstam variables. 
 Also contains a small database for errors and warnings encountered 
 during program execution. 
+</file> 
+ 
+<file name="JunctionSplitting"> 
+processes a colour singlet system containing several (anti)junctions
+such that it can be split into several systems each containing 
+(at most) one junction.
 </file> 
  
 <file name="LesHouches"> 
@@ -364,6 +379,11 @@ CKM mixing matrices, and a few other parameters such as
  
 <file name="StringFragmentation"> 
 performs string fragmentation of a given set of partons. 
+</file> 
+ 
+<file name="StringLength"> 
+calculates the string-length <ei>lambda</ei> measure for various
+colour topologies, including junction ones.
 </file> 
  
 <file name="SusyCouplings"> 

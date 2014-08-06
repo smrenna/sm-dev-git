@@ -34,7 +34,7 @@ task. Each file typically contains one main class, but often
 with a few related helper classes that are not used elsewhere in 
 the program. Normally the files come in pairs. 
 <ul> 
-<li>A header file, <code>.h</code> in the <code>include</code> 
+<li>A header file, <code>.h</code> in the <code>include/Pythia8</code> 
 subdirectory, where the public interface of the class is declared, 
 and inline methods are defined.</li> 
 <li>A source code file, <code>.cc</code> in the <code>src</code> 
@@ -98,6 +98,15 @@ provides a simple method to impose Bose-Einstein correlations on
 pairs of identical mesons. 
    
  
+<p/><code>file&nbsp; </code><strong> ColourReconnection &nbsp;</strong> <br/>
+implements several models that describe how the colour flow between
+outgoing partons can be changed by nonperturbative effects.
+   
+ 
+<p/><code>file&nbsp; </code><strong> ColourTracing &nbsp;</strong> <br/>
+finds out how partons are colour-connected in (more or less long) chains.
+   
+ 
 <p/><code>file&nbsp; </code><strong> Event &nbsp;</strong> <br/>
 contains the event record, which basically is a vector of particles. 
 This file also contains the <code>Particle</code> class, used by 
@@ -157,6 +166,12 @@ is a simple container that gives access to some information on the
 nature of the current process, such as Mandelstam variables. 
 Also contains a small database for errors and warnings encountered 
 during program execution. 
+   
+ 
+<p/><code>file&nbsp; </code><strong> JunctionSplitting &nbsp;</strong> <br/>
+processes a colour singlet system containing several (anti)junctions
+such that it can be split into several systems each containing 
+(at most) one junction.
    
  
 <p/><code>file&nbsp; </code><strong> LesHouches &nbsp;</strong> <br/>
@@ -391,6 +406,11 @@ CKM mixing matrices, and a few other parameters such as
  
 <p/><code>file&nbsp; </code><strong> StringFragmentation &nbsp;</strong> <br/>
 performs string fragmentation of a given set of partons. 
+   
+ 
+<p/><code>file&nbsp; </code><strong> StringLength &nbsp;</strong> <br/>
+calculates the string-length <i>lambda</i> measure for various
+colour topologies, including junction ones.
    
  
 <p/><code>file&nbsp; </code><strong> SusyCouplings &nbsp;</strong> <br/>
