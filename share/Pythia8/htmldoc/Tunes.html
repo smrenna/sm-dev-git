@@ -87,6 +87,8 @@ and with different emphasis on minimum-bias and underlying-event data
 [<a href="Bibliography.html" target="page">ATL12</a>]. These typically require LHAPDF to be linked, but this 
 can be avoided in cases where the same PDF set is implemented internally. 
 Also two CMS underlying-event tunes are implemented [<a href="Bibliography.html" target="page">CMS14</a>].
+The ATLAS AZ tune [<a href="Bibliography.html" target="page">ATL14</a>] instead puts emphasis on the <i>pT</i>
+spectrum of the <i>Z^/gamma^*0</i> boson. 
  
 <p/> 
 Central diffraction is a recent addition to the "soft QCD" process palette, 
@@ -252,7 +254,7 @@ set <code>Tune:preferLHAPDF = off</code> <i>before</i> the
    
  
 <p/><code>mode&nbsp; </code><strong> Tune:pp &nbsp;</strong> 
- (<code>default = <strong>14</strong></code>; <code>minimum = -1</code>; <code>maximum = 16</code>)<br/>
+ (<code>default = <strong>14</strong></code>; <code>minimum = -1</code>; <code>maximum = 17</code>)<br/>
 Choice of tune to <i>pp/ppbar</i> data, mainly for the 
 initial-state-radiation, multiparton-interactions and  beam-remnants 
 aspects of PYTHIA. Note that the previous crude (non-)tunes 
@@ -338,6 +340,9 @@ from LHAPDF.
 <br/><code>option </code><strong> 16</strong> : "CMS UE Tune CUETP8S1-HERAPDF1.5LO", an underlying-event 
 tune based on tune 4C [<a href="Bibliography.html" target="page">CMS14</a>]. Uses HERAPDF1.5LO, which is not 
 currently implemented in PYTHIA, so you must link LHAPDF. 
+   
+<br/><code>option </code><strong> 17</strong> : "ATLAS Tune AZ", is tuned to the <i>pT</i> spectrum 
+of the <i>Z^/gamma^*0</i> boson in a set of rapidity bins [<a href="Bibliography.html" target="page">ATL14</a>]. 
    
 
    

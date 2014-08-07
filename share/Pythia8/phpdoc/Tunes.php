@@ -108,6 +108,8 @@ and with different emphasis on minimum-bias and underlying-event data
 [<a href="Bibliography.php" target="page">ATL12</a>]. These typically require LHAPDF to be linked, but this 
 can be avoided in cases where the same PDF set is implemented internally. 
 Also two CMS underlying-event tunes are implemented [<a href="Bibliography.php" target="page">CMS14</a>].
+The ATLAS AZ tune [<a href="Bibliography.php" target="page">ATL14</a>] instead puts emphasis on the <i>pT</i>
+spectrum of the <i>Z^/gamma^*0</i> boson. 
  
 <p/> 
 Central diffraction is a recent addition to the "soft QCD" process palette, 
@@ -236,7 +238,7 @@ set <code>Tune:preferLHAPDF = off</code> <i>before</i> the
 <code>Tune:pp</code> choice. 
    
  
-<br/><br/><table><tr><td><strong>Tune:pp  </td><td>  &nbsp;&nbsp;(<code>default = <strong>14</strong></code>; <code>minimum = -1</code>; <code>maximum = 16</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>Tune:pp  </td><td>  &nbsp;&nbsp;(<code>default = <strong>14</strong></code>; <code>minimum = -1</code>; <code>maximum = 17</code>)</td></tr></table>
 Choice of tune to <ei>pp/ppbar</ei> data, mainly for the 
 initial-state-radiation, multiparton-interactions and  beam-remnants 
 aspects of PYTHIA. Note that the previous crude (non-)tunes 
@@ -267,6 +269,7 @@ not all that different, but you will not be fully consistent.)
 <input type="radio" name="3" value="14" checked="checked"><strong>14 </strong>: the Monash 2013 tune by Peter Skands at al. <ref>Ska14</ref>, to both <ei>e^+e^-</ei> and <ei>pp/pbarp</ei> data.  Should be combined with <code>Tune:ee = 7</code>. <br/>
 <input type="radio" name="3" value="15"><strong>15 </strong>: "CMS UE Tune CUETP8S1-CTEQ6L1", an underlying-event  tune based on tune 4C <ref>CMS14</ref>. Uses CTEQ 6L1, by default  from LHAPDF. <br/>
 <input type="radio" name="3" value="16"><strong>16 </strong>: "CMS UE Tune CUETP8S1-HERAPDF1.5LO", an underlying-event  tune based on tune 4C <ref>CMS14</ref>. Uses HERAPDF1.5LO, which is not  currently implemented in PYTHIA, so you must link LHAPDF.  <br/>
+<input type="radio" name="3" value="17"><strong>17 </strong>: "ATLAS Tune AZ", is tuned to the <ei>pT</ei> spectrum  of the <ei>Z^/gamma^*0</ei> boson in a set of rapidity bins <ref>ATL14</ref>.  <br/>
 
  
 <input type="hidden" name="saved" value="1"/>
