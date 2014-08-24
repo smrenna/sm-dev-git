@@ -68,9 +68,9 @@ Makefile.inc:
 $(LOCAL_TMP)/%.o: $(LOCAL_SRC)/%.cc
 ifeq ($(GZIP_USE),true)
 	$(CXX) -MD $(CXX_COMMON) -I$(LOCAL_INCLUDE) -I$(BOOST_INCLUDE) \
-	-DGZIPSUPPORT -c -o $@ $^
+	-DGZIPSUPPORT -c -o $@ $<
 else
-	$(CXX) -MD $(CXX_COMMON) -I$(LOCAL_INCLUDE) -c -o $@ $^
+	$(CXX) -MD $(CXX_COMMON) -I$(LOCAL_INCLUDE) -c -o $@ $<
 endif
 $(LOCAL_LIB)/libpythia8.a: $(OBJECTS)
 	ar cru $@ $^

@@ -40,8 +40,10 @@ compensated by positive corrections in the NLO matrix elements.
 Therefore do not blindly assume that an NLO tune has to be better than 
 an LO one when combined with the LO matrix elements in PYTHIA. There are 
 explicit examples where such thinking can lead you down the wrong alley, 
-especially if you study low-<ei>pT</ei> physics. In the list below you 
-should therefore be extra cautious when using set 6 or set 9. 
+especially if you study low-<ei>pT</ei> physics. A longer discussion on
+this point can be found in <a href="../pdfdoc/pdfwarning.pdf">this note</a>. 
+In the list below you should therefore be extra cautious when using 
+set 6 or set 9. 
  
 <p/> 
 The simplest option is to pick one 

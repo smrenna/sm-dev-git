@@ -606,20 +606,21 @@ Number of allowed quark flavours in <i>g &rarr; q qbar</i> branchings
 <i>g &rarr; b bbar</i>, etc. 
    
  
-<br/><br/><table><tr><td><strong>TimeShower:weightGluonToQuark  </td><td>  &nbsp;&nbsp;(<code>default = <strong>1</strong></code>; <code>minimum = 1</code>; <code>maximum = 8</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>TimeShower:weightGluonToQuark  </td><td>  &nbsp;&nbsp;(<code>default = <strong>4</strong></code>; <code>minimum = 1</code>; <code>maximum = 8</code>)</td></tr></table>
 Different options to assign kinematics distributions and weights 
 for <ei>g &rarr; q qbar</ei> branchings, notably for charm and bottom 
 quarks. These options also have the corresponding effect on 
-<ei>gamma &rarr; f fbar</ei> branchings.
-Notation: <ei>r_q = m_q^2/m_qq^2</ei>, <ei>beta = sqrt(1 - 4r_q)</ei>, with 
-<ei>m_q</ei> the quark mass and <ei>m_qq</ei> the <ei>q qbar</ei> pair 
+<ei>gamma &rarr; f fbar</ei> branchings. The rationale for the options
+is described in <a href="../pdfdoc/g2qqbarsplit.pdf">this note</a>.
+<br/>Notation: <ei>r_q = m_q^2/m_qq^2</ei>, <ei>beta = sqrt(1 - 4r_q)</ei>, 
+with <ei>m_q</ei> the quark mass and <ei>m_qq</ei> the <ei>q qbar</ei> pair 
 invariant mass. The scale factor <ei>k</ei> is described below, 
 <code>TimeShower:scaleGluonToQuark</code>.
 <br/>
-<input type="radio" name="32" value="1" checked="checked"><strong>1 </strong>: same splitting kernel <ei>(1/2) (z^2 + (1-z)^2)</ei> for  massive as massless quarks, only with an extra <ei>beta</ei> phase  space factor.<br/>
+<input type="radio" name="32" value="1"><strong>1 </strong>: same splitting kernel <ei>(1/2) (z^2 + (1-z)^2)</ei> for  massive as massless quarks, only with an extra <ei>beta</ei> phase  space factor.<br/>
 <input type="radio" name="32" value="2"><strong>2 </strong>: a splitting kernel  <ei>(beta/2) (z^2 + (1-z)^2 + 8r_q z(1-z))</ei>.<br/>
 <input type="radio" name="32" value="3"><strong>3 </strong>: a splitting kernel <ei>z^2 + (1-z)^2 + 8r_q z(1-z)</ei>, normalized so that the <ei>z</ei>-integrated rate is <ei>(beta/3) (1 + r/2)</ei>.<br/>
-<input type="radio" name="32" value="4"><strong>4 </strong>: same as 3, but additionally a suppression factor <ei>(1 - m_qq^2/m_dipole^2)^3</ei>, which reduces the rate of high-mass  <ei>q qbar</ei> pairs.<br/>
+<input type="radio" name="32" value="4" checked="checked"><strong>4 </strong>: same as 3, but additionally a suppression factor <ei>(1 - m_qq^2/m_dipole^2)^3</ei>, which reduces the rate of high-mass  <ei>q qbar</ei> pairs.<br/>
 <input type="radio" name="32" value="5"><strong>5 </strong>: same as 1, but reweighted to an <ei>alpha_s(k m_qq^2)</ei> rather than the normal <ei>alpha_s(pT^2)</ei>.<br/>
 <input type="radio" name="32" value="6"><strong>6 </strong>: same as 2, but reweighted to an <ei>alpha_s(k m_qq^2)</ei> rather than the normal <ei>alpha_s(pT^2)</ei>.<br/>
 <input type="radio" name="32" value="7"><strong>7 </strong>: same as 3, but reweighted to an <ei>alpha_s(k m_qq^2)</ei> rather than the normal <ei>alpha_s(pT^2)</ei>.<br/>
@@ -890,7 +891,7 @@ if($_POST["31"] != "5")
 $data = "TimeShower:nGluonToQuark = ".$_POST["31"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["32"] != "1")
+if($_POST["32"] != "4")
 {
 $data = "TimeShower:weightGluonToQuark = ".$_POST["32"]."\n";
 fwrite($handle,$data);

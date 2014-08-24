@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.200: 7 August 2014 
+<li>8.200: 24 August 2014 
 <ul> 
 
 <li>A new <code>share/Pythia8</code> directory collects all 
@@ -54,7 +54,10 @@ and <code>README</code> are also copied here during installation.
 documents that are linked from the <code>htmldoc</code> and 
 <code>phpdoc</code> directories. Over time it will  provide more 
 in-depth descriptions of various physics aspects than offered in 
-the html/php-formatted documentation.</li> 
+the html/php-formatted documentation. In addition to the official
+main publication and the worksheet, currently notes on LO vs. NLO
+PDFs and on the <i>g &rarr; q qbar</i> branching kernel are 
+included.</li> 
  
 <li>A new <code>include/Pythia8Plugins</code> directory collects
 code that does not form part of the core PYTHIA functionality but
@@ -156,6 +159,13 @@ Also most other older tunes are based on <code>Tune:ee = 3</code>.
 <li>Two new CMS underlying-event tunes [<a href="Bibliography.php" target="page">CMS14</a>] and the ATLAS
 AZ tune [<a href="Bibliography.php" target="page">ATL14</a>] have been added as options.</li> 
  
+<li>The default handling of the <i>g &rarr; q qbar</i> splitting kernel
+has been changed, affecting in particular heavy-flavour production. 
+<code>TimeShower:weightGluonToQuark</code> has been changed from 1 to 4
+to do this. All old tunes are with the 1 value but, since the tunes are
+not probing the detailed <i>g &rarr; q qbar</i> behaviour, this is
+not set as part of the tune options.</li> 
+ 
 <li>Christine Rasmussen joins as new PYTHIA collaboration member.</li> 
  
 <li>A new model for the handling of <?php $filepath = $_GET["filepath"];
@@ -192,6 +202,8 @@ the changed structure of the HepMC interface.</li>
  
 <li>Bug fix in the two-loop running <i>alpha_s</i>, for the matching 
 to six flavours at the top mass.</li> 
+ 
+<li>Eliminate harmless compiler warnings for <code>FJcore</code>.</li> 
  
 <li></li> 
  

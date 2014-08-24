@@ -612,13 +612,14 @@ Number of allowed quark flavours in <ei>g &rarr; q qbar</ei> branchings
 <ei>g &rarr; b bbar</ei>, etc. 
 </modeopen> 
  
-<modepick name="TimeShower:weightGluonToQuark" default="1" min="1" max="8"> 
+<modepick name="TimeShower:weightGluonToQuark" default="4" min="1" max="8"> 
 Different options to assign kinematics distributions and weights 
 for <ei>g &rarr; q qbar</ei> branchings, notably for charm and bottom 
 quarks. These options also have the corresponding effect on 
-<ei>gamma &rarr; f fbar</ei> branchings.
-Notation: <ei>r_q = m_q^2/m_qq^2</ei>, <ei>beta = sqrt(1 - 4r_q)</ei>, with 
-<ei>m_q</ei> the quark mass and <ei>m_qq</ei> the <ei>q qbar</ei> pair 
+<ei>gamma &rarr; f fbar</ei> branchings. The rationale for the options
+is described in <a href="../pdfdoc/g2qqbarsplit.pdf">this note</a>.
+<br/>Notation: <ei>r_q = m_q^2/m_qq^2</ei>, <ei>beta = sqrt(1 - 4r_q)</ei>, 
+with <ei>m_q</ei> the quark mass and <ei>m_qq</ei> the <ei>q qbar</ei> pair 
 invariant mass. The scale factor <ei>k</ei> is described below, 
 <code>TimeShower:scaleGluonToQuark</code>.
 <option value="1">same splitting kernel <ei>(1/2) (z^2 + (1-z)^2)</ei> for 
