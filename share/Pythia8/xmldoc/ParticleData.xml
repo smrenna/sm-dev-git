@@ -395,12 +395,16 @@ The meaning of the various properties and the format used are explained
  <channel onMode="1" bRatio="0.1132710" products="4 -4"/> 
  <channel onMode="1" bRatio="0.1457810" products="5 -5"/> 
  <channel onMode="1" bRatio="0.0490020" products="6 -6"/> 
+ <channel onMode="1" bRatio="0.0000000" products="7 -7"/> 
+ <channel onMode="1" bRatio="0.0000000" products="8 -8"/> 
  <channel onMode="1" bRatio="0.0320250" products="11 -11"/> 
  <channel onMode="1" bRatio="0.0636420" products="12 -12"/> 
  <channel onMode="1" bRatio="0.0320250" products="13 -13"/> 
  <channel onMode="1" bRatio="0.0636420" products="14 -14"/> 
  <channel onMode="1" bRatio="0.0320220" products="15 -15"/> 
- <channel onMode="1" bRatio="0.0636420" products="16 -16"/> 
+ <channel onMode="1" bRatio="0.0636420" products="16 -16"/>
+ <channel onMode="1" bRatio="0.0000000" products="17 -17"/> 
+ <channel onMode="1" bRatio="0.0000000" products="18 -18"/>  
  <channel onMode="1" bRatio="0.0000000" products="24 -24"/> 
 </particle> 
  

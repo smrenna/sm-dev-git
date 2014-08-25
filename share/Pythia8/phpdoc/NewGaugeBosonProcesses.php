@@ -46,7 +46,7 @@ to fermion pairs. It is possible to pick only a subset, e.g, only
 the pure <i>Z'^0</i> piece. No higher-order processes are 
 available explicitly, but the ISR showers contain automatic 
 matching to the <i>Z'^0</i> + 1 jet matrix elements, as for 
-the corresponding <i>gamma^*/Z^0</i> process. 
+the corresponding &nbsp <i>gamma^*/Z^0</i> process. 
    
 <br/><br/><strong>NewGaugeBoson:ffbar2gmZZprime</strong>  <input type="radio" name="1" value="on"><strong>On</strong>
 <input type="radio" name="1" value="off" checked="checked"><strong>Off</strong>
@@ -216,9 +216,7 @@ axial coupling of <i>nu_tau</i> neutrinos.
 <p/> 
 The coupling to the decay channel <i>Z'^0 &rarr; W^+ W^-</i> is 
 more model-dependent. By default it is therefore off, but can be 
-switched on as follows. Furthermore, we have left some amount of 
-freedom in the choice of decay angular correlations in this 
-channel, but obviously alternative shapes could be imagined. 
+switched on as follows. 
  
 <br/><br/><table><tr><td><strong>Zprime:coup2WW </td><td></td><td> <input type="text" name="28" value="0." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.</strong></code>; <code>minimum = 0.</code>)</td></tr></table>
 the coupling <i>Z'^0 &rarr; W^+ W^-</i> is taken to be this number 
@@ -236,6 +234,10 @@ Note that this channel only includes the pure <i>Z'</i> part,
 while <i>f fbar &rarr; gamma^*/Z^*0 &rarr; W^+ W^-</i> is available 
 as a separate electroweak process. 
    
+
+Furthermore, we have left some amount of 
+freedom in the choice of decay angular correlations in this 
+channel, but obviously alternative shapes could be imagined. 
  
 <br/><br/><table><tr><td><strong>Zprime:anglesWW </td><td></td><td> <input type="text" name="29" value="0." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.</strong></code>; <code>minimum = 0.</code>; <code>maximum = 1.</code>)</td></tr></table>
 in the decay chain <i>Z'^0 &rarr; W^+ W^- &rarr;f_1 fbar_2 f_3 fbar_4</i> 
@@ -252,7 +254,59 @@ A massive <i>Z'^0</i> is also likely to decay into Higgs bosons
 and potentially into other now unknown particles. Such possibilities 
 clearly are quite model-dependent, and have not been included 
 for now. 
+
+<p/>
+Finally, to allow the exploration of more BSM physics scenarios, 
+we include the possibility of the <i>Z'^0</i> (and hence the 
+<i>gamma</i> and <i>Z^0</i>) coupling to a fourth generation of fermions.
+This provides redundancy with and extensions beyond those processes implemented 
+as <?php $filepath = $_GET["filepath"];
+echo "<a href='Fourth-Generation Processes.php?filepath=".$filepath."' target='page'>";?>fourth-generation processes</a>.
+By default, the decay channels for the fourth-generation and not included.
+They are enabled using:
+<br/><br/><strong>Zprime:coup2gen4</strong>  <input type="radio" name="30" value="on"><strong>On</strong>
+<input type="radio" name="30" value="off" checked="checked"><strong>Off</strong>
+ &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
+<i> Z'^0 </i> couples to 4th generation fermions.
+  
+
+<p/>
+Here are the further couplings that are specific for 
+a scenario with <code>Zprime:universality</code> switched off: 
+
+<br/><br/><table><tr><td><strong>Zprime:vbPrime </td><td></td><td> <input type="text" name="31" value="-0.693" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>-0.693</strong></code>)</td></tr></table>
+vector coupling of <i>b'</i> quarks. 
+   
  
+<br/><br/><table><tr><td><strong>Zprime:abPrime </td><td></td><td> <input type="text" name="32" value="-1." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>-1.</strong></code>)</td></tr></table>
+axial coupling of <i>b'</i> quarks. 
+   
+ 
+<br/><br/><table><tr><td><strong>Zprime:vtPrime </td><td></td><td> <input type="text" name="33" value="0.387" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.387</strong></code>)</td></tr></table>
+vector coupling of <i>t'</i> quarks. 
+   
+ 
+<br/><br/><table><tr><td><strong>Zprime:atPrime </td><td></td><td> <input type="text" name="34" value="1." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.</strong></code>)</td></tr></table>
+axial coupling of <i>t'</i> quarks. 
+   
+ 
+<br/><br/><table><tr><td><strong>Zprime:vtauPrime </td><td></td><td> <input type="text" name="35" value="-0.08" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>-0.08</strong></code>)</td></tr></table>
+vector coupling of <i>tau'</i> leptons. 
+   
+ 
+<br/><br/><table><tr><td><strong>Zprime:atauPrime </td><td></td><td> <input type="text" name="36" value="-1." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>-1.</strong></code>)</td></tr></table>
+axial coupling of <i>tau'</i> leptons. 
+   
+ 
+<br/><br/><table><tr><td><strong>Zprime:vnutauPrime </td><td></td><td> <input type="text" name="37" value="1." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.</strong></code>)</td></tr></table>
+vector coupling of <i>nu_tau'</i> neutrinos. 
+   
+ 
+<br/><br/><table><tr><td><strong>Zprime:anutauPrime </td><td></td><td> <input type="text" name="38" value="1." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.</strong></code>)</td></tr></table>
+axial coupling of <i>nu_tau'</i> neutrinos. 
+   
+
+
 <h3><i>W'^+-</i></h3> 
    
 The <i>W'^+-</i> implementation is less ambitious than the 
@@ -269,8 +323,8 @@ first. Only one process is implemented but, like for the
 <i>W^+-</i>, the ISR showers contain automatic matching to the 
 <i>W'^+-</i> + 1 jet matrix elements. 
  
-<br/><br/><strong>NewGaugeBoson:ffbar2Wprime</strong>  <input type="radio" name="30" value="on"><strong>On</strong>
-<input type="radio" name="30" value="off" checked="checked"><strong>Off</strong>
+<br/><br/><strong>NewGaugeBoson:ffbar2Wprime</strong>  <input type="radio" name="39" value="on"><strong>On</strong>
+<input type="radio" name="39" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
 Scattering <i>f fbar' &rarr; W'^+-</i>. 
 Code 3021. 
@@ -289,19 +343,19 @@ the standard <i>W^+-</i>. Depending on your assumed neutrino
 nature you may want to restrict your freedom in the lepton sector, 
 but no limitations are enforced by the program. 
  
-<br/><br/><table><tr><td><strong>Wprime:vq </td><td></td><td> <input type="text" name="31" value="1." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.</strong></code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>Wprime:vq </td><td></td><td> <input type="text" name="40" value="1." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.</strong></code>)</td></tr></table>
 vector coupling of quarks. 
    
  
-<br/><br/><table><tr><td><strong>Wprime:aq </td><td></td><td> <input type="text" name="32" value="-1." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>-1.</strong></code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>Wprime:aq </td><td></td><td> <input type="text" name="41" value="-1." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>-1.</strong></code>)</td></tr></table>
 axial coupling of quarks. 
    
  
-<br/><br/><table><tr><td><strong>Wprime:vl </td><td></td><td> <input type="text" name="33" value="1." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.</strong></code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>Wprime:vl </td><td></td><td> <input type="text" name="42" value="1." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.</strong></code>)</td></tr></table>
 vector coupling of leptons. 
    
  
-<br/><br/><table><tr><td><strong>Wprime:al </td><td></td><td> <input type="text" name="34" value="-1." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>-1.</strong></code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>Wprime:al </td><td></td><td> <input type="text" name="43" value="-1." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>-1.</strong></code>)</td></tr></table>
 axial coupling of leptons. 
    
  
@@ -313,7 +367,7 @@ switched on as follows. Furthermore, we have left some amount of
 freedom in the choice of decay angular correlations in this 
 channel, but obviously alternative shapes could be imagined. 
  
-<br/><br/><table><tr><td><strong>Wprime:coup2WZ </td><td></td><td> <input type="text" name="35" value="0." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.</strong></code>; <code>minimum = 0.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>Wprime:coup2WZ </td><td></td><td> <input type="text" name="44" value="0." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.</strong></code>; <code>minimum = 0.</code>)</td></tr></table>
 the coupling <i>W'^0 &rarr; W^+- Z^0</i> is taken to be this number 
 times <i>m_W^2 / m_W'^2</i> times the <i>W^+- &rarr; W^+- Z^0</i> 
 coupling. Thus a unit value corresponds to the 
@@ -328,7 +382,7 @@ of the <i>W'^+-</i> mass. These two extremes correspond to the
 of [<a href="Bibliography.php" target="page">Alt89</a>]. 
    
  
-<br/><br/><table><tr><td><strong>Wprime:anglesWZ </td><td></td><td> <input type="text" name="36" value="0." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.</strong></code>; <code>minimum = 0.</code>; <code>maximum = 1.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>Wprime:anglesWZ </td><td></td><td> <input type="text" name="45" value="0." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.</strong></code>; <code>minimum = 0.</code>; <code>maximum = 1.</code>)</td></tr></table>
 in the decay chain <i>W'^+- &rarr; W^+- Z^0 &rarr;f_1 fbar_2 f_3 fbar_4</i> 
 the decay angular distributions is taken to be a mixture of two 
 possible shapes. This parameter gives the fraction that is distributed 
@@ -357,8 +411,8 @@ the other a negative one. This particular model has no new
 parameters beyond the <i>R^0</i> mass. Decays are assumed isotropic. 
 For further details see [<a href="Bibliography.php" target="page">Ben85</a>]. 
    
-<br/><br/><strong>NewGaugeBoson:ffbar2R0</strong>  <input type="radio" name="37" value="on"><strong>On</strong>
-<input type="radio" name="37" value="off" checked="checked"><strong>Off</strong>
+<br/><br/><strong>NewGaugeBoson:ffbar2R0</strong>  <input type="radio" name="46" value="on"><strong>On</strong>
+<input type="radio" name="46" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
 Scattering <i>f_1 fbar_2 &rarr; R^0 &rarr; f_3 fbar_4</i>, where 
 <i>f_1</i> and <i>fbar_2</i> are separated by <i>+-</i> one 
@@ -531,42 +585,87 @@ fwrite($handle,$data);
 }
 if($_POST["30"] != "off")
 {
-$data = "NewGaugeBoson:ffbar2Wprime = ".$_POST["30"]."\n";
+$data = "Zprime:coup2gen4 = ".$_POST["30"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["31"] != "1.")
+if($_POST["31"] != "-0.693")
 {
-$data = "Wprime:vq = ".$_POST["31"]."\n";
+$data = "Zprime:vbPrime = ".$_POST["31"]."\n";
 fwrite($handle,$data);
 }
 if($_POST["32"] != "-1.")
 {
-$data = "Wprime:aq = ".$_POST["32"]."\n";
+$data = "Zprime:abPrime = ".$_POST["32"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["33"] != "1.")
+if($_POST["33"] != "0.387")
 {
-$data = "Wprime:vl = ".$_POST["33"]."\n";
+$data = "Zprime:vtPrime = ".$_POST["33"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["34"] != "-1.")
+if($_POST["34"] != "1.")
 {
-$data = "Wprime:al = ".$_POST["34"]."\n";
+$data = "Zprime:atPrime = ".$_POST["34"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["35"] != "0.")
+if($_POST["35"] != "-0.08")
 {
-$data = "Wprime:coup2WZ = ".$_POST["35"]."\n";
+$data = "Zprime:vtauPrime = ".$_POST["35"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["36"] != "0.")
+if($_POST["36"] != "-1.")
 {
-$data = "Wprime:anglesWZ = ".$_POST["36"]."\n";
+$data = "Zprime:atauPrime = ".$_POST["36"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["37"] != "off")
+if($_POST["37"] != "1.")
 {
-$data = "NewGaugeBoson:ffbar2R0 = ".$_POST["37"]."\n";
+$data = "Zprime:vnutauPrime = ".$_POST["37"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["38"] != "1.")
+{
+$data = "Zprime:anutauPrime = ".$_POST["38"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["39"] != "off")
+{
+$data = "NewGaugeBoson:ffbar2Wprime = ".$_POST["39"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["40"] != "1.")
+{
+$data = "Wprime:vq = ".$_POST["40"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["41"] != "-1.")
+{
+$data = "Wprime:aq = ".$_POST["41"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["42"] != "1.")
+{
+$data = "Wprime:vl = ".$_POST["42"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["43"] != "-1.")
+{
+$data = "Wprime:al = ".$_POST["43"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["44"] != "0.")
+{
+$data = "Wprime:coup2WZ = ".$_POST["44"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["45"] != "0.")
+{
+$data = "Wprime:anglesWZ = ".$_POST["45"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["46"] != "off")
+{
+$data = "NewGaugeBoson:ffbar2R0 = ".$_POST["46"]."\n";
 fwrite($handle,$data);
 }
 fclose($handle);

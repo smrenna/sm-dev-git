@@ -18,7 +18,7 @@ to fermion pairs. It is possible to pick only a subset, e.g, only
 the pure <ei>Z'^0</ei> piece. No higher-order processes are 
 available explicitly, but the ISR showers contain automatic 
 matching to the <ei>Z'^0</ei> + 1 jet matrix elements, as for 
-the corresponding <ei>gamma^*/Z^0</ei> process. 
+the corresponding &nbsp <ei>gamma^*/Z^0</ei> process. 
    
 <flag name="NewGaugeBoson:ffbar2gmZZprime" default="off"> 
 Scattering <ei>f fbar &rarr;Z'^0</ei>. 
@@ -188,9 +188,7 @@ axial coupling of <ei>nu_tau</ei> neutrinos.
 <p/> 
 The coupling to the decay channel <ei>Z'^0 &rarr; W^+ W^-</ei> is 
 more model-dependent. By default it is therefore off, but can be 
-switched on as follows. Furthermore, we have left some amount of 
-freedom in the choice of decay angular correlations in this 
-channel, but obviously alternative shapes could be imagined. 
+switched on as follows. 
  
 <parm name="Zprime:coup2WW" default="0." min="0."> 
 the coupling <ei>Z'^0 &rarr; W^+ W^-</ei> is taken to be this number 
@@ -208,6 +206,10 @@ Note that this channel only includes the pure <ei>Z'</ei> part,
 while <ei>f fbar &rarr; gamma^*/Z^*0 &rarr; W^+ W^-</ei> is available 
 as a separate electroweak process. 
 </parm> 
+
+Furthermore, we have left some amount of 
+freedom in the choice of decay angular correlations in this 
+channel, but obviously alternative shapes could be imagined. 
  
 <parm name="Zprime:anglesWW" default="0." min="0." max="1."> 
 in the decay chain <ei>Z'^0 &rarr; W^+ W^- &rarr;f_1 fbar_2 f_3 fbar_4</ei> 
@@ -224,7 +226,56 @@ A massive <ei>Z'^0</ei> is also likely to decay into Higgs bosons
 and potentially into other now unknown particles. Such possibilities 
 clearly are quite model-dependent, and have not been included 
 for now. 
+
+<p/>
+Finally, to allow the exploration of more BSM physics scenarios, 
+we include the possibility of the <ei>Z'^0</ei> (and hence the 
+<ei>gamma</ei> and <ei>Z^0</ei>) coupling to a fourth generation of fermions.
+This provides redundancy with and extensions beyond those processes implemented 
+as <aloc href="Fourth-Generation Processes">fourth-generation processes</aloc>.
+By default, the decay channels for the fourth-generation and not included.
+They are enabled using:
+<flag name="Zprime:coup2gen4" default="off">
+<ei> Z'^0 </ei> couples to 4th generation fermions.
+</flag>
+
+<p/>
+Here are the further couplings that are specific for 
+a scenario with <code>Zprime:universality</code> switched off: 
+
+<parm name="Zprime:vbPrime" default="-0.693"> 
+vector coupling of <ei>b'</ei> quarks. 
+</parm> 
  
+<parm name="Zprime:abPrime" default="-1."> 
+axial coupling of <ei>b'</ei> quarks. 
+</parm> 
+ 
+<parm name="Zprime:vtPrime" default="0.387"> 
+vector coupling of <ei>t'</ei> quarks. 
+</parm> 
+ 
+<parm name="Zprime:atPrime" default="1."> 
+axial coupling of <ei>t'</ei> quarks. 
+</parm> 
+ 
+<parm name="Zprime:vtauPrime" default="-0.08"> 
+vector coupling of <ei>tau'</ei> leptons. 
+</parm> 
+ 
+<parm name="Zprime:atauPrime" default="-1."> 
+axial coupling of <ei>tau'</ei> leptons. 
+</parm> 
+ 
+<parm name="Zprime:vnutauPrime" default="1."> 
+vector coupling of <ei>nu_tau'</ei> neutrinos. 
+</parm> 
+ 
+<parm name="Zprime:anutauPrime" default="1."> 
+axial coupling of <ei>nu_tau'</ei> neutrinos. 
+</parm> 
+
+
 <h3><ei>W'^+-</ei></h3> 
    
 The <ei>W'^+-</ei> implementation is less ambitious than the 

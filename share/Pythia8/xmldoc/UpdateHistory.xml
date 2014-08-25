@@ -12,7 +12,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.200: 24 August 2014 
+<li>8.200: 25 August 2014 
 <ul> 
 
 <li>A new <code>share/Pythia8</code> directory collects all 
@@ -169,6 +169,10 @@ to read SLHA information embedded in the input file or stream.</li>
 
 <li>The <code>Makefile</code>s have been updated to take into account
 the changed structure of the HepMC interface.</li> 
+
+<li>The <ei>Z'</ei> production process has been updated to optionally
+allow decay to a fourth generation of fermions, with universal or
+non-universal couplings.</li> 
  
 <li>Bug fix in the two-loop running <ei>alpha_s</ei>, for the matching 
 to six flavours at the top mass.</li> 

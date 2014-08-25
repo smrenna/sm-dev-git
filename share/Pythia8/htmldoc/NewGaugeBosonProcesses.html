@@ -24,7 +24,7 @@ to fermion pairs. It is possible to pick only a subset, e.g, only
 the pure <i>Z'^0</i> piece. No higher-order processes are 
 available explicitly, but the ISR showers contain automatic 
 matching to the <i>Z'^0</i> + 1 jet matrix elements, as for 
-the corresponding <i>gamma^*/Z^0</i> process. 
+the corresponding &nbsp <i>gamma^*/Z^0</i> process. 
    
 <p/><code>flag&nbsp; </code><strong> NewGaugeBoson:ffbar2gmZZprime &nbsp;</strong> 
  (<code>default = <strong>off</strong></code>)<br/>
@@ -221,9 +221,7 @@ axial coupling of <i>nu_tau</i> neutrinos.
 <p/> 
 The coupling to the decay channel <i>Z'^0 &rarr; W^+ W^-</i> is 
 more model-dependent. By default it is therefore off, but can be 
-switched on as follows. Furthermore, we have left some amount of 
-freedom in the choice of decay angular correlations in this 
-channel, but obviously alternative shapes could be imagined. 
+switched on as follows. 
  
 <p/><code>parm&nbsp; </code><strong> Zprime:coup2WW &nbsp;</strong> 
  (<code>default = <strong>0.</strong></code>; <code>minimum = 0.</code>)<br/>
@@ -242,6 +240,10 @@ Note that this channel only includes the pure <i>Z'</i> part,
 while <i>f fbar &rarr; gamma^*/Z^*0 &rarr; W^+ W^-</i> is available 
 as a separate electroweak process. 
    
+
+Furthermore, we have left some amount of 
+freedom in the choice of decay angular correlations in this 
+channel, but obviously alternative shapes could be imagined. 
  
 <p/><code>parm&nbsp; </code><strong> Zprime:anglesWW &nbsp;</strong> 
  (<code>default = <strong>0.</strong></code>; <code>minimum = 0.</code>; <code>maximum = 1.</code>)<br/>
@@ -259,7 +261,65 @@ A massive <i>Z'^0</i> is also likely to decay into Higgs bosons
 and potentially into other now unknown particles. Such possibilities 
 clearly are quite model-dependent, and have not been included 
 for now. 
+
+<p/>
+Finally, to allow the exploration of more BSM physics scenarios, 
+we include the possibility of the <i>Z'^0</i> (and hence the 
+<i>gamma</i> and <i>Z^0</i>) coupling to a fourth generation of fermions.
+This provides redundancy with and extensions beyond those processes implemented 
+as <a href="Fourth-Generation Processes.html" target="page">fourth-generation processes</a>.
+By default, the decay channels for the fourth-generation and not included.
+They are enabled using:
+<p/><code>flag&nbsp; </code><strong> Zprime:coup2gen4 &nbsp;</strong> 
+ (<code>default = <strong>off</strong></code>)<br/>
+<i> Z'^0 </i> couples to 4th generation fermions.
+  
+
+<p/>
+Here are the further couplings that are specific for 
+a scenario with <code>Zprime:universality</code> switched off: 
+
+<p/><code>parm&nbsp; </code><strong> Zprime:vbPrime &nbsp;</strong> 
+ (<code>default = <strong>-0.693</strong></code>)<br/>
+vector coupling of <i>b'</i> quarks. 
+   
  
+<p/><code>parm&nbsp; </code><strong> Zprime:abPrime &nbsp;</strong> 
+ (<code>default = <strong>-1.</strong></code>)<br/>
+axial coupling of <i>b'</i> quarks. 
+   
+ 
+<p/><code>parm&nbsp; </code><strong> Zprime:vtPrime &nbsp;</strong> 
+ (<code>default = <strong>0.387</strong></code>)<br/>
+vector coupling of <i>t'</i> quarks. 
+   
+ 
+<p/><code>parm&nbsp; </code><strong> Zprime:atPrime &nbsp;</strong> 
+ (<code>default = <strong>1.</strong></code>)<br/>
+axial coupling of <i>t'</i> quarks. 
+   
+ 
+<p/><code>parm&nbsp; </code><strong> Zprime:vtauPrime &nbsp;</strong> 
+ (<code>default = <strong>-0.08</strong></code>)<br/>
+vector coupling of <i>tau'</i> leptons. 
+   
+ 
+<p/><code>parm&nbsp; </code><strong> Zprime:atauPrime &nbsp;</strong> 
+ (<code>default = <strong>-1.</strong></code>)<br/>
+axial coupling of <i>tau'</i> leptons. 
+   
+ 
+<p/><code>parm&nbsp; </code><strong> Zprime:vnutauPrime &nbsp;</strong> 
+ (<code>default = <strong>1.</strong></code>)<br/>
+vector coupling of <i>nu_tau'</i> neutrinos. 
+   
+ 
+<p/><code>parm&nbsp; </code><strong> Zprime:anutauPrime &nbsp;</strong> 
+ (<code>default = <strong>1.</strong></code>)<br/>
+axial coupling of <i>nu_tau'</i> neutrinos. 
+   
+
+
 <h3><i>W'^+-</i></h3> 
    
 The <i>W'^+-</i> implementation is less ambitious than the 
