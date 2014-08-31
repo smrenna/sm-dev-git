@@ -148,7 +148,7 @@ public:
   string word(string key) {return settings.word(key);}
 
   // Auxiliary to set parton densities among list of possibilities.
-  PDF* getPDFPtr(int idIn, int sequence = 1);
+  PDF* getPDFPtr(int idIn, int sequence = 1, string beam = "");
 
   // The event record for the parton-level central process.
   Event          process;

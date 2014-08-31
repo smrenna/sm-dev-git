@@ -36,10 +36,12 @@ ifeq ($(ENABLE_SHARED),true)
   TARGETS+=$(LOCAL_LIB)/libpythia8$(LIB_SUFFIX)
 endif
 
-# LHAPDF5.
-TARGETS+=$(LOCAL_LIB)/libpythia8lhapdf5.a
-ifeq ($(ENABLE_SHARED),true)
-  TARGETS+=$(LOCAL_LIB)/libpythia8lhapdf5$(LIB_SUFFIX)
+# LHAPDF.
+ifeq ($(LHAPDF5_USE),true)
+  TARGETS+=$(LOCAL_LIB)/libpythia8lhapdf5.so
+endif
+ifeq ($(LHAPDF6_USE),true)
+  TARGETS+=$(LOCAL_LIB)/libpythia8lhapdf6.so
 endif
 
 ################################################################################
@@ -77,13 +79,14 @@ $(LOCAL_LIB)/libpythia8.a: $(OBJECTS)
 $(LOCAL_LIB)/libpythia8$(LIB_SUFFIX): $(OBJECTS)
 	$(CXX) $(CXX_COMMON) $(CXX_SHARED) -o $@ $^ $(CXX_SONAME),$(notdir $@)
 
-# LHAPDF5.
-$(LOCAL_TMP)/LHAPDF5.o: $(LOCAL_INCLUDE)/Pythia8Plugins/LHAPDF5.h
-	$(CXX) -MD $(CXX_COMMON) -I$(LOCAL_INCLUDE) -x c++ -c -o $@ $^
-$(LOCAL_LIB)/libpythia8lhapdf5.a: $(LOCAL_TMP)/LHAPDF5.o
-	ar cru $@ $^
-$(LOCAL_LIB)/libpythia8lhapdf5$(LIB_SUFFIX): $(LOCAL_TMP)/LHAPDF5.o
-	$(CXX) $(CXX_COMMON) $(CXX_SHARED) -o $@ $^ $(CXX_SONAME),$(notdir $@)
+# LHAPDF (turn off all warnings for readability).
+$(LOCAL_TMP)/LHAPDF%.o: $(LOCAL_INCLUDE)/Pythia8Plugins/LHAPDF%.h
+	$(CXX) -MD $(CXX_COMMON) -I$(LOCAL_INCLUDE) -I$(LHAPDF$*_INCLUDE) \
+	-w -x c++ -c -o $@ $<
+$(LOCAL_LIB)/libpythia8lhapdf%.so: $(LOCAL_TMP)/LHAPDF%.o \
+	$(LOCAL_LIB)/libpythia8.a
+	$(CXX) $(CXX_COMMON) $(CXX_SHARED) -o $@ $^ $(CXX_SONAME),$(notdir $@) \
+	-L$(LHAPDF$*_LIB) -Wl,-rpath $(LHAPDF$*_LIB) -lLHAPDF
 
 # Install (rsync is used for finer control).
 install: all

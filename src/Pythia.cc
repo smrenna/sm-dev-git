@@ -143,11 +143,11 @@ Pythia::Pythia(string xmlDir, bool printBanner) {
 Pythia::~Pythia() {
 
   // Delete the PDF's created with new.
-  if (useNewPdfHard && pdfHardAPtr != pdfAPtr) delete pdfHardAPtr;
-  if (useNewPdfHard && pdfHardBPtr != pdfBPtr) delete pdfHardBPtr;
-  if (useNewPdfA) delete pdfAPtr;
-  if (useNewPdfB) delete pdfBPtr;
-  if (useNewPdfPomA) delete pdfPomAPtr;
+  if (useNewPdfHard && pdfHardAPtr != pdfAPtr) delete pdfHardAPtr; 
+  if (useNewPdfHard && pdfHardBPtr != pdfBPtr) delete pdfHardBPtr; 
+  if (useNewPdfA) delete pdfAPtr; 
+  if (useNewPdfB) delete pdfBPtr; 
+  if (useNewPdfPomA) delete pdfPomAPtr; 
   if (useNewPdfPomB) delete pdfPomBPtr;
 
   // Delete the Les Houches object created with new.
@@ -914,7 +914,7 @@ bool Pythia::initPDFs() {
     useNewPdfA  = true;
   }
   if (pdfBPtr == 0) {
-    pdfBPtr     = getPDFPtr(idB);
+    pdfBPtr     = getPDFPtr(idB, 1, "B");
     if (pdfBPtr == 0 || !pdfBPtr->isSetup()) {
       info.errorMsg("Error in Pythia::init: "
         "could not set up PDF for beam B");
@@ -928,7 +928,7 @@ bool Pythia::initPDFs() {
   if (settings.flag("PDF:useHard") && useNewPdfA && useNewPdfB) {
     pdfHardAPtr = getPDFPtr(idA, 2);
     if (!pdfHardAPtr->isSetup()) return false;
-    pdfHardBPtr = getPDFPtr(idB, 2);
+    pdfHardBPtr = getPDFPtr(idB, 2, "B");
     if (!pdfHardBPtr->isSetup()) return false;
     useNewPdfHard = true;
   }
@@ -1933,7 +1933,7 @@ bool Pythia::check(ostream& os) {
 
 // Routine to set up a PDF pointer.
 
-PDF* Pythia::getPDFPtr(int idIn, int sequence) {
+PDF* Pythia::getPDFPtr(int idIn, int sequence, string beam) {
 
   // Temporary pointer to be returned.
   PDF* tempPDFPtr = 0;
@@ -1941,82 +1941,47 @@ PDF* Pythia::getPDFPtr(int idIn, int sequence) {
   // One option is to treat a Pomeron like a pi0.
   if (idIn == 990 && settings.mode("PDF:PomSet") == 2) idIn = 111;
 
-  // Proton beam, normal choice. Also used for neutron.
-  if ((abs(idIn) == 2212 || abs(idIn) == 2112) && sequence == 1) {
-    int  pSet      = settings.mode("PDF:pSet");
-    bool useLHAPDF = settings.flag("PDF:useLHAPDF");
-
-    // Use internal sets.
-    if (!useLHAPDF) {
-      if      (pSet == 1) tempPDFPtr = new GRV94L(idIn);
-      else if (pSet == 2) tempPDFPtr = new CTEQ5L(idIn);
-      else if (pSet <= 6)
-           tempPDFPtr = new MSTWpdf(idIn, pSet - 2, xmlPath, &info);
-      else if (pSet <= 12)
-           tempPDFPtr = new CTEQ6pdf(idIn, pSet - 6, xmlPath, &info);
-      else tempPDFPtr = new NNPDF(idIn, pSet - 12, xmlPath, &info);
-    }
+  // Proton beam, normal or hard choice. Also used for neutron.
+  if (abs(idIn) == 2212 || abs(idIn) == 2112) {
+    string pSet = settings.word("PDF:p" + string(sequence == 1 ? "" : "Hard") + 
+				"Set" + beam);
+    if (pSet == "void" && sequence != 1 && beam == "B") 
+      pSet = settings.word("PDF:pHardSet");
+    if (pSet == "void") pSet = settings.word("PDF:pSet");
+    istringstream pSetStream(pSet);
+    int pSetInt(0);
+    pSetStream >> pSetInt;
     
     // Use sets from LHAPDF.
-    else {
-      string LHAPDFset    = settings.word("PDF:LHAPDFset");
-      int    LHAPDFmember = settings.mode("PDF:LHAPDFmember");
-      int nSet = LHAPDF::findNSet(LHAPDFset, LHAPDFmember);
-      if (nSet == -1) nSet = LHAPDF::freeNSet();
-      tempPDFPtr = new LHAPDF(idIn, LHAPDFset, LHAPDFmember, nSet, &info);
-
-      // Optionally allow extrapolation beyond x and Q2 limits.
-      tempPDFPtr->setExtrapolate( settings.flag("PDF:extrapolateLHAPDF") );
-    }
-  }
-
-  // Proton beam, special choice for the hard process. Also neutron.
-  else if (abs(idIn) == 2212 || abs(idIn) == 2112) {
-    int  pSet      = settings.mode("PDF:pHardSet");
-    bool useLHAPDF = settings.flag("PDF:useHardLHAPDF");
+    if (pSetInt == 0)
+      tempPDFPtr = new LHAPDF(idIn, pSet, &info);
 
     // Use internal sets.
-    if (!useLHAPDF) {
-      if      (pSet == 1) tempPDFPtr = new GRV94L(idIn);
-      else if (pSet == 2) tempPDFPtr = new CTEQ5L(idIn);
-      else if (pSet <= 6)
-           tempPDFPtr = new MSTWpdf(idIn, pSet - 2, xmlPath, &info);
-      else if (pSet <= 12)
-           tempPDFPtr = new CTEQ6pdf(idIn, pSet - 6, xmlPath, &info);
-      else tempPDFPtr = new NNPDF(idIn, pSet - 12, xmlPath, &info);
-    }
-    
-    // Use sets from LHAPDF.
-    else {
-      string LHAPDFset    = settings.word("PDF:hardLHAPDFset");
-      int    LHAPDFmember = settings.mode("PDF:hardLHAPDFmember");
-      int nSet = LHAPDF::findNSet(LHAPDFset, LHAPDFmember);
-      if (nSet == -1) nSet = LHAPDF::freeNSet();
-      tempPDFPtr = new LHAPDF(idIn, LHAPDFset, LHAPDFmember, nSet, &info);
- 
-     // Optionally allow extrapolation beyond x and Q2 limits.
-      tempPDFPtr->setExtrapolate( settings.flag("PDF:extrapolateLHAPDF") );
-    }
+    else if (pSetInt == 1) tempPDFPtr = new GRV94L(idIn);
+    else if (pSetInt == 2) tempPDFPtr = new CTEQ5L(idIn);
+    else if (pSetInt <= 6)
+      tempPDFPtr = new MSTWpdf(idIn, pSetInt - 2, xmlPath, &info);
+    else if (pSetInt <= 12)
+      tempPDFPtr = new CTEQ6pdf(idIn, pSetInt - 6, xmlPath, &info);
+    else if (pSetInt <= 16)
+      tempPDFPtr = new NNPDF(idIn, pSetInt - 12, xmlPath, &info);
+    else tempPDFPtr = 0;
   }
 
   // Pion beam (or, in one option, Pomeron beam).
   else if (abs(idIn) == 211 || idIn == 111) {
-    bool useLHAPDF = settings.flag("PDF:piUseLHAPDF");
+    string pSet = settings.word("PDF:piSet" + beam);
+    istringstream pSetStream(pSet);
+    int pSetInt(0);
+    pSetStream >> pSetInt;
 
-    // Use internal sets.
-    if (!useLHAPDF) {
-      tempPDFPtr = new GRVpiL(idIn);
-    }
-    
     // Use sets from LHAPDF.
-    else {
-      string LHAPDFset    = settings.word("PDF:piLHAPDFset");
-      int    LHAPDFmember = settings.mode("PDF:piLHAPDFmember");
-      tempPDFPtr = new LHAPDF(idIn, LHAPDFset, LHAPDFmember, 1, &info);
+    if (pSetInt == 0)
+      tempPDFPtr = new LHAPDF(idIn, pSet, &info);
 
-      // Optionally allow extrapolation beyond x and Q2 limits.
-      tempPDFPtr->setExtrapolate( settings.flag("PDF:extrapolateLHAPDF") );
-    }
+    // Use internal set.
+    else if (pSetInt == 1) tempPDFPtr = new GRVpiL(idIn);
+    else tempPDFPtr = 0;
   }
 
   // Pomeron beam, if not treated like a pi0 beam.
@@ -2052,8 +2017,9 @@ PDF* Pythia::getPDFPtr(int idIn, int sequence) {
     else tempPDFPtr = new LeptonPoint(idIn);
   }
 
-  // Failure for unrecognized particle.
-  else tempPDFPtr = 0;
+  // Optionally allow extrapolation beyond x and Q2 limits.
+  if (tempPDFPtr) 
+    tempPDFPtr->setExtrapolate( settings.flag("PDF:extrapolate") );
   
   // Done.
   return tempPDFPtr;

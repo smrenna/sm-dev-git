@@ -272,6 +272,9 @@ private:
   // Map for LHEF headers
   map<string, string> headers;
 
+  // Map for plugin libraries.
+  map<string, pair<void*, int> > plugins;
+
   // Friend classes allowed to set info.
   friend class Pythia;
   friend class ProcessLevel;
@@ -279,6 +282,7 @@ private:
   friend class PartonLevel;
   friend class MultipartonInteractions;
   friend class LHAup;
+  friend class LHAPDF;
 
   // Set info on the two incoming beams: only from Pythia class.
   void setBeamA( int idAin, double pzAin, double eAin, double mAin) {
