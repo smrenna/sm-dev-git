@@ -243,14 +243,18 @@ Should be combined with <code>Tune:pp = 14</code>.
    
    
  
-<p/><code>flag&nbsp; </code><strong> Tune:preferLHAPDF &nbsp;</strong> 
- (<code>default = <strong>on</strong></code>)<br/>
-Tunes made by experimental collaborations typically use the LHAPDF 
-package to obtain their PDF values, and so PYTHIA has to be linked 
-accordingly. For PDFs implemented natively in PYTHIA it is possible 
-to use the respective tunes, without having to link to LHAPDF, if you 
-set <code>Tune:preferLHAPDF = off</code> <i>before</i> the 
-<code>Tune:pp</code> choice. 
+<p/><code>mode&nbsp; </code><strong> Tune:preferLHAPDF &nbsp;</strong> 
+ (<code>default = <strong>1</strong></code>; <code>minimum = 0</code>; <code>maximum = 2</code>)<br/>
+Tunes made by experimental collaborations typically use the LHAPDF
+package to obtain their PDF values, and so PYTHIA must be built
+accordingly. See the <a href="PDFSelection.html" target="page">PDF
+documentation</a> for more information. For PDFs implemented
+natively in PYTHIA it is possible to use the respective tunes, without
+having to use LHAPDF, if you set <code>Tune:preferLHAPDF =
+0</code> <i>before</i> the <code>Tune:pp</code> choice.
+<br/><code>option </code><strong> 0</strong> :  Use the internal PYTHIA PDFs.
+<br/><code>option </code><strong> 1</strong> :  Use LHAPDF5 PDFs.
+<br/><code>option </code><strong> 2</strong> :  Use LHAPDF6 PDFs.
    
  
 <p/><code>mode&nbsp; </code><strong> Tune:pp &nbsp;</strong> 

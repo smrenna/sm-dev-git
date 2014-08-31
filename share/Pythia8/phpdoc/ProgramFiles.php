@@ -187,15 +187,6 @@ one, to be used for runtime interfacing to Fortran programs, such as
 PYTHIA 6. 
    
  
-<p/><code>file&nbsp; </code><strong> LHAPDFInterface &nbsp;</strong> <br/>
-is a header file only, with interfaces to the key LHAPDF routines, 
-as needed for a runtime interface. There is a file 
-<code>lhapdfdummy/LHAPDFdummy.cc</code> with matching dummy 
-implementations, however. This file is used to build a separate 
-<code>liblhapdfdummy</code> library, to be linked when the LHAPDF 
-library is not used, so as to avoid problems with undefined references. 
-   
- 
 <p/><code>file&nbsp; </code><strong> Merging &nbsp;</strong> <br/>
 Wpapper class to interface matrix element merging schemes with Pythia. 
    

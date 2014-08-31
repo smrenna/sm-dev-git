@@ -55,17 +55,18 @@ int main() {
   // The Pythia class itself is not used, but some facilities that come along.
   //Pythia pythia;
 
-  // Chosen new PDF set; LHAPDF file name conventions.
-  //string pdfSet = "cteq5l.LHgrid";
-  //string pdfSet = "cteq61.LHpdf";
-  //string pdfSet = "cteq61.LHgrid";
-  //string pdfSet = "MRST2004nlo.LHgrid";
-  //string pdfSet = "MRST2001lo.LHgrid";
-  string pdfSet = "MRST2007lomod.LHgrid";
+  // Chosen new PDF set; LHAPDF5 file name conventions.
+  //string pdfSet = "LHAPDF5:cteq5l.LHgrid";
+  //string pdfSet = "LHAPDF5:cteq61.LHpdf";
+  //string pdfSet = "LHAPDF5:cteq61.LHgrid";
+  //string pdfSet = "LHAPDF5:MRST2004nlo.LHgrid";
+  //string pdfSet = "LHAPDF5:MRST2001lo.LHgrid";
+  string pdfSet = "LHAPDF5:MRST2007lomod.LHgrid";
 
   // Pointers to old default and new tryout PDF sets.
+  Info info;
   PDF* oldPDF = new CTEQ5L(2212);
-  PDF* newPDF = new LHAPDF(2212, pdfSet, 0);
+  PDF* newPDF = new LHAPDF(2212, pdfSet, &info);
 
   // Alternative: compare two Pomeron PDF's. Boost second by factor 2.
   //PDF* oldPDF = new PomFix( 990, -0.2, 2.5, 0., 3., 0.4, 0.5);

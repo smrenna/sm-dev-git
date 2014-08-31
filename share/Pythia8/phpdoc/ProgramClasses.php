@@ -116,13 +116,6 @@ echo "<a href='EventInformation.php?filepath=".$filepath."' target='page'>";?>Ev
 </tr> 
  
 <tr> 
-<td><code>LHAPDFInterface</code></td> 
-<td><?php $filepath = $_GET["filepath"];
-echo "<a href='PartonDistributions.php?filepath=".$filepath."' target='page'>";?>Parton Distributions</a></td> 
-<td>use PDF sets from the LHAPDF library</td> 
-</tr> 
- 
-<tr> 
 <td><code>LHAup</code></td> 
 <td><?php $filepath = $_GET["filepath"];
 echo "<a href='LesHouchesAccord.php?filepath=".$filepath."' target='page'>";?>Les Houches Accord</a></td> 

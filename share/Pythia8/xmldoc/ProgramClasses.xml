@@ -79,12 +79,6 @@ collider topologies</td>
 </tr> 
  
 <tr> 
-<td><code>LHAPDFInterface</code></td> 
-<td><aloc href="PartonDistributions">Parton Distributions</aloc></td> 
-<td>use PDF sets from the LHAPDF library</td> 
-</tr> 
- 
-<tr> 
 <td><code>LHAup</code></td> 
 <td><aloc href="LesHouchesAccord">Les Houches Accord</aloc></td> 
 <td>base class for Les Houches external hard-event input</td> 

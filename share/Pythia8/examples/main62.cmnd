@@ -1,4 +1,4 @@
-! main62.cmnd.
+! main43.cmnd.
 ! This file contains commands to be read in for a Pythia8 run.
 ! Lines not beginning with a letter or digit are comments.
 ! Names are case-insensitive  -  but spellings-sensitive!
@@ -20,12 +20,11 @@ Next:numberShowEvent = 1           ! print event record n times
 Stat:showPartonLevel = off         ! additional statistics on MPI
 
 ! 3) PDF settings. Default is to use internal PDFs
-PDF:useLHAPDF = on
 ! some pdf sets examples: cteq61.LHpdf cteq61.LHgrid MRST2004nlo.LHgrid
-PDF:LHAPDFset = MRST2001lo.LHgrid
+PDF:pSet = LHAPDF5:MRST2001lo.LHgrid
 ! Allow extrapolation of PDF's beyond x and Q2 boundaries, at own risk.
 ! Default behaviour is to freeze PDF's at boundaries.
-PDF:extrapolateLHAPDF = on
+PDF:extrapolate = on
 
 ! 4) Other common settings.
 6:m0 = 175.                        ! same m_t as Pythia 6.4 to compare

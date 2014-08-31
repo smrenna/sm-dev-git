@@ -10,11 +10,11 @@
 // A makefile can be found in the ProMC  package, in examples/pythia.
 
 #include <map>
-#include "Pythia.h"
+#include "Pythia8/Pythia.h"
 // ProMC file
-#include "ProMCHeader.pb.h"
-#include "ProMC.pb.h"
-#include "ProMCBook.h"
+#include "src/ProMCHeader.pb.h"
+#include "src/ProMC.pb.h"
+#include "src/ProMCBook.h"
 
 using namespace Pythia8;
 
@@ -87,7 +87,7 @@ int main() {
   pythia.readString("PhaseSpace:mHatMax = 120.");
   pythia.readString("Random:setSeed = on");
   pythia.readString("Random:seed = 0");
-  pythia.init( 2212, 2212, 14000.);
+  pythia.init();
 
   // ****************  book ProMC file **********************
   ProMCBook* epbook = new ProMCBook("Pythia8.promc","w");
@@ -152,7 +152,7 @@ int main() {
       pa->add_id( i  );
       pa->add_pdg_id( pythia.event[i].id() );
       // Particle status in HEPMC style.
-      pa->add_status(  pythia.event.statusHepMC(i) );
+      pa->add_status(  pythia.event[i].statusHepMC() );
       pa->add_mother1( pythia.event[i].mother1() );
       pa->add_mother2( pythia.event[i].mother2() );
       pa->add_daughter1( pythia.event[i].daughter1() );

@@ -21,8 +21,7 @@ int main() {
   // Access the PDFs.
   int idBeamIn = 2212;
   string xmlPath = "../xmldoc/";
-  Info* infoPtr = 0;
-  int member=0;
+  Info info;
 
   // Grid of studied points.
   string xpdf[] = {"x*g","x*d","x*u","x*s"};
@@ -36,18 +35,16 @@ int main() {
   int const nx = 200;
   
   // Loop over all internal PDF sets in Pythia8
-  // and compare with their LHAPDF correspondents.
-  for (int iFitIn = 1; iFitIn < 5; iFitIn++) {
+  // and compare with their LHAPDF5 correspondents.
+  for (int iFitIn = 3; iFitIn < 5; iFitIn++) {
 
     // Constructor for internal PDFs.
-    NNPDF pdfs_nnpdf( idBeamIn, iFitIn, xmlPath, infoPtr);
+    NNPDF pdfs_nnpdf( idBeamIn, iFitIn, xmlPath, &info);
     
     // Constructor for LHAPDF.
-    if (iFitIn == 1) setName = "NNPDF23_lo_as_0130_qed_mem0.LHgrid";
-    if (iFitIn == 2) setName = "NNPDF23_lo_as_0119_qed_mem0.LHgrid";
-    if (iFitIn == 3) setName = "NNPDF23_nlo_as_0119_qed_mc_mem0.LHgrid";
-    if (iFitIn == 4) setName = "NNPDF23_nnlo_as_0119_qed_mc_mem0.LHgrid";
-    LHAPDF pdfs_nnpdf_lha( idBeamIn, setName, member);
+    if (iFitIn == 3) setName = "LHAPDF5:NNPDF23_nlo_as_0119_qed.LHgrid";
+    if (iFitIn == 4) setName = "LHAPDF5:NNPDF23_nnlo_as_0119_qed.LHgrid";
+    LHAPDF pdfs_nnpdf_lha( idBeamIn, setName, &info);
     cout << "\n PDF set = " << setName << " \n" << endl;
   
     // Check quarks and gluons.

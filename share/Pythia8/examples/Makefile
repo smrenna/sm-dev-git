@@ -23,11 +23,12 @@ ifeq ($(GZIP_USE),true)
   CXX_COMMON+= -L$(GZIP_LIB) -Wl,-rpath $(GZIP_LIB) -lz
 endif
 
-# Check if local distribution (use local version first, then installed version).
+# Check distribution (use local version first, then installed version).
 ifneq ("$(wildcard ../../../lib/libpythia8.a)","")
   PREFIX_LIB=../../../lib
   PREFIX_INCLUDE=../../../include
 endif
+CXX_COMMON+= -ldl -Wl,-rpath $(PREFIX_LIB)
 
 ################################################################################
 # RULES: Definition of the rules used to build the PYTHIA examples.
@@ -47,17 +48,17 @@ Makefile.inc:
                 in the top PYTHIA directory)
 
 # PYTHIA libraries.
-$(PREFIX_LIB)/libpythia8.a $(PREFIX_LIB)/libpythia8lhapdf5.a:
+$(PREFIX_LIB)/libpythia8.a :
 	$(error Error: PYTHIA must be built, please run "make" \
                 in the top PYTHIA directory)
 
 # Examples without external dependencies.
-main% : main%.cc $(PREFIX_LIB)/libpythia8.a $(PREFIX_LIB)/libpythia8lhapdf5.a
+main% : main%.cc $(PREFIX_LIB)/libpythia8.a
 	$(CXX) $(CXX_COMMON) -I$(PREFIX_INCLUDE) -o $@ $^
 
 # HEPMC2.
-main41 main42: $$@.cc $(PREFIX_LIB)/libpythia8.a \
-	       $(PREFIX_LIB)/libpythia8lhapdf5.a
+main41 main42 main61 main62 main85 main86 main87 main88: $$@.cc \
+	$(PREFIX_LIB)/libpythia8.a
 ifeq ($(HEPMC2_USE),true)
 	$(CXX) $(CXX_COMMON) -I$(PREFIX_INCLUDE) -I$(HEPMC2_INCLUDE) -o $@ $^ \
 	-L$(HEPMC2_LIB) -Wl,-rpath $(HEPMC2_LIB) -lHepMC
@@ -65,28 +66,21 @@ else
 	@echo "Error: $@ requires HEPMC2"
 endif
 
-# LHAPDF5.
-main51 main52 main53 main54: $$@.cc $(PREFIX_LIB)/libpythia8.a
-ifeq ($(LHAPDF5_USE),true)
-	$(CXX) $(CXX_COMMON) -I$(PREFIX_INCLUDE) -o $@ $^ \
-	-L$(LHAPDF5_LIB) -Wl,-rpath $(LHAPDF5_LIB) -lLHAPDF -lgfortran
+# PROMC and HEPMC2.
+main46: $$@.cc $(PREFIX_LIB)/libpythia8.a
+ifeq ($(PROMC_USE)$(HEPMC2_USE),truetrue)
+	@echo "Warning: this example is VERY experimental"
+	$(CXX) $(CXX_COMMON) -I$(PREFIX_INCLUDE) -I$(PROMC_INCLUDE) \
+	-I$(PROMC_INCLUDE)/include -I$(HEPMC2_INCLUDE) -o $@ $^ \
+	-L$(PROMC_LIB) -Wl,-rpath $(PROMC_LIB) \
+	-lprotoc -lprotobuf -lprotobuf-lite -lcbook \
+	-L$(HEPMC2_LIB) -Wl,-rpath $(HEPMC2_LIB) -lHepMC
 else
-	@echo "Error: $@ requires LHAPDF5"
-endif
-
-# HEPMC2 and LHAPDF5.
-main61 main62 main85 main86 main87 main88: $$@.cc $(PREFIX_LIB)/libpythia8.a
-ifeq ($(HEPMC2_USE)$(LHAPDF5_USE),truetrue)
-	$(CXX) $(CXX_COMMON) -I$(PREFIX_INCLUDE) -I$(HEPMC2_INCLUDE) -o $@ $^ \
-	-L$(HEPMC2_LIB) -Wl,-rpath $(HEPMC2_LIB) -lHepMC \
-	-L$(LHAPDF5_LIB) -Wl,-rpath $(LHAPDF5_LIB) -lLHAPDF -lgfortran
-else
-	@echo "Error: $@ requires HEPMC2 and LHAPDF5"
+	@echo "Error: $@ requires PROMC and HEPMC2"
 endif
 
 # FASTJET3.
-main71 main72: $$@.cc $(PREFIX_LIB)/libpythia8.a \
-               $(PREFIX_LIB)/libpythia8lhapdf5.a
+main71 main72: $$@.cc $(PREFIX_LIB)/libpythia8.a
 ifeq ($(FASTJET3_USE),true)
 	$(CXX) $(CXX_COMMON) -I$(PREFIX_INCLUDE) -I$(FASTJET3_INCLUDE) -o $@ $^\
 	-L$(FASTJET3_LIB) -Wl,-rpath $(FASTJET3_LIB) -lfastjet
@@ -94,28 +88,26 @@ else
 	@echo "Error: $@ requires FASTJET3"
 endif
 
-# FASTJET3, HEPMC2, and LHAPDF5.
+# FASTJET3 and HEPMC2.
 main81 main82 main83 main84: $$@.cc $(PREFIX_LIB)/libpythia8.a
-ifeq ($(FASTJET3_USE)$(HEPMC2_USE)$(LHAPDF5_USE),truetruetrue)
+ifeq ($(FASTJET3_USE)$(HEPMC2_USE),truetrue)
 	$(CXX) $(CXX_COMMON) -I$(PREFIX_INCLUDE) -I$(FASTJET3_INCLUDE) \
-	-I$(HEPMC2_INCLUDE) -o $@ $^ -\
+	-I$(HEPMC2_INCLUDE) -o $@ $^ \
 	-L$(HEPMC2_LIB) -Wl,-rpath $(HEPMC2_LIB) -lHepMC \
-	-L$(LHAPDF5_LIB) -Wl,-rpath $(LHAPDF5_LIB) -lLHAPDF -lgfortran \
 	-L$(FASTJET3_LIB) -Wl,-rpath $(FASTJET3_LIB) -lfastjet
 else
-	@echo "Error: $@ requires FASTJET3, HEPMC2, and LHAPDF5"
+	@echo "Error: $@ requires FASTJET3 and HEPMC2"
 endif
 
 # ROOT (turn off all warnings for readability).
-main91: $$@.cc $(PREFIX_LIB)/libpythia8.a $(PREFIX_LIB)/libpythia8lhapdf5.a
+main91: $$@.cc $(PREFIX_LIB)/libpythia8.a
 ifeq ($(ROOT_USE),true)
 	$(CXX) $(CXX_COMMON) -w -I$(PREFIX_INCLUDE) -I$(ROOT_INCLUDE) -o $@ $^ \
 	-Wl,-rpath $(ROOT_LIB) `$(ROOT_BIN)root-config --glibs`
 else
 	@echo "Error: $@ requires ROOT"
 endif
-main92: $$@.cc $$@.h $$@LinkDef.h $(PREFIX_LIB)/libpythia8.a \
-        $(PREFIX_LIB)/libpythia8lhapdf5.a
+main92: $$@.cc $$@.h $$@LinkDef.h $(PREFIX_LIB)/libpythia8.a
 ifeq ($(ROOT_USE),true)
 	export LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:$(ROOT_LIB); \
 	$(ROOT_BIN)rootcint -f $@Dct.cc -c -I$(PREFIX_INCLUDE) $@.h $@LinkDef.h

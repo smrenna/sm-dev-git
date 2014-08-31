@@ -4,8 +4,13 @@
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
 // This program is written by Stefan Prestel.
-// It illustrates how to do CKKW-L merging,
-// see the Matrix Element Merging page in the online manual.
+// It illustrates how to do CKKW-L merging, see the Matrix Element
+// Merging page in the online manual. An example command is
+//     ./main84 main84.cmnd hepmcout84.dat 2 w+_production_lhc histout84.dat
+// where main84.cmnd supplies the commands, hepmcout84.dat is the
+// HepMC output, 2 is the maximial number of jets, w+_production_lhc
+// provides the input LHE events, and histout84.dat is the output
+// histogram file. This example requires FastJet and HepMC.
 
 #include <time.h>
 #include "Pythia8/Pythia.h"
@@ -147,11 +152,7 @@ int main( int argc, char* argv[] ){
 
       // Get process and events from LHE file, initialize only the
       // first time
-      bool skipInit = false;
-      if(n > 1){
-        skipInit = true;
-        pythia.readString("Main:LHEFskipInit = on");
-      }
+      if(n > 1) pythia.readString("Main:LHEFskipInit = on");
 
       // From njet, choose LHE file
       stringstream in;
@@ -162,7 +163,9 @@ int main( int argc, char* argv[] ){
       pythia.readString("HadronLevel:all = off");
 
       // Read in ME configurations
-      pythia.init(LHEfile,skipInit);
+      pythia.readString("Beams:frameType = 4");
+      pythia.readString("Beams:LHEF = " + LHEfile);
+      pythia.init();
 
       for( int iEvent=0; iEvent<nEvent; ++iEvent ){
         countEvents++;
@@ -246,11 +249,7 @@ int main( int argc, char* argv[] ){
 
       // Get process and events from LHE file, initialize only the
       // first time
-      bool skipInit = false;
-      if(n > 1){
-        skipInit = true;
-        pythia.readString("Main:LHEFskipInit = on");
-      }
+      if(n > 1) pythia.readString("Main:LHEFskipInit = on");
 
       // From njet, choose LHE file
       stringstream in;
@@ -269,7 +268,9 @@ int main( int argc, char* argv[] ){
       pythia.readString("HadronLevel:all = on");
 
       // Read in ME configurations
-      pythia.init(LHEfile,skipInit);
+      pythia.readString("Beams:frameType = 4");
+      pythia.readString("Beams:LHEF = " + LHEfile);
+      pythia.init();
 
       for( int iEvent=0; iEvent<nEvent; ++iEvent ){
 
