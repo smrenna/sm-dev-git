@@ -28,7 +28,7 @@ ifneq ("$(wildcard ../../../lib/libpythia8.a)","")
   PREFIX_LIB=../../../lib
   PREFIX_INCLUDE=../../../include
 endif
-CXX_COMMON+= -ldl -Wl,-rpath $(PREFIX_LIB)
+CXX_COMMON+= -Wl,-rpath $(PREFIX_LIB)
 
 ################################################################################
 # RULES: Definition of the rules used to build the PYTHIA examples.
@@ -54,14 +54,14 @@ $(PREFIX_LIB)/libpythia8.a :
 
 # Examples without external dependencies.
 main% : main%.cc $(PREFIX_LIB)/libpythia8.a
-	$(CXX) $(CXX_COMMON) -I$(PREFIX_INCLUDE) -o $@ $^
+	$(CXX) $(CXX_COMMON) -I$(PREFIX_INCLUDE) -o $@ $^ -ldl
 
 # HEPMC2.
-main41 main42 main61 main62 main85 main86 main87 main88: $$@.cc \
+main41 main42 main61 main62 main85 main86 main87 main88 main89: $$@.cc \
 	$(PREFIX_LIB)/libpythia8.a
 ifeq ($(HEPMC2_USE),true)
 	$(CXX) $(CXX_COMMON) -I$(PREFIX_INCLUDE) -I$(HEPMC2_INCLUDE) -o $@ $^ \
-	-L$(HEPMC2_LIB) -Wl,-rpath $(HEPMC2_LIB) -lHepMC
+	-L$(HEPMC2_LIB) -Wl,-rpath $(HEPMC2_LIB) -lHepMC -ldl
 else
 	@echo "Error: $@ requires HEPMC2"
 endif
@@ -74,7 +74,7 @@ ifeq ($(PROMC_USE)$(HEPMC2_USE),truetrue)
 	-I$(PROMC_INCLUDE)/include -I$(HEPMC2_INCLUDE) -o $@ $^ \
 	-L$(PROMC_LIB) -Wl,-rpath $(PROMC_LIB) \
 	-lprotoc -lprotobuf -lprotobuf-lite -lcbook \
-	-L$(HEPMC2_LIB) -Wl,-rpath $(HEPMC2_LIB) -lHepMC
+	-L$(HEPMC2_LIB) -Wl,-rpath $(HEPMC2_LIB) -lHepMC -ldl
 else
 	@echo "Error: $@ requires PROMC and HEPMC2"
 endif
@@ -83,7 +83,7 @@ endif
 main71 main72: $$@.cc $(PREFIX_LIB)/libpythia8.a
 ifeq ($(FASTJET3_USE),true)
 	$(CXX) $(CXX_COMMON) -I$(PREFIX_INCLUDE) -I$(FASTJET3_INCLUDE) -o $@ $^\
-	-L$(FASTJET3_LIB) -Wl,-rpath $(FASTJET3_LIB) -lfastjet
+	-L$(FASTJET3_LIB) -Wl,-rpath $(FASTJET3_LIB) -lfastjet -ldl
 else
 	@echo "Error: $@ requires FASTJET3"
 endif
@@ -94,7 +94,7 @@ ifeq ($(FASTJET3_USE)$(HEPMC2_USE),truetrue)
 	$(CXX) $(CXX_COMMON) -I$(PREFIX_INCLUDE) -I$(FASTJET3_INCLUDE) \
 	-I$(HEPMC2_INCLUDE) -o $@ $^ \
 	-L$(HEPMC2_LIB) -Wl,-rpath $(HEPMC2_LIB) -lHepMC \
-	-L$(FASTJET3_LIB) -Wl,-rpath $(FASTJET3_LIB) -lfastjet
+	-L$(FASTJET3_LIB) -Wl,-rpath $(FASTJET3_LIB) -lfastjet -ldl
 else
 	@echo "Error: $@ requires FASTJET3 and HEPMC2"
 endif
@@ -103,7 +103,7 @@ endif
 main91: $$@.cc $(PREFIX_LIB)/libpythia8.a
 ifeq ($(ROOT_USE),true)
 	$(CXX) $(CXX_COMMON) -w -I$(PREFIX_INCLUDE) -I$(ROOT_INCLUDE) -o $@ $^ \
-	-Wl,-rpath $(ROOT_LIB) `$(ROOT_BIN)root-config --glibs`
+	-Wl,-rpath $(ROOT_LIB) `$(ROOT_BIN)root-config --glibs` -ldl
 else
 	@echo "Error: $@ requires ROOT"
 endif
@@ -113,7 +113,7 @@ ifeq ($(ROOT_USE),true)
 	$(ROOT_BIN)rootcint -f $@Dct.cc -c -I$(PREFIX_INCLUDE) $@.h $@LinkDef.h
 	$(CXX) $(CXX_COMMON) -w -I$(PREFIX_INCLUDE) -I$(ROOT_INCLUDE) \
 	-o $@ $@Dct.cc $^ \
-	-Wl,-rpath $(ROOT_LIB) `$(ROOT_BIN)root-config --glibs`
+	-Wl,-rpath $(ROOT_LIB) `$(ROOT_BIN)root-config --glibs` -ldl
 else
 	@echo "Error: $@ requires ROOT"
 endif

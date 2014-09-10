@@ -183,6 +183,14 @@ in <code>main32_unw.par</code>. Madgraph events are taken from the
 <code>w+_production_lhc_2.lhe</code> file in this case. 
 </li> 
  
+<li><code>main37.cc</code> : shows how LHEF version 3.0 files can be
+read and used to fill several histograms of the same property, but with
+different event weights.</li> 
+ 
+<li><code>main38.cc</code> : an extended version of <code>main37.cc</code>,
+where additionally it is shown how to extract many different kinds of
+LHEF version 3.0 information.</li> 
+ 
 <li><code>main41.cc</code> : similar to <code>main01</code>, except that 
 the event record is output in the HepMC event record format. Requires that 
 HepMC is properly linked. Note that the <code>hepmcout41.dat</code> output 
@@ -319,6 +327,13 @@ The program will produce positively and negatively weighted events.
 See <a href="NLOMerging.html" target="page">NLO Merging</a> (UNLOPS section) for further 
 details. 
 </li> 
+ 
+<li><code>main89.cc</code> : do matching/merging according to five alternative
+methods, simply by choosing which <code>.cmnd</code> file to read:
+<code>main89ckkwl.cmnd</code> for CKKW-L, <code>main89fxfx.cmnd</code> 
+for FxFx, <code>main89mlm.cmnd</code> for MLM, <code>main89umeps.cmnd</code>
+for UMEPS, and <code>main89unlops.cmnd</code> for UNLOPS.
+</li>
 
 <li><code>main91.cc</code> : shows how ROOT can be used for histogramming 
 in a program that for the rest is structured like a normal PYTHIA run. 

@@ -7,9 +7,9 @@
 // in Alpgen for Alpgen input)
 // and Stephen Mrenna (implementation of MLM-style matching as
 // in Madgraph for Alpgen or Madgraph 5 input.)
-// and Simon de Visscher and Stefan Prestel (implementation of shower-kT
-// MLM-style matching and flavour treatment for Madgraph input, and FxFx NLO
-// jet matching with aMC@NLO.)
+// and Simon de Visscher, Stefan Prestel (implementation of shower-kT
+// MLM-style matching and flavour treatment for Madgraph input)
+// and Stefan Prestel (FxFx NLO jet matching with aMC@NLO.)
 // This file provides the classes to perform MLM matching of
 // Alpgen or MadGraph 5 input.
 // Example usage is shown in main32.cc, and further details
@@ -179,6 +179,12 @@ public:
   bool canVetoStep() { return doShowerKt; }
   bool doVetoStep(int,  int, int, const Event& );
 
+  // Jet algorithm to access the jet separations in the cleaned event
+  // after showering.
+  SlowJet* slowJetDJR;
+  // Function to return the jet clustering scales.
+  vector<double> GetDJR() { return DJR;}
+
 protected:
 
   // Different steps of the matching algorithm.
@@ -190,6 +196,10 @@ protected:
   int  matchPartonsToJetsHeavy();
   bool doShowerKtVeto(double pTfirst);
 
+  // Functions to clear and set the jet clustering scales.
+  void ClearDJR() { DJR.resize(0);}
+  void SetDJR( const Event& event);
+
   // Variables.
   vector<int> origTypeIdx[3];
   int    nQmatch;
@@ -197,6 +207,13 @@ protected:
   bool   doFxFx;
   int    nPartonsNow;
   double qCutME, qCutMESq;
+
+  // Vector to store the jet clustering scales.
+  vector<double> DJR;
+
+  // Function to get the current number of partons in the Born state, as
+  // read from LHE.
+  int npNLO();
 
 };
 
@@ -955,6 +972,10 @@ bool JetMatchingMadgraph::initAfterBeams() {
   slowJetHard = new SlowJet(slowJetPower, coneRadius, qCutME,
     etaJetMaxAlgo, 2, 2, NULL, false);
 
+  // To access the DJR's
+  slowJetDJR = new SlowJet(slowJetPower, coneRadius, qCutME,
+    etaJetMaxAlgo, 2, 2, NULL, false);
+
   // Setup local event records
   eventProcessOrig.init("(eventProcessOrig)", particleDataPtr);
   eventProcess.init("(eventProcess)", particleDataPtr);
@@ -1082,6 +1103,50 @@ bool JetMatchingMadgraph::doShowerKtVeto(double pTfirst) {
 
 //--------------------------------------------------------------------------
 
+// Function to set the jet clustering scales (to be used as output)
+
+void JetMatchingMadgraph::SetDJR( const Event& event) {
+
+ // Clear members.
+ ClearDJR();
+ vector<double> result;
+
+  // Initialize SlowJetDJR jet algorithm with event
+  if (!slowJetDJR->setup(event) ) {
+    infoPtr->errorMsg("Warning in JetMatchingMadgraph:iGetDJR"
+      ": the SlowJet algorithm failed on setup");
+    return;
+  }
+
+  // Cluster in steps to find all hadronic jets
+  while ( slowJetDJR->sizeAll() - slowJetDJR->sizeJet() > 0 ) {
+    // Save the next clustering scale.
+    result.push_back(sqrt(slowJetDJR->dNext()));
+    // Perform step.
+    slowJetDJR->doStep();
+  }
+
+  // Save clustering scales in reserve order.
+  for (int i=int(result.size())-1; i > 0; --i)
+    DJR.push_back(result[i]);
+
+}
+
+//--------------------------------------------------------------------------
+
+// Function to get the current number of partons in the Born state, as
+// read from LHE.
+
+int JetMatchingMadgraph::npNLO(){
+  string npIn = infoPtr->getEventAttribute("npNLO",true);
+  int np = (npIn != "") ? atoi((char*)npIn.c_str()) : -1;
+  if ( np < 0 ) { ; }
+  else return np;
+  return nPartonsNow;
+}
+
+//--------------------------------------------------------------------------
+
 // Step (1): sort the incoming particles
 
 void JetMatchingMadgraph::sortIncomingProcess(const Event &event) {
@@ -1089,6 +1154,7 @@ void JetMatchingMadgraph::sortIncomingProcess(const Event &event) {
   // Remove resonance decays from original process and keep only final
   // state. Resonances will have positive status code after this step.
   omitResonanceDecays(eventProcessOrig, true);
+  ClearDJR();
 
   // For FxFx, pre-cluster partons in the event into jets.
   if (doFxFx) {
@@ -1122,7 +1188,7 @@ void JetMatchingMadgraph::sortIncomingProcess(const Event &event) {
       // Done if next step is above qCut
       if( slowJetHard->dNext() > localQcutSq ) break;
       // Done if we're at or below the number of partons in the Born state.
-      if( slowJetHard->sizeAll()-slowJetHard->sizeJet() <= nPartonsNow) break;
+      if( slowJetHard->sizeAll()-slowJetHard->sizeJet() <= npNLO()) break;
       slowJetHard->doStep();
     }
 
@@ -1353,7 +1419,7 @@ int JetMatchingMadgraph::matchPartonsToJetsLight() {
   // Count of the number of hadronic jets in SlowJet accounting
   int nCLjets = nClus - nJets;
   // Get number of partons. Different for MLM and FxFx schemes.
-  int nRequested = (doFxFx) ? nPartonsNow : nParton;
+  int nRequested = (doFxFx) ? npNLO() : nParton;
 
   // Veto event if too few hadronic jets
   if ( nCLjets < nRequested ) return LESS_JETS;
@@ -1543,6 +1609,9 @@ int JetMatchingMadgraph::matchPartonsToJetsLight() {
   // This information is not used currently.
   if (nParton > 0 && pTminEstimate > 0) eTpTlightMin = pTminEstimate;
   else eTpTlightMin = -1.;
+
+  // Record the jet separations.
+  SetDJR(workEventJet);
 
   // No veto
   return NONE;

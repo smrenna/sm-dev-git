@@ -162,7 +162,6 @@ void LHAPDF5::init(string setName, int member, Info*) {
   else hasPhoton = false;
   
   // If already initialized then need not do anything further.
-  cout << nSet << "\n";
   pair<string, int> initializedNameMember = 
     LHAPDF5Interface::initializedSets[nSet];
   string initializedSetName   = initializedNameMember.first;

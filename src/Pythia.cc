@@ -379,7 +379,7 @@ bool Pythia::init() {
         // Header is optional, so use NULL pointer to indicate no value.
         const char* cstring2 = (lhefHeader == "void") ?
                                NULL : lhefHeader.c_str();
-        lhaUpPtr   = new LHAupLHEF(cstring1, cstring2, readHeaders);
+        lhaUpPtr   = new LHAupLHEF(&info,cstring1,cstring2,readHeaders);
         useNewLHA  = true;
       }
 

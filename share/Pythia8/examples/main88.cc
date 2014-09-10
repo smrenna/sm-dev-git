@@ -4,7 +4,7 @@
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
 // This program is written by Stefan Prestel.
-// It illustrates how to do NL3 merging, see the Matrix Element
+// It illustrates how to do UNLOPS merging, see the Matrix Element
 // Merging page in the online manual. An example command is
 //     ./main88 main88.cmnd w_production hepmcout88.dat
 // where main88.cmnd supplies the commands, w_production provides the

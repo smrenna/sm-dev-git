@@ -137,6 +137,8 @@ echo "<a href='LesHouchesAccord.php?filepath=".$filepath."' target='page'>Les Ho
 &nbsp;&nbsp;--&nbsp;&nbsp; 
 <a href='POWHEGMerging.php?filepath=".$filepath."' target='page'>POWHEG Merging</a><br/> 
 &nbsp;&nbsp;--&nbsp;&nbsp; 
+<a href='aMCatNLOMatching.php?filepath=".$filepath."' target='page'>aMC@NLO Matching</a><br/> 
+&nbsp;&nbsp;--&nbsp;&nbsp; 
 <a href='CKKWLMerging.php?filepath=".$filepath."' target='page'>CKKW-L Merging</a><br/> 
 &nbsp;&nbsp;--&nbsp;&nbsp; 
 <a href='JetMatching.php?filepath=".$filepath."' target='page'>Jet Matching</a><br/> 

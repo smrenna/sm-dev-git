@@ -647,6 +647,14 @@ bool ProcessLevel::nextOne( Event& process) {
       && !containerPtrs[iContainer]->decayResonances( process) )
       physical = false;
 
+    // Retry process for unphysical states.
+    for (int i =1; i < process.size(); ++i)
+      if (process[i].e() < 0.) {
+        infoPtr->errorMsg("Error in ProcessLevel::nextOne: "
+          "Constructed particle with negative energy.");
+        physical = false;
+      }
+
     // Add any junctions to the process event record list.
     if (physical) findJunctions( process);
 

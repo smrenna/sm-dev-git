@@ -12,7 +12,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.200: 25 August 2014 
+<li>8.200: 10 September 2014 
 <ul> 
 
 <li>A new <code>share/Pythia8</code> directory collects all 
@@ -52,9 +52,8 @@ into the HepMC format, combining the code previously in
 <li>the <code>FastJet3.h</code> interface of PYTHIA particles to the
 FastJet 3 library of jet finders, formerly found in 
 <code>include/FastJet3.h</code>; and</li> 
-<li>the <code>LHAPDF5.h</code> file that contains the dummy code 
-previously in <code>lhapdfdummy/LHAPDFDummy.cc</code>, to be linked
-when LHAPDF is not, in order to avoid unresolved references.</li> 
+<li>the <code>LHAPDF5.h</code> and <code>LHAPDF6.h</code> files for 
+interfaces to the LHAPDF library (see further below).
 </ul>
 
 <li>The configure/make structure has been considerably rewritten. 
@@ -77,6 +76,27 @@ as follows:
   <tr> <td>share/</td> <td>&rarr;&nbsp;</td> <td>/usr/share/</td> </tr> 
   <tr> <td>pythia-config</td> <td>&rarr;&nbsp;</td> <td>/usr/bin/</td> </tr> 
 </table> 
+</li> 
+
+<li>The interface to LHAPDF is now dynamically loaded when requested,
+and can be either to version 5 or 6 of the library. The dummy code   
+previously in <code>lhapdfdummy/LHAPDFDummy.cc</code>, to be linked
+when LHAPDF is not, is no longer required. The two new files
+<code>LHAPDF5.h</code> and <code>LHAPDF6.h</code> in the
+<code>include/Pythia8Plugins</code> directory contain the necessary
+interface code. The selection of PDF sets, notably for the proton, 
+has been exteded to simplify mixing of internal and external PDF sets,  
+and it is now possible to specify different PDFs for the two incoming
+protons at the LHC, see the <aloc href="PDFSelection">PDF Selection</aloc>
+description.</li> 
+
+<li>The new <code>LHEF3.h</code> file contains a generic interface for
+reading Les Houches Event Files of versions 1.0, 2.0 and 3.0. This 
+allows more information to be read and studied by the author. Currently
+PYTHIA itself makes no use of the information beyond the one in 1.0,
+but it is available among the 
+<aloc href="EventInformation">Event Information</aloc>.
+Examples are found in <code>main37.cc</code> and <code>main38.cc</code>. 
 </li> 
 
 <li>The <code>rootexamples</code> directory has been removed, and the
@@ -163,6 +183,15 @@ models, via user hooks. Some of them are only intended for top decays,
 for top mass uncertainty studies, whereas others can be used more 
 generally. The <code>examples/main29.cc</code> program illustrated how 
 the different options should be set up.</li> 
+
+<li>Several new features and improvements in the matching/merging 
+machinery. Notably the aMC@NLO matching scheme has been implemented,
+see the <aloc href="aMCatNLOMatching">aMC@NLO Matching</aloc>
+description. To this end the global-recoil option of timelike showers
+has been improved, and security checks have been introduced for 
+inaccurate LHEF input. A new <code>main89.cc</code> example has been
+introduced, where different <code>.cmnd</code> files show how to set
+up either CKKW-L, FxFx, MLM, UMEPS or UNLOPS merging.</li>
 
 <li>Improved capability for the <code>LHAup</code> Les Houches interface 
 to read SLHA information embedded in the input file or stream.</li> 

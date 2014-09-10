@@ -58,6 +58,10 @@ JHEP 0902 (2009) 017 [arXiv:0810.5350 [hep-ph]]</dd>
 <dd>J. Alwall, M. Herquet, F. Maltoni, O. Mattelaer, T. Stelzer, 
 JHEP 1106 (2011) 128 [arXiv:1106.0522 [hep-ph]]</dd> 
  
+<dt>Alw14</dt> 
+<dd>J. Alwall, R. Frederix, S. Frixione, V. Hirschi,
+F. Maltoni and others, JHEP 1407 (2014) 079 [arXiv:1405.0301 [hep-ph]]</dd> 
+
 <dt>Arg14</dt> 
 <dd>S. Argyropoulos and T. Sj&ouml;strand, in preparation</dd> 
  
@@ -149,6 +153,9 @@ at TeV Colliders, Les Houches, France, 21 May - 1 Jun 2001
 <dt>Buc11</dt> 
 <dd>A. Buckley et al., Phys. Rep. 504 (2011) 145 
 [arXiv:1101.2599 [hep-ph]]</dd> 
+
+<dt>But14</dt> 
+<dd>J. Butterworth et al., arXiv:1405.1067 [hep-ph]]</dd> 
  
 <dt>Cac06</dt> 
 <dd>M. Cacciari and G.P. Salam, Phys. Lett. B641 (2006) 57 

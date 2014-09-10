@@ -1287,6 +1287,84 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
+<td>string</td>
+<td><a href="EventInformation.php#method70" target="page">Info::getEventAttribute(...)</a></td>
+<td>Event Information</td>
+</tr>
+
+<tr>
+<td>string</td>
+<td><a href="EventInformation.php#method62" target="page">Info::getGeneratorAttribute(...)</a></td>
+<td>Event Information</td>
+</tr>
+
+<tr>
+<td>int</td>
+<td><a href="EventInformation.php#method62" target="page">Info::getGeneratorSize()</a></td>
+<td>Event Information</td>
+</tr>
+
+<tr>
+<td>string</td>
+<td><a href="EventInformation.php#method62" target="page">Info::getGeneratorValue(...)</a></td>
+<td>Event Information</td>
+</tr>
+
+<tr>
+<td>int</td>
+<td><a href="EventInformation.php#method61" target="page">Info::getInitrwgtSize()</a></td>
+<td>Event Information</td>
+</tr>
+
+<tr>
+<td>double</td>
+<td><a href="EventInformation.php#method69" target="page">Info::getScalesAttribute(...)</a></td>
+<td>Event Information</td>
+</tr>
+
+<tr>
+<td>string</td>
+<td><a href="EventInformation.php#method68" target="page">Info::getScalesValue()</a></td>
+<td>Event Information</td>
+</tr>
+
+<tr>
+<td>string</td>
+<td><a href="EventInformation.php#method68" target="page">Info::getWeightsCompressedAttribute(...)</a></td>
+<td>Event Information</td>
+</tr>
+
+<tr>
+<td>unsigned int</td>
+<td><a href="EventInformation.php#method66" target="page">Info::getWeightsCompressedSize()</a></td>
+<td>Event Information</td>
+</tr>
+
+<tr>
+<td>double</td>
+<td><a href="EventInformation.php#method67" target="page">Info::getWeightsCompressedValue(...)</a></td>
+<td>Event Information</td>
+</tr>
+
+<tr>
+<td>string</td>
+<td><a href="EventInformation.php#method65" target="page">Info::getWeightsDetailedAttribute(...)</a></td>
+<td>Event Information</td>
+</tr>
+
+<tr>
+<td>unsigned int</td>
+<td><a href="EventInformation.php#method63" target="page">Info::getWeightsDetailedSize()</a></td>
+<td>Event Information</td>
+</tr>
+
+<tr>
+<td>double</td>
+<td><a href="EventInformation.php#method64" target="page">Info::getWeightsDetailedValue(...)</a></td>
+<td>Event Information</td>
+</tr>
+
+<tr>
 <td>bool</td>
 <td><a href="EventInformation.php#method57" target="page">Info::hasHistory()</a></td>
 <td>Event Information</td>
@@ -1306,13 +1384,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>string</td>
-<td><a href="EventInformation.php#method60" target="page">Info::header(...)</a></td>
+<td><a href="EventInformation.php#method71" target="page">Info::header(...)</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>vector &lt;string&gt;</td>
-<td><a href="EventInformation.php#method61" target="page">Info::headerKeys()</a></td>
+<td><a href="EventInformation.php#method72" target="page">Info::headerKeys()</a></td>
 <td>Event Information</td>
 </tr>
 
@@ -1421,6 +1499,12 @@ Many of them are only intended for experts, while undocumented ones are only for
 <tr>
 <td>int</td>
 <td><a href="EventInformation.php#method37" target="page">Info::lhaStrategy()</a></td>
+<td>Event Information</td>
+</tr>
+
+<tr>
+<td>int</td>
+<td><a href="EventInformation.php#method60" target="page">Info::LHEFversion()</a></td>
 <td>Event Information</td>
 </tr>
 
@@ -1672,7 +1756,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="EventInformation.php#method62" target="page">Info::setHeader(...)</a></td>
+<td><a href="EventInformation.php#method73" target="page">Info::setHeader(...)</a></td>
 <td>Event Information</td>
 </tr>
 

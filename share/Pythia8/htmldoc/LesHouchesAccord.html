@@ -571,15 +571,15 @@ at least 10 GeV, so that only massive particles like <i>W^+-</i>,
    
  
 <h3>An interface to Les Houches Event Files</h3> 
- 
-The LHEF standard [<a href="Bibliography.html" target="page">Alw06</a>] specifies a format where a single file 
-packs initialization and event information. This has become the most 
-frequently used procedure to process external parton-level events in 
-Pythia.To access this, you must set <code>Beams:frameType = 4</code> 
+
+The LHEF standard ([<a href="Bibliography.html" target="page">Alw06</a>], [<a href="Bibliography.html" target="page">But14</a>]) specifies a format
+where a single file packs initialization and event information. This has 
+become the most frequently used procedure to process external parton-level
+events in Pythia. To access this, you must set <code>Beams:frameType = 4</code> 
 and <code>Beams:LHEF</code> to be the file name, see 
-<a href="BeamParameters.html" target="page">Beam Parameters</a>.
-Internally this name is then used to create an instance of the derived 
-class <code>LHAupLHEF</code>, which can do the job of reading an LHEF. 
+<a href="BeamParameters.html" target="page">Beam Parameters</a>. Internally this name is
+then used to create an instance of the derived class <code>LHAupLHEF</code>,
+which can do the job of reading an LHEF. 
 
 <p/>
 As some information in a Les Houches Event File init block is only known 
@@ -598,6 +598,19 @@ and <code>&lt;/init&gt;</code> lines must be included for the file parsing
 to work as expected. It is also possible to have a non-empty init block, 
 with the beams assigned code 0, and optionally a number of specified 
 "processes".
+
+<p/>
+The latest update of the LHEF format [<a href="Bibliography.html" target="page">But14</a>] introduced a
+multitude of different optional features. This means that apart
+from the <code>&lt;init&gt;</code> and <code>&lt;event&gt;</code>
+tags, a plethora of new, optional information is available.
+Furthermore, the inclusion of an arbitrary number of attributes into
+the tags should be supported. The LHEF reader in Pythia adheres to
+the updated LHEF format without any restriction. The new generation
+information available through the updated LHEF format can be 
+retrieved by using Pythia's <code>Info</code> class. For a detailed
+description, please consult the section "Les Houches Event File 3.0
+information" in <a href="EventInformation.html" target="page">Event Information</a>.
  
 <p/> 
 The LHEF reader can also read in and store header blocks. By default 
@@ -720,10 +733,7 @@ and run it with
 <p/> 
 The workhorses of the <code>LHAupLHEF</code> class are three methods 
 found in the base class, so as to allow them to be reused in other 
-contexts. Specifically, it allows derived classes where one parton-level 
-configuration can be reused several times, e.g. in the context of 
-matrix-element-to-parton-shower matching (example in preparation). 
-Also two small utility routines. 
+contexts.
  
 <a name="method32"></a>
 <p/><strong>bool LHAup::setInitLHEF(ifstream& is, bool readHeaders = false) &nbsp;</strong> <br/>
@@ -747,7 +757,19 @@ process the same configuration several times. This method currently
 only returns true, i.e. any errors should be caught by the preceding 
 <code>setNewEventLHEF</code> call. 
    
- 
+
+<p/> 
+These three main methods build on a number of container classes and a
+generic LHEF reader class (called <code>Reader</code>) found in
+<code>LHEF3.h</code> and <code>LHEF3.cc</code>. The <code>Reader</code>
+handles all the parsing and storage necessary to adhere with 
+[<a href="Bibliography.html" target="page">But14</a>]. All parsing that is not strictly part of the LHEF format
+(e.g. the reading of header information) is instead performed directly in
+the <code>LHAupLHEF</code> methods.
+
+<p/> 
+Two other small utility routines are:
+
 <a name="method35"></a>
 <p/><strong>bool LHAup::fileFound() &nbsp;</strong> <br/>
 always returns true in the base class, but in <code>LHAupLHEF</code> 

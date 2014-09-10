@@ -17,11 +17,14 @@
 // Note: the new models tend to be slower than the default CR scenario,
 // since they have to probe many more reconnection possibilities.
 
-// Important: the main program top mass analysis is way more primitive 
-// than the ones used in the article studies, and only illustrative.
+// Important: the top mass shift analysis encoded here is very primitive, 
+// does not perform well at all, and should not be taken seriously.
+// The important part is that you see how the different scenarios 
+// should be set up to operate as intended.
 
 #include "Pythia8/Pythia.h"
 #include "Pythia8Plugins/ColourReconnectionHooks.h"
+
 using namespace Pythia8;
 
 //==========================================================================
@@ -45,8 +48,8 @@ int main() {
 
   // Loop over different reconnection scenarios.
   for (int mLoop = 0; mLoop < 14; ++mLoop) {
-  cout << "\n\n ==================================== Now begin mLoop = "
-       << mLoop << " ====================================\n" << endl;
+  cout << "\n\n ================================ Now begin mLoop = "
+       << mLoop << " ================================\n" << endl;
 
     // Generator at 8 TeV LHC.
     Pythia pythia;
@@ -60,10 +63,15 @@ int main() {
     // Colour reconnection setups.
     UserHooks* myUserHooks;
 
+    // Tuning parameters for CR scenarios have tune 4C as a starting point.
+    pythia.readString("Tune:ee = 3");
+    pythia.readString("Tune:pp = 5");
+    
     // No reconnection at all.
     if (mLoop == 0) {
       pythia.readString("ColourReconnection:reconnect = off");
       pythia.readString("PartonLevel:earlyResDec = off");
+      pythia.readString("MultipartonInteractions:pT0Ref = 2.30");
 
     // Standard reconnection, but top decay products unaffected.
     } else if (mLoop == 1) {
@@ -82,10 +90,20 @@ int main() {
       pythia.readString("PartonLevel:earlyResDec = off");
       // Swap (mode = 1) or move (2), and flip (1, 2) or not (0).
       int mode = (mLoop <= 5) ? 1 : 2;
-      int flip = mLoop - 3 * mode;
+      int flip = ( mLoop - 3 * mode) % 3;
       // Possibilities to vary effects by further parameters.
       double dLamCut   = 0.;
       double fracGluon = 1.;
+      if ( mode == 1 ) {
+        if ( flip > 0 ) 
+             pythia.readString("MultipartonInteractions:pT0Ref = 2.20"); 
+        else pythia.readString("MultipartonInteractions:pT0Ref = 2.30"); 
+      }
+      else {
+        if ( flip > 0 ) 
+             pythia.readString("MultipartonInteractions:pT0Ref = 2.15");
+	else pythia.readString("MultipartonInteractions:pT0Ref = 2.25");  
+      }
       myUserHooks = new MBReconUserHooks(mode, flip, dLamCut, fracGluon);
       pythia.setUserHooksPtr( myUserHooks);
 
@@ -99,7 +117,7 @@ int main() {
       pythia.readString("ColourReconnection:reconnect = on");
       pythia.readString("PartonLevel:earlyResDec = off");
       // Possibility with reduced reconnection strength.
-      double strength = 1.;
+      double strength = ( mLoop == 13 ) ? 1. : 0.075;    
       myUserHooks = new TopReconUserHooks(mLoop - 8, strength);     
       pythia.setUserHooksPtr( myUserHooks);
     } 
@@ -114,8 +132,8 @@ int main() {
 
     // Top and W masses. Semileptonic top decay chosen by W decay.
     // (One of two charge states, so properly ought to symmetrize.)
-    // Only allow decay to stable tau, standing in for e and mu as well,
-    // but easy to remove before jet finding. 
+    // Trick: only allow decay to stable tau, standing in for e and mu as well,
+    // but the tau is easy to remove before jet finding. 
     pythia.readString("6:m0 = 173.3");
     pythia.readString("24:m0 = 80.385");
     pythia.readString("24:onPosIfAny = 1 2 3 4 5");

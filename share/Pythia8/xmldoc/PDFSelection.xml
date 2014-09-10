@@ -36,7 +36,34 @@ with this switch on.
 </flag> 
  
 <h3>Parton densities for protons</h3> 
+
+PYTHIA comes with a reasonably complete list of recent LO fits built-in, 
+both ones within the normal LO context and ones with modifications for
+better matching to event generators. In addition two older sets are 
+included for backwards reference (most studies to date are based on 
+CTEQ 5L). Therefore there is no real need to link any external PDF sets. 
  
+<p/> 
+If the internal PDF sets are not sufficient, the   
+<a href="http://projects.hepforge.org/lhapdf/" target="page">LHAPDF 
+library</a> <ref>Wha05</ref> gives you access to a much wider selection. 
+<note>Warning 1:</note> owing to previous problems with the behaviour 
+of PDF's beyond the <ei>x</ei> and <ei>Q^2</ei> boundaries of a set, 
+you should only use LHAPDF <b>version 5.3.0 or later</b>. 
+<note>Warning 2:</note> the behaviour of the LHAPDF sets need not be 
+identical with the implementation found in PYTHIA. Specifically we 
+are aware of the following points that may influence a comparison. 
+<br/>(a) CTEQ 5L in PYTHIA is the parametrization, in LHAPDF the grid 
+interpolation. 
+<br/>(b) MRST LO* and LO** in PYTHIA is based on an updated edition, 
+where one makes use of the expanded MSTW grid format, while LHAPDF 
+is based on the original smaller grid. 
+<br/>(c) The CTEQ 6 and CT09MC sets in PYTHIA are frozen at the 
+boundaries of the grid, by recommendation of the authors, while 
+LHAPDF also offers an option with a smooth extrapolation outside 
+the grid boundaries. 
+ 
+<p/> 
 The selection of parton densities is made once and then is propagated 
 through the program. It is essential to make an informed choice, 
 for several reasons <ref>Kas10</ref>: 
@@ -69,7 +96,9 @@ set 6 or set 9.
  
 <word name="PDF:pSet" default="2"> 
 Parton densities to be used for proton beams (and, by implication, 
-antiproton ones): 
+antiproton ones). Note that the choice of a string input (rather than
+e.g. an integer) allows to pick either an internal, LHAPDF5 or LHAPDF6
+set in one single setting, by some behind-the-scenes machinations.    
 <option value="1">GRV 94L, LO <ei>alpha_s(M_Z) = 0.128</ei> 
 (this set is out of date, but retained for historical comparisons).</option> 
 <option value="2">CTEQ 5L, LO <ei>alpha_s(M_Z) = 0.127</ei> 
@@ -97,6 +126,7 @@ NLO <ei>alpha_s(M_Z) = 0.1180</ei> (NLO, see Warning 3 above).</option>
 <option value="15">NNPDF2.3 QCD+QED NLO <ei>alpha_s(M_Z) = 0.119</ei>.
 </option> 
 <option value="16">NNPDF2.3 QCD+QED NNLO <ei>alpha_s(M_Z) = 0.119</ei>. 
+</option> 
 <option value="LHAPDF5:set/member">Use an external LHAPDF set
 where <code>set</code> is the name of the set to use
 and <code>member</code> is the member of the set to use. The value
@@ -109,7 +139,7 @@ for <code>LHAPDF5:set/member</code> but now the LHAPDF6 library is
 used instead.
 </option> 
 </word> 
-<note>Note 1:</note> the <ei>alpha_s(M_Z)</ei> values and the order of the 
+<note>Warning 1:</note> the <ei>alpha_s(M_Z)</ei> values and the order of the 
 running in the description above is purely informative, and does not 
 affect any other parts of the program. Instead you have the freedom to 
 set <ei>alpha_s(M_Z)</ei> value and running separately for 
@@ -118,12 +148,16 @@ set <ei>alpha_s(M_Z)</ei> value and running separately for
 <aloc href="MultipartonInteractions">multiparton interactions</aloc>, 
 <aloc href="SpacelikeShowers">initial-state radiation</aloc>, and 
 <aloc href="TimelikeShowers">final-state radiation</aloc>. 
-<note>Note 2:</note> in order for <code>LHAPDF</code> PDF sets to work
+<note>Warning 2:</note> in order for <code>LHAPDF</code> PDF sets to work
 you must have compiled the approriate LHAPDF plugins for PYTHIA and
 have set the <code>LHAPATH</code> environment variable
 (or <code>LHAPDF_DATA_PATH</code>) to provide the data-files directory
 of your local LHAPDF installation. See the README file in
 the <code>examples</code> directory for further instructions.
+<note>Warning 3:</note> it is technically possible to simultaneously
+use <code>LHAPDF5</code> and <code>LHAPDF6</code> PDF sets at the same
+time for the two beams, but such a configuration is not officially
+supported and strongly discouraged.
 </flag> 
 
 <word name="PDF:pSetB" default="void"> 
@@ -132,34 +166,6 @@ options available as for <code>PDF:pSet</code>. If this option is set
 to <code>void</code> then the same PDF set as <code>PDF:pSet</code> is
 used.
 </word> 
- 
-<p/> 
-This is a reasonably complete list of recent LO fits, both 
-ones within the normal LO context and ones with modifications for better 
-matching to event generators. In addition two older sets are 
-included for backwards reference (most studies to date are based on 
-CTEQ 5L). If you link to the 
-<a href="http://projects.hepforge.org/lhapdf/" target="page">LHAPDF 
-library</a> <ref>Wha05</ref> you get access to a much wider selection. 
-<note>Warning 1:</note> owing to previous problems with the behaviour 
-of PDF's beyond the <ei>x</ei> and <ei>Q^2</ei> boundaries of a set, 
-you should only use LHAPDF <b>version 5.3.0 or later</b>. 
-<note>Warning 2:</note> the behaviour of the LHAPDF sets need not be 
-identical with the implementation found in PYTHIA. Specifically we 
-are aware of the following points that may influence a comparison. 
-<br/>(a) CTEQ 5L in PYTHIA is the parametrization, in LHAPDF the grid 
-interpolation. 
-<br/>(b) MRST LO* and LO** in PYTHIA is based on an updated edition, 
-where one makes use of the expanded MSTW grid format, while LHAPDF 
-is based on the original smaller grid. 
-<br/>(c) The CTEQ 6 and CT09MC sets in PYTHIA are frozen at the 
-boundaries of the grid, by recommendation of the authors, while 
-LHAPDF also offers an option with a smooth extrapolation outside 
-the grid boundaries. 
-<note>Warning 3:</note> it is technically possible to simultaneously
-use <code>LHAPDF5</code> and <code>LHAPDF6</code> PDF sets at the same
-time for the two beams, but such a configuration is not officially
-supported and strongly discouraged.
  
 <p/> 
 If you want to use PDF's not found in LHAPDF, or you want to interface 
