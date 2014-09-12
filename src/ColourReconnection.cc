@@ -3009,8 +3009,16 @@ bool ColourReconnection::reconnectMove( Event&  event, int oldSize) {
   vector<InfoGluonMove> infoGM; 
 
   // Temporary variables.
-  int iNow, colNow, acolNow, iColNow, iAcolNow, col2Now, iCol2Now, iAcol2Now;
-  double lambdaRefNow, dLambdaNow;
+  int iNow            = 0;
+  int colNow          = 0;
+  int acolNow         = 0;
+  int iColNow         = 0;
+  int iAcolNow        = 0;
+  int col2Now         = 0;
+  int iCol2Now        = 0;
+  int iAcol2Now       = 0;
+  double lambdaRefNow = 0.;
+  double dLambdaNow   = 0.;
 
   // Loop over all final particles. Store (fraction of) gluons to move.
   for (int i = oldSize; i < event.size(); ++i) if (event[i].isFinal()) {
