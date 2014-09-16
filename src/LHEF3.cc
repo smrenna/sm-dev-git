@@ -612,7 +612,6 @@ bool Reader::readEvent(HEPEUP * peup) {
   // Get event attributes.
   if (currentLine != "") {
     string eventLine(currentLine);
-    replace( eventLine.begin(), eventLine.end(), '\'', '\"');
     eventLine += "</event>";
     vector<XMLTag*> evtags = XMLTag::findXMLTags(eventLine);
     XMLTag & evtag = *evtags[0];
@@ -706,4 +705,3 @@ bool Reader::readEvent(HEPEUP * peup) {
 //==========================================================================
 
 }
-

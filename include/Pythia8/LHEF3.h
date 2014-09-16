@@ -793,7 +793,11 @@ protected:
 
   // Used internally to read a single line from the stream.
   bool getLine() {
-    return ( getline(file, currentLine) );
+    currentLine = "";
+    if(!getline(file, currentLine)) return false;
+    // Replace single by double quotes
+    replace(currentLine.begin(),currentLine.end(),'\'','\"');
+    return true;
   }
 
 protected:
