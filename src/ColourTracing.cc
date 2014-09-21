@@ -273,8 +273,8 @@ vector<vector<int > > ColourTracing::getJunChains(Event& event) {
   vector<bool> usedJuncs(event.sizeJunction(),false);
   
   // Loop over junctions.
-  for(int i = 0;i < event.sizeJunction(); ++i) {
-    if(usedJuncs[i])
+  for (int i = 0; i < event.sizeJunction(); ++i) {
+    if (usedJuncs[i])
       continue;
     std::list<int> curJun;
     vector<int> junList;

@@ -436,8 +436,7 @@ void HEPEUP::resize() {
 //--------------------------------------------------------------------------
 
 // Used internally in the constructors to read header and init blocks.
-
-void Reader::init() {
+bool Reader::init() {
 
   bool readingHeader = false;
   bool readingInit = false;
@@ -446,9 +445,7 @@ void Reader::init() {
   getLine();
 
   if ( currentLine.find("<LesHouchesEvents" ) == string::npos )
-    throw std::runtime_error
-      ("Tried to read a file which does not start with the "
-       "LesHouchesEvents tag.");
+    return false;
   version = 0;
   if ( currentLine.find("version=\"1" ) != string::npos )
     version = 1;
@@ -457,8 +454,7 @@ void Reader::init() {
   else if ( currentLine.find("version=\"3" ) != string::npos )
     version = 3;
   else
-    throw std::runtime_error ("Tried to read a LesHouchesEvents file"
-       " which is not version 1.0, 2.0 or 3.0.");
+    return false;
 
   // Loop over all lines until we hit the </init> tag.
   while ( getLine() && currentLine.find("</init>") == string::npos ) {
@@ -483,7 +479,7 @@ void Reader::init() {
                   >> heprup.PDFSUP.first >> heprup.PDFSUP.second
                   >> heprup.IDWTUP >> heprup.NPRUP ) ) {
         heprup.NPRUP = -42;
-        return;
+        return false;
       }
       heprup.resize();
 
@@ -493,7 +489,7 @@ void Reader::init() {
         if ( !( isss >> heprup.XSECUP[i] >> heprup.XERRUP[i]
                     >> heprup.XMAXUP[i] >> heprup.LPRUP[i] ) ) {
           heprup.NPRUP = -42;
-          return;
+          return false;
         }
       }
     }
@@ -581,6 +577,9 @@ void Reader::init() {
     }
     delete &tag;
   }
+
+  // Done
+  return true;
 
 }
 

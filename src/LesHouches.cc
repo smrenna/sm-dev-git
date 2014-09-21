@@ -649,6 +649,9 @@ void LHAup::closeFile(istream *&is, ifstream &ifs) {
 
 bool LHAupLHEF::setInitLHEF( istream & isIn, bool readHead ) {
 
+  // Done if there was a problem with initialising the reader
+  if (!reader.isGood) return false;
+
   // Construct header information (stored in comments strings or optional
   // header file), so that reading of headers is possible.
   string comments;

@@ -169,7 +169,7 @@ public:
 
   // Constructor and destructor
   JetMatchingMadgraph() { }
-  ~JetMatchingMadgraph() { }
+  ~JetMatchingMadgraph() { if (slowJetDJR) delete slowJetDJR; }
 
   // Initialisation
   bool initAfterBeams();

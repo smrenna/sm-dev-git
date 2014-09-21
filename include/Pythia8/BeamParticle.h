@@ -280,7 +280,8 @@ private:
   int    maxValQuark, companionPower;
   double valencePowerMeson, valencePowerUinP, valencePowerDinP,
          valenceDiqEnhance, pickQuarkNorm, pickQuarkPower,
-         diffPrimKTwidth, diffLargeMassSuppress, beamSat;
+         diffPrimKTwidth, diffLargeMassSuppress, beamSat, gluonPower,
+         xGluonCutoff;
 
   // Basic properties of a beam particle.
   int    idBeam, idBeamAbs;

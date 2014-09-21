@@ -230,7 +230,7 @@ Switch to choose between the two different colour models for the beam remnant.
 <br/><code>option </code><strong> 1</strong> :  The new beam remnant model.    
   
 
-<br/><br/><table><tr><td><strong>BeamRemnants:saturation </td><td></td><td> <input type="text" name="9" value="5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>5</strong></code>; <code>minimum = 0.1</code>; <code>maximum = 1000</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>BeamRemnants:saturation </td><td></td><td> <input type="text" name="9" value="5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>5</strong></code>; <code>minimum = 0.1</code>; <code>maximum = 100000</code>)</td></tr></table>
 Controls the suppresion due to saturation in the new model. The exact formula
 used is <i>exp(-M / k)</i>, where M is the multiplet size and k is this 
 parameter. Thus a small number will result in a large saturation.
@@ -292,8 +292,18 @@ Enhancement factor for valence diquarks in baryons, relative to the
 simple sum of the two constituent quarks. 
    
  
-<br/><br/><strong>BeamRemnants:allowJunction</strong>  <input type="radio" name="16" value="on" checked="checked"><strong>On</strong>
-<input type="radio" name="16" value="off"><strong>Off</strong>
+<br/><br/><table><tr><td><strong>BeamRemnants:gluonPower </td><td></td><td> <input type="text" name="16" value="4.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>4.0</strong></code>; <code>minimum = 0.</code>)</td></tr></table>
+The abovementioned power for gluons.
+   
+
+<br/><br/><table><tr><td><strong>BeamRemnants:xGluonCutoff </td><td></td><td> <input type="text" name="17" value="1E-7" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1E-7</strong></code>; <code>minimum = 1E-10</code>; <code>maximum = 1</code>)</td></tr></table>
+The gluon PDF is approximated with <i>g(x) ~ (1 - x)^p / x</i>, which 
+integrates to infinity when integrated from 0 to 1. This cut-off is 
+introduced as a minimum to avoid the problems with infinities.
+  
+
+<br/><br/><strong>BeamRemnants:allowJunction</strong>  <input type="radio" name="18" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="18" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 The <code>off</code> option is intended for debug purposes only, as 
 follows. When more than one valence quark is kicked out of a baryon 
@@ -307,8 +317,8 @@ multiparton interactions and showers are redone until a
 junction-free topology is found. 
    
 
-<br/><br/><strong>BeamRemnants:beamJunction</strong>  <input type="radio" name="17" value="on"><strong>On</strong>
-<input type="radio" name="17" value="off" checked="checked"><strong>Off</strong>
+<br/><br/><strong>BeamRemnants:beamJunction</strong>  <input type="radio" name="19" value="on"><strong>On</strong>
+<input type="radio" name="19" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
 This parameter is only relevant if the new colour reconnection scheme is used.
 (see  <?php $filepath = $_GET["filepath"];
@@ -316,6 +326,14 @@ echo "<a href='ColourReconnection.php?filepath=".$filepath."' target='page'>";?>
 This parameter tells whether to form a junction or a di-quark if more 
 than two valence quarks are found in the beam remnants. If off a di-quark is 
 formed and if on a junction will be formed.
+   
+
+<br/><br/><strong>BeamRemnants:allowBeamJunction</strong>  <input type="radio" name="20" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="20" value="off"><strong>Off</strong>
+ &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
+This parameter is only relevant if the new Beam remnant model is used.
+This parameter tells whether to allow the formation of junction structures 
+in the colour configuration of the scattered partons.
    
  
 <input type="hidden" name="saved" value="1"/>
@@ -408,14 +426,29 @@ if($_POST["15"] != "2.0")
 $data = "BeamRemnants:valenceDiqEnhance = ".$_POST["15"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["16"] != "on")
+if($_POST["16"] != "4.0")
 {
-$data = "BeamRemnants:allowJunction = ".$_POST["16"]."\n";
+$data = "BeamRemnants:gluonPower = ".$_POST["16"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["17"] != "off")
+if($_POST["17"] != "1E-7")
 {
-$data = "BeamRemnants:beamJunction = ".$_POST["17"]."\n";
+$data = "BeamRemnants:xGluonCutoff = ".$_POST["17"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["18"] != "on")
+{
+$data = "BeamRemnants:allowJunction = ".$_POST["18"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["19"] != "off")
+{
+$data = "BeamRemnants:beamJunction = ".$_POST["19"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["20"] != "on")
+{
+$data = "BeamRemnants:allowBeamJunction = ".$_POST["20"]."\n";
 fwrite($handle,$data);
 }
 fclose($handle);

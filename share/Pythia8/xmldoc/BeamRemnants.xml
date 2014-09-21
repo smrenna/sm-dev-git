@@ -195,7 +195,7 @@ Switch to choose between the two different colour models for the beam remnant.
 <option value="1"> The new beam remnant model. </option> 
 </modeopen>
 
-<parm = name="BeamRemnants:saturation" default="5" min="0.1" max="1000">
+<parm = name="BeamRemnants:saturation" default="5" min="0.1" max="100000">
 Controls the suppresion due to saturation in the new model. The exact formula
 used is <ei>exp(-M / k)</ei>, where M is the multiplet size and k is this 
 parameter. Thus a small number will result in a large saturation.
@@ -258,6 +258,16 @@ Enhancement factor for valence diquarks in baryons, relative to the
 simple sum of the two constituent quarks. 
 </parm> 
  
+<parm name="BeamRemnants:gluonPower" default="4.0" min="0."> 
+The abovementioned power for gluons.
+</parm> 
+
+<parm name="BeamRemnants:xGluonCutoff" default="1E-7" min="1E-10" max="1">
+The gluon PDF is approximated with <ei>g(x) ~ (1 - x)^p / x</ei>, which 
+integrates to infinity when integrated from 0 to 1. This cut-off is 
+introduced as a minimum to avoid the problems with infinities.
+</parm>
+
 <flag name="BeamRemnants:allowJunction" default="on"> 
 The <code>off</code> option is intended for debug purposes only, as 
 follows. When more than one valence quark is kicked out of a baryon 
@@ -277,6 +287,12 @@ This parameter is only relevant if the new colour reconnection scheme is used.
 This parameter tells whether to form a junction or a di-quark if more 
 than two valence quarks are found in the beam remnants. If off a di-quark is 
 formed and if on a junction will be formed.
+</flag> 
+
+<flag name="BeamRemnants:allowBeamJunction" default="on"> 
+This parameter is only relevant if the new Beam remnant model is used.
+This parameter tells whether to allow the formation of junction structures 
+in the colour configuration of the scattered partons.
 </flag> 
  
 </chapter> 

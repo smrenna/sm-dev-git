@@ -77,16 +77,20 @@ void BeamParticle::init( int idIn, double pzIn, double eIn, double mIn,
   // Assume g(x) ~ (1-x)^power/x to constrain companion to sea quark.
   companionPower    = settings.mode("BeamRemnants:companionPower");
 
-  // Assume g(x) ~ (1-x)^power/x to constrain companion to sea quark.
-  companionPower    = settings.mode("BeamRemnants:companionPower");
+  // Assume g(x) ~ (1-x)^power/x with a cut-off for low x.
+  gluonPower        = settings.parm("BeamRemnants:gluonPower");
+  xGluonCutoff      = settings.parm("BeamRemnants:xGluonCutoff");
 
   // Allow or not more than one valence quark to be kicked out.
   allowJunction     = settings.flag("BeamRemnants:allowJunction");
-
+  
   // Choose whether to form a di-quark or 
   // a junction with new colur reconnection scheme.
-  beamJunction     = settings.flag("beamRemnants:beamJunction");
-  
+  beamJunction       = settings.flag("beamRemnants:beamJunction");
+
+  // Allow junctions in the outgoing colour state.
+  allowBeamJunctions = settings.flag("beamRemnants:allowBeamJunction");
+
   // For low-mass diffractive system kick out q/g = norm / mass^power.
   pickQuarkNorm     = settings.parm("Diffraction:pickQuarkNorm");
   pickQuarkPower    = settings.parm("Diffraction:pickQuarkPower");
@@ -803,8 +807,13 @@ double BeamParticle::xRemnant( int i) {
       * (pow2(x) + pow2(xCompanion)) / pow2(x + xCompanion)
       < rndmPtr->flat() );
 
-  // Else, rarely, a single gluon remnant, so value does not matter.
-  } else x = 1.;
+  // Else a gluon remnant.
+  // Rarely it is a single gluon remnant, for that case value does not matter.
+  } else {
+    do x = pow(xGluonCutoff, 1 - rndmPtr->flat());
+    while ( pow(1. - x, gluonPower) < rndmPtr->flat() );
+  }
+  
   return x;
 
 }
@@ -1303,7 +1312,7 @@ bool BeamParticle::remnantFlavoursNew(Event& event) {
   // If no other remnants found, add a light q-qbar pair or a photon 
   // to carry momentum.
   if (size() == nInit) {
-    if(!isHadron())
+    if (!isHadron())
       append(0, 22, 0., -1);
     else {
       int idRemnant = int(3*rndmPtr->flat())+1;
@@ -1316,7 +1325,7 @@ bool BeamParticle::remnantFlavoursNew(Event& event) {
 
   usedCol =  vector<bool>(size(),false);
   usedAcol = vector<bool>(size(),false);
-  
+
   // If at least two valence quarks left in baryon and no junction formed.
   // First check if junction already was moved into beam.
   nDiffJuncs = nJuncs - nAjuncs - beamJunc;
@@ -1364,7 +1373,7 @@ bool BeamParticle::remnantFlavoursNew(Event& event) {
         
 	// Find matching colour.
   	int col = findSingleCol(event, false, true);
-        if(col == 0) return false;
+        if (col == 0) return false;
         
         // Make the junction.
         int newCol1 = event.nextColTag();
@@ -1450,7 +1459,7 @@ bool BeamParticle::remnantFlavoursNew(Event& event) {
   }
   
   // Need to end in a colour singlet.
-  if(cols.size() != 0 || acols.size() != 0) {
+  if (cols.size() != 0 || acols.size() != 0) {
     infoPtr->errorMsg("Error in BeamParticle::RemnantFlavours: "
       "Colour not conserved in beamRemnants");
     return false;
@@ -1571,14 +1580,14 @@ void BeamParticle::updateCol(vector<pair<int,int> > colourChanges) {
 void BeamParticle::updateSingleCol(int oldCol, int newCol) {
   
   // Update acols and cols.
-  for (int i = 0;i < int(cols.size()); ++i)
+  for (int i = 0; i < int(cols.size()); ++i)
     if (cols[i] == oldCol) cols[i] = newCol;
 
-  for ( int i = 0;i < int(acols.size()); ++i)
-    if(acols[i] == oldCol) acols[i] = newCol;
+  for ( int i = 0; i < int(acols.size()); ++i)
+    if (acols[i] == oldCol) acols[i] = newCol;
 
   // Update resolved partons colours.
-  for(int i = 0;i < int(resolved.size()); ++i) {
+  for (int i = 0; i < int(resolved.size()); ++i) {
     if (resolved[i].acol() == oldCol) resolved[i].acol(newCol);
     if (resolved[i].col() == oldCol) resolved[i].col(newCol);
   }

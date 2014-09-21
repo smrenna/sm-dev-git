@@ -1449,7 +1449,7 @@ void ResonanceZprime::calcPreFac(bool calledFromInit) {
     vapi2     = 1.;
     int idInFlavAbs = abs(idInFlav);
     if ( (idInFlavAbs >  0 && idInFlavAbs <= maxZpGen) 
-      || (idInFlavAbs > 10 && idInFlavAbs <= maxZpGen+10) ) {
+      || (idInFlavAbs > 10 && idInFlavAbs <= maxZpGen + 10) ) {
       double ei  = couplingsPtr->ef(idInFlavAbs);
       double ai  = couplingsPtr->af(idInFlavAbs);
       double vi  = couplingsPtr->vf(idInFlavAbs);
@@ -1502,7 +1502,7 @@ void ResonanceZprime::calcWidth(bool calledFromInit) {
   if (calledFromInit) {
 
     // Contributions from three (4?) fermion generations.
-    if ( id1Abs <= maxZpGen || (id1Abs > 10 && id1Abs <= maxZpGen+10) ) {
+    if ( id1Abs <= maxZpGen || (id1Abs > 10 && id1Abs <= maxZpGen + 10) ) {
       double apf = afZp[id1Abs];
       double vpf = vfZp[id1Abs];
       widNow = preFac * ps * (vpf*vpf * (1. + 2. * mr1)
@@ -1520,7 +1520,7 @@ void ResonanceZprime::calcWidth(bool calledFromInit) {
   else {
 
     // Contributions from three (4?) fermion generations.
-    if ( id1Abs <= maxZpGen || (id1Abs > 10 && id1Abs <= maxZpGen) ) {
+    if ( id1Abs <= maxZpGen || (id1Abs > 10 && id1Abs <= maxZpGen + 10) ) {
 
       // Couplings of gamma^*/Z^0/Z'^0  to final flavour
       double ef  = couplingsPtr->ef(id1Abs);

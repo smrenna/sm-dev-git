@@ -23,7 +23,7 @@ namespace Pythia8 {
 
 // Minimum delta R between two partons. This is to avoid problems 
 // with infinities.
-const double StringLength::MINDELTAR = 1E-10;
+const double StringLength::MINDELTAR = 1e-20;
 
 void StringLength::init(Info* infoPtrIn, Settings& settings) {
 
@@ -39,7 +39,7 @@ void StringLength::init(Info* infoPtrIn, Settings& settings) {
 
 //--------------------------------------------------------------------------
 
-// Calculate string length for two indicies in the event record.
+// Calculate string length for two indices in the event record.
 
 double StringLength::getStringLength( Event& event, int i, int j) {
   
@@ -57,10 +57,8 @@ double StringLength::getStringLength( Event& event, int i, int j) {
 double StringLength::getStringLength( Vec4 p1, Vec4 p2) {
 
   // Check that particles are not completely paralel.
-  if (REtaPhi(p1,p2)  < MINDELTAR) {
-    infoPtr->errorMsg("Warning in StringLength::getStringLength:"
-      "Delta R is below minimum");
-    return 1E9;
+  if (REtaPhi(p1,p2) < MINDELTAR) {
+    return 1e9;
   }
   
   // Boost to restframe.
@@ -81,6 +79,7 @@ double StringLength::getStringLength( Vec4 p1, Vec4 p2) {
 // The second vector represents (1,0,0,0) in dipole restframe.
 
 double StringLength::getLength(Vec4 p, Vec4 v) {
+
   if (lambdaForm == 0)
     return log (1. + sqrt2 * v * p/ m0 );
   else if (lambdaForm == 1)
@@ -88,7 +87,7 @@ double StringLength::getLength(Vec4 p, Vec4 v) {
   else if (lambdaForm == 2)
     return log (2 * v * p / m0);
   else
-    return 1E9;
+    return 1e9;
 }
 
 //--------------------------------------------------------------------------
@@ -97,7 +96,7 @@ double StringLength::getLength(Vec4 p, Vec4 v) {
 
 double StringLength::getJuncLength( Event& event, int i, int j, int k) {
   if (i == j || i == k || j == k)     
-    return 1E9;
+    return 1e9;
   
   Vec4 p1 = event[i].p();
   Vec4 p2 = event[j].p();
@@ -114,9 +113,7 @@ double StringLength::getJuncLength(Vec4 p1, Vec4 p2, Vec4 p3) {
   // Check for parallel particles. 
   if (REtaPhi(p1,p2) < MINDELTAR || REtaPhi(p1,p3) < MINDELTAR || 
       REtaPhi(p2,p3) < MINDELTAR) {
-    infoPtr->errorMsg("Warning in StringLength::getJuncLength:"
-      "Delta R is below minimum");
-    return 1E9;
+    return 1e9;
   }
   
   // Find the junction rest frame.
@@ -128,7 +125,7 @@ double StringLength::getJuncLength(Vec4 p1, Vec4 p2, Vec4 p3) {
   // Possible problem when the right system rest frame system is not found.
   if (pow2(p1*v1) - p1*p1 < 0 || pow2(p2*v1) - p2*p2 < 0 
     || pow2(p3*v1) - p3*p3 < 0)
-    return 1E9;
+    return 1e9;
   
   // Calcualte the junction length.
   return getLength(p1,v1) + getLength(p2,v1) + getLength(p3,v1);
@@ -141,7 +138,7 @@ double StringLength::getJuncLength(Vec4 p1, Vec4 p2, Vec4 p3) {
 
 double StringLength::getJuncLength( Event& event, int i, int j, int k, int l) {
   if (i == j || i == k || i == l || j == k || j == l || k == l) 
-    return 1E9;
+    return 1e9;
   
   // Simple minimum check of lengths.
   double origLength = getStringLength(event, i, k) + 
@@ -169,10 +166,8 @@ double StringLength::getJuncLength(Vec4 p1, Vec4 p2, Vec4 p3, Vec4 p4) {
   // Check for parallel problems.
   if (REtaPhi(p1,p2) < MINDELTAR || REtaPhi(p1,p3) < MINDELTAR || 
       REtaPhi(p1,p4) < MINDELTAR || REtaPhi(p2,p3) < MINDELTAR || 
-      REtaPhi(p2,p4) < MINDELTAR || REtaPhi(p3,p4) < MINDELTAR) {
-    infoPtr->errorMsg("Warning in StringLength::getJuncLength:"
-      "Delta R is below minimum");
-    return 1E9;
+      REtaPhi(p2,p4) < MINDELTAR || REtaPhi(p3,p4) < MINDELTAR) { 
+    return 1e9;
   }
   
   // Calculate velocity of first junction.
@@ -192,8 +187,8 @@ double StringLength::getJuncLength(Vec4 p1, Vec4 p2, Vec4 p3, Vec4 p4) {
   // This only happens if it is not possible to find the correct rest frame.
   if (pow2(p1*v1) - p1*p1 < 0 || pow2(p2*v1) - p2*p2 < 0 || 
       pow2(p3*v2) - p3*p3 < 0 || pow2(p4*v2) - p4*p4 < 0)
-    return 1E9;
-  
+    return 1e9;
+
   return getLength(p1,v1) + getLength(p2,v1) + getLength(p3,v2) + 
     getLength(p4,v2) + log(v1*v2 + sqrt(pow2(v1*v2)-1));
 }

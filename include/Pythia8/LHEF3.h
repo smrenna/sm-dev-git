@@ -760,7 +760,7 @@ public:
   //
   Reader(istream & is)
     : file(is) {
-    init();
+    isGood = init();
   }
 
   // Initialize the Reader with a filename from which to read an event
@@ -780,7 +780,7 @@ public:
 private:
 
   // Used internally in the constructors to read header and init blocks.
-  void init();
+  bool init();
 
 public:
 
@@ -814,6 +814,9 @@ protected:
   string currentLine;
 
 public:
+
+  // Save if the initialisation worked.
+  bool isGood;
 
   // XML file version
   int version;

@@ -45,7 +45,7 @@ private:
   static const double JJSTRINGM2MAX, JJSTRINGM2FRAC, CONVJNREST, MTHAD;
 
   double eNormJunction;
-
+  bool allowDoubleJunRem;
   // Pointer to various information on the generation.
   Info*          infoPtr;
 
@@ -81,6 +81,9 @@ private:
   // Get the list of partons connected to the junctions.
   bool getPartonLists(Event& event, vector<vector< int > >& iPartonJun,
     vector<vector<int > >& iPartonAntiJun);
+
+  // Change the anticolour of the particle that has acol to be col.
+  bool setAcol(Event& event, int col, int acol);
 
 };
 

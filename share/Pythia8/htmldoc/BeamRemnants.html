@@ -210,7 +210,7 @@ Switch to choose between the two different colour models for the beam remnant.
   
 
 <p/><code>parm&nbsp; </code><strong> BeamRemnants:saturation &nbsp;</strong> 
- (<code>default = <strong>5</strong></code>; <code>minimum = 0.1</code>; <code>maximum = 1000</code>)<br/>
+ (<code>default = <strong>5</strong></code>; <code>minimum = 0.1</code>; <code>maximum = 100000</code>)<br/>
 Controls the suppresion due to saturation in the new model. The exact formula
 used is <i>exp(-M / k)</i>, where M is the multiplet size and k is this 
 parameter. Thus a small number will result in a large saturation.
@@ -278,6 +278,18 @@ Enhancement factor for valence diquarks in baryons, relative to the
 simple sum of the two constituent quarks. 
    
  
+<p/><code>parm&nbsp; </code><strong> BeamRemnants:gluonPower &nbsp;</strong> 
+ (<code>default = <strong>4.0</strong></code>; <code>minimum = 0.</code>)<br/>
+The abovementioned power for gluons.
+   
+
+<p/><code>parm&nbsp; </code><strong> BeamRemnants:xGluonCutoff &nbsp;</strong> 
+ (<code>default = <strong>1E-7</strong></code>; <code>minimum = 1E-10</code>; <code>maximum = 1</code>)<br/>
+The gluon PDF is approximated with <i>g(x) ~ (1 - x)^p / x</i>, which 
+integrates to infinity when integrated from 0 to 1. This cut-off is 
+introduced as a minimum to avoid the problems with infinities.
+  
+
 <p/><code>flag&nbsp; </code><strong> BeamRemnants:allowJunction &nbsp;</strong> 
  (<code>default = <strong>on</strong></code>)<br/>
 The <code>off</code> option is intended for debug purposes only, as 
@@ -299,6 +311,13 @@ This parameter is only relevant if the new colour reconnection scheme is used.
 This parameter tells whether to form a junction or a di-quark if more 
 than two valence quarks are found in the beam remnants. If off a di-quark is 
 formed and if on a junction will be formed.
+   
+
+<p/><code>flag&nbsp; </code><strong> BeamRemnants:allowBeamJunction &nbsp;</strong> 
+ (<code>default = <strong>on</strong></code>)<br/>
+This parameter is only relevant if the new Beam remnant model is used.
+This parameter tells whether to allow the formation of junction structures 
+in the colour configuration of the scattered partons.
    
  
 </body>

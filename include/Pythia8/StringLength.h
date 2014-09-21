@@ -32,7 +32,7 @@ public:
   // The second vector represents (1,0,0,0) in dipole restframe.
   double getLength(Vec4 p, Vec4 v);
 
-  // Calculate string length for two indicies in the event record.
+  // Calculate string length for two indices in the event record.
   double getStringLength(Event& event, int i, int j);
 
   // Calculate string length for two particles given their four-momenta.

@@ -31,11 +31,11 @@ of a lower-<ei>pT</ei> MPI system are merged with the ones in a higher-pT MPI.
 A more detailed description of the merging can be found below. 
 Relative to the other models it tests fewer reconnection possibilities, 
 and therefore tends to be reasonably fast.
-
+ 
 <p/>
 The new scheme <ref>Chr14a</ref>relies on the full QCD colour configuration 
 in the beam remnant. This is followed up by a colour reconnection, where the 
-potential string energy is minimized (i.e. the <ei>lambda</ei> measure is 
+potential string energy is minimized (ie. the <ei>lambda</ei> measure is 
 minimized). The QCD colour rules are also incorporated in the colour 
 reconnection, and determine the probability that a reconnection is allowed. 
 The model also allows the creation of junction structures.
@@ -60,10 +60,10 @@ Allow or not a system to be merged with another one.
 <modepick name="ColourReconnection:mode" default="0" min="0" max="2">
 Determine which model is used for colour reconnection. Beware that 
 different <code>BeamRemnants:remnantMode</code> should be used for 
-different reconnection schemes. 
-<option value="0"> The MPI-based original Pythia 8 model.
+different reconnection schemes.
+<option value="0"> The MPI-based original Pythia 8 scheme.
 </option>
-<option value="1"> The new more QCD-based model.
+<option value="1"> The new more QCD based scheme.
 </option>
 <option value="2"> The new gluon-move model.
 </option>
@@ -162,7 +162,7 @@ is in the new model also used as a cut for forming pseudo particles that are
 not colour reconnected. 
 </parm> 
 
-<modeopen name="ColourReconnection:nColours" default="9" min="1" max="15">
+<modeopen name="ColourReconnection:nColours" default="9" min="1" max="30">
 The number of reconnection colours, this should not be confused with the 
 standard number of QCD colours. Each string is given an integer number between 
 0 and <code>nColours - 1</code>. Only strings with the same number are allowed
@@ -204,6 +204,20 @@ or junction restframe.
 <option value="2"> <ei>lambda = ln (2 E/m0)</ei>
 </option>
 </modepick>
+
+<parm name="ColourReconnection:minimumGainJun" default="1" min="-100" max="100">
+The minimum <ei>lambda</ei> has to decrease in order to create a junction 
+antijunction pair.
+</parm>
+
+<flag name="ColourReconnection:allowDoubleJunRem" default="on">
+This parameter tells whether or not to allow a directly connected 
+junction-antijunction pair to split into two strings. The lambda measure of
+the junction system is compared to that of the two possible string 
+configurations. If the chosen configuration is the junction system, a q-qbar 
+system is inserted between the junctions by removing some energy/momentum from 
+the other legs.
+</flag>
 
 <h3>The gluon-move scheme</h3> 
 

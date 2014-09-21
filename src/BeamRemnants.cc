@@ -1032,21 +1032,21 @@ void BeamRemnants::updateColEvent( Event& event,
 
     int oldCol = colChanges[iCol].first;
     int newCol = colChanges[iCol].second;
-    if(oldCol == newCol)
+    if (oldCol == newCol)
       continue;
 
     // Add a copy of final particles with old colour and change the colour.
-    for(int j = 0;j < event.size();j++) {
-      if(event[j].isFinal() && event[j].col() == oldCol) 
+    for (int j = 0; j < event.size(); ++j) {
+      if (event[j].isFinal() && event[j].col() == oldCol) 
 	event[event.copy(j, 64)].col(newCol);
       
-      if(event[j].isFinal() && event[j].acol() == oldCol)
+      if (event[j].isFinal() && event[j].acol() == oldCol)
 	event[event.copy(j,64)].acol(newCol);
     }
 
     // Update junction.
-    for (int j = 0;j < event.sizeJunction();j++) 
-      for(int jCol = 0;jCol < 3;jCol++) 
+    for (int j = 0;j < event.sizeJunction(); ++j) 
+      for (int jCol = 0; jCol < 3; ++jCol) 
 	if (event.colJunction(j,jCol) == oldCol) 
 	  event.colJunction(j,jCol,newCol);	
   }

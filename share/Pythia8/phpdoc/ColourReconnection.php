@@ -58,11 +58,11 @@ of a lower-<i>pT</i> MPI system are merged with the ones in a higher-pT MPI.
 A more detailed description of the merging can be found below. 
 Relative to the other models it tests fewer reconnection possibilities, 
 and therefore tends to be reasonably fast.
-
+ 
 <p/>
 The new scheme [<a href="Bibliography.php" target="page">Chr14a</a>]relies on the full QCD colour configuration 
 in the beam remnant. This is followed up by a colour reconnection, where the 
-potential string energy is minimized (i.e. the <i>lambda</i> measure is 
+potential string energy is minimized (ie. the <i>lambda</i> measure is 
 minimized). The QCD colour rules are also incorporated in the colour 
 reconnection, and determine the probability that a reconnection is allowed. 
 The model also allows the creation of junction structures.
@@ -89,10 +89,10 @@ Allow or not a system to be merged with another one.
 <br/><br/><table><tr><td><strong>ColourReconnection:mode  </td><td>  &nbsp;&nbsp;(<code>default = <strong>0</strong></code>; <code>minimum = 0</code>; <code>maximum = 2</code>)</td></tr></table>
 Determine which model is used for colour reconnection. Beware that 
 different <code>BeamRemnants:remnantMode</code> should be used for 
-different reconnection schemes. 
+different reconnection schemes.
 <br/>
-<input type="radio" name="2" value="0" checked="checked"><strong>0 </strong>:  The MPI-based original Pythia 8 model. <br/>
-<input type="radio" name="2" value="1"><strong>1 </strong>:  The new more QCD-based model. <br/>
+<input type="radio" name="2" value="0" checked="checked"><strong>0 </strong>:  The MPI-based original Pythia 8 scheme. <br/>
+<input type="radio" name="2" value="1"><strong>1 </strong>:  The new more QCD based scheme. <br/>
 <input type="radio" name="2" value="2"><strong>2 </strong>:  The new gluon-move model. <br/>
 
 <h3>The MPI-based scheme</h3> 
@@ -188,7 +188,7 @@ is in the new model also used as a cut for forming pseudo particles that are
 not colour reconnected. 
    
 
-<br/><br/><table><tr><td><strong>ColourReconnection:nColours  </td><td></td><td> <input type="text" name="5" value="9" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>9</strong></code>; <code>minimum = 1</code>; <code>maximum = 15</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>ColourReconnection:nColours  </td><td></td><td> <input type="text" name="5" value="9" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>9</strong></code>; <code>minimum = 1</code>; <code>maximum = 30</code>)</td></tr></table>
 The number of reconnection colours, this should not be confused with the 
 standard number of QCD colours. Each string is given an integer number between 
 0 and <code>nColours - 1</code>. Only strings with the same number are allowed
@@ -231,6 +231,22 @@ or junction restframe.
 <input type="radio" name="8" value="0" checked="checked"><strong>0 </strong>:  <ei>lambda = ln (1 + sqrt(2) E/m0)</ei> <br/>
 <input type="radio" name="8" value="1"><strong>1 </strong>:  <ei>lambda = ln (1 + 2 E/m0)</ei> <br/>
 <input type="radio" name="8" value="2"><strong>2 </strong>:  <ei>lambda = ln (2 E/m0)</ei> <br/>
+
+<br/><br/><table><tr><td><strong>ColourReconnection:minimumGainJun </td><td></td><td> <input type="text" name="9" value="1" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1</strong></code>; <code>minimum = -100</code>; <code>maximum = 100</code>)</td></tr></table>
+The minimum <i>lambda</i> has to decrease in order to create a junction 
+antijunction pair.
+  
+
+<br/><br/><strong>ColourReconnection:allowDoubleJunRem</strong>  <input type="radio" name="10" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="10" value="off"><strong>Off</strong>
+ &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
+This parameter tells whether or not to allow a directly connected 
+junction-antijunction pair to split into two strings. The lambda measure of
+the junction system is compared to that of the two possible string 
+configurations. If the chosen configuration is the junction system, a q-qbar 
+system is inserted between the junctions by removing some energy/momentum from 
+the other legs.
+  
 
 <h3>The gluon-move scheme</h3> 
 
@@ -290,7 +306,7 @@ As an option, singlet subsystems containing a junction may or may not
 be allowed to take part in the flip step. Since the number of junction
 systems is limited in this model the differences are not so important. 
 
-<br/><br/><table><tr><td><strong>ColourReconnection:m2Lambda </td><td></td><td> <input type="text" name="9" value="1." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.</strong></code>; <code>minimum = 0.25</code>; <code>maximum = 16.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>ColourReconnection:m2Lambda </td><td></td><td> <input type="text" name="11" value="1." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.</strong></code>; <code>minimum = 0.25</code>; <code>maximum = 16.</code>)</td></tr></table>
 The <i>m2Lambda</i> parameter used in the definition of the approximate
 <i>lambda</i> measure above. It represents an approximate hadronic 
 mass-square scale, cf. <i>m0</i> in the previous model. Its value is 
@@ -299,12 +315,12 @@ a potential move or flip is rather insensitive to the precise value,
 owing to large cancellations.
    
 
-<br/><br/><table><tr><td><strong>ColourReconnection:fracGluon </td><td></td><td> <input type="text" name="10" value="1." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.</strong></code>; <code>minimum = 0.</code>; <code>maximum = 1.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>ColourReconnection:fracGluon </td><td></td><td> <input type="text" name="12" value="1." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.</strong></code>; <code>minimum = 0.</code>; <code>maximum = 1.</code>)</td></tr></table>
 The probability that a given gluon will be considered for being moved.
 It thus gives the average fraction of gluons being considered. 
    
 
-<br/><br/><table><tr><td><strong>ColourReconnection:dLambdaCut </td><td></td><td> <input type="text" name="11" value="0." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.</strong></code>; <code>minimum = 0.</code>; <code>maximum = 10.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>ColourReconnection:dLambdaCut </td><td></td><td> <input type="text" name="13" value="0." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.</strong></code>; <code>minimum = 0.</code>; <code>maximum = 10.</code>)</td></tr></table>
 Restrict gluon moves and colour flips to those that reduce <i>lambda</i> 
 by more than this amount. The larger this number, the fewer moves and flips 
 will be performed, but those that remain are the ones most likely to produce
@@ -314,9 +330,9 @@ large effects.
 <br/><br/><table><tr><td><strong>ColourReconnection:flipMode  </td><td>  &nbsp;&nbsp;(<code>default = <strong>0</strong></code>; <code>minimum = 0</code>; <code>maximum = 2</code>)</td></tr></table>
 Performing the flip step or not.
 <br/>
-<input type="radio" name="12" value="0" checked="checked"><strong>0 </strong>:  No flip handling. <br/>
-<input type="radio" name="12" value="1"><strong>1 </strong>:  Allow flips, but not for strings in junction topologies. <br/>
-<input type="radio" name="12" value="2"><strong>2 </strong>:  Allow flips, including for strings in junction topologies.  <br/>
+<input type="radio" name="14" value="0" checked="checked"><strong>0 </strong>:  No flip handling. <br/>
+<input type="radio" name="14" value="1"><strong>1 </strong>:  Allow flips, but not for strings in junction topologies. <br/>
+<input type="radio" name="14" value="2"><strong>2 </strong>:  Allow flips, including for strings in junction topologies.  <br/>
 
 <input type="hidden" name="saved" value="1"/>
 
@@ -373,24 +389,34 @@ if($_POST["8"] != "0")
 $data = "ColourReconnection:lambdaForm = ".$_POST["8"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["9"] != "1.")
+if($_POST["9"] != "1")
 {
-$data = "ColourReconnection:m2Lambda = ".$_POST["9"]."\n";
+$data = "ColourReconnection:minimumGainJun = ".$_POST["9"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["10"] != "1.")
+if($_POST["10"] != "on")
 {
-$data = "ColourReconnection:fracGluon = ".$_POST["10"]."\n";
+$data = "ColourReconnection:allowDoubleJunRem = ".$_POST["10"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["11"] != "0.")
+if($_POST["11"] != "1.")
 {
-$data = "ColourReconnection:dLambdaCut = ".$_POST["11"]."\n";
+$data = "ColourReconnection:m2Lambda = ".$_POST["11"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["12"] != "0")
+if($_POST["12"] != "1.")
 {
-$data = "ColourReconnection:flipMode = ".$_POST["12"]."\n";
+$data = "ColourReconnection:fracGluon = ".$_POST["12"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["13"] != "0.")
+{
+$data = "ColourReconnection:dLambdaCut = ".$_POST["13"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["14"] != "0")
+{
+$data = "ColourReconnection:flipMode = ".$_POST["14"]."\n";
 fwrite($handle,$data);
 }
 fclose($handle);

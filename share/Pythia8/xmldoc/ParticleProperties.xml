@@ -108,6 +108,8 @@ In detail, the list of used or foreseen status codes is:
   <li>62 : outgoing subprocess particle with primordial <ei>kT</ei> 
            included</li> 
   <li>63 : outgoing beam remnant</li> 
+  <li>64 : copied particle with new colour according to the colour
+           configuration of the beam remnant</li>
   </ul> 
 <li>71 - 79 : partons in preparation of hadronization process</li> 
   <ul> 
@@ -116,14 +118,17 @@ In detail, the list of used or foreseen status codes is:
            one hadron and momentum has to be reshuffled</li> 
   <li>73 : combination of very nearby partons into one</li> 
   <li>74 : combination of two junction quarks (+ nearby gluons) 
-           to a diquark</li> 
+           to a diquark (this index is not changed by recoils 
+           or recombinations)</li> 
   <li>75 : gluons split to decouple a junction-antijunction pair</li> 
-  <li>76 : partons with momentum shuffled to decouple a 
-           junction-antijunction pair </li> 
+  <li>76 : partons with momentum shuffled or a new colour to decouple 
+           junction-antijunction structures </li> 
   <li>77 : temporary opposing parton when fragmenting first two 
            strings in to junction (should disappear again)</li> 
   <li>78 : temporary combined diquark end when fragmenting last 
            string in to junction (should disappear again)</li> 
+  <li>79 : copy of particle with new colour indices after the 
+           colour reconnection</li>
   </ul> 
 <li>81 - 89 : primary hadrons produced by hadronization process</li> 
   <ul> 
@@ -135,6 +140,10 @@ In detail, the list of used or foreseen status codes is:
   <li>85, 86 : primary produced hadrons in junction fragmentation of 
            the first two string legs in to the junction, 
            in order of treatment</li> 
+  <li>87, 88 : primary produced baryon from a junction (similar difference 
+               as for 83, 84)</li> 
+  <li>89 : primary produced baryon from a junction in the ministring 
+           framework</li>
   </ul> 
 <li>91 - 99 : particles produced in decay process, or by Bose-Einstein 
   effects</li> 
