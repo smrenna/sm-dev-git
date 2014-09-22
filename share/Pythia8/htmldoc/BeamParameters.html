@@ -168,6 +168,15 @@ Skip the first <i>nSkip</i> events of the input stream
 Only used when <code>Beams:frameType</code> = 4 or 5. 
    
  
+<p/><code>flag&nbsp; </code><strong> Beams:strictLHEFscale &nbsp;</strong> 
+ (<code>default = <strong>off</strong></code>)<br/>
+Always use the <code>SCALUP</code> value read from LHEF
+as production scale for particles, also including particles
+coming from resonance decays. By default, the production scale
+of resonance decay products (W-, Z-, H-bosons, top quarks) will
+be set to <i>M/2</i>, where <i>M</i> is the mass of the resonance.
+   
+ 
 <h3>Beam momentum spread</h3> 
  
 This framework currently is intended for a modest beam spread, such as 

@@ -286,10 +286,8 @@ private:
   // hard event (to distinguish between S and H), maximally allowed number of
   // global recoil branchings.
   int nHard, nFinalBorn, nMaxGlobalBranch;
-  // Number of proposed splittings in each scattering system. Note: Has to be
-  // initialised here to comply with c++ standard.
-  static const int SYSSIZE_MAX = 1000;
-  int nProposed[SYSSIZE_MAX];
+  // Number of proposed splittings in hard scattering systems.
+  map<int,int> nProposed;
   // Number of splittings with global recoil (currently only 1).
   int nGlobal, globalRecoilMode;
   // Switch to constrain recoiling system.

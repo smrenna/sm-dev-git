@@ -505,7 +505,7 @@ void TimeShower::prepareGlobal( Event& event) {
   // Global recoils: reset some counters.
   nGlobal    = 0;
   nHard      = 0;
-  for (int i = 0; i < SYSSIZE_MAX; ++i) nProposed[i]  = 0;
+  nProposed.clear();
   hardPartons.resize(0);
 
   // Global recoils: store positions of hard outgoing partons.
@@ -529,9 +529,6 @@ void TimeShower::prepareGlobal( Event& event) {
 
 void TimeShower::prepare( int iSys, Event& event, bool limitPTmaxIn) {
 
-  // Reset number of proposed splittings.
-  nProposed[iSys]  = 0;
-
   // Reset W/Z radiation flag at first call for new event.
   if (iSys == 0) hasWeaklyRadiated = false;
 
@@ -548,9 +545,29 @@ void TimeShower::prepare( int iSys, Event& event, bool limitPTmaxIn) {
   if (doSecondHard && iSys == 0) limitPTmaxIn = dopTlimit1;
   if (doSecondHard && iSys == 1) limitPTmaxIn = dopTlimit2;
 
+  // Reset number of proposed splittings. Used for global recoil.
+  // First check if this system belongs to the hard scattering.
+  bool isHard = false;
+  for (int i = 0; i < partonSystemsPtr->sizeOut(iSys); ++i) {
+    int ii = partonSystemsPtr->getOut( iSys, i);
+    for (int iHard = 0; iHard < int(hardPartons.size()); ++iHard) {
+      if ( event[ii].isAncestor(hardPartons[iHard])
+        || ii == hardPartons[iHard]){
+        isHard = true;
+        break;
+      }
+    }
+    if (isHard) break;
+  }
+  // If the system belongs to the hard scattering, initialise
+  // counter of proposed emissions.
+  if (isHard &&  nProposed.find(iSys) == nProposed.end() )
+    nProposed.insert(make_pair(iSys,0));
+
   // Loop through final state of system to find possible dipole ends.
   for (int i = 0; i < partonSystemsPtr->sizeOut(iSys); ++i) {
     int iRad = partonSystemsPtr->getOut( iSys, i);
+
     if (event[iRad].isFinal() && event[iRad].scale() > 0.) {
 
       // Identify colour octet onium state. Check whether QCD shower allowed.
@@ -1104,12 +1121,13 @@ void TimeShower::setupQCDdip( int iSys, int i, int colTag, int colSign,
   // If no success then look for matching (anti)colour anywhere in final state.
   if ( iRec == 0 || (!doInterleave && !event[iRec].isFinal()) ) {
     iRec = 0;
-    for (int j = 0; j < event.size(); ++j) if (event[j].isFinal())
+    for (int j = 0; j < event.size(); ++j) if (event[j].isFinal()){
     if ( (colSign > 0 && event[j].acol() == colTag)
       || (colSign < 0 && event[j].col()  == colTag) ) {
       iRec = j;
       otherSystemRec = true;
       break;
+    }
     }
 
     // If no success then look for match to non-rescattered in initial state.
@@ -1710,11 +1728,15 @@ double TimeShower::pTnext( Event& event, double pTbegAll, double pTendAll,
     // Check if this system is part of the hard scattering (including resonance
     // decay products)
     bool hardSystem = true;
+    bool isQCD = event[dip.iRadiator].colType() != 0;
     for (int i = 0; i < partonSystemsPtr->sizeOut(dip.system); ++i) {
       int ii = partonSystemsPtr->getOut( dip.system, i);
-      bool hasHardAncestor = false;
-      for (int iHard = 0; iHard < int(hardPartons.size()); ++iHard)
-        if ( event[ii].isAncestor(hardPartons[iHard]) ) hasHardAncestor = true;
+      bool hasHardAncestor = event[ii].statusAbs() < 23;
+      for (int iHard = 0; iHard < int(hardPartons.size()); ++iHard){
+        if ( event[ii].isAncestor(hardPartons[iHard])
+          || ii == hardPartons[iHard] )
+          hasHardAncestor = true;
+      }
       if (!hasHardAncestor) hardSystem = false;
     }
 
@@ -1723,7 +1745,7 @@ double TimeShower::pTnext( Event& event, double pTbegAll, double pTendAll,
       && partonSystemsPtr->sizeOut(dip.system) <= nMaxGlobalRecoil);
 
     // Do not use global recoil if the radiator line has already branched.
-    if (globalRecoilMode == 1) {
+    if (globalRecoilMode == 1 && isQCD) {
       if (globalRecoil && hardSystem) useLocalRecoilNow = true;
       for (int iHard = 0; iHard < int(hardPartons.size()); ++iHard)
         if ( event[dip.iRadiator].isAncestor(hardPartons[iHard]) )
@@ -1732,13 +1754,15 @@ double TimeShower::pTnext( Event& event, double pTbegAll, double pTendAll,
       if ( !globalRecoil || nGlobal >= nMaxGlobalBranch )
         useLocalRecoilNow = true;
     // Switch off global recoil after first trial emission.
-    } else if (globalRecoilMode == 2) {
+    } else if (globalRecoilMode == 2 && isQCD) {
       useLocalRecoilNow = !(globalRecoil && hardSystem 
+        && nProposed.find(dip.system) != nProposed.end()
         && nProposed[dip.system] == 0); 
       int nFinal = 0;
       for (int k = 0; k < int(event.size()); ++k)
         if ( event[k].isFinal() && event[k].colType() != 0) nFinal++;
       bool isFirst = (nHard == nFinal);
+
       // Switch off global recoil after first emission
       if ( globalRecoil && doInterleave && !isFirst )
         useLocalRecoilNow = true;
@@ -1757,13 +1781,14 @@ double TimeShower::pTnext( Event& event, double pTbegAll, double pTendAll,
     } else {
       Vec4 pSumGlobal;
       // Include all particles in all hard systems (hard production system,
-      // systems of resonance decay products) into the global recoil momentum.
+      // systems of resonance decay products) in the global recoil momentum.
       for (int iS = 0; iS < partonSystemsPtr->sizeSys(); ++iS) {
         for (int i = 0; i < partonSystemsPtr->sizeOut(iS); ++i) {
           int ii = partonSystemsPtr->getOut( iS, i);
-          bool hasHardAncestor = false;
+          bool hasHardAncestor = event[ii].statusAbs() < 23;
           for (int iHard = 0; iHard < int(hardPartons.size()); ++iHard) {
-            if ( event[ii].isAncestor(hardPartons[iHard]) )
+            if ( event[ii].isAncestor(hardPartons[iHard])
+              || ii == hardPartons[iHard] )
               hasHardAncestor = true;
           }
           if (hasHardAncestor && ii !=  dip.iRadiator && event[ii].isFinal() )
@@ -1784,6 +1809,7 @@ double TimeShower::pTnext( Event& event, double pTbegAll, double pTendAll,
 
     // For global recoil, always set the starting scale for first emission.
     bool isFirstWimpy = !useLocalRecoilNow && (pTmaxMatch == 1)
+                      && nProposed.find(dip.system) != nProposed.end()
                       && (nProposed[dip.system] == 0 || isFirstTrial);
     double muQ        = (infoPtr->scalup() > 0.) ? infoPtr->scalup()
                       : infoPtr->QFac();
@@ -1826,7 +1852,8 @@ double TimeShower::pTnext( Event& event, double pTbegAll, double pTendAll,
   }
 
   // Update the number of proposed timelike emissions.
-  if (dipSel != 0) ++nProposed[dipSel->system];
+  if (dipSel != 0 && nProposed.find(dipSel->system) != nProposed.end())
+    ++nProposed[dipSel->system];
 
   // Return nonvanishing value if found pT bigger than already found.
   return (dipSel == 0) ? 0. : sqrt(pT2sel);
@@ -2455,12 +2482,16 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
   // Check if this system is part of the hard scattering (including resonance
   // decay products)
   bool hardSystem = true;
+  bool isQCD = event[dipSel->iRadiator].colType() != 0;
   for (int i = 0; i < partonSystemsPtr->sizeOut(dipSel->system); ++i) {
-      int ii = partonSystemsPtr->getOut( dipSel->system, i);
-      bool hasHardAncestor = false;
-      for (int iHard = 0; iHard < int(hardPartons.size()); ++iHard)
-        if ( event[ii].isAncestor(hardPartons[iHard]) ) hasHardAncestor = true;
-      if (!hasHardAncestor) hardSystem = false;
+    int ii = partonSystemsPtr->getOut( dipSel->system, i);
+    bool hasHardAncestor = event[ii].statusAbs() < 23;
+    for (int iHard = 0; iHard < int(hardPartons.size()); ++iHard){
+      if ( event[ii].isAncestor(hardPartons[iHard])
+        || ii == hardPartons[iHard] )
+        hasHardAncestor = true;
+    }
+    if (!hasHardAncestor) hardSystem = false;
   }
 
   // Check if global recoil should be used in resonance showers.
@@ -2468,7 +2499,7 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
     && partonSystemsPtr->sizeOut(dipSel->system) <= nMaxGlobalRecoil);
 
   // Do not use global recoil if the radiator line has already branched.
-  if (globalRecoilMode == 1) {
+  if (globalRecoilMode == 1 && isQCD) {
     if ( globalRecoil && hardSystem) useLocalRecoilNow = true;
     for (int iHard = 0; iHard < int(hardPartons.size()); ++iHard)
       if ( event[dipSel->iRadiator].isAncestor(hardPartons[iHard]) )
@@ -2478,9 +2509,11 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
       useLocalRecoilNow = true;
 
   // Switch off global recoil after first trial emission
-  } else if (globalRecoilMode == 2) {
-    useLocalRecoilNow = !(globalRecoil && nProposed[dipSel->system] == 1); 
-      // Check if global recoil should be used.
+  } else if (globalRecoilMode == 2 && isQCD) {
+    useLocalRecoilNow = !(globalRecoil
+      && nProposed.find(dipSel->system) != nProposed.end()
+      && nProposed[dipSel->system] == 1); 
+    // Check if global recoil should be used.
     int nFinal = 0;
     for (int i = 0; i < int(event.size()); ++i)
       if ( event[i].isFinal() && event[i].colType() != 0) nFinal++;
@@ -2509,15 +2542,16 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
   if (useLocalRecoilNow) pRecBef =  event[iRecBef].p();
   else {
     // Include all particles in all hard systems (hard production system,
-    // systems of resonance decay products) into the global recoil momentum.
+    // systems of resonance decay products) in the global recoil momentum.
     for (int iS = 0; iS < partonSystemsPtr->sizeSys(); ++iS) {
       for (int i = 0; i < partonSystemsPtr->sizeOut(iS); ++i) {
         int iG = partonSystemsPtr->getOut( iS, i);
-        bool hasHardAncestor = false;
+        bool hasHardAncestor = event[iG].statusAbs() < 23;
         for (int iHard = 0; iHard < int(hardPartons.size()); ++iHard)
-          if ( event[iG].isAncestor(hardPartons[iHard]) )
+          if ( event[iG].isAncestor(hardPartons[iHard]) 
+            || iG == hardPartons[iHard])
             hasHardAncestor = true;
-        if (hasHardAncestor && iG !=  dipSel->iRadiator
+        if (hasHardAncestor && iG != dipSel->iRadiator
           && event[iG].isFinal() ) {
           iGRecBef.push_back(iG);
           pRecBef += event[iG].p();

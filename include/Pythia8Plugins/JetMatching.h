@@ -182,8 +182,10 @@ public:
   // Jet algorithm to access the jet separations in the cleaned event
   // after showering.
   SlowJet* slowJetDJR;
-  // Function to return the jet clustering scales.
+  // Functions to return the jet clustering scales and number of ME partons.
+  // These are useful to investigate the matching systematics.
   vector<double> GetDJR() { return DJR;}
+  pair<int,int> nMEpartons() { return nMEpartonsSave;}
 
 protected:
 
@@ -199,6 +201,13 @@ protected:
   // Functions to clear and set the jet clustering scales.
   void ClearDJR() { DJR.resize(0);}
   void SetDJR( const Event& event);
+  // Functions to clear and set the jet clustering scales.
+  void clear_nMEpartons() { nMEpartonsSave.first = nMEpartonsSave.second =-1;}
+  void set_nMEpartons( const int nOrig, const int nMatch) {
+    clear_nMEpartons();
+    nMEpartonsSave.first  = nOrig;
+    nMEpartonsSave.second = nMatch;
+  };
 
   // Variables.
   vector<int> origTypeIdx[3];
@@ -210,6 +219,9 @@ protected:
 
   // Vector to store the jet clustering scales.
   vector<double> DJR;
+  // Pair of integers giving the number of ME partons read from LHEF and used
+  // in the matching (can be different if some partons should not be matched)
+  pair<int,int> nMEpartonsSave;
 
   // Function to get the current number of partons in the Born state, as
   // read from LHE.
@@ -1034,24 +1046,33 @@ bool JetMatchingMadgraph::doVetoStep(int iPos, int nISR, int nFSR,
 
   // Get (kinematical) pT of first emission
   double pTfirst = 0.;
-  for (int i = 0; i < workEvent.size(); i++){
-    // Since this event only contains one emission, this test is enough
-    // to isolate this emission.
-    if ( workEvent[i].isFinal()
-      && (workEvent[i].statusAbs()==43 || workEvent[i].statusAbs()==51)) {
-      // Only check partons originating from QCD splittings.
-      int jPos = 1;
+
+  // Get weak bosons, for later checks if the emission is a "QCD emission".
+  vector<int> weakBosons;
+  for (int i = 0; i < event.size(); i++) {
+    if ( event[i].id() == 22
+      && event[i].id() == 23
+      && event[i].idAbs() == 24)
+      weakBosons.push_back(i);
+  }
+
+  for (int i =  workEvent.size()-1; i > 0; --i) {
+    if ( workEvent[i].isFinal() && workEvent[i].colType() != 0
+      && (workEvent[i].statusAbs() == 43 || workEvent[i].statusAbs() == 51)) {
+      // Check if any of the EW bosons are ancestors of this parton. This
+      // should never happen for the first non-resonance shower emission.
+      // Check just to be sure.
       bool QCDemission = true;
-      while ( workEvent[jPos].statusAbs() > 23 ) {
-        if ( workEvent[jPos].id() == 22 || workEvent[jPos].id() == 23
-          || workEvent[jPos].idAbs() == 24){
+      // Get position of this parton in the actual event (workEvent does
+      // not contain right mother-daughter relations). Stored in daughters.
+      int iPosOld = workEvent[i].daughter1();
+      for (int j = 0; i < int(weakBosons.size()); ++i)
+        if ( event[iPosOld].isAncestor(j)) {
           QCDemission = false;
           break;
         }
-        jPos = workEvent[jPos].mother1();
-      }
-      // Get kinematical pT.
-      if (QCDemission) {
+      // Done for a QCD emission.
+      if (QCDemission){
         pTfirst = workEvent[i].pT();
         break;
       }
@@ -1155,6 +1176,7 @@ void JetMatchingMadgraph::sortIncomingProcess(const Event &event) {
   // state. Resonances will have positive status code after this step.
   omitResonanceDecays(eventProcessOrig, true);
   ClearDJR();
+  clear_nMEpartons();
 
   // For FxFx, pre-cluster partons in the event into jets.
   if (doFxFx) {
@@ -1373,8 +1395,14 @@ bool JetMatchingMadgraph::matchPartonsToJets(int iType) {
 
   // Use two different routines for light/heavy jets as
   // different veto conditions and for clarity
-  if (iType == 0) return (matchPartonsToJetsLight() > 0);
-  else            return (matchPartonsToJetsHeavy() > 0);
+  if (iType == 0) {
+    // Record the jet separations here, also if matchPartonsToJetsLight
+    // returns preemptively. 
+    SetDJR(workEventJet);
+    set_nMEpartons(origTypeIdx[0].size(), typeIdx[0].size());
+    // Perform jet matching.
+    return (matchPartonsToJetsLight() > 0);
+  } else return (matchPartonsToJetsHeavy() > 0);
 }
 
 //--------------------------------------------------------------------------
@@ -1393,7 +1421,6 @@ bool JetMatchingMadgraph::matchPartonsToJets(int iType) {
 int JetMatchingMadgraph::matchPartonsToJetsLight() {
 
   // Count the number of hard partons
-  //BUG!! int nParton = origTypeIdx[0].size();
   int nParton = typeIdx[0].size();
 
   // Initialize SlowJet with current working event

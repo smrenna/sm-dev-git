@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.200: 21 September 2014 
+<li>8.200: 22 September 2014 
 <ul> 
 
 <li>A new <code>share/Pythia8</code> directory collects all 
@@ -127,6 +127,10 @@ but it is available among the
 echo "<a href='EventInformation.php?filepath=".$filepath."' target='page'>";?>Event Information</a>.
 Examples are found in <code>main37.cc</code> and <code>main38.cc</code>. 
 </li> 
+ 
+<li>The new <code>Beams:strictLHEFscale</code> switch can be used to
+restrict parton showers in resonance decays to be below the input
+Les Houches scale, not only the hard process itself.</li> 
 
 <li>The <code>rootexamples</code> directory has been removed, and the
 two programs <code>examples/main91</code> and <code>examples/main92</code>
