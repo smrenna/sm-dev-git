@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # configure is a part of the PYTHIA event generator.
 # Copyright (C) 2014 Torbjorn Sjostrand.
 # PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
@@ -26,7 +26,7 @@ by square brackets in the option description. Arguments to the options are
 indicated in caps, i.e. DIR.
 
 Configuration options.
---help          : Print this help message (must be first option).
+--help          : Print this help message (also -h, --h, and -help).
 --enable-debug  : Turn on debugging and disable optimization.
 --enable-64bit  : Turn on 64-bit compilation.
 --enable-shared : Build the shared PYTHIA library during compilation.
@@ -67,7 +67,8 @@ Installation directories.
 
 Advanced options.
 --arch=ARCH          : Architecture of the system. When not set, this
-                       is determined automatically.
+                       is determined automatically. Options are LINUX for *nix
+                       systems and DARWIN for OS X.
 --cxx=COMPILER       : Use this C++ compiler [g++].
 --cxx-common='FLAGS' : Set the common C++ flags.
 --cxx-shared='FLAGS' : Set the shared C++ flags.
@@ -140,7 +141,7 @@ function configure_package() {
     if [ -z "${PKG_CFG[3]}" ]; then PKG_CFG[1]="./"; fi;
     for LIB in ${PKG_CFG[6]}; do
 	local TEST=$(echo "int main(){}" | $CXX -o /dev/null -x c - \
-	    -L${PKG_CFG[3]} -l$LIB 2>&1 | grep "cannot find -l$LIB")
+	    -L${PKG_CFG[3]} -l$LIB 2>&1 | grep "\-$LIB")
 	if [ -n "$TEST" ]; then
 	    PKG_CFG[8]="${PKG_CFG[8]},$WARN library $LIB missing."; fi; done
     IFS=" "
@@ -160,13 +161,16 @@ function configure_package() {
 # MAIN: The main execution of the configuration script.
 ################################################################################
 
+# Check if help requested.
+for VAR in "$@"; do
+    if [ "$VAR" = "-h" ] || [ "$VAR" = "--h" ] || [ "$VAR" = "-help" ] \
+	|| [ "$VAR" = "--help" ]; then echo "$USAGE"; exit; fi; done
+
 # Parse the user arguments and evaluate each as a global variable.
-if [ "$1" = "-h" ] || [ "$1" = "--h" ] || [ "$1" = "-help" ] \
-    || [ "$1" = "--help" ]; then echo "$USAGE"; exit; fi;
 echo "# PYTHIA configuration file." > $CFG_FILE
 echo "# Generated on" `date` "with the user supplied options:" >> $CFG_FILE
 for VAR in "$@"; do
-    if [[ $VAR = --* ]]; then echo "# $VAR" >> $CFG_FILE; fi;
+    if [[ $VAR = --* ]]; then echo "# $VAR" >> $CFG_FILE; else continue; fi;
     VAR=${VAR#--with-}; VAR=${VAR#--};
     KEY=${VAR%=*}; VAL=${VAR#$KEY}; VAL=${VAL#*=}; KEY=${KEY//"-"/"_"}; 
     KEY=$(echo $KEY | awk '{print toupper($0)}');  VAL=$(eval echo $VAL)
@@ -176,23 +180,25 @@ for VAR in "$@"; do
 [ "$ENABLE_DEBUG_SET"  = true ] && ENABLE_DEBUG="-g "   || ENABLE_DEBUG="-O2 "
 [ "$ENABLE_64BIT_SET"  = true ] && ENABLE_64BIT="-m64 " || ENABLE_64BIT=""
 [ "$ENABLE_SHARED_SET" = true ] && ENABLE_SHARED="true" || ENABLE_SHARED="false"
-if [ -z "$ARCH" ]; then
-    ARCH=$(uname | grep -i -o -e Linux -e Darwin); fi
+if [ -z "$ARCH" ]; then ARCH=$(uname | grep -i -o -e Linux -e Darwin); fi
+ARCH=$(echo $ARCH | awk '{print toupper($0)}')
+if [ "$ARCH" != "LINUX" ] && [ "$ARCH" != "DARWIN" ]; then
+    echo "WARNING: Unknown architecture $ARCH."; fi
 if [ -z "$CXX" ]; then CXX="g++"; fi
 if [ -z "$CXX_COMMON" ]; then 
     CXX_COMMON="${ENABLE_DEBUG}${ENABLE_64BIT}-ansi"
     CXX_COMMON="$CXX_COMMON -pedantic -W -Wall -Wshadow -fPIC"; fi
 if [ -z "$CXX_SHARED" ]; then
-    if [ "$ARCH" = "Linux" ];  then CXX_SHARED="-shared"; fi
-    if [ "$ARCH" = "Darwin" ]; then 
+    if [ "$ARCH" = "LINUX" ];  then CXX_SHARED="-shared"; fi
+    if [ "$ARCH" = "DARWIN" ]; then 
 	CXX_SHARED="-dynamiclib -flat_namespace"
 	CXX_SHARED="$CXX_SHARED -undefined suppress -Qunused-arguments"; fi; fi
 if [ -z "$CXX_SONAME" ]; then 
-    if [ "$ARCH" = "Linux" ];  then CXX_SONAME="-Wl,-soname"; fi
-    if [ "$ARCH" = "Darwin" ]; then CXX_SONAME="-Wl,-dylib_install_name"; fi; fi
+    if [ "$ARCH" = "LINUX" ];  then CXX_SONAME="-Wl,-soname"; fi
+    if [ "$ARCH" = "DARWIN" ]; then CXX_SONAME="-Wl,-dylib_install_name"; fi; fi
 if [ -z "$LIB_SUFFIX" ]; then
-    if [ "$ARCH" = "Linux" ];  then LIB_SUFFIX=".so"; fi
-    if [ "$ARCH" = "Darwin" ]; then LIB_SUFFIX=".dylib"; fi; fi
+    if [ "$ARCH" = "LINUX" ];  then LIB_SUFFIX=".so"; fi
+    if [ "$ARCH" = "DARWIN" ]; then LIB_SUFFIX=".dylib"; fi; fi
 
 # Configure the installation directories (order matters).
 if [ "$PREFIX_SET" != true ]; then PREFIX=/usr; fi
@@ -237,7 +243,9 @@ for IDX in ${!PKG_LIST[@]}; do PKG=${PKG_LIST[$IDX]}
 		echo "WARNING: Disabling $PKG - requires $DEP."; 
 	    fi; done; IFS=" "; fi; done
     
-# Write the configuation to screen and file.
+# Write the configuation to screen and file, update the pythia8-config script.
+sed -i '0,/^CFG_FILE=.*/s||CFG_FILE='"$PREFIX_SHARE"'/examples/Makefile.inc|' \
+    bin/pythia8-config
 echo "---------------------------------------------------------------------"
 echo "|                    PYTHIA Configuration Summary                   |"
 echo "---------------------------------------------------------------------"
@@ -270,7 +278,7 @@ for IDX in ${!PKG_LIST[@]}; do
     if [ "$PKG_USE" = true ]; then echo "* $PKG"
 	eval PKG_BIN=\${${PKG}_CFG[1]}; eval PKG_INC=\${${PKG}_CFG[2]};
 	eval PKG_LIB=\${${PKG}_CFG[3]};
-    else  PKG_INC=""; PKG_LIB=""; fi
+    else  PKG_BIN=""; PKG_INC=""; PKG_LIB=""; fi
     cat >> $CFG_FILE << BLOCKTEXT
 
 # $PKG configuration.

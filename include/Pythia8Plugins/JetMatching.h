@@ -21,7 +21,8 @@
 // Includes
 #include "Pythia8/Pythia.h"
 #include "Pythia8Plugins/GeneratorInput.h"
-using namespace Pythia8;
+
+namespace Pythia8 {
 
 //==========================================================================
 
@@ -245,7 +246,7 @@ const bool JetMatching::MATCHINGCHECK = false;
 
 // Early parton level veto (before beam remnants and resonance showers)
 
-bool JetMatching::doVetoPartonLevelEarly(const Event& event) {
+inline bool JetMatching::doVetoPartonLevelEarly(const Event& event) {
 
   // 1) Sort the original incoming process. After this step is performed,
   //    the following assignments have been made:
@@ -356,7 +357,7 @@ const double JetMatchingAlpgen::ZEROTHRESHOLD = 1e-10;
 // Uses a selection sort, as number of partons generally small
 // and so efficiency not a worry.
 
-void JetMatchingAlpgen::sortTypeIdx(vector < int > &vecIn) {
+inline void JetMatchingAlpgen::sortTypeIdx(vector < int > &vecIn) {
   for (size_t i = 0; i < vecIn.size(); i++) {
     size_t jMax = i;
     double vMax = (jetAlgorithm == 1) ?
@@ -379,7 +380,7 @@ void JetMatchingAlpgen::sortTypeIdx(vector < int > &vecIn) {
 // Initialisation routine automatically called from Pythia::init().
 // Setup all parts needed for the merging.
 
-bool JetMatchingAlpgen::initAfterBeams() {
+inline bool JetMatchingAlpgen::initAfterBeams() {
 
   // Read in parameters
   doMerge         = settingsPtr->flag("JetMatching:merge");
@@ -507,7 +508,7 @@ bool JetMatchingAlpgen::initAfterBeams() {
 
 // Step (1): sort the incoming particles
 
-void JetMatchingAlpgen::sortIncomingProcess(const Event &event) {
+inline void JetMatchingAlpgen::sortIncomingProcess(const Event &event) {
 
   // Remove resonance decays from original process and keep only final
   // state. Resonances will have positive status code after this step.
@@ -555,7 +556,7 @@ void JetMatchingAlpgen::sortIncomingProcess(const Event &event) {
 
 // Step (2a): pick which particles to pass to the jet algorithm
 
-void JetMatchingAlpgen::jetAlgorithmInput(const Event &event, int iType) {
+inline void JetMatchingAlpgen::jetAlgorithmInput(const Event &event, int iType) {
 
   // Take input from 'workEvent' and put output in 'workEventJet'
   workEventJet = workEvent;
@@ -654,7 +655,7 @@ void JetMatchingAlpgen::jetAlgorithmInput(const Event &event, int iType) {
 
 // Step (2b): run jet algorithm and provide common output
 
-void JetMatchingAlpgen::runJetAlgorithm() {
+inline void JetMatchingAlpgen::runJetAlgorithm() {
 
   // Run the jet clustering algorithm
   if (jetAlgorithm == 1)
@@ -688,7 +689,7 @@ void JetMatchingAlpgen::runJetAlgorithm() {
 
 // Step (2c): veto decision (returning true vetoes the event)
 
-bool JetMatchingAlpgen::matchPartonsToJets(int iType) {
+inline bool JetMatchingAlpgen::matchPartonsToJets(int iType) {
 
   // Use two different routines for light/heavy jets as
   // different veto conditions and for clarity
@@ -709,7 +710,7 @@ bool JetMatchingAlpgen::matchPartonsToJets(int iType) {
 //       that is harder than any matched soft jet
 //   4 = veto as there is a parton which does not match a jet
 
-int JetMatchingAlpgen::matchPartonsToJetsLight() {
+inline int JetMatchingAlpgen::matchPartonsToJetsLight() {
 
   // Always veto if number of jets is less than original number of jets
   if (jetMomenta.size() < typeIdx[0].size()) return LESS_JETS;
@@ -809,7 +810,7 @@ int JetMatchingAlpgen::matchPartonsToJetsLight() {
 //   2 = veto as in inclusive mode and extra jets were harder
 //       than any matched light jet
 
-int JetMatchingAlpgen::matchPartonsToJetsHeavy() {
+inline int JetMatchingAlpgen::matchPartonsToJetsHeavy() {
 
   // If there are no extra jets, then accept
   if (jetMomenta.empty()) return NONE;
@@ -887,7 +888,7 @@ int JetMatchingAlpgen::matchPartonsToJetsHeavy() {
 // Initialisation routine automatically called from Pythia::init().
 // Setup all parts needed for the merging.
 
-bool JetMatchingMadgraph::initAfterBeams() {
+inline bool JetMatchingMadgraph::initAfterBeams() {
 
   // Read in Madgraph specific configuration variables
   bool setMad    = settingsPtr->flag("JetMatching:setMad");
@@ -1024,7 +1025,7 @@ bool JetMatchingMadgraph::initAfterBeams() {
 
 //--------------------------------------------------------------------------
 
-bool JetMatchingMadgraph::doVetoStep(int iPos, int nISR, int nFSR,
+inline bool JetMatchingMadgraph::doVetoStep(int iPos, int nISR, int nFSR,
   const Event& event)  {
 
   // Do not perform any veto if not in the Shower-kT scheme.
@@ -1089,7 +1090,7 @@ bool JetMatchingMadgraph::doVetoStep(int iPos, int nISR, int nFSR,
 
 //--------------------------------------------------------------------------
 
-bool JetMatchingMadgraph::doShowerKtVeto(double pTfirst) {
+inline bool JetMatchingMadgraph::doShowerKtVeto(double pTfirst) {
 
   // Only check veto in the shower-kT scheme.
   if ( !doShowerKt ) return false;
@@ -1126,7 +1127,7 @@ bool JetMatchingMadgraph::doShowerKtVeto(double pTfirst) {
 
 // Function to set the jet clustering scales (to be used as output)
 
-void JetMatchingMadgraph::SetDJR( const Event& event) {
+inline void JetMatchingMadgraph::SetDJR( const Event& event) {
 
  // Clear members.
  ClearDJR();
@@ -1158,7 +1159,7 @@ void JetMatchingMadgraph::SetDJR( const Event& event) {
 // Function to get the current number of partons in the Born state, as
 // read from LHE.
 
-int JetMatchingMadgraph::npNLO(){
+inline int JetMatchingMadgraph::npNLO(){
   string npIn = infoPtr->getEventAttribute("npNLO",true);
   int np = (npIn != "") ? atoi((char*)npIn.c_str()) : -1;
   if ( np < 0 ) { ; }
@@ -1170,7 +1171,7 @@ int JetMatchingMadgraph::npNLO(){
 
 // Step (1): sort the incoming particles
 
-void JetMatchingMadgraph::sortIncomingProcess(const Event &event) {
+inline void JetMatchingMadgraph::sortIncomingProcess(const Event &event) {
 
   // Remove resonance decays from original process and keep only final
   // state. Resonances will have positive status code after this step.
@@ -1315,7 +1316,7 @@ void JetMatchingMadgraph::sortIncomingProcess(const Event &event) {
 
 // Step (2a): pick which particles to pass to the jet algorithm
 
-void JetMatchingMadgraph::jetAlgorithmInput(const Event &event, int iType) {
+inline void JetMatchingMadgraph::jetAlgorithmInput(const Event &event, int iType) {
 
   // Take input from 'workEvent' and put output in 'workEventJet'
   workEventJet = workEvent;
@@ -1385,13 +1386,13 @@ void JetMatchingMadgraph::jetAlgorithmInput(const Event &event, int iType) {
 // This does nothing, because the jet algorithm is run several times
 //  in the matching algorithm.
 
-void JetMatchingMadgraph::runJetAlgorithm() {; }
+inline void JetMatchingMadgraph::runJetAlgorithm() {; }
 
 //--------------------------------------------------------------------------
 
 // Step (2c): veto decision (returning true vetoes the event)
 
-bool JetMatchingMadgraph::matchPartonsToJets(int iType) {
+inline bool JetMatchingMadgraph::matchPartonsToJets(int iType) {
 
   // Use two different routines for light/heavy jets as
   // different veto conditions and for clarity
@@ -1418,7 +1419,7 @@ bool JetMatchingMadgraph::matchPartonsToJets(int iType) {
 //       that is harder than any matched soft jet
 //   4 = veto as there is a parton which does not match a jet
 
-int JetMatchingMadgraph::matchPartonsToJetsLight() {
+inline int JetMatchingMadgraph::matchPartonsToJetsLight() {
 
   // Count the number of hard partons
   int nParton = typeIdx[0].size();
@@ -1654,7 +1655,7 @@ int JetMatchingMadgraph::matchPartonsToJetsLight() {
 //   2 = veto as in inclusive mode and extra jets were harder
 //       than any matched light jet
 
-int JetMatchingMadgraph::matchPartonsToJetsHeavy() {
+inline int JetMatchingMadgraph::matchPartonsToJetsHeavy() {
 
   // Currently, heavy jets are unmatched
   // If there are no extra jets, then accept
@@ -1665,5 +1666,7 @@ int JetMatchingMadgraph::matchPartonsToJetsHeavy() {
 }
 
 //==========================================================================
+
+} // end namespace Pythia8
 
 #endif // end Pythia8_JetMatching_H

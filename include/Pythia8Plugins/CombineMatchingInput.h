@@ -18,7 +18,8 @@
 #include "Pythia8/Pythia.h"
 #include "Pythia8Plugins/GeneratorInput.h"
 #include "Pythia8Plugins/JetMatching.h"
-using namespace Pythia8;
+
+namespace Pythia8 {
 
 //==========================================================================
 
@@ -141,5 +142,7 @@ public:
 };
 
 //==========================================================================
+
+} // end namespace Pythia8
 
 #endif // Pythia8_CombineMatchingInput_H

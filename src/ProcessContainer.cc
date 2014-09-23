@@ -62,7 +62,7 @@ bool ProcessContainer::init(bool isFirst, Info* infoPtrIn,
   lhaStratAbs = abs(lhaStrat);
   allowNegSig = sigmaProcessPtr->allowNegativeSigma();
 
-  useStrictLHEFscales = settings.flag("Beams:stricLHEFscales");
+  useStrictLHEFscales = settings.flag("Beams:strictLHEFscale");
 
   // Flag for maximum violation handling.
   increaseMaximum = settings.flag("PhaseSpace:increaseMaximum");

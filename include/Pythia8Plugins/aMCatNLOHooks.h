@@ -1,4 +1,4 @@
-// main-josh.cc is a not yet part of the PYTHIA event generator.
+// aMCatNLOHooks.h is a part of the PYTHIA event generator.
 // Copyright (C) 2014 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
@@ -12,9 +12,12 @@
 // d) UNLOPS NLO merged events
 // see the respective sections in the online manual for details. 
 
+#ifndef Pythia8_aMCatNLOHooks_H
+#define Pythia8_aMCatNLOHooks_H
+
 #include "Pythia8/Pythia.h"
 
-using namespace Pythia8;
+namespace Pythia8 {
 
 //==========================================================================
 
@@ -161,3 +164,8 @@ private:
   double normFactor;
 };
 
+//==========================================================================
+
+} // end namespace Pythia8
+
+#endif // end Pythia8_aMCatNLOHooks_H

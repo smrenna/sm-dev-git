@@ -96,6 +96,14 @@ The methods return the index at which the entry has been stored,
 but normally you would not use this feature. 
  
 <p/> 
+All the four methods have two final, optional arguments. The 
+<code>scale</code> one is highly relevant if you want to perform parton 
+showers in addition to hadronization; see the 
+<code>pythia.forceTimeShower()</code> description below. The final 
+<code>pol</code> one denotes polarization, and could be used to 
+perform polarized <i>tau</i> decays. 
+ 
+<p/> 
 You can find descriptions of the input variables 
 <?php $filepath = $_GET["filepath"];
 echo "<a href='ParticleProperties.php?filepath=".$filepath."' target='page'>";?>here</a>. 

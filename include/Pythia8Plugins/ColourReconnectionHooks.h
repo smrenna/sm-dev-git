@@ -24,7 +24,7 @@
 
 // Includes
 #include "Pythia8/Pythia.h"
-using namespace Pythia8;
+namespace Pythia8 {
 
 //==========================================================================
 
@@ -134,7 +134,7 @@ private:
 
   // Initial setup: relevant gluons and coloured partons.
 
-  bool setupConfig(Event& event) {
+  inline bool setupConfig(Event& event) {
 
     // Reset arrays to prepare for the new event analysis.
     iGlu.clear();
@@ -236,7 +236,7 @@ private:
 
   // Swap gluons by lambda measure.
 
-  bool doReconnectSwap(Event& event) {
+  inline bool doReconnectSwap(Event& event) {
 
     // Set up initial possible gluon swap pairs with lambda gains/losses.
     for (int iG1 = 0; iG1 < nGlu - 1; ++iG1) {
@@ -310,7 +310,7 @@ private:
 
   // Calculate pair swap properties.
 
-  void calcLamSwap( InfoSwapMove& tmpSM, Event& event) {
+  inline void calcLamSwap( InfoSwapMove& tmpSM, Event& event) {
 
     // Colour line tracing to neighbours.   
     tmpSM.col1   = event[tmpSM.i1].col();
@@ -347,7 +347,7 @@ private:
 
   // Move gluons by lambda measure.
 
-  bool doReconnectMove(Event& event) {
+  inline bool doReconnectMove(Event& event) {
 
     // Temporary variables.
     int    iNow, colNow, acolNow, iColNow, iAcolNow, col2Now;
@@ -476,7 +476,7 @@ private:
 
   // Flip colour chains by lambda measure.
 
-  bool doReconnectFlip(Event& event) {
+  inline bool doReconnectFlip(Event& event) {
 
     // Array with colour lines, and where each line begins and ends.
     vector<int> iTmp, iVec, iBeg, iEnd; 
@@ -690,7 +690,7 @@ private:
   // Classify all coloured partons at the end of showers by origin.
   // Note: for now only t -> b W is fully classified. 
 
-  bool classifyFinalPartons(Event& event) {
+  inline bool classifyFinalPartons(Event& event) {
   
     // Reset arrays to prepare for the new event analysis.
     iBqrk.clear();
@@ -765,7 +765,7 @@ private:
 
   // Check that classification worked by summing up partons to t/tbar.
 
-  bool checkClassification(Event& event) {
+  inline bool checkClassification(Event& event) {
 
     // Find final copy of t and tbar quarks.
     int iTqrkLoc = 0;
@@ -813,7 +813,7 @@ private:
 
   // Print how final-state (mainly coloured) particles were classified.
 
-  void listClassification() {
+  inline void listClassification() {
 
     cout << "\n Final-state coloured partons classified by source: ";
     cout << "\n From Bqrk:";
@@ -840,7 +840,7 @@ private:
 
   // Reconnect gluons either from t or from tbar quark.
 
-  bool doReconnect(bool doTqrk, Event& event) {
+  inline bool doReconnect(bool doTqrk, Event& event) {
 
     // Gather coloured decay products either of t or of tbar.
     vector<int> iTdec;
@@ -937,7 +937,7 @@ private:
 
   // Swap colours and/or anticolours in the event listing. 
 
-  void swapCols( int i, int j, Event& event) {
+  inline void swapCols( int i, int j, Event& event) {
 
     // Swap the colours in the event record.
     int coli  = event[i].col();
@@ -958,5 +958,7 @@ private:
 };
 
 //==========================================================================
+
+} // end namespace Pythia8
 
 #endif // end Pythia8_ColourReconnectionHooks_H

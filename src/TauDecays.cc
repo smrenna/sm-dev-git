@@ -301,6 +301,10 @@ bool TauDecays::decay(int idxOut1, Event& event) {
     correlated = false;
   }
 
+  // Set as uncorrelated if forced polarization.
+  if ( (tauMode == 2 && abs(mediator.id()) == tauMother) || tauMode == 3 )
+    correlated = false;
+
   // Check if correlated partner should decay.
   if (correlated) {
     // Check vertex is within limits.
@@ -336,7 +340,6 @@ bool TauDecays::decay(int idxOut1, Event& event) {
       ? (1 - polarization) / 2 : (1 + polarization) / 2;
     tau->rho[1][1] = (tau->id() > 0)
       ? (1 + polarization) / 2 : (1 - polarization) / 2;
-    correlated = false;
   }
 
   // Begin PS April 2012.

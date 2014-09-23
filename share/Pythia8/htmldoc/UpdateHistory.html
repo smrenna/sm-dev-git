@@ -18,7 +18,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.200: 22 September 2014 
+<li>8.200: 23 September 2014 
 <ul> 
 
 <li>A new <code>share/Pythia8</code> directory collects all 
@@ -59,8 +59,8 @@ into the HepMC format, combining the code previously in
 FastJet 3 library of jet finders, formerly found in 
 <code>include/FastJet3.h</code>; and</li> 
 <li>the <code>LHAPDF5.h</code> and <code>LHAPDF6.h</code> files for 
-interfaces to the LHAPDF library (see further below).
-</ul>
+interfaces to the LHAPDF library (see further below).</li>
+</ul></li>
 
 <li>The configure/make structure has been considerably rewritten. 
 Now all external libraries to be linked are specified in the 
@@ -82,6 +82,13 @@ as follows:
   <tr> <td>share/</td> <td>&rarr;&nbsp;</td> <td>/usr/share/</td> </tr> 
   <tr> <td>pythia-config</td> <td>&rarr;&nbsp;</td> <td>/usr/bin/</td> </tr> 
 </table> 
+</li> 
+
+<li>
+The <code>pythia8-config.in</code> script has been replaced by a new
+<code>bin/pythia8-config</code> script. See the README file for details.
+The <code>make install</code> step by default will put a copy of it in
+<code>/usr/bin</code>.
 </li> 
 
 <li>The interface to LHAPDF is now dynamically loaded when requested,

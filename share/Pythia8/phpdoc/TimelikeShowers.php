@@ -92,8 +92,11 @@ for all of them.
 <br/><b>Note 3:</b> Recall that resonance decays are not affected by 
 this mode, but that showers there are always set to fill the full phase 
 space, often with built-in matrix-element-matching that give a NLO 
-accuracy. A modification of this behaviour would require you to 
-work with <code>UserHooks</code>. 
+accuracy. A modification of this behaviour would require you to work with 
+<code>UserHooks</code>. However, for Les Houches input the optional 
+<code><aloc href="BeamParameters">Beams:strictLHEFscale = on</aloc></code> 
+setting restricts all emissions, also in resonance decays, to be below 
+the input <code>scale</code> value.
  
 <br/><br/><table><tr><td><strong>TimeShower:pTmaxFudge </td><td></td><td> <input type="text" name="2" value="1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.0</strong></code>; <code>minimum = 0.25</code>; <code>maximum = 2.0</code>)</td></tr></table>
 In cases where the above <code>pTmaxMatch</code> rules would imply 

@@ -24,7 +24,8 @@
 
 // Includes and namespace
 #include "Pythia8/Pythia.h"
-using namespace Pythia8;
+
+namespace Pythia8 {
 
 //==========================================================================
 
@@ -220,7 +221,7 @@ const double AlpgenPar::ZEROTHRESHOLD = 1e-10;
 // Warn if e/pT imbalance greater than these values
 // Parse an incoming Alpgen parameter file string
 
-bool AlpgenPar::parse(const string paramStr) {
+inline bool AlpgenPar::parse(const string paramStr) {
 
   // Read par file in blocks:
   //   0 - process information
@@ -258,7 +259,7 @@ bool AlpgenPar::parse(const string paramStr) {
 
 // Parse an incoming parameter line
 
-void AlpgenPar::extractRunParam(string line) {
+inline void AlpgenPar::extractRunParam(string line) {
 
   // Extract information to the right of the final '!' character
   size_t idx = line.rfind("!");
@@ -317,7 +318,7 @@ void AlpgenPar::extractRunParam(string line) {
 
 // Print parameters read from the '.par' file
 
-void AlpgenPar::printParams() {
+inline void AlpgenPar::printParams() {
 
   // Loop over all stored parameters and print
   cout << fixed << setprecision(3) << endl
@@ -334,7 +335,7 @@ void AlpgenPar::printParams() {
 
 // Warn if a parameter is going to be overwriten
 
-void AlpgenPar::warnParamOverwrite(const string &paramIn, double val) {
+inline void AlpgenPar::warnParamOverwrite(const string &paramIn, double val) {
 
   // Check if present and if new value is different
   if (haveParam(paramIn) &&
@@ -348,7 +349,7 @@ void AlpgenPar::warnParamOverwrite(const string &paramIn, double val) {
 
 // Simple string trimmer
 
-string AlpgenPar::trim(string s) {
+inline string AlpgenPar::trim(string s) {
 
   // Remove whitespace in incoming string
   size_t i;
@@ -455,7 +456,7 @@ LHAupAlpgen::LHAupAlpgen(const char* baseFNin, Info* infoPtrIn)
 // setInit is a virtual method that must be finalised here.
 // Sets up beams, strategy and processes.
 
-bool LHAupAlpgen::setInit() {
+inline bool LHAupAlpgen::setInit() {
 
   // Check that all required parameters are present
   if (!alpgenPar.haveParam("ih2") || !alpgenPar.haveParam("ebeam")  ||
@@ -548,7 +549,7 @@ bool LHAupAlpgen::setInit() {
 // setEvent is a virtual method that must be finalised here.
 // Read in an event from the 'unw' file and setup.
 
-bool LHAupAlpgen::setEvent(int, double) {
+inline bool LHAupAlpgen::setEvent(int, double) {
 
   // Read in the first line of the event
   int    nEvent, iProc, nParton;
@@ -653,7 +654,7 @@ bool LHAupAlpgen::setEvent(int, double) {
 
 // Print list of particles; mainly intended for debugging
 
-void LHAupAlpgen::printParticles() {
+inline void LHAupAlpgen::printParticles() {
 
   cout << endl << "---- LHAupAlpgen particle listing begin ----" << endl;
   cout << scientific << setprecision(6);
@@ -680,7 +681,7 @@ void LHAupAlpgen::printParticles() {
 // Routine to add resonances to an incoming event based on the
 // hard process code (now stored in lprup).
 
-bool LHAupAlpgen::addResonances() {
+inline bool LHAupAlpgen::addResonances() {
 
   // Temporary storage for resonance information
   int    idT, statusT, mother1T, mother2T, col1T, col2T;
@@ -937,7 +938,7 @@ bool LHAupAlpgen::addResonances() {
 // (again, no changes to masses required). Because incoming pz/e is not
 // zero, effects can be slightly larger ~0.002/0.003.
 
-bool LHAupAlpgen::rescaleMomenta() {
+inline bool LHAupAlpgen::rescaleMomenta() {
 
   // Total momenta in/out
   int  nOut = 0;
@@ -1068,7 +1069,7 @@ AlpgenHooks::AlpgenHooks(Pythia &pythia) : LHAagPtr(NULL) {
 // information has been read in), but before any other internal
 // initialisation. Provides the remaining 'Alpgen:*' options.
 
-bool AlpgenHooks::initAfterBeams() {
+inline bool AlpgenHooks::initAfterBeams() {
 
   // Read in ALPGEN specific configuration variables
   bool setLightMasses = settingsPtr->flag("Alpgen:setLightMasses");
@@ -1144,7 +1145,7 @@ const double MadgraphPar::ZEROTHRESHOLD = 1e-10;
 
 // Parse an incoming Madgraph parameter file string
 
-bool MadgraphPar::parse(const string paramStr) {
+inline bool MadgraphPar::parse(const string paramStr) {
 
   // Loop over incoming lines
   stringstream paramStream(paramStr);
@@ -1158,7 +1159,7 @@ bool MadgraphPar::parse(const string paramStr) {
 
 // Parse an incoming parameter line
 
-void MadgraphPar::extractRunParam(string line) {
+inline void MadgraphPar::extractRunParam(string line) {
 
   // Extract information to the right of the final '!' character
   size_t idz = line.find("#");
@@ -1195,7 +1196,7 @@ void MadgraphPar::extractRunParam(string line) {
 
 // Print parameters read from the '.par' file
 
-void MadgraphPar::printParams() {
+inline void MadgraphPar::printParams() {
 
   // Loop over all stored parameters and print
   cout << endl
@@ -1212,7 +1213,7 @@ void MadgraphPar::printParams() {
 
 // Warn if a parameter is going to be overwriten
 
-void MadgraphPar::warnParamOverwrite(const string &paramIn, double val) {
+inline void MadgraphPar::warnParamOverwrite(const string &paramIn, double val) {
 
   // Check if present and if new value is different
   if (haveParam(paramIn) &&
@@ -1226,7 +1227,7 @@ void MadgraphPar::warnParamOverwrite(const string &paramIn, double val) {
 
 // Simple string trimmer
 
-string MadgraphPar::trim(string s) {
+inline string MadgraphPar::trim(string s) {
 
   // Remove whitespace in incoming string
   size_t i;
@@ -1238,5 +1239,7 @@ string MadgraphPar::trim(string s) {
 }
 
 //==========================================================================
+
+} // end namespace Pythia8
 
 #endif //  Pythia8_GeneratorInput_H

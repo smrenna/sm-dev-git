@@ -28,7 +28,7 @@ ifneq ("$(wildcard ../../../lib/libpythia8.a)","")
   PREFIX_LIB=../../../lib
   PREFIX_INCLUDE=../../../include
 endif
-CXX_COMMON+= -Wl,-rpath $(PREFIX_LIB)
+CXX_COMMON:=-I$(PREFIX_INCLUDE) $(CXX_COMMON) -Wl,-rpath $(PREFIX_LIB) -ldl
 
 ################################################################################
 # RULES: Definition of the rules used to build the PYTHIA examples.
@@ -44,24 +44,24 @@ all:
 
 # The Makefile configuration.
 Makefile.inc:
-	$(error Error: PYTHIA must be configured, please run "./configure" \
+	$(error Error: PYTHIA must be configured, please run "./configure"\
                 in the top PYTHIA directory)
 
 # PYTHIA libraries.
 $(PREFIX_LIB)/libpythia8.a :
-	$(error Error: PYTHIA must be built, please run "make" \
+	$(error Error: PYTHIA must be built, please run "make"\
                 in the top PYTHIA directory)
 
 # Examples without external dependencies.
 main% : main%.cc $(PREFIX_LIB)/libpythia8.a
-	$(CXX) $(CXX_COMMON) -I$(PREFIX_INCLUDE) -o $@ $^ -ldl
+	$(CXX) $^ -o $@ $(CXX_COMMON)
 
 # HEPMC2.
-main41 main42 main61 main62 main85 main86 main87 main88 main89: $$@.cc \
+main41 main42 main61 main62 main85 main86 main87 main88 main89: $$@.cc\
 	$(PREFIX_LIB)/libpythia8.a
 ifeq ($(HEPMC2_USE),true)
-	$(CXX) $(CXX_COMMON) -I$(PREFIX_INCLUDE) -I$(HEPMC2_INCLUDE) -o $@ $^ \
-	-L$(HEPMC2_LIB) -Wl,-rpath $(HEPMC2_LIB) -lHepMC -ldl
+	$(CXX) $^ -o $@ -I$(HEPMC2_INCLUDE) $(CXX_COMMON)\
+	 -L$(HEPMC2_LIB) -Wl,-rpath $(HEPMC2_LIB) -lHepMC
 else
 	@echo "Error: $@ requires HEPMC2"
 endif
@@ -70,11 +70,11 @@ endif
 main46: $$@.cc $(PREFIX_LIB)/libpythia8.a
 ifeq ($(PROMC_USE)$(HEPMC2_USE),truetrue)
 	@echo "Warning: this example is VERY experimental"
-	$(CXX) $(CXX_COMMON) -I$(PREFIX_INCLUDE) -I$(PROMC_INCLUDE) \
-	-I$(PROMC_INCLUDE)/include -I$(HEPMC2_INCLUDE) -o $@ $^ \
-	-L$(PROMC_LIB) -Wl,-rpath $(PROMC_LIB) \
-	-lprotoc -lprotobuf -lprotobuf-lite -lcbook \
-	-L$(HEPMC2_LIB) -Wl,-rpath $(HEPMC2_LIB) -lHepMC -ldl
+	$(CXX) $^ -o $@ -I$(PROMC_INCLUDE) -I$(PROMC_INCLUDE)/include\
+	 -I$(HEPMC2_INCLUDE) $(CXX_COMMON)\
+	 -L$(PROMC_LIB) -Wl,-rpath $(PROMC_LIB)\
+	 -lprotoc -lprotobuf -lprotobuf-lite -lcbook\
+	 -L$(HEPMC2_LIB) -Wl,-rpath $(HEPMC2_LIB) -lHepMC
 else
 	@echo "Error: $@ requires PROMC and HEPMC2"
 endif
@@ -82,8 +82,8 @@ endif
 # FASTJET3.
 main71 main72: $$@.cc $(PREFIX_LIB)/libpythia8.a
 ifeq ($(FASTJET3_USE),true)
-	$(CXX) $(CXX_COMMON) -I$(PREFIX_INCLUDE) -I$(FASTJET3_INCLUDE) -o $@ $^\
-	-L$(FASTJET3_LIB) -Wl,-rpath $(FASTJET3_LIB) -lfastjet -ldl
+	$(CXX) $^ -o $@ -I$(FASTJET3_INCLUDE) $(CXX_COMMON)\
+	 -L$(FASTJET3_LIB) -Wl,-rpath $(FASTJET3_LIB) -lfastjet
 else
 	@echo "Error: $@ requires FASTJET3"
 endif
@@ -91,10 +91,9 @@ endif
 # FASTJET3 and HEPMC2.
 main81 main82 main83 main84: $$@.cc $(PREFIX_LIB)/libpythia8.a
 ifeq ($(FASTJET3_USE)$(HEPMC2_USE),truetrue)
-	$(CXX) $(CXX_COMMON) -I$(PREFIX_INCLUDE) -I$(FASTJET3_INCLUDE) \
-	-I$(HEPMC2_INCLUDE) -o $@ $^ \
-	-L$(HEPMC2_LIB) -Wl,-rpath $(HEPMC2_LIB) -lHepMC \
-	-L$(FASTJET3_LIB) -Wl,-rpath $(FASTJET3_LIB) -lfastjet -ldl
+	$(CXX) $^ -o $@ -I$(FASTJET3_INCLUDE) -I$(HEPMC2_INCLUDE) $(CXX_COMMON)\
+	 -L$(HEPMC2_LIB) -Wl,-rpath $(HEPMC2_LIB) -lHepMC\
+	 -L$(FASTJET3_LIB) -Wl,-rpath $(FASTJET3_LIB) -lfastjet
 else
 	@echo "Error: $@ requires FASTJET3 and HEPMC2"
 endif
@@ -102,23 +101,22 @@ endif
 # ROOT (turn off all warnings for readability).
 main91: $$@.cc $(PREFIX_LIB)/libpythia8.a
 ifeq ($(ROOT_USE),true)
-	$(CXX) $(CXX_COMMON) -w -I$(PREFIX_INCLUDE) -I$(ROOT_INCLUDE) -o $@ $^ \
-	-Wl,-rpath $(ROOT_LIB) `$(ROOT_BIN)root-config --glibs` -ldl
+	$(CXX) $^ -o $@ -w -I$(ROOT_INCLUDE) $(CXX_COMMON)\
+	 -Wl,-rpath $(ROOT_LIB) `$(ROOT_BIN)root-config --glibs`
 else
 	@echo "Error: $@ requires ROOT"
 endif
 main92: $$@.cc $$@.h $$@LinkDef.h $(PREFIX_LIB)/libpythia8.a
 ifeq ($(ROOT_USE),true)
-	export LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:$(ROOT_LIB); \
-	$(ROOT_BIN)rootcint -f $@Dct.cc -c -I$(PREFIX_INCLUDE) $@.h $@LinkDef.h
-	$(CXX) $(CXX_COMMON) -w -I$(PREFIX_INCLUDE) -I$(ROOT_INCLUDE) \
-	-o $@ $@Dct.cc $^ \
-	-Wl,-rpath $(ROOT_LIB) `$(ROOT_BIN)root-config --glibs` -ldl
+	export LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:$(ROOT_LIB);\
+	 $(ROOT_BIN)rootcint -f $@Dct.cc -c -I$(PREFIX_INCLUDE) $@.h $@LinkDef.h
+	$(CXX) $@Dct.cc $^ -o $@ -w -I$(ROOT_INCLUDE) $(CXX_COMMON)\
+	 -Wl,-rpath $(ROOT_LIB) `$(ROOT_BIN)root-config --glibs`
 else
 	@echo "Error: $@ requires ROOT"
 endif
 
 # Clean.
 clean:
-	@rm -f main[0-9][0-9]; rm -f out[0-9][0-9]; rm -f weakbosons.lhe; \
+	@rm -f main[0-9][0-9]; rm -f out[0-9][0-9]; rm -f weakbosons.lhe;\
 	rm -f *~; rm -f \#*; rm -f core*; rm -f *Dct.*

@@ -16,7 +16,8 @@
 
 // Includes
 #include "Pythia8/Pythia.h"
-using namespace Pythia8;
+
+namespace Pythia8 {
 
 //==========================================================================
 
@@ -53,7 +54,7 @@ public:
   // For the Pythia pT definition, a recoiler (after) must be specified.
 
   // Compute the Pythia pT separation. Based on pTLund function in History.cc
-  double pTpythia(const Event &e, int RadAfterBranch, int EmtAfterBranch,
+  inline double pTpythia(const Event &e, int RadAfterBranch, int EmtAfterBranch,
                   int RecAfterBranch, bool FSR) {
 
     // Convenient shorthands for later
@@ -104,7 +105,7 @@ public:
   }
 
   // Compute the POWHEG pT separation between i and j
-  double pTpowheg(const Event &e, int i, int j, bool FSR) {
+  inline double pTpowheg(const Event &e, int i, int j, bool FSR) {
 
     // pT value for FSR and ISR
     double pTnow = 0.;
@@ -142,7 +143,7 @@ public:
   // If i, k, r and xSR are -1, then all incoming and outgoing
   // partons are tried.
   // xSR set to 0 means ISR, while xSR set to 1 means FSR
-  double pTcalc(const Event &e, int i, int j, int k, int r, int xSRin) {
+  inline double pTcalc(const Event &e, int i, int j, int k, int r, int xSRin) {
 
     // Loop over ISR and FSR if necessary
     double pTemt = -1., pTnow;
@@ -266,9 +267,9 @@ public:
   // at the end of the event and the final entry is the POWHEG emission.
   // If there is no POWHEG emission, then pThard is set to SCALUP.
 
-  bool canVetoMPIStep()    { return true; }
-  int  numberVetoMPIStep() { return 1; }
-  bool doVetoMPIStep(int nMPI, const Event &e) {
+  inline bool canVetoMPIStep()    { return true; }
+  inline int  numberVetoMPIStep() { return 1; }
+  inline bool doVetoMPIStep(int nMPI, const Event &e) {
     // Extra check on nMPI
     if (nMPI > 1) return false;
 
@@ -326,8 +327,8 @@ public:
 
   // ISR veto
 
-  bool canVetoISREmission() { return (vetoMode == 0) ? false : true; }
-  bool doVetoISREmission(int, const Event &e, int iSys) {
+  inline bool canVetoISREmission() { return (vetoMode == 0) ? false : true; }
+  inline bool doVetoISREmission(int, const Event &e, int iSys) {
     // Must be radiation from the hard system
     if (iSys != 0) return false;
 
@@ -375,8 +376,8 @@ public:
 
   // FSR veto
 
-  bool canVetoFSREmission() { return (vetoMode == 0) ? false : true; }
-  bool doVetoFSREmission(int, const Event &e, int iSys, bool) {
+  inline bool canVetoFSREmission() { return (vetoMode == 0) ? false : true; }
+  inline bool doVetoFSREmission(int, const Event &e, int iSys, bool) {
     // Must be radiation from the hard system
     if (iSys != 0) return false;
 
@@ -447,8 +448,8 @@ public:
 
   // MPI veto
 
-  bool canVetoMPIEmission() { return (MPIvetoMode == 0) ? false : true; }
-  bool doVetoMPIEmission(int, const Event &e) {
+  inline bool canVetoMPIEmission() { return (MPIvetoMode == 0) ? false : true; }
+  inline bool doVetoMPIEmission(int, const Event &e) {
     if (MPIvetoMode == 1) {
       if (e[e.size() - 1].pT() > pTMPI) return true;
     }
@@ -459,8 +460,8 @@ public:
 
   // Functions to return information
 
-  int    getNISRveto() { return nISRveto; }
-  int    getNFSRveto() { return nFSRveto; }
+  inline int    getNISRveto() { return nISRveto; }
+  inline int    getNFSRveto() { return nFSRveto; }
 
 //--------------------------------------------------------------------------
 
@@ -479,6 +480,8 @@ private:
 };
 
 //==========================================================================
+
+} // end namespace Pythia8
 
 #endif // end Pythia8_PowhegHooks_H
 

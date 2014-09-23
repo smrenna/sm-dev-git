@@ -85,7 +85,7 @@ private:
 // Read one event from Pythia8 and fill GenEvent,
 // and return T/F = success/failure.
 
-bool Pythia8ToHepMC::fill_next_event( Pythia8::Event& pyev, GenEvent* evt,
+inline bool Pythia8ToHepMC::fill_next_event( Pythia8::Event& pyev, GenEvent* evt,
   int ievnum, Pythia8::Info* pyinfo, Pythia8::Settings* pyset) {
 
   // 1. Error if no event passed.

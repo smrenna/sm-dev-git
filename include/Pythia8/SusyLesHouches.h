@@ -891,7 +891,8 @@ template <class T> bool SusyLesHouches::getEntry(string blockName, int indx,
   return false;
  }
 
-}
+} // end of namespace Pythia8
+
 #endif
 
 

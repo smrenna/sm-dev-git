@@ -493,6 +493,10 @@ public:
   void scaleSecond( double scaleSecondIn) {scaleSecondSave = scaleSecondIn;}
   double scaleSecond() const {return scaleSecondSave;}
 
+  // Find complete list of daughters.
+  // Note: temporarily retained for CMS compatibility. Do not use!
+  vector<int> daughterList(int i) const {return entry[i].daughterList();}
+
   // Member functions for rotations and boosts of an event.
   void rot(double theta, double phi)
     {for (int i = 0; i < size(); ++i) entry[i].rot(theta, phi);}

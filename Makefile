@@ -27,9 +27,10 @@ LOCAL_SHARE=share/Pythia8
 LOCAL_SRC=src
 LOCAL_TMP=tmp
 LOCAL_MKDIRS:=$(shell mkdir -p $(LOCAL_TMP) $(LOCAL_LIB))
+CXX_COMMON:=-I$(LOCAL_INCLUDE) $(CXX_COMMON)
 
 # PYTHIA.
-OBJECTS=$(patsubst $(LOCAL_SRC)/%.cc,$(LOCAL_TMP)/%.o, \
+OBJECTS=$(patsubst $(LOCAL_SRC)/%.cc,$(LOCAL_TMP)/%.o,\
 	$(wildcard $(LOCAL_SRC)/*.cc))
 TARGETS=$(LOCAL_LIB)/libpythia8.a
 ifeq ($(ENABLE_SHARED),true)
@@ -69,29 +70,30 @@ Makefile.inc:
 # PYTHIA.
 $(LOCAL_TMP)/%.o: $(LOCAL_SRC)/%.cc
 ifeq ($(GZIP_USE),true)
-	$(CXX) -MD $(CXX_COMMON) -I$(LOCAL_INCLUDE) -I$(BOOST_INCLUDE) \
-	-DGZIPSUPPORT -c -o $@ $<
+	$(CXX) $< -o $@ -c -MD -DGZIPSUPPORT -I$(BOOST_INCLUDE) $(CXX_COMMON)
 else
-	$(CXX) -MD $(CXX_COMMON) -I$(LOCAL_INCLUDE) -c -o $@ $<
+	$(CXX) $< -o $@ -c -MD $(CXX_COMMON)
 endif
 $(LOCAL_LIB)/libpythia8.a: $(OBJECTS)
 	ar cru $@ $^
 $(LOCAL_LIB)/libpythia8$(LIB_SUFFIX): $(OBJECTS)
-	$(CXX) $(CXX_COMMON) $(CXX_SHARED) -o $@ $^ $(CXX_SONAME),$(notdir $@)
+	$(CXX) $^ -o $@ $(CXX_COMMON) $(CXX_SHARED) $(CXX_SONAME),$(notdir $@)
 
 # LHAPDF (turn off all warnings for readability).
 $(LOCAL_TMP)/LHAPDF%.o: $(LOCAL_INCLUDE)/Pythia8Plugins/LHAPDF%.h
-	$(CXX) -MD $(CXX_COMMON) -I$(LOCAL_INCLUDE) -I$(LHAPDF$*_INCLUDE) \
-	-w -x c++ -c -o $@ $<
-$(LOCAL_LIB)/libpythia8lhapdf%.so: $(LOCAL_TMP)/LHAPDF%.o \
+	$(CXX) -x c++ $< -o $@ -c -MD -w -I$(LHAPDF$*_INCLUDE) $(CXX_COMMON)
+$(LOCAL_LIB)/libpythia8lhapdf5.so: $(LOCAL_TMP)/LHAPDF5.o\
 	$(LOCAL_LIB)/libpythia8.a
-	$(CXX) $(CXX_COMMON) $(CXX_SHARED) -o $@ $^ $(CXX_SONAME),$(notdir $@) \
-	-L$(LHAPDF$*_LIB) -Wl,-rpath $(LHAPDF$*_LIB) -lLHAPDF
+	$(CXX) $^ -o $@ $(CXX_COMMON) $(CXX_SHARED) $(CXX_SONAME),$(notdir $@)\
+	 -L$(LHAPDF5_LIB) -Wl,-rpath $(LHAPDF5_LIB) -lLHAPDF -lgfortran
+$(LOCAL_LIB)/libpythia8lhapdf6.so: $(LOCAL_TMP)/LHAPDF6.o\
+	$(LOCAL_LIB)/libpythia8.a
+	$(CXX) $^ -o $@ $(CXX_COMMON) $(CXX_SHARED) $(CXX_SONAME),$(notdir $@)\
+	 -L$(LHAPDF6_LIB) -Wl,-rpath $(LHAPDF6_LIB) -lLHAPDF
 
 # Install (rsync is used for finer control).
 install: all
 	mkdir -p $(PREFIX_BIN) $(PREFIX_INCLUDE) $(PREFIX_LIB) $(PREFIX_SHARE)
-	rsync -a pythia8-config.in $(LOCAL_BIN)/
 	rsync -a $(LOCAL_BIN)/* $(PREFIX_BIN) --exclude .svn
 	rsync -a $(LOCAL_INCLUDE)/* $(PREFIX_INCLUDE) --exclude .svn
 	rsync -a $(LOCAL_LIB)/* $(PREFIX_LIB) --exclude .svn

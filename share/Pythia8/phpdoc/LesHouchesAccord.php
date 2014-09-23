@@ -479,6 +479,24 @@ in their names, see explanation in the
 echo "<a href='EventInformation.php?filepath=".$filepath."' target='page'>";?>Event Information</a> description. 
    
  
+<p/>
+The maximum scale for parton-shower evolution of a Les Houches event is 
+regulated by the 
+<code><?php $filepath = $_GET["filepath"];
+echo "<a href='TimelikeShowers.php?filepath=".$filepath."' target='page'>";?>TimeShower:pTmaxMatch</a></code>
+and
+<code><?php $filepath = $_GET["filepath"];
+echo "<a href='SpacelikeShowers.php?filepath=".$filepath."' target='page'>";?>SpaceShower:pTmaxMatch</a></code>
+modes. If you want to guarantee that the input <code>scale</code> value
+is respected, as is often the case in matching/merging procedures, you 
+should set both of these modes to 1. That only affects the hard process,
+while resonance decays are still processed using the resonance mass to
+set the upper limit. However, the optional 
+<code><?php $filepath = $_GET["filepath"];
+echo "<a href='BeamParameters.php?filepath=".$filepath."' target='page'>";?>Beams:strictLHEFscale = on</a></code> 
+setting restricts also resonance-decay emissions to be below the input 
+<code>scale</code> value.
+  
 <p/> 
 As a further, currently completely non-standard feature, it is also 
 possible to read in the separate scale values of all final particles. 
@@ -489,6 +507,7 @@ restrict the maximum scale for shower evolutions for each parton
 separately. This information is returned by the method 
 <code>double LHAup::scale(int i)</code>. When no such information 
 has been read from the LHEF, the scale defaults to -1. 
+ 
  
 <p/> 
 <a name="method30"></a>
@@ -603,7 +622,7 @@ As some information in a Les Houches Event File init block is only known
 at the end of generation, some programs choose to output this as a 
 separate file. If so, the name of this file can be specified by  
 <code><?php $filepath = $_GET["filepath"];
-echo "<a href='BeamParameters.php?filepath=".$filepath."' target='page'>";?>Beams:LHEFheader</a></code> 
+echo "<a href='BeamParameters.php?filepath=".$filepath."' target='page'>";?>Beams:LHEFheader</a></code>. 
 
 <p/> 
 The two key compulsory parts of an LHEF is the initialization information

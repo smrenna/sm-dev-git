@@ -295,6 +295,10 @@ public:
   string getScalesValue(bool doRemoveWhitespace = false);
   double getScalesAttribute(string key);
 
+  // Set LHEF headers
+  void setHeader(const string &key, const string &val)
+    { headers[key] = val; }
+
 private:
 
   // Number of times the same error message is repeated, unless overridden.
@@ -475,10 +479,6 @@ private:
 
   // Save merging weight (i.e.  CKKW-L-type weight, summed O(\alpha_s) weight)
   double weightCKKWLSave, weightFIRSTSave;
-
-  // Set LHEF headers
-  void setHeader(const string &key, const string &val)
-    { headers[key] = val; }
 
 };
  
