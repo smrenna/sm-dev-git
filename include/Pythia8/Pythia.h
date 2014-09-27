@@ -201,7 +201,7 @@ private:
          doResDec, doFSRinRes, decayRHadrons, abortIfVeto, checkEvent,
          checkHistory;
   int    nErrList;
-  double epTolErr, epTolWarn;
+  double epTolErr, epTolWarn, mTolErr, mTolWarn;
 
   // Initialization data, extracted from init(...) call.
   bool   isConstructed, isInit, isUnresolvedA, isUnresolvedB, showSaV,

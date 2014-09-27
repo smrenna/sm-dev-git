@@ -130,8 +130,9 @@ echo "<a href='TotalCrossSections.php?filepath=".$filepath."' target='page'>";?>
 and on <?php $filepath = $_GET["filepath"];
 echo "<a href='Diffraction.php?filepath=".$filepath."' target='page'>";?>Diffraction</a> for details. 
 In particular note the <code>SigmaTotal:zeroAXB</code> flag, 
-which is off in most tunes, and that therefore would need to 
-be reset to on after the selection of a tune (even the default one). 
+which is on in most tunes, meaning no central diffraction, and 
+that therefore would need to be reset to off after the selection 
+of a tune (even the default one) to get central diffraction. 
 Code 106. 
    
  

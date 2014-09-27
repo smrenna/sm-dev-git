@@ -256,7 +256,7 @@ public:
 private:
 
   // Constants: could only be changed in the code itself.
-  static const double XMINUNRESOLVED;
+  static const double XMINUNRESOLVED, POMERONMASS;
   static const int NMAX, NRANDOMTRIES;
   
   // Pointer to various information on the generation.

@@ -167,7 +167,11 @@ public:
     BeamParticle* beamAPtrIn, BeamParticle* beamBPtrIn,
     PartonSystems* partonSystemsPtrIn);
 
-  // Do Colour reconnection for current event.
+  // New beams possible for handling of hard diffraction.
+  void reassignBeamPtrs( BeamParticle* beamAPtrIn, BeamParticle* beamBPtrIn) 
+    {beamAPtr = beamAPtrIn; beamBPtr = beamBPtrIn;}
+
+  // Do colour reconnection for current event.
   bool next( Event & event, int oldSize);
 
 private:

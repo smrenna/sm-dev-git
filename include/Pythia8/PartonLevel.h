@@ -160,8 +160,6 @@ private:
 
   // The generator class to construct beam-remnant kinematics.
   BeamRemnants remnants;
-  // Separate instance for central diffraction.
-  BeamRemnants remnantsCD;
   
   // The RHadrons class is used to fragment off and decay R-hadrons.
   RHadrons*    rHadronsPtr;

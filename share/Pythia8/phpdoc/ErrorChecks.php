@@ -120,6 +120,18 @@ warning rather than an error, and not leading to the event being
 classified as aborted. 
    
  
+<br/><br/><table><tr><td><strong>Check:mTolErr </td><td></td><td> <input type="text" name="9" value="1e-3" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1e-3</strong></code>)</td></tr></table>
+For each particle the maximum allowed deviation between the mass 
+calculated from energy-momentum and the bookkept mass, as a fraction 
+of the energy. This energy is taken to be at least 1 GeV, in order 
+to avoid harmless problems at very low energies (gluons mainly).
+   
+ 
+<br/><br/><table><tr><td><strong>Check:mTolWarn </td><td></td><td> <input type="text" name="10" value="1e-4" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1e-4</strong></code>)</td></tr></table>
+A check on the deviation as above, but counted as a warning rather 
+than an error. 
+   
+ 
 <input type="hidden" name="saved" value="1"/>
 
 <?php
@@ -173,6 +185,16 @@ fwrite($handle,$data);
 if($_POST["8"] != "1e-6")
 {
 $data = "Check:epTolWarn = ".$_POST["8"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["9"] != "1e-3")
+{
+$data = "Check:mTolErr = ".$_POST["9"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["10"] != "1e-4")
+{
+$data = "Check:mTolWarn = ".$_POST["10"]."\n";
 fwrite($handle,$data);
 }
 fclose($handle);

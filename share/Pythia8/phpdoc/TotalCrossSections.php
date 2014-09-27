@@ -91,10 +91,11 @@ dependence is then parametrized, and behaves roughly like
 several existing <?php $filepath = $_GET["filepath"];
 echo "<a href='Tunes.php?filepath=".$filepath."' target='page'>";?>tunes</a> do not include CD. 
 An inclusion of a nonvanishing CD cross section directly affects 
-the nondiffractive phenomenology (even if not dramatically), and so 
-this flag is used to switch off the CD cross section in such tunes. 
-You can switch it back on <i>after</i> the selection of a tune, if you 
-so wish. This option has no effect for the MBR model 
+the nondiffractive phenomenology, even if not dramatically, and so 
+this flag is used to forcibly set the CD cross section to vanish 
+in such tunes. You can switch CD back on <i>after</i> the selection of 
+a tune, if you so wish, by resetting <code>SigmaTotal:zeroAXB = off</code>. 
+This option has no effect for the MBR model 
 (<code>Diffraction:PomFlux = 5</code>), where the CD cross section 
 has been included from the onset. 
    

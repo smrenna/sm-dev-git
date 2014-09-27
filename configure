@@ -244,8 +244,8 @@ for IDX in ${!PKG_LIST[@]}; do PKG=${PKG_LIST[$IDX]}
 	    fi; done; IFS=" "; fi; done
     
 # Write the configuation to screen and file, update the pythia8-config script.
-sed -i '0,/^CFG_FILE=.*/s||CFG_FILE='"$PREFIX_SHARE"'/examples/Makefile.inc|' \
-    bin/pythia8-config
+sed 's|CFG_FILE=.*|CFG_FILE='"$PREFIX_SHARE"'/examples/Makefile.inc|;n' \
+    bin/pythia8-config > bin/tmp; mv bin/tmp bin/pythia8-config
 echo "---------------------------------------------------------------------"
 echo "|                    PYTHIA Configuration Summary                   |"
 echo "---------------------------------------------------------------------"

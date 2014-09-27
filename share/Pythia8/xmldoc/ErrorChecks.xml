@@ -89,6 +89,18 @@ warning rather than an error, and not leading to the event being
 classified as aborted. 
 </parm> 
  
+<parm name="Check:mTolErr" default="1e-3"> 
+For each particle the maximum allowed deviation between the mass 
+calculated from energy-momentum and the bookkept mass, as a fraction 
+of the energy. This energy is taken to be at least 1 GeV, in order 
+to avoid harmless problems at very low energies (gluons mainly).
+</parm> 
+ 
+<parm name="Check:mTolWarn" default="1e-4"> 
+A check on the deviation as above, but counted as a warning rather 
+than an error. 
+</parm> 
+ 
 </chapter> 
  
 <!-- Copyright (C) 2014 Torbjorn Sjostrand --> 

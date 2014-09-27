@@ -2,7 +2,7 @@
 # Copyright (C) 2014 Torbjorn Sjostrand.
 # PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 # Please respect the MCnet Guidelines, see GUIDELINES for details.
-# Author: Philip Ilten, August 2014.
+# Author: Philip Ilten, September 2014.
 #
 # This is is the Makefile used to build PYTHIA examples on POSIX systems.
 # Example usage is:

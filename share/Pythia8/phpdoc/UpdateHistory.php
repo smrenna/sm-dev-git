@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.200: 23 September 2014 
+<li>8.200: 27 September 2014 
 <ul> 
 
 <li>A new <code>share/Pythia8</code> directory collects all 

@@ -533,6 +533,8 @@ bool Pythia::init() {
   nErrList         = settings.mode("Check:nErrList");
   epTolErr         = settings.parm("Check:epTolErr");
   epTolWarn        = settings.parm("Check:epTolWarn");
+  mTolErr         = settings.parm("Check:mTolErr");
+  mTolWarn        = settings.parm("Check:mTolWarn");
 
   // Initialise merging hooks.
   if ( doMerging && (hasMergingHooks || hasOwnMergingHooks) )
@@ -1715,11 +1717,16 @@ bool Pythia::check(ostream& os) {
     if (abs(event[i].px()) >= 0. && abs(event[i].py()) >= 0.
       && abs(event[i].pz()) >= 0.  && abs(event[i].e()) >= 0.
       && abs(event[i].m()) >= 0.) {
-      if (abs(event[i].mCalc() - event[i].m()) > epTolErr * event[i].e()) {
+      double errMass = abs(event[i].mCalc() - event[i].m()) 
+        / max( 1.0, event[i].e()); 
+      if (errMass > mTolErr) {
         info.errorMsg("Error in Pythia::check: "
           "unmatched particle energy/momentum/mass");
         physical = false;
         iErrEpm.push_back(i);
+      } else if (errMass > mTolWarn) {
+        info.errorMsg("Warning in Pythia::check: "
+          "not quite matched particle energy/momentum/mass");
       }
     } else {
       info.errorMsg("Error in Pythia::check: "

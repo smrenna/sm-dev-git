@@ -38,6 +38,9 @@ public:
 // A lepton that takes (almost) the full beam energy does not leave a remnant.
 const double BeamParticle::XMINUNRESOLVED = 1. - 1e-10;
 
+// Fictitious Pomeron mass to leave some room for beam remnant.
+const double BeamParticle::POMERONMASS = 1.;
+
 // Maximum number of tries to find a suitable colour.
 const int BeamParticle::NMAX = 1000;
 
@@ -240,7 +243,8 @@ double BeamParticle::xMax(int iSkip) {
 
   // Minimum requirement on remaining energy > nominal mass for hadron.
   double xLeft = 1.;
-  if (isHadron()) xLeft -= m() / e();
+  if (idBeam == 990)   xLeft -= POMERONMASS / e();
+  else if (isHadron()) xLeft -= m() / e();
   if (size() == 0) return xLeft;
 
   // Subtract what was carried away by initiators (to date).

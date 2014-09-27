@@ -8960,11 +8960,11 @@ echo "<a href='ParticleDecays.php?filepath=".$filepath."' target='page'>";?>here
  <br/>      channel: onMode="1" bRatio="1.0000000" products="10551 21"
 
 <p/>particle: id="9950023" name="chi_1b[3S1(8)]" spinType="3" chargeType="0" colType="2"
-          m0="10.0928" mWidth="0.0" mMin="10.0928" mMax="10.0928"
+          m0="10.09280" mWidth="0.0" mMin="10.09280" mMax="10.09280"
  <br/>      channel: onMode="1" bRatio="1.0000000" products="20553 21"
 
 <p/>particle: id="9950103" name="Upsilon(2S)[3S1(8)]" spinType="3" chargeType="0" colType="2"
-          m0="10.2233" mWidth="0.0" mMin="10.2233" mMax="10.2233"
+          m0="10.22326" mWidth="0.0" mMin="10.22326" mMax="10.22326"
  <br/>      channel: onMode="1" bRatio="1.0000000" products="100553 21"
 
 <p/>particle: id="9950203" name="Upsilon(3S)[3S1(8)]" spinType="3" chargeType="0" colType="2"
@@ -8976,7 +8976,7 @@ echo "<a href='ParticleDecays.php?filepath=".$filepath."' target='page'>";?>here
  <br/>      channel: onMode="1" bRatio="1.0000000" products="553 21"
 
 <p/>particle: id="9951103" name="Upsilon(2S)[1S0(8)]" spinType="1" chargeType="0" colType="2"
-          m0="10.2233" mWidth="0.0" mMin="10.2233" mMax="10.2233"
+          m0="10.22326" mWidth="0.0" mMin="10.22326" mMax="10.22326"
  <br/>      channel: onMode="1" bRatio="1.0000000" products="100553 21"
 
 <p/>particle: id="9951203" name="Upsilon(3S)[1S0(8)]" spinType="1" chargeType="0" colType="2"
@@ -8988,7 +8988,7 @@ echo "<a href='ParticleDecays.php?filepath=".$filepath."' target='page'>";?>here
  <br/>      channel: onMode="1" bRatio="1.0000000" products="553 21"
 
 <p/>particle: id="9952103" name="Upsilon(2S)[3PJ(8)]" spinType="3" chargeType="0" colType="2"
-          m0="10.2233" mWidth="0.0" mMin="10.2233" mMax="10.2233"
+          m0="10.22326" mWidth="0.0" mMin="10.22326" mMax="10.22326"
  <br/>      channel: onMode="1" bRatio="1.0000000" products="100553 21"
 
 <p/>particle: id="9952203" name="Upsilon(3S)[3PJ(8)]" spinType="3" chargeType="0" colType="2"

@@ -2,7 +2,7 @@
 # Copyright (C) 2014 Torbjorn Sjostrand.
 # PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 # Please respect the MCnet Guidelines, see GUIDELINES for details.
-# Author: Philip Ilten, August 2014.
+# Author: Philip Ilten, September 2014.
 #
 # This is is the Makefile used to build PYTHIA on POSIX systems. Example usage 
 # is:
@@ -80,8 +80,11 @@ $(LOCAL_LIB)/libpythia8$(LIB_SUFFIX): $(OBJECTS)
 	$(CXX) $^ -o $@ $(CXX_COMMON) $(CXX_SHARED) $(CXX_SONAME),$(notdir $@)
 
 # LHAPDF (turn off all warnings for readability).
-$(LOCAL_TMP)/LHAPDF%.o: $(LOCAL_INCLUDE)/Pythia8Plugins/LHAPDF%.h
-	$(CXX) -x c++ $< -o $@ -c -MD -w -I$(LHAPDF$*_INCLUDE) $(CXX_COMMON)
+$(LOCAL_TMP)/LHAPDF5.o: $(LOCAL_INCLUDE)/Pythia8Plugins/LHAPDF5.h
+	$(CXX) -x c++ $< -o $@ -c -MD -w -I$(LHAPDF5_INCLUDE) $(CXX_COMMON)
+$(LOCAL_TMP)/LHAPDF6.o: $(LOCAL_INCLUDE)/Pythia8Plugins/LHAPDF5.h
+	$(CXX) -x c++ $< -o $@ -c -MD -w -I$(LHAPDF6_INCLUDE)\
+	 -I$(BOOST_INCLUDE) $(CXX_COMMON)
 $(LOCAL_LIB)/libpythia8lhapdf5.so: $(LOCAL_TMP)/LHAPDF5.o\
 	$(LOCAL_LIB)/libpythia8.a
 	$(CXX) $^ -o $@ $(CXX_COMMON) $(CXX_SHARED) $(CXX_SONAME),$(notdir $@)\
