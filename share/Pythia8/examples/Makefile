@@ -56,6 +56,10 @@ $(PREFIX_LIB)/libpythia8.a :
 main% : main%.cc $(PREFIX_LIB)/libpythia8.a
 	$(CXX) $^ -o $@ $(CXX_COMMON)
 
+# User-written examples for tutorials, without external dependencies.
+mymain% : mymain%.cc $(PREFIX_LIB)/libpythia8.a
+	$(CXX) $^ -o $@ $(CXX_COMMON)
+
 # HEPMC2.
 main41 main42 main61 main62 main85 main86 main87 main88 main89: $$@.cc\
 	$(PREFIX_LIB)/libpythia8.a
@@ -119,4 +123,5 @@ endif
 # Clean.
 clean:
 	@rm -f main[0-9][0-9]; rm -f out[0-9][0-9]; rm -f weakbosons.lhe;\
+	rm -f mymain[0-9][0-9]; rm -f myout[0-9][0-9];\
 	rm -f *~; rm -f \#*; rm -f core*; rm -f *Dct.*
