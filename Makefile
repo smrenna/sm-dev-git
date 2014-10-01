@@ -108,7 +108,10 @@ clean:
 	rm -f $(LOCAL_SHARE)/examples/*Dct.*
 	rm -f $(LOCAL_SHARE)/examples/main[0-9][0-9]
 	rm -f $(LOCAL_SHARE)/examples/out[0-9][0-9]
+	rm -f $(LOCAL_SHARE)/examples/mymain[0-9][0-9]
+	rm -f $(LOCAL_SHARE)/examples/myout[0-9][0-9]
 	rm -f $(LOCAL_SHARE)/examples/weakbosons.lhe 
+	rm -f $(LOCAL_SHARE)/examples/hist.root
 
 # Clean all temporary and generated files.
 distclean: clean

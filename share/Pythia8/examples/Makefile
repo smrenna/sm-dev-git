@@ -19,6 +19,7 @@
 
 # Handle GZIP support.
 ifeq ($(GZIP_USE),true)
+  CXX_COMMON+= -DGZIPSUPPORT
   CXX_COMMON+= -L$(BOOST_LIB) -Wl,-rpath $(BOOST_LIB) -lboost_iostreams
   CXX_COMMON+= -L$(GZIP_LIB) -Wl,-rpath $(GZIP_LIB) -lz
 endif
@@ -123,5 +124,5 @@ endif
 # Clean.
 clean:
 	@rm -f main[0-9][0-9]; rm -f out[0-9][0-9]; rm -f weakbosons.lhe;\
-	rm -f mymain[0-9][0-9]; rm -f myout[0-9][0-9];\
+	rm -f mymain[0-9][0-9]; rm -f myout[0-9][0-9]; rm -f hist.root;\
 	rm -f *~; rm -f \#*; rm -f core*; rm -f *Dct.*

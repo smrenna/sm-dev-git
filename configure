@@ -16,6 +16,7 @@
 # VARIABLES: Global variables not defined via command line arguments.
 #     CFG_FILE: The Makefile configuration file.
 #     USAGE:    Text printed when the --help option is passed.
+#     OPTIONS:  List of valid options that can be passed by the user.
 ################################################################################
 CFG_FILE="Makefile.inc"
 read -d "" USAGE << "BLOCKTEXT"
@@ -32,7 +33,8 @@ Configuration options.
 --enable-shared : Build the shared PYTHIA library during compilation.
 --lcg=PLATFORM  : Specify the LCG platform to use when the 
                   --with-PACKAGE-version option, described below, is set for a
-                  given optional package.
+                  given optional package [x86_64-slc6-gcc48-opt]. The packages
+                  are accessed via the path /afs/cern.ch/sw/lcg/releases on AFS.
 
 Optional external packages.
 --with-PACKAGE[=DIR]       : Use the external PACKAGE from the list below with
@@ -76,6 +78,13 @@ Advanced options.
 --lib-suffix=SUF     : Shared library name suffix: [.so] for Linux and [.dylib]
                        for OS X.
 BLOCKTEXT
+OPTIONS="-h --h -help --help --enable-debug --enable-64bit --enable-64bit --lcg"
+OPTIONS+=" --prefix --prefix-bin --prefix-lib --prefix-include --prefix-share"
+for PKG in "fastjet3" "hepmc2" "hepmc3" "lhapdf5" "lhapdf6" "promc" "root"\
+    "boost" "gzip"; do
+    OPTIONS+=" --with-$PKG --with-$PKG-bin --with-$PKG-lib --with-$PKG-include"
+    OPTIONS+=" --with-$PKG-version"; done
+OPTIONS+=" --arch --cxx --cxx-common --cxx-shared --cxx-soname --lib-suffix"
 
 ################################################################################
 # FUNCTION: Configure a package.
@@ -113,7 +122,11 @@ function configure_package() {
 	
     # Set package path for LCG if available and requested.
     if [ -n "$PKG_VER" ] && [ -n "$LCG_DIR" ]; then 
-	PKG_DIR=$LCG_DIR/$PKG_VER/$LCG;
+	if [ ! -d $LCG_DIR/$PKG_VER ]; then
+	    echo "$WARN version $PKG_VER not available via LCG."
+	elif [ ! -d $LCG_DIR/$PKG_VER/$LCG ]; then
+	    echo "$WARN platform $LCG not available via LCG."
+	else PKG_DIR=$LCG_DIR/$PKG_VER/$LCG; fi
     elif [ -n "$PKG_VER" ]; then 
 	echo "$WARN package not available via LCG."; fi
 
@@ -141,7 +154,7 @@ function configure_package() {
     if [ -z "${PKG_CFG[3]}" ]; then PKG_CFG[1]="./"; fi;
     for LIB in ${PKG_CFG[6]}; do
 	local TEST=$(echo "int main(){}" | $CXX -o /dev/null -x c - \
-	    -L${PKG_CFG[3]} -l$LIB 2>&1 | grep "\-$LIB")
+	    -L${PKG_CFG[3]} -l$LIB 2>&1 | grep "\-l$LIB")
 	if [ -n "$TEST" ]; then
 	    PKG_CFG[8]="${PKG_CFG[8]},$WARN library $LIB missing."; fi; done
     IFS=" "
@@ -170,13 +183,15 @@ for VAR in "$@"; do
 echo "# PYTHIA configuration file." > $CFG_FILE
 echo "# Generated on" `date` "with the user supplied options:" >> $CFG_FILE
 for VAR in "$@"; do
-    if [[ $VAR = --* ]]; then echo "# $VAR" >> $CFG_FILE; else continue; fi;
+    if [[ $OPTIONS =~ (^| )${VAR%=*}($| ) ]]; then echo "# $VAR" >> $CFG_FILE; 
+    else echo "WARNING: Ignoring invalid option \"${VAR%=*}\"."; continue; fi;
     VAR=${VAR#--with-}; VAR=${VAR#--};
     KEY=${VAR%=*}; VAL=${VAR#$KEY}; VAL=${VAL#*=}; KEY=${KEY//"-"/"_"}; 
     KEY=$(echo $KEY | awk '{print toupper($0)}');  VAL=$(eval echo $VAL)
     eval $KEY=\"$VAL\"; eval ${KEY}_SET=true; done
 
 # Set the compilation flags and options (order matters).
+if [ "$LCG_SET" != true ]; then LCG=x86_64-slc6-gcc48-opt; fi
 [ "$ENABLE_DEBUG_SET"  = true ] && ENABLE_DEBUG="-g "   || ENABLE_DEBUG="-O2 "
 [ "$ENABLE_64BIT_SET"  = true ] && ENABLE_64BIT="-m64 " || ENABLE_64BIT=""
 [ "$ENABLE_SHARED_SET" = true ] && ENABLE_SHARED="true" || ENABLE_SHARED="false"
@@ -208,20 +223,20 @@ if [ -z "$PREFIX_LIB" ];      then PREFIX_LIB=$PREFIX/lib; fi
 if [ -z "$PREFIX_SHARE" ];    then PREFIX_SHARE=$PREFIX/share/Pythia8; fi
 
 # Configure the packages (order does not matter).
-configure_package "FASTJET3" "/afs/cern.ch/sw/lcg/external/fastjet" \
+configure_package "FASTJET3" "/afs/cern.ch/sw/lcg/releases/fastjet"\
     "bin" "include" "lib" "" "fastjet/config.h" "fastjet" ""
-configure_package "HEPMC2" "/afs/cern.ch/sw/lcg/external/HepMC" \
+configure_package "HEPMC2" "/afs/cern.ch/sw/lcg/releases/HepMC"\
     "bin" "include" "lib" "" "HepMC/GenEvent.h" "HepMC" ""
-configure_package "HEPMC3" "/afs/cern.ch/sw/lcg/external/HepMC" \
+configure_package "HEPMC3" "" \
     "bin" "include" "lib" "" "HepMC/GenEvent.h" "HepMC" ""
-configure_package "LHAPDF5" "/afs/cern.ch/sw/lcg/external/MCGenerators/lhapdf" \
+configure_package "LHAPDF5" "/afs/cern.ch/sw/lcg/releases/MCGenerators/lhapdf"\
     "bin" "include" "lib" "" "LHAPDF/LHAPDF.h" "LHAPDF" ""
-configure_package "LHAPDF6" "/afs/cern.ch/sw/lcg/external/MCGenerators/lhapdf" \
+configure_package "LHAPDF6" "/afs/cern.ch/sw/lcg/releases/MCGenerators/lhapdf6"\
     "bin" "include" "lib" "" "LHAPDF/LHAPDF.h" "LHAPDF" "BOOST"
 configure_package "PROMC" "" "bin" "" "lib" "" "src/ProMCBook.h" "cbook" ""
-configure_package "ROOT" "/afs/cern.ch/sw/lcg/external/root" \
-    "bin" "include" "lib" "rootcint,root-config" "" "Cint" ""
-configure_package "BOOST" "/afs/cern.ch/sw/lcg/external/Boost" \
+configure_package "ROOT" "/afs/cern.ch/sw/lcg/releases/ROOT"\
+    "bin" "include" "lib" "rootcint,root-config" "TH1D.h" "Cint" ""
+configure_package "BOOST" "/afs/cern.ch/sw/lcg/releases/Boost"\
     "bin" "include" "lib" "" "" "boost_iostreams" ""
 configure_package "GZIP" "" "" "include" "lib" "" "zlib.h" "z" "BOOST"
 
