@@ -441,13 +441,13 @@ setting restricts also resonance-decay emissions to be below the input
 <code>scale</code> value.
   
 <p/> 
-As a further, currently completely non-standard feature, it is also 
-possible to read in the separate scale values of all final particles. 
-Currently such information should appear as a line begun by a single 
-hashtag character (#) and then sequentially the scale value of all 
-particles with status 1. Such scale values could be used e.g. to 
-restrict the maximum scale for shower evolutions for each parton 
-separately. This information is returned by the method 
+As a further non-standard feature, it is also possible to read in the
+separate scale values of all final particles. Such scale values could be used 
+e.g. to restrict the maximum scale for shower evolutions for each parton
+separately. This reading will only be applied if the <code>
+Beams:setProductionScaleFromLHEF</code> switch is true (see <code>
+<aloc href="BeamParameters">Beam Parameters</aloc></code> for details).
+This information is returned by the method 
 <code>double LHAup::scale(int i)</code>. When no such information 
 has been read from the LHEF, the scale defaults to -1. 
  

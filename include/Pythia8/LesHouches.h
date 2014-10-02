@@ -323,10 +323,11 @@ public:
 
   // Constructor.
   LHAupLHEF(Pythia8::Info* infoPtrIn, const char* filenameIn, 
-    const char* headerIn = NULL, bool readHeadersIn = false ) :
+    const char* headerIn = NULL, bool readHeadersIn = false,
+    bool setScalesFromLHEFIn = false ) :
     infoPtr(infoPtrIn), filename(filenameIn), headerfile(headerIn),
     is(openFile(filenameIn, ifs)), reader(*is), isHead(NULL),
-    readHeaders(readHeadersIn) {
+    readHeaders(readHeadersIn), setScalesFromLHEF(setScalesFromLHEFIn) {
     // Optionally open header file as well. Note that both
     // are opened here so that initialisation can be aborted if
     // either of the files is missing, see fileFound().
@@ -339,9 +340,9 @@ public:
      closeAllFiles();
   }
 
-  // Helper routine to correctly close files
+  // Helper routine to correctly close files.
   void closeAllFiles() {
-    // Close header file if separate, and close main file
+    // Close header file if separate, and close main file.
     if (isHead != is) closeFile(isHead, ifsHead);
     closeFile(is, ifs);
   }
@@ -399,6 +400,9 @@ private:
 
   // Flag to read headers or not
   bool readHeaders;
+
+  // Flag to set particle production scales or not.
+  bool setScalesFromLHEF;
 
 };
 

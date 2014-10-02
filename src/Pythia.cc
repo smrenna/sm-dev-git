@@ -367,6 +367,7 @@ bool Pythia::init() {
     string lhef        = word("Beams:LHEF");
     string lhefHeader  = word("Beams:LHEFheader");
     bool   readHeaders = flag("Beams:readLHEFheaders");
+    bool   setScales   = flag("Beams:setProductionScalesFromLHEF");
     bool   skipInit    = flag("Beams:newLHEFsameInit");
     int    nSkipAtInit = mode("Beams:nSkipLHEFatInit");
 
@@ -377,9 +378,10 @@ bool Pythia::init() {
       else {
         if (useNewLHA) delete lhaUpPtr;
         // Header is optional, so use NULL pointer to indicate no value.
-        const char* cstring2 = (lhefHeader == "void") ?
-                               NULL : lhefHeader.c_str();
-        lhaUpPtr   = new LHAupLHEF(&info,cstring1,cstring2,readHeaders);
+        const char* cstring2 = (lhefHeader == "void") 
+          ? NULL : lhefHeader.c_str();
+        lhaUpPtr   = new LHAupLHEF(&info, cstring1, cstring2,
+          readHeaders, setScales);
         useNewLHA  = true;
       }
 
@@ -1473,8 +1475,8 @@ void Pythia::banner(ostream& os) {
      << "tronomy and Theoretical Physics,      |  | \n"
      << " |  |      Lund University, Solvegatan 14A, S"
      << "E-223 62 Lund, Sweden;                |  | \n"
-     << " |  |      phone: + 46 - 46 - 222 48 16; e-ma"
-     << "il: torbjorn@thep.lu.se               |  | \n"
+     << " |  |      e-mail: torbjorn@thep.lu.se       "
+     << "                                      |  | \n"
      << " |  |   Jesper Roy Christiansen;  Department "
      << "of Astronomy and Theoretical Physics, |  | \n"
      << " |  |      Lund University, Solvegatan 14A, S"
@@ -1485,8 +1487,8 @@ void Pythia::banner(ostream& os) {
      << "ische Physik,                         |  | \n"
      << " |  |     Universitaet Heidelberg, Philosophe"
      << "nweg 16, D-69120 Heidelberg, Germany; |  | \n"
-     << " |  |      phone: +49 - 6221 54 9424; e-mail:"
-     << " Nishita.Desai@cern.ch                |  | \n"
+     << " |  |      e-mail: Nishita.Desai@cern.ch     "
+     << "                                      |  | \n"
      << " |  |   Philip Ilten;  Massachusetts Institut"
      << "e of Technology,                      |  | \n"
      << " |  |      stationed at CERN, CH-1211 Geneva "
@@ -1497,36 +1499,32 @@ void Pythia::banner(ostream& os) {
      << "Simulations Group,                    |  | \n"
      << " |  |      Fermi National Accelerator Laborat"
      << "ory, MS 234, Batavia, IL 60510, USA;  |  | \n"
-     << " |  |      phone: + 1 - 630 - 840 - 2556; e-m"
-     << "ail: mrenna@fnal.gov                  |  | \n"
-     << " |  |   Stefan Prestel;  Theory Group, DESY, "
+     << " |  |      e-mail: mrenna@fnal.gov           "
      << "                                      |  | \n"
-     << " |  |      Notkestrasse 85, D-22607 Hamburg, "
-     << "Germany;                              |  | \n"
-     << " |  |      phone: + 49 - 40 - 8998-4250; e-ma"
-     << "il: stefan.prestel@thep.lu.se         |  | \n"
+     << " |  |   Stefan Prestel;  Theoretical Physics "
+     << "Group,                                |  | \n"
+     << " |  |      SLAC National Accelerator Laborato"
+     << "ry, Menlo Park, CA 94025, USA;        |  | \n"
+     << " |  |      e-mail: stefan.prestel@thep.lu.se "
+     << "                                      |  | \n"
      << " |  |   Christine Rasmussen;  Department of A"
      << "stronomy and Theoretical Physics,     |  | \n"
      << " |  |      Lund University, Solvegatan 14A, S"
      << "E-223 62 Lund, Sweden;                |  | \n"
      << " |  |      e-mail: christine.rasmussen@thep.l"
      << "u.se                                  |  | \n"
-     << " |  |   Peter Skands;  Theoretical Physics, C"
-     << "ERN, CH-1211 Geneva 23, Switzerland;  |  | \n"
-     << " |  |      phone: + 41 - 22 - 767 2447; e-mai"
-     << "l: peter.skands@cern.ch               |  | \n"
-     << " |  |   Stefan Ask; former author; e-mail: as"
-     << "k.stefan@gmail.com                    |  | \n"
-     << " |  |   Richard Corke; former author; e-mail:"
-     << " r.corke@errno.net                    |  | \n"
+     << " |  |   Peter Skands;  School of Physics,    "
+     << "                                      |  | \n"
+     << " |  |      Monash University, PO Box 27, 3800"
+     << " Melbourne, Australia;                |  | \n"
+     << " |  |      e-mail: peter.skands@cern.ch      "
+     << "                                      |  | \n"
      << " |  |                                        "
      << "                                      |  | \n"
-     << " |  |   The main program reference is the 'Br"
-     << "ief Introduction to PYTHIA 8.1',      |  | \n"
-     << " |  |   T. Sjostrand, S. Mrenna and P. Skands"
-     << ", Comput. Phys. Comm. 178 (2008) 85   |  | \n"
-     << " |  |   [arXiv:0710.3820]                    "
-     << "                                      |  | \n"
+     << " |  |   The main program reference is 'An Int"
+     << "roduction to PYTHIA 8.2',             |  | \n"
+     << " |  |   T. Sjostrand et al, arXiv:1410.???? ["
+     << "hep-ph]                               |  | \n"
      << " |  |                                        "
      << "                                      |  | \n"
      << " |  |   The main physics reference is the 'PY"

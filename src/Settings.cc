@@ -1970,7 +1970,7 @@ void Settings::initTunePP( int ppTune) {
       else if (preferLHAPDF == 2)
 	word("PDF:pSet",             "LHAPDF6:cteq6l1");
       else word("PDF:pSet",                     "8"   );
-      parm("MultipartonInteractions:pT0Ref",    3.1006);
+      parm("MultipartonInteractions:pT0Ref",    2.1006);
       parm("MultipartonInteractions:ecmPow",    0.2106);
       parm("MultipartonInteractions:expPow",    1.6089);
       parm("MultipartonInteractions:a1",        0.00  );

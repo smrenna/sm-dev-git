@@ -18,7 +18,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.200: 29 September 2014 
+<li>8.200: 2 October 2014 
 <ul> 
 
 <li>A new <code>share/Pythia8</code> directory collects all 
@@ -106,7 +106,7 @@ description.</li>
 <li>The new <code>LHEF3.h</code> file contains a generic interface for
 reading Les Houches Event Files of versions 1.0, 2.0 and 3.0. This 
 allows more information to be read and studied by the author. Currently
-PYTHIA itself makes no use of the information beyond the one in 1.0,
+PYTHIA itself makes little use of the information beyond the one in 1.0,
 but it is available among the 
 <a href="EventInformation.html" target="page">Event Information</a>.
 Examples are found in <code>main37.cc</code> and <code>main38.cc</code>. 
@@ -114,7 +114,10 @@ Examples are found in <code>main37.cc</code> and <code>main38.cc</code>.
  
 <li>The new <code>Beams:strictLHEFscale</code> switch can be used to
 restrict parton showers in resonance decays to be below the input
-Les Houches scale, not only the hard process itself.</li> 
+Les Houches scale, not only the hard process itself.
+The new <code>Beams:setProductionScalesFromLHEF</code> switch can be used
+to restrict the emission off each separate parton to be below its specific
+scale.</li> 
 
 <li>The <code>rootexamples</code> directory has been removed, and the
 two programs <code>examples/main91</code> and <code>examples/main92</code>
@@ -225,8 +228,7 @@ to six flavours at the top mass.</li>
  
 <li>Eliminate harmless compiler warnings for <code>FJcore</code>.</li> 
  
-<li>Updated Brief Introduction (= the official 8.2 article) and 
-Worksheet.</li> 
+<li>Updated Introduction (= the official 8.2 article) and Worksheet.</li> 
  
 </ul> 
 </li> 

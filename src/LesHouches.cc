@@ -871,6 +871,7 @@ bool LHAupLHEF::setNewEventLHEF(double mRecalculate ) {
   std::stringstream ss(reader.eventComments);
   getPDFSave = false;
   getScale   = false;
+  getScale   = (setScalesFromLHEF && reader.version == 1) ? false : true;
   while (getline(ss, line)) {
     istringstream getinfo(line);
     getinfo >> tag;
@@ -891,6 +892,23 @@ bool LHAupLHEF::setNewEventLHEF(double mRecalculate ) {
         }
       if (!getinfo) return false;
       getScale = true;
+    }
+  }
+
+  // Set production scales from <scales> tag. 
+  if ( setScalesFromLHEF && reader.version > 1 ){
+    if(&reader.hepeup.scales)
+    for ( map<string,double>::const_iterator
+      it  = reader.hepeup.scales.attributes.begin();
+      it != reader.hepeup.scales.attributes.end(); ++it ) {
+      if ( it->first.find_last_of("_") != string::npos) {
+        unsigned iFound = it->first.find_last_of("_") + 1;
+        int iPos = atoi(it->first.substr(iFound).c_str());
+        // Only set production scales of final particles.
+        if ( iPos < int(particlesSave.size())
+          && particlesSave[iPos].statusPart == 1)
+          particlesSave[iPos].scalePart = it->second;
+      }
     }
   }
 

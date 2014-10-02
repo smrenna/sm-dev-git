@@ -175,6 +175,10 @@ public:
   // Initialisation
   bool initAfterBeams();
 
+  // Process level vetos
+  bool canVetoProcessLevel() { return doMerge; }
+  bool doVetoProcessLevel(Event& process);
+
   // Shower step vetoes (after the first emission, for Shower-kT scheme)
   int  numberVetoStep() {return 1;}
   bool canVetoStep() { return doShowerKt; }
@@ -1025,15 +1029,34 @@ inline bool JetMatchingMadgraph::initAfterBeams() {
 
 //--------------------------------------------------------------------------
 
+// Process level vetos
+
+inline bool JetMatchingMadgraph::doVetoProcessLevel(Event& process) {
+
+  eventProcessOrig = process;
+
+  // Setup for veto if hard ME has too many partons.
+  // This is done to achieve consistency with the Pythia6 implementation.
+
+  // Clear the event of MPI systems and resonace decay products. Store trimmed
+  // event in workEvent.
+  sortIncomingProcess(process);
+
+  // Veto in case the hard input matrix element already has too many partons.
+  if ( int(typeIdx[0].size()) > nJetMax ) return true;
+
+  // Done  
+  return false;
+
+}
+
+//--------------------------------------------------------------------------
+
 inline bool JetMatchingMadgraph::doVetoStep(int iPos, int nISR, int nFSR,
   const Event& event)  {
 
   // Do not perform any veto if not in the Shower-kT scheme.
   if ( !doShowerKt ) return false;
-
-  // Default to no veto in case the hard input matrix element already has too
-  // many partons (same as in Pythia6).
-  if ( int(typeIdx[0].size()) > nJetMax ) return false;
 
   // Do nothing for emissions after the first one.
   if ( nISR + nFSR > 1 ) return false;

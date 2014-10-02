@@ -177,6 +177,27 @@ of resonance decay products (W-, Z-, H-bosons, top quarks) will
 be set to <i>M/2</i>, where <i>M</i> is the mass of the resonance.
    
  
+<p/><code>flag&nbsp; </code><strong> Beams:setProductionScalesFromLHEF &nbsp;</strong> 
+ (<code>default = <strong>off</strong></code>)<br/>
+If enabled, production scales for all particles in an input Les Houches 
+event will be set by using auxiliary information provided in the 
+input event. Depending on which LHEF version is used, different
+information will be read. For LHEF 1.0, scale information can be
+transferred by including a line starting with the hashtag 
+(#) character at the end of the event. The hashtag should be
+followed by the sequential scale values of the particles with status 1.
+For LHEF 3.0, the standardised <i>&lt;scales&gt;</i> tag is used
+instead. In this case, please ensure that production scale of 
+the final state particle with position <i>i</i> in the input event
+will be transferred as the value of a scales tag attribute which contains
+<i>i</i> at the end of the attribute name, separated from the rest of
+the name by an underscore (_). An example <i>&lt;scales&gt;</i> tag
+would be <i>&lt;scales muf="100" pt_start_3="100" pt_start_4="50"&gt;
+&lt;/scales&gt;</i>. This could be used to set the production scales
+of particles three and four to 100 GeV and 50 GeV, respectively, provided
+that these particles have status 1.
+   
+ 
 <h3>Beam momentum spread</h3> 
  
 This framework currently is intended for a modest beam spread, such as 
