@@ -71,19 +71,6 @@ else
 	@echo "Error: $@ requires HEPMC2"
 endif
 
-# PROMC and HEPMC2.
-main46: $$@.cc $(PREFIX_LIB)/libpythia8.a
-ifeq ($(PROMC_USE)$(HEPMC2_USE),truetrue)
-	@echo "Warning: this example is VERY experimental"
-	$(CXX) $^ -o $@ -I$(PROMC_INCLUDE) -I$(PROMC_INCLUDE)/include\
-	 -I$(HEPMC2_INCLUDE) $(CXX_COMMON)\
-	 -L$(PROMC_LIB) -Wl,-rpath $(PROMC_LIB)\
-	 -lprotoc -lprotobuf -lprotobuf-lite -lcbook\
-	 -L$(HEPMC2_LIB) -Wl,-rpath $(HEPMC2_LIB) -lHepMC
-else
-	@echo "Error: $@ requires PROMC and HEPMC2"
-endif
-
 # FASTJET3.
 main71 main72: $$@.cc $(PREFIX_LIB)/libpythia8.a
 ifeq ($(FASTJET3_USE),true)

@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.200: 2 October 2014 
+<li>8.200: 4 October 2014 
 <ul> 
 
 <li>A new <code>share/Pythia8</code> directory collects all 
@@ -153,6 +153,8 @@ named <code>examples/mainxx</code>, while previously it was named
 <li>The rudimentary support for compilation on Windows platforms,
 present in PYTHIA 8.1, has not yet been updated for 8.2 and so is omitted.
 Also the README.HepMC file is omitted for now.</li> 
+
+<li>The ProMC interface is broken, and has been removed for now.</li> 
 
 <li>Several methods have been removed from the <code>Event</code> class
 since the properties now instead can be accessed from the individual 

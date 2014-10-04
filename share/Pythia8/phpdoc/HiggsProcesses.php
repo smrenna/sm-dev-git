@@ -1065,18 +1065,25 @@ exclusively for the description of angular distributions in decays.
  
 <br/><br/><table><tr><td><strong>HiggsH1:parity  </td><td>  &nbsp;&nbsp;(<code>default = <strong>1</strong></code>; <code>minimum = 0</code>; <code>maximum = 3</code>)</td></tr></table>
 possibility to modify angular decay correlations in the decay of a 
-<ei>h^0(H_1)</ei> decay <ei>Z^0 Z^0</ei> or <ei>W^+ W^-</ei> to four 
-fermions. Currently it does not affect the partial width of the 
-channels, which is only based on the above parameters. 
+<ei>h^0(H_1)</ei> decay <ei>Z^0 Z^0</ei> or <ei>W^+ W^-</ei> to four
+fermions, or <ei>tau^+ tau^-</ei> to any final state. Currently it
+does not affect the partial width of the channels, which is only based
+on the above parameters.
 <br/>
 <input type="radio" name="111" value="0"><strong>0 </strong>: <br/>
 <input type="radio" name="111" value="1" checked="checked"><strong>1 </strong>: assuming the <ei>h^0(H_1)</ei> is a pure scalar  (CP-even), as in the MSSM.<br/>
 <input type="radio" name="111" value="2"><strong>2 </strong>: assuming the <ei>h^0(H_1)</ei> is a pure pseudoscalar  (CP-odd).<br/>
 <input type="radio" name="111" value="3"><strong>3 </strong>: assuming the <ei>h^0(H_1)</ei> is a mixture of the two,  including the CP-violating interference term. The parameter  <ei>eta</ei>, see below, sets the strength of the CP-odd admixture,  with the interference term being proportional to <ei>eta</ei>  and the CP-odd one to <ei>eta^2</ei>.<br/>
+<input type="radio" name="111" value="4"><strong>4 </strong>: same as <code>3</code> but now <ei>phi</ei>, see below, sets the CP-mixing angle. The CP-even term is proportional to <ei>sin^2(phi)</ei>, the interference to <ei>sin(phi)cos(phi)</ei>, and the CP-odd term to <ei>cos^2(phi)</ei>. Consequently <ei>phi=0</ei> is pure CP-odd and <ei>phi=pi/2</ei> is pure CP-even.<br/>
  
 <br/><br/><table><tr><td><strong>HiggsH1:etaParity </td><td></td><td> <input type="text" name="112" value="0." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.</strong></code>)</td></tr></table>
 The <i>eta</i> value of CP-violation in the 
 <code>HiggsSM:parity = 3</code> option. 
+   
+
+<br/><br/><table><tr><td><strong>HiggsH1:phiParity </td><td></td><td> <input type="text" name="113" value="0." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.</strong></code>)</td></tr></table>
+The <i>phi</i> value of CP-mixing in the 
+<code>HiggsSM:parity = 4</code> option. 
    
  
 <br/><br/><table><tr><td><strong>HiggsH2:parity  </td><td>  &nbsp;&nbsp;(<code>default = <strong>1</strong></code>; <code>minimum = 0</code>; <code>maximum = 3</code>)</td></tr></table>
@@ -1085,12 +1092,12 @@ possibility to modify angular decay correlations in the decay of a
 fermions. Currently it does not affect the partial width of the 
 channels, which is only based on the above parameters. 
 <br/>
-<input type="radio" name="113" value="0"><strong>0 </strong>: <br/>
-<input type="radio" name="113" value="1" checked="checked"><strong>1 </strong>: assuming the <ei>H^0(H_2)</ei> is a pure scalar  (CP-even), as in the MSSM.<br/>
-<input type="radio" name="113" value="2"><strong>2 </strong>: assuming the <ei>H^0(H_2)</ei> is a pure pseudoscalar  (CP-odd).<br/>
-<input type="radio" name="113" value="3"><strong>3 </strong>: assuming the <ei>H^0(H_2)</ei> is a mixture of the two,  including the CP-violating interference term. The parameter  <ei>eta</ei>, see below, sets the strength of the CP-odd admixture,  with the interference term being proportional to <ei>eta</ei>  and the CP-odd one to <ei>eta^2</ei>.<br/>
+<input type="radio" name="114" value="0"><strong>0 </strong>: <br/>
+<input type="radio" name="114" value="1" checked="checked"><strong>1 </strong>: assuming the <ei>H^0(H_2)</ei> is a pure scalar  (CP-even), as in the MSSM.<br/>
+<input type="radio" name="114" value="2"><strong>2 </strong>: assuming the <ei>H^0(H_2)</ei> is a pure pseudoscalar  (CP-odd).<br/>
+<input type="radio" name="114" value="3"><strong>3 </strong>: assuming the <ei>H^0(H_2)</ei> is a mixture of the two,  including the CP-violating interference term. The parameter  <ei>eta</ei>, see below, sets the strength of the CP-odd admixture,  with the interference term being proportional to <ei>eta</ei>  and the CP-odd one to <ei>eta^2</ei>.<br/>
  
-<br/><br/><table><tr><td><strong>HiggsH2:etaParity </td><td></td><td> <input type="text" name="114" value="0." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.</strong></code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>HiggsH2:etaParity </td><td></td><td> <input type="text" name="115" value="0." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.</strong></code>)</td></tr></table>
 The <i>eta</i> value of CP-violation in the 
 <code>HiggsSM:parity = 3</code> option. 
    
@@ -1101,12 +1108,12 @@ possibility to modify angular decay correlations in the decay of a
 fermions. Currently it does not affect the partial width of the 
 channels, which is only based on the above parameters. 
 <br/>
-<input type="radio" name="115" value="0"><strong>0 </strong>: <br/>
-<input type="radio" name="115" value="1"><strong>1 </strong>: assuming the <ei>A^0(H_3)</ei> is a pure scalar  (CP-even).<br/>
-<input type="radio" name="115" value="2" checked="checked"><strong>2 </strong>: assuming the <ei>A^0(H_3)</ei> is a pure pseudoscalar  (CP-odd), as in the MSSM.<br/>
-<input type="radio" name="115" value="3"><strong>3 </strong>: assuming the <ei>A^0(H_3)</ei> is a mixture of the two,  including the CP-violating interference term. The parameter  <ei>eta</ei>, see below, sets the strength of the CP-odd admixture,  with the interference term being proportional to <ei>eta</ei>  and the CP-odd one to <ei>eta^2</ei>.<br/>
+<input type="radio" name="116" value="0"><strong>0 </strong>: <br/>
+<input type="radio" name="116" value="1"><strong>1 </strong>: assuming the <ei>A^0(H_3)</ei> is a pure scalar  (CP-even).<br/>
+<input type="radio" name="116" value="2" checked="checked"><strong>2 </strong>: assuming the <ei>A^0(H_3)</ei> is a pure pseudoscalar  (CP-odd), as in the MSSM.<br/>
+<input type="radio" name="116" value="3"><strong>3 </strong>: assuming the <ei>A^0(H_3)</ei> is a mixture of the two,  including the CP-violating interference term. The parameter  <ei>eta</ei>, see below, sets the strength of the CP-odd admixture,  with the interference term being proportional to <ei>eta</ei>  and the CP-odd one to <ei>eta^2</ei>.<br/>
  
-<br/><br/><table><tr><td><strong>HiggsA3:etaParity </td><td></td><td> <input type="text" name="116" value="0." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.</strong></code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>HiggsA3:etaParity </td><td></td><td> <input type="text" name="117" value="0." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.</strong></code>)</td></tr></table>
 The <i>eta</i> value of CP-violation in the 
 <code>HiggsSM:parity = 3</code> option. 
    
@@ -1686,24 +1693,29 @@ if($_POST["112"] != "0.")
 $data = "HiggsH1:etaParity = ".$_POST["112"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["113"] != "1")
+if($_POST["113"] != "0.")
 {
-$data = "HiggsH2:parity = ".$_POST["113"]."\n";
+$data = "HiggsH1:phiParity = ".$_POST["113"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["114"] != "0.")
+if($_POST["114"] != "1")
 {
-$data = "HiggsH2:etaParity = ".$_POST["114"]."\n";
+$data = "HiggsH2:parity = ".$_POST["114"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["115"] != "2")
+if($_POST["115"] != "0.")
 {
-$data = "HiggsA3:parity = ".$_POST["115"]."\n";
+$data = "HiggsH2:etaParity = ".$_POST["115"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["116"] != "0.")
+if($_POST["116"] != "2")
 {
-$data = "HiggsA3:etaParity = ".$_POST["116"]."\n";
+$data = "HiggsA3:parity = ".$_POST["116"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["117"] != "0.")
+{
+$data = "HiggsA3:etaParity = ".$_POST["117"]."\n";
 fwrite($handle,$data);
 }
 fclose($handle);

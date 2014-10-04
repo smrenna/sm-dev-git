@@ -996,9 +996,10 @@ exclusively for the description of angular distributions in decays.
 <p/><code>mode&nbsp; </code><strong> HiggsH1:parity &nbsp;</strong> 
  (<code>default = <strong>1</strong></code>; <code>minimum = 0</code>; <code>maximum = 3</code>)<br/>
 possibility to modify angular decay correlations in the decay of a 
-<i>h^0(H_1)</i> decay <i>Z^0 Z^0</i> or <i>W^+ W^-</i> to four 
-fermions. Currently it does not affect the partial width of the 
-channels, which is only based on the above parameters. 
+<i>h^0(H_1)</i> decay <i>Z^0 Z^0</i> or <i>W^+ W^-</i> to four
+fermions, or <i>tau^+ tau^-</i> to any final state. Currently it
+does not affect the partial width of the channels, which is only based
+on the above parameters.
 <br/><code>option </code><strong> 0</strong> : isotropic decays.   
 <br/><code>option </code><strong> 1</strong> : assuming the <i>h^0(H_1)</i> is a pure scalar 
 (CP-even), as in the MSSM.   
@@ -1009,12 +1010,23 @@ including the CP-violating interference term. The parameter
 <i>eta</i>, see below, sets the strength of the CP-odd admixture, 
 with the interference term being proportional to <i>eta</i> 
 and the CP-odd one to <i>eta^2</i>.   
-   
+<br/><code>option </code><strong> 4</strong> : same as <code>3</code> but now <i>phi</i>, see
+below, sets the CP-mixing angle. The CP-even term is proportional
+to <i>sin^2(phi)</i>, the interference to <i>sin(phi)cos(phi)</i>,
+and the CP-odd term to <i>cos^2(phi)</i>. Consequently <i>phi=0</i> is
+pure CP-odd and <i>phi=pi/2</i> is pure CP-even.  
+  
  
 <p/><code>parm&nbsp; </code><strong> HiggsH1:etaParity &nbsp;</strong> 
  (<code>default = <strong>0.</strong></code>)<br/>
 The <i>eta</i> value of CP-violation in the 
 <code>HiggsSM:parity = 3</code> option. 
+   
+
+<p/><code>parm&nbsp; </code><strong> HiggsH1:phiParity &nbsp;</strong> 
+ (<code>default = <strong>0.</strong></code>)<br/>
+The <i>phi</i> value of CP-mixing in the 
+<code>HiggsSM:parity = 4</code> option. 
    
  
 <p/><code>mode&nbsp; </code><strong> HiggsH2:parity &nbsp;</strong> 

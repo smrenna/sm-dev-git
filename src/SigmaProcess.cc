@@ -654,7 +654,7 @@ double SigmaProcess::weightHiggsDecay( Event& process, int iResBeg,
       - 2. * pow2(p35 * p46 - p36 * p45)
       + p34 * p56 * (pow2(p35 + p46) + pow2(p36 + p45))
       + p34 * p56 * (p35 + p36 - p45 - p46) * (p35 + p45 - p36 - p46) ) )
-      / ( 1. * 2. * etaMod * mZW1 * mZW2 + 2. * pow2(etaMod * mZW1 * mZW2) );
+      / ( 1. + 2. * etaMod * mZW1 * mZW2 + 2. * pow2(etaMod * mZW1 * mZW2) );
   }
 
   // Done.

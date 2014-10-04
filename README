@@ -216,12 +216,6 @@
        interface works properly. Second, both LHAPDF5 and LHAPDF6 can
        be used simultaneously, technically. This behavior has not
        been tested and is not recommended.
-   PROMC) This is an experimental method for storing MC events and is
-       is under active development by ATLAS. Note that this external
-       package is rather volatile and so this interface is not
-       guaranteed to work. See http://atlaswww.hep.anl.gov/asc/promc/
-       for further details. Only "share/Pythia8/examples/main46.cc"
-       uses this package.
    ROOT) The ROOT HEP package used for data analysis and
        visualization, http://root.cern.ch. This package is only used
        for the "share/Pythia8/examples/main9[1,2].cc" examples.

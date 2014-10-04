@@ -879,9 +879,10 @@ exclusively for the description of angular distributions in decays.
  
 <modepick name="HiggsH1:parity" default="1" min="0" max="3"> 
 possibility to modify angular decay correlations in the decay of a 
-<ei>h^0(H_1)</ei> decay <ei>Z^0 Z^0</ei> or <ei>W^+ W^-</ei> to four 
-fermions. Currently it does not affect the partial width of the 
-channels, which is only based on the above parameters. 
+<ei>h^0(H_1)</ei> decay <ei>Z^0 Z^0</ei> or <ei>W^+ W^-</ei> to four
+fermions, or <ei>tau^+ tau^-</ei> to any final state. Currently it
+does not affect the partial width of the channels, which is only based
+on the above parameters.
 <option value="0">isotropic decays.</option> 
 <option value="1">assuming the <ei>h^0(H_1)</ei> is a pure scalar 
 (CP-even), as in the MSSM.</option> 
@@ -892,11 +893,21 @@ including the CP-violating interference term. The parameter
 <ei>eta</ei>, see below, sets the strength of the CP-odd admixture, 
 with the interference term being proportional to <ei>eta</ei> 
 and the CP-odd one to <ei>eta^2</ei>.</option> 
-</modepick> 
+<option value="4">same as <code>3</code> but now <ei>phi</ei>, see
+below, sets the CP-mixing angle. The CP-even term is proportional
+to <ei>sin^2(phi)</ei>, the interference to <ei>sin(phi)cos(phi)</ei>,
+and the CP-odd term to <ei>cos^2(phi)</ei>. Consequently <ei>phi=0</ei> is
+pure CP-odd and <ei>phi=pi/2</ei> is pure CP-even.</option>
+</modepick>
  
 <parm name="HiggsH1:etaParity" default="0."> 
 The <ei>eta</ei> value of CP-violation in the 
 <code>HiggsSM:parity = 3</code> option. 
+</parm> 
+
+<parm name="HiggsH1:phiParity" default="0."> 
+The <ei>phi</ei> value of CP-mixing in the 
+<code>HiggsSM:parity = 4</code> option. 
 </parm> 
  
 <modepick name="HiggsH2:parity" default="1" min="0" max="3"> 

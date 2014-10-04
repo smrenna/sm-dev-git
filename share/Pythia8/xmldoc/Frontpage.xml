@@ -28,8 +28,8 @@ on the one hand, and an in-depth physics description, on the other.
  
 <p/> 
 The overview can be found in the attached PDF file 
-<br/><a href="../pdfdoc/pythia8200.pdf" target="page"><b>An Introduction 
-to PYTHIA 8.2</b></a> 
+<br/><a href="../pdfdoc/pythia8200.pdf" target="page">
+<b>An Introduction to PYTHIA 8.2</b></a> 
 <br/>T. Sj&ouml;strand et al, arXiv:1410.???? [hep-ph]. 
 <br/>You are strongly recommended to read this summary when you 
 start out to learn how to use PYTHIA 8.2. 
@@ -44,7 +44,7 @@ here. When you use PYTHIA 8.2, you should therefore cite both.
  
 <p/> 
 Furthermore, a separate 
-<br/><a href="../pdfdoc/worksheet.pdf" target="page"> 
+<br/><a href="../pdfdoc/worksheet8200.pdf" target="page"> 
 <b>PYTHIA 8.2 Worksheet</b></a>, 
 <br/>also an attached PDF file, offers a practical introduction to 
 using the generator. It has been developed for and used at a few 

@@ -200,11 +200,6 @@ be provided as command-line arguments. Requires that HepMC is properly
 linked. Note that the HepMC output file can become quite big; so no 
 example is included in this distribution.</li> 
  
-<li><code>main46.cc</code> : illustrates how to write a ProMC file with 
-PYTHIA events. Note that this example cannot (yet) be built by the PYTHIA 
-Makefile, but a relevant Makefile is available on the ProMC webpage 
-<code>http://atlaswww.hep.anl.gov/asc/promc/</code>.</li> 
- 
 <li><code>main51.cc</code> : a test of the shape of parton densities, 
 as a check prior to using a given PDF set in a generator.  Requires 
 that LHAPDF is properly linked.</li> 

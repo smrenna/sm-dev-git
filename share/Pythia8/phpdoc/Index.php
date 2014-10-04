@@ -168,8 +168,8 @@ echo "<a href='LesHouchesAccord.php?filepath=".$filepath."' target='page'>Les Ho
  
 <h4>Separate documents</h4> 
  
-<a href="../pdfdoc/pythia8100.pdf" target="page">Brief Introduction</a><br/> 
-<a href="../pdfdoc/worksheet.pdf" target="page">Worksheet</a> 
+<a href="../pdfdoc/pythia8200.pdf" target="page">Introduction</a><br/> 
+<a href="../pdfdoc/worksheet8200.pdf" target="page">Worksheet</a> 
  
 </body>
 </html>
