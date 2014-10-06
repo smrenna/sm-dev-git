@@ -1517,7 +1517,7 @@ void Pythia::banner(ostream& os) {
      << "                                      |  | \n"
      << " |  |      Monash University, PO Box 27, 3800"
      << " Melbourne, Australia;                |  | \n"
-     << " |  |      e-mail: peter.skands@cern.ch      "
+     << " |  |      e-mail: peter.skands@monash.edu   "
      << "                                      |  | \n"
      << " |  |                                        "
      << "                                      |  | \n"

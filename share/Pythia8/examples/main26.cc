@@ -123,7 +123,7 @@ int main() {
   }
 
   // Switch off sophisticated tau treatment: not yet matched to SUSY.
-  pythia.readString("ParticleDecays:sophisticatedTau = 0");
+  pythia.readString("TauDecays:mode = 0");
 
   // Initialization for LHC.
   pythia.readString("Beams:eCM = 14000.");

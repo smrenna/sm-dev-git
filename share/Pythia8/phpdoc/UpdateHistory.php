@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.200: 4 October 2014 
+<li>8.200: 6 October 2014 
 <ul> 
 
 <li>A new <code>share/Pythia8</code> directory collects all 
@@ -251,11 +251,24 @@ the changed structure of the HepMC interface.</li>
 <li>The <i>Z'</i> production process has been updated to optionally
 allow decay to a fourth generation of fermions, with universal or
 non-universal couplings.</li> 
+
+<li>Various improvements in the <i>tau</code> decay handling, 
+including correlated handling of tau pairs in Les Houches input
+from known resonance decays, and from CP-violating Higgs decays.
+The <code>ParticleDecays:sophisticatedTau</code> mode has been renamed
+<code>TauDecays:mode</code>, with two new options, and some 
+further settings have been added, see the
+<?php $filepath = $_GET["filepath"];
+echo "<a href='ParticleDecays.php?filepath=".$filepath."' target='page'>";?>tau decays</a> section. 
+</li> 
  
 <li>Bug fix in the two-loop running <i>alpha_s</i>, for the matching 
 to six flavours at the top mass.</li> 
  
 <li>Eliminate harmless compiler warnings for <code>FJcore</code>.</li> 
+ 
+<li>Bug fix in <i>H^0 &rarr; W^+ W^- &rarr; 4 f</i> matrix element
+for mixed CP-state case.</li> 
  
 <li>Updated Introduction (= the official 8.2 article) and Worksheet.</li> 
  

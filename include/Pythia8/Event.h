@@ -186,11 +186,11 @@ public:
     ? vProdSave.e()  + tauSave * pSave.e()  / mSave : vProdSave.e();}
 
   // Methods that can refer back to the event the particle belongs to.
-  int index()        const;
-  int iTopCopy()     const;
-  int iBotCopy()     const;
-  int iTopCopyId()   const;
-  int iBotCopyId()   const;
+  virtual int index() const;
+  int iTopCopy()      const;
+  int iBotCopy()      const;
+  int iTopCopyId()    const;
+  int iBotCopyId()    const;
   vector<int> motherList()   const;
   vector<int> daughterList() const;
   vector<int> sisterList(bool traceTopBot = false) const;
@@ -278,7 +278,7 @@ public:
     int addDaughter);
   void offsetCol( int addCol);
 
-private:
+protected:
 
   // Constants: could only be changed in the code itself.
   static const double TINY;
