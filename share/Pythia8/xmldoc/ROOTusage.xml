@@ -68,6 +68,21 @@ The example may be compiled and run with as usual. Afterwards, the new
 <code>pytree.root</code> file will contain the PYTHIA events. Note that 
 files can become quite large when many events are generated. 
  
+<h4>Error notice</h4> 
+
+It appears that ROOTCINT cannot handle the <code>dlfcn.h</code> header
+in the current ROOT version. If you run into this problem with your
+ROOT installation, you could try to insert the following lines in
+your <code>PythiaStdlib.h</code> file:
+<pre>
+   // Stdlib header file for dynamic library loading.
+   #ifndef __CINT__
+   #define dlsym __
+   #include <dlfcn.h>
+   #undef dlsym
+   #endif
+</pre>     
+ 
 <br/><br/><hr/> 
 <h3>PYTHIA as a plugin to ROOT</h3> 
  
@@ -236,22 +251,6 @@ functionality, e.g. in an interactive session
     Pythia8::Pythia *p = new Pythia8::Pythia(); 
     p->readString("SoftQCD:nonDiffractive = on"); 
 </pre> 
- 
-<h4>Error notice</h4> 
-
-It appears that ROOTCINT cannot handle the <code>dlfcn.h</code> header
-in the current ROOT version. If you run into this problem with your
-ROOT installation, you could try to insert the following lines in
-your <code>PythiaStdlib.h</code> file:
-<pre>
-   // Stdlib header file for dynamic library loading.
-   #ifndef __CINT__
-   #define dlsym __
-   #include <dlfcn.h>
-   #undef dlsym
-   #endif
-</pre>     
-
 
 </chapter> 
  

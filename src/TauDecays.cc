@@ -102,22 +102,37 @@ void TauDecays::init(Info* infoPtrIn, Settings* settingsPtrIn,
 
 bool TauDecays::decay(int idxOut1, Event& event) {
 
-  // Set the first outgoing particle of the hard process.
-  out1 = HelicityParticle(event[idxOut1]);
+  // Set the outgoing particles of the hard process.
+  out1                    = HelicityParticle(event[idxOut1]);
+  int         idxOut1Top  = out1.iTopCopyId();
+  vector<int> sistersOut1 = event[idxOut1Top].sisterList();
+  int         idxOut2Top  = idxOut1Top;
+  if (sistersOut1.size() == 1) idxOut2Top = sistersOut1[0];
+  else {
+    // If more then one sister, select by preference tau, nu_tau, lep, nu_lep.
+    int tau(-1), tnu(-1), lep(-1), lnu(-1);
+    for (int i = 0; i < (int)sistersOut1.size(); ++i) {
+      int sn = out1.id() == 15 ? -1 : 1;
+      int id = event[sistersOut1[i]].id();
+      if      (id == sn * 15 && tau == -1) tau = sistersOut1[i];
+      else if (id == sn * 16 && tnu == -1) tnu = sistersOut1[i];
+      else if ((id == sn * 11 || (id == sn * 13)) && lep == -1)
+	lep = sistersOut1[i];
+      else if ((id == sn * 12 || (id == sn * 14)) && lnu == -1)
+	lnu = sistersOut1[i];
+    }      
+    if      (tau > 0) idxOut2Top = tau;
+    else if (tnu > 0) idxOut2Top = tnu;
+    else if (lep > 0) idxOut2Top = lep;
+    else if (lnu > 0) idxOut2Top = lnu;
+  }
+  int idxOut2 = event[idxOut2Top].iBotCopyId();
+  out2        = HelicityParticle(event[idxOut2]);
 
   // Set the mediator of the hard process.
-  int idxOut1Top     = out1.iTopCopyId();
   int idxMediator    = event[idxOut1Top].mother1();
   mediator           = HelicityParticle(event[idxMediator]);
   mediator.direction = -1;
-
-  // Set the second outgoing particle of the hard process.
-  int idxOut2Top = (mediator.daughter1() == idxOut1Top)
-    ? mediator.daughter2() : mediator.daughter1();
-  int idxOut2    = event[idxOut2Top].iBotCopyId();
-  out2           = HelicityParticle(event[idxOut2]);
-
-  // Adjust the mediator four-vector if mass less than outgoing particles.
   if (mediator.m() < out1.m() + out2.m()) {
     Vec4 p = out1.p() + out2.p();
     mediator.p(p);
@@ -382,9 +397,10 @@ bool TauDecays::externalMechanism(Event &event) {
     double spinup = mediator.pol();
     if (abs(spinup) > 1.001) spinup = event[mediator.iTopCopyId()].pol();
     if (abs(spinup) > 1.001) spinup = 0;
-    int idx = mediator.spinStates() - 1;
-    mediator.rho[0][0]     = (1 - spinup) / mediator.spinStates();
-    mediator.rho[idx][idx] = (1 + spinup) / mediator.spinStates();
+    if (mediator.rho.size() > 1) {
+      mediator.rho[0][0] = (1 - spinup) / mediator.spinStates();
+      mediator.rho[1][1] = (1 + spinup) / mediator.spinStates();
+    }
     particles[1] = mediator;
     if (abs(mediator.id()) == 22)
       hardME = hmeGamma2TwoFermions.initChannel(particles);

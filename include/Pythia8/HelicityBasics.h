@@ -248,9 +248,6 @@ private:
   // Particle index in the event record.
   int indexSave;
 
-  // Constants: could only be changed in the code itself.
-  static const double TOLERANCE;
-
 };
 
 //==========================================================================

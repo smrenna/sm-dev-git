@@ -36,6 +36,7 @@ Available options.
 --datadir    : PYTHIA share directory (equivalent to --prefix-share).
 --xmldoc     : PYTHIA xmldoc directory.
 --cxxflags   : Returns the PYTHIA -I flag string needed for compilation.
+--cflags     : Equivalent to --cxxflags.
 --ldflags    : Returns the PYTHIA -L/-l flag string needed for compilation.
 --libs       : Equivalent to --ldflags.
 --PACKAGE    : Provides the -I/-L/-l flags needed to link with an external
@@ -87,6 +88,7 @@ for VAR in "$@"; do
     elif [ "$VAR" = "DATADIR" ];    then VAR="PREFIX_SHARE"
     elif [ "$VAR" = "XMLDOC" ];     then VAR="PREFIX_SHARE/xmldoc"
     elif [ "$VAR" = "LIBS" ];       then VAR="LDFLAGS"
+    elif [ "$VAR" = "CFLAGS" ];     then VAR="CXXFLAGS"
     elif [ "$VAR" = "HEPMC" ];      then VAR="HEPMC2"; fi
     
     # All "--with" arguments.
