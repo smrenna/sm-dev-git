@@ -603,7 +603,10 @@ value will have the mass recalculated and reset from the four-momentum,
 numerically for light particles, so it should only be used for the 
 programs and particles where it is needed. Thus the value ought to be 
 at least 10 GeV, so that only massive particles like <i>W^+-</i>, 
-<i>Z^0</i> and <i>t</i> are affected. 
+<i>Z^0</i> and <i>t</i> are affected. If a particle does not have
+its mass recalculated, currently instead the energy is recalculated
+from its three-momntum and mass. This is to avoid spurious mismatches
+from limited numerical precision in an LHEF.
    
  
 <h3>An interface to Les Houches Event Files</h3> 

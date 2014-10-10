@@ -32,14 +32,14 @@ echo "<font color='red'>NO FILE SELECTED YET.. PLEASE DO SO </font><a href='Save
 These update notes describe major updates relative to the 
 PYTHIA 8.186 version, which was the last regular 8.1 release.
 (Minor bug fixes will continue to appear.) The step from 
-8.1 to 8.2 gave an occasion to break backwards compatbility,
+8.1 to 8.2 gave an occasion to break backwards compatibility,
 but this should only affect a small part of the user code.
 
 <h3>Main news by version</h3> 
  
 <ul> 
  
-<li>8.200: 6 October 2014 
+<li>8.200: 10 October 2014 
 <ul> 
 
 <li>A new <code>share/Pythia8</code> directory collects all 
@@ -119,7 +119,7 @@ when LHAPDF is not, is no longer required. The two new files
 <code>LHAPDF5.h</code> and <code>LHAPDF6.h</code> in the
 <code>include/Pythia8Plugins</code> directory contain the necessary
 interface code. The selection of PDF sets, notably for the proton, 
-has been exteded to simplify mixing of internal and external PDF sets,  
+has been extended to simplify mixing of internal and external PDF sets,  
 and it is now possible to specify different PDFs for the two incoming
 protons at the LHC, see the <?php $filepath = $_GET["filepath"];
 echo "<a href='PDFSelection.php?filepath=".$filepath."' target='page'>";?>PDF Selection</a>
@@ -185,7 +185,7 @@ removed altogether, but of course the underlying functionality remains.
 <li>A few aliases for (parts of) settings names have been removed.
 Previously "Multiple" was mapped to "Multiparton", "MI" to "MPI" and
 "minBias" to "nonDiffractive" if a settings name was not found for the 
-original inpout string.</li> 
+original input string.</li> 
  
 <li>The default tune has been changed from 4C to Monash 2013, meaning
 <code>Tune:ee = 7</code> and <code>Tune:pp = 14</code>. The old 4C
@@ -221,7 +221,7 @@ junctions. The old model remains as default for now. The
 reconnection has been renamed <code>ColourReconnection:reconnect</code>,
 the main parameter <code>BeamRemnants:reconnectRange</code> of the old
 model has been renamed <code>ColourReconnection:range</code>, and several
-new settigns have been introduced, notably 
+new settings have been introduced, notably 
 <code>ColourReconnection:mode</code> to switch among the three models.
 </li> 
 
@@ -252,25 +252,41 @@ the changed structure of the HepMC interface.</li>
 allow decay to a fourth generation of fermions, with universal or
 non-universal couplings.</li> 
 
-<li>Various improvements in the <i>tau</code> decay handling, 
-including correlated handling of tau pairs in Les Houches input
-from known resonance decays, and from CP-violating Higgs decays.
-The <code>ParticleDecays:sophisticatedTau</code> mode has been renamed
-<code>TauDecays:mode</code>, with two new options, and some 
-further settings have been added, see the
-<?php $filepath = $_GET["filepath"];
-echo "<a href='ParticleDecays.php?filepath=".$filepath."' target='page'>";?>tau decays</a> section. 
+<li>Introduction of a new Higgs CP-mixing parametrization via a mixing
+angle <i>phi</i> as described in <?php $filepath = $_GET["filepath"];
+echo "<a href='HiggsProcesses.php?filepath=".$filepath."' target='page'>";?>Higgs
+Processes</a>. The choice of the Higgs CP-mixing parametrization
+now also affects the distributions of the <i>tau</i> decay products
+from the processes <i>H^0 &rarr; tau^+ tau ^-</i>.
+
+<li>Bug fix in <i>H^0 &rarr; W^+ W^- &rarr; 4 f</i> matrix element
+for mixed CP-state case.</li>
+
+<li>Various improvements and finer grain control for the determination
+of <i>tau</i> decay correlations and <i>tau</i> polarizations. By
+default the decays of <i>tau</i> pairs from known resonance decays
+in Les Houches input are now correlated.
+The <code>ParticleDecays:sophisticatedTau</code> mode
+in <?php $filepath = $_GET["filepath"];
+echo "<a href='ParticleDecays.php?filepath=".$filepath."' target='page'>";?>Particle Decays</a> has been renamed
+<code>TauDecays:mode</code>, as well as all <i>tau</i>
+related <code>ParticleDecay</code> options, with two new options of
+using only the internal machinery to determine correlations and
+polarizations, and only using the provided SPINUP digit from Les
+Houches input. The option <code>TauDecays:externalMode</code> has been
+introduced to control the interpretation of the SPINUP digit.
 </li> 
+
+<li>For Les Houches Event input the energy of a particle is recalculated
+from its three-momentum and mass, in order to limit mismatches from
+limited numerical precision in the input values.</li>
  
 <li>Bug fix in the two-loop running <i>alpha_s</i>, for the matching 
 to six flavours at the top mass.</li> 
  
 <li>Eliminate harmless compiler warnings for <code>FJcore</code>.</li> 
  
-<li>Bug fix in <i>H^0 &rarr; W^+ W^- &rarr; 4 f</i> matrix element
-for mixed CP-state case.</li> 
- 
-<li>Updated Introduction (= the official 8.2 article) and Worksheet.</li> 
+ <li>Updated Introduction (= the official 8.2 article) and Worksheet.</li> 
  
 </ul> 
 </li> 

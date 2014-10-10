@@ -236,7 +236,23 @@ functionality, e.g. in an interactive session
     Pythia8::Pythia *p = new Pythia8::Pythia(); 
     p->readString("SoftQCD:nonDiffractive = on"); 
 </pre> 
-   
+ 
+<h4>Error notice</h4> 
+
+It appears that ROOTCINT cannot handle the <code>dlfcn.h</code> header
+in the current ROOT version. If you run into this problem with your
+ROOT installation, you could try to insert the following lines in
+your <code>PythiaStdlib.h</code> file:
+<pre>
+   // Stdlib header file for dynamic library loading.
+   #ifndef __CINT__
+   #define dlsym __
+   #include <dlfcn.h>
+   #undef dlsym
+   #endif
+</pre>     
+
+
 </chapter> 
  
 <!-- Copyright (C) 2014 Torbjorn Sjostrand --> 

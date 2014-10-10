@@ -510,6 +510,8 @@ bool LHAup::setNewEventLHEF(istream& is, double mRecalculate ) {
     // Optionally recalculate mass from four-momentum.
     if (doRecalculate && pup5 > mRecalculate)
       pup5 = sqrtpos( pup4*pup4 - pup1*pup1 - pup2*pup2 - pup3*pup3);
+    // If not, recalculate energy from three-momentum and mass.
+    else pup4 = sqrt( pup1*pup1 + pup2*pup2 + pup3*pup3 + pup5*pup5);
     particlesSave.push_back( LHAParticle( idup, istup, mothup1, mothup2,
       icolup1, icolup2, pup1, pup2, pup3, pup4, pup5, vtimup, spinup, -1.) );
   }
@@ -856,6 +858,8 @@ bool LHAupLHEF::setNewEventLHEF(double mRecalculate ) {
     // Optionally recalculate mass from four-momentum.
     if (doRecalculate && pup5 > mRecalculate)
       pup5 = Pythia8::sqrtpos( pup4*pup4 - pup1*pup1 - pup2*pup2 - pup3*pup3);
+    // If not, recalculate energy from three-momentum and mass.
+    else pup4 = sqrt( pup1*pup1 + pup2*pup2 + pup3*pup3 + pup5*pup5);
     particlesSave.push_back( Pythia8::LHAParticle( idup,istup,mothup1,mothup2,
       icolup1, icolup2, pup1, pup2, pup3, pup4, pup5, vtimup, spinup, -1.) );
   }
