@@ -18,12 +18,6 @@ Merging:muRen               = 91.188
 Merging:muFacInME           = 91.188
 Merging:muRenInME           = 91.188
 
-1:m0 = 0.0
-2:m0 = 0.0
-3:m0 = 0.0
-4:m0 = 0.0
-5:m0 = 0.0
-
 ! Use same PDFs / alpha_s value as in ME calculation (not necessary!)
 PDF:pSet                  = LHAPDF5:CT10.LHgrid
 SpaceShower:alphaSvalue   = 0.118
@@ -39,5 +33,4 @@ Check:epTolErr               = 2e-2
 LHEFInputs:nSubruns       = 1 
 Main:subrun               = 0
 Merging:doPTLundMerging   = on
-Beams:LHEF                = zemu_lo012.lhe.gz
-
+Beams:LHEF                = zProduction_Ckkwl_012.lhe.gz

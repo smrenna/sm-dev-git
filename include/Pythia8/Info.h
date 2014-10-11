@@ -216,9 +216,16 @@ public:
   // Return a list of all header key names
   vector < string > headerKeys();
 
-  // LHEF3 information: Public for easy access.
+  // Return the number of processes in the LHEF.
+  int nProcessesLHEF() { return int(sigmaLHEFSave.size());}
+  // Return the cross section information read from LHEF.
+  double sigmaLHEF(int iProcess) { return sigmaLHEFSave[iProcess];}
 
+  // LHEF3 information: Public for easy access.
   int LHEFversionSave;
+
+  // Save process information as read from init block of LHEF.
+  vector<double> sigmaLHEFSave;
 
   // Contents of the LHAinitrwgt tag
   LHAinitrwgt *initrwgt;

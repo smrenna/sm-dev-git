@@ -790,6 +790,7 @@ bool LHAupLHEF::setInitLHEF( istream & isIn, bool readHead ) {
   xSecSumSave = 0.;
   xErrSumSave = 0.;
   int lprup; 
+  infoPtr->sigmaLHEFSave.resize(0);
   for (int ip = 0; ip < nprup; ++ip) { 
     xsecup = reader.heprup.XSECUP[ip];
     xerrup = reader.heprup.XERRUP[ip];
@@ -798,6 +799,7 @@ bool LHAupLHEF::setInitLHEF( istream & isIn, bool readHead ) {
     addProcess(lprup, xsecup, xerrup, xmaxup);
     xSecSumSave += xsecup;
     xErrSumSave += pow(xerrup,2);
+    infoPtr->sigmaLHEFSave.push_back(xsecup);
   }
   xErrSumSave = sqrt(xErrSumSave);
 

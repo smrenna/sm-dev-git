@@ -35,9 +35,7 @@ int main( int argc, char* argv[] ){
     cerr << " Unexpected number of command-line arguments ("<<argc<<"). \n"
          << " You are expected to provide the arguments" << endl
          << " 1. Input file for settings" << endl
-         << " 2. Name of the input LHE file (with path), up to the '_tree'"
-         << " identifier" << endl
-         << " 3. Output hepmc file name" << endl
+         << " 2. Output file for HepMC events" << endl
          << " Program stopped. " << endl;
     return 1;
   }
@@ -115,34 +113,6 @@ int main( int argc, char* argv[] ){
     pythia.setUserHooksPtr(matching);
   }
 
-  // x-section estimate for unweighted events (currently only needed in MLM)
-  Pythia estimateXsec;
-  estimateXsec.settings.addMode("LHEFInputs:nSubruns",0,true,false,0,100);
-  estimateXsec.readFile(argv[1], 0);
-  estimateXsec.settings.flag("PartonLevel:FSR", false);
-  estimateXsec.settings.flag("PartonLevel:ISR", false);
-  estimateXsec.settings.flag("PartonLevel:MPI", false);
-  estimateXsec.settings.flag("HadronLevel:all", false);
-  estimateXsec.settings.flag("Check:Event", false);
-  estimateXsec.settings.flag("Print:quiet", true);
-  estimateXsec.settings.flag("Init:showProcesses", false);
-  estimateXsec.settings.flag("Init:showMultipartonInteractions", false);
-  estimateXsec.settings.flag("Init:showChangedSettings", false);
-  estimateXsec.init();
-  estimateXsec.next();
-  bool est = (doMatch && estimateXsec.info.lhaStrategy() == 3);
-  // Loop through event file to get the cross section for MLM.
-  while (est) {
-    // Generate the next event
-    if (!estimateXsec.next()) {
-      // Break if all events are used up.
-      if (estimateXsec.info.atEndOfFile()) break;
-      // Try next event if Pythia failed (very rare!)
-      continue;
-    }
-  } // End of event loop.
-  double xsecLO      = estimateXsec.info.sigmaGen();
-
   // Cross section an error.
   double sigmaTotal  = 0.;
   double errorTotal  = 0.;
@@ -159,7 +129,12 @@ int main( int argc, char* argv[] ){
     pythia.readFile(argv[1], iMerge);
     // Initialise.
     pythia.init();
- 
+
+    // Get the inclusive x-section by summing over all process x-sections.
+    double xs = 0.;
+    for (int i=0; i < pythia.info.nProcessesLHEF(); ++i)
+      xs += pythia.info.sigmaLHEF(i);
+
     // Start generation loop
     while( pythia.info.nSelected() < nEvent ){
 
@@ -188,7 +163,7 @@ int main( int argc, char* argv[] ){
         normhepmc = 1. / double(1e9*nEvent);
       // Work with unweighted events.
       else
-        normhepmc = xsecLO / double(nEvent);
+        normhepmc = xs / double(1e9*nEvent);
 
       // Set event weight
       hepmcevt->weights().push_back(evtweight*normhepmc);

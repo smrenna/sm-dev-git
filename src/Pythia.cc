@@ -1505,7 +1505,7 @@ void Pythia::banner(ostream& os) {
      << "Group,                                |  | \n"
      << " |  |      SLAC National Accelerator Laborato"
      << "ry, Menlo Park, CA 94025, USA;        |  | \n"
-     << " |  |      e-mail: stefan.prestel@thep.lu.se "
+     << " |  |      e-mail: prestel@slac.stanford.edu "
      << "                                      |  | \n"
      << " |  |   Christine Rasmussen;  Department of A"
      << "stronomy and Theoretical Physics,     |  | \n"
