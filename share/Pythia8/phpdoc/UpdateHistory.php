@@ -39,6 +39,21 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
+<li>8.201: 14 October 2014 
+<ul> 
+
+<li>The <i>Introduction to PYTHIA 8.2</i> has now been assigned 
+the arXiv:1410.3012 [hep-ph] identifier, which has been introduced 
+in code and text.</li> 
+
+<li>The <code>enable-shared</code> by mistake was not listed
+among allowed configure options.</li> 
+
+<li>Corrected a few tiny documentation typos.</li> 
+
+</ul> 
+</li> 
+ 
 <li>8.200: 11 October 2014 
 <ul> 
 
@@ -204,7 +219,7 @@ to do this. All old tunes are with the 1 value but, since the tunes are
 not probing the detailed <i>g &rarr; q qbar</i> behaviour, this is
 not set as part of the tune options.</li> 
  
-<li>Christine Rasmussen joins as new PYTHIA collaboration member.</li> 
+<li>Christine O. Rasmussen joins as new PYTHIA collaboration member.</li> 
  
 <li>A new model for the handling of <?php $filepath = $_GET["filepath"];
 echo "<a href='BeamRemnants.php?filepath=".$filepath."' target='page'>";?>beam 
@@ -229,7 +244,7 @@ new settings have been introduced, notably
 makes available an even larger selection of toy colour reconnection 
 models, via user hooks. Some of them are only intended for top decays, 
 for top mass uncertainty studies, whereas others can be used more 
-generally. The <code>examples/main29.cc</code> program illustrated how 
+generally. The <code>examples/main29.cc</code> program illustrates how 
 the different options should be set up.</li> 
 
 <li>Several new features and improvements in the matching/merging 
@@ -257,7 +272,7 @@ angle <i>phi</i> as described in <?php $filepath = $_GET["filepath"];
 echo "<a href='HiggsProcesses.php?filepath=".$filepath."' target='page'>";?>Higgs
 Processes</a>. The choice of the Higgs CP-mixing parametrization
 now also affects the distributions of the <i>tau</i> decay products
-from the processes <i>H^0 &rarr; tau^+ tau ^-</i>.
+from the processes <i>H^0 &rarr; tau^+ tau^-</i>.
 
 <li>Bug fix in <i>H^0 &rarr; W^+ W^- &rarr; 4 f</i> matrix element
 for mixed CP-state case.</li>
@@ -269,8 +284,8 @@ in Les Houches input are now correlated.
 The <code>ParticleDecays:sophisticatedTau</code> mode
 in <?php $filepath = $_GET["filepath"];
 echo "<a href='ParticleDecays.php?filepath=".$filepath."' target='page'>";?>Particle Decays</a> has been renamed
-<code>TauDecays:mode</code>, as well as all <i>tau</i>
-related <code>ParticleDecay</code> options, with two new options of
+<code>TauDecays:mode</code>, as well as all <i>tau</i>-related 
+<code>ParticleDecay</code> options, with two new options of
 using only the internal machinery to determine correlations and
 polarizations, and only using the provided SPINUP digit from Les
 Houches input. The option <code>TauDecays:externalMode</code> has been
@@ -286,12 +301,11 @@ to six flavours at the top mass.</li>
  
 <li>Eliminate harmless compiler warnings for <code>FJcore</code>.</li> 
  
- <li>Updated Introduction (= the official 8.2 article) and Worksheet.</li> 
+<li>Updated Introduction (= the official 8.2 article) and Worksheet.</li> 
  
 </ul> 
 </li> 
  
-
 </ul> 
  
 </body>
