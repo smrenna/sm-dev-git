@@ -235,6 +235,7 @@ bool PartonLevel::next( Event& process, Event& event) {
   isSingleDiff   = isDiff && !isDoubleDiff  && !isCentralDiff;
   isNonDiff      = infoPtr->isNonDiffractive();
   doVeto         = false;
+  infoPtr->setAbortPartonLevel(false);
 
   // nHardLoop counts how many hard-scattering subsystems are to be processed.
   // Almost always 1, but elastic and low-mass diffraction gives 0, while
@@ -765,7 +766,7 @@ bool PartonLevel::next( Event& process, Event& event) {
       return false;
     }
   }
-  
+
   // Perform showers in resonance decay chains after beams & reconnection.
   int oldSizeEvt = event.size();
   if (!earlyResDec) {
@@ -1437,6 +1438,16 @@ bool PartonLevel::resonanceShowers( Event& process, Event& event,
     int acolAft = aftMother.acol();
     RotBstMatrix M;
     M.bst( hardMother.p(), aftMother.p());
+
+    // New colour reconnection can not handle late resonance decay 
+    // of coloured particles so abort event.
+    if ( (colBef != 0 || acolBef != 0) && doReconnect && reconnectMode == 1 
+      && !earlyResDec) {
+      infoPtr->errorMsg("Abort in PartonLevel::resonanceShower: "
+        "new CR can't handle late resonance decay of coloured particles");
+      infoPtr->setAbortPartonLevel(true);
+      return false;
+    }
 
     // Extract next partons from hard event into normal event record.
     vector<bool> doCopyJun;

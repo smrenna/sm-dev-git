@@ -1600,7 +1600,7 @@ void TimeShower::setupWeakdip( int iSys, int i, int weakType, Event& event,
     else if (event[iRad].statusAbs() > 40) {
       if (event[event[iRad].mother1()].idAbs() < 20)
         weakPol = event[event[iRad].mother1()].pol();
-      else if ((int)event[iRad].sisterList(true).size() != 0)
+      else if (int(event[iRad].sisterList(true).size()) != 0)
         weakPol = event[event[iRad].sisterList(true)[0]].pol();
     }
     // If it is not a 2 to 2 process, always use recoiler.

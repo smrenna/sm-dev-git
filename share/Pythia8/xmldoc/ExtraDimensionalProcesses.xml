@@ -267,9 +267,9 @@ SM interference included.</option>
 interference included.</option> 
 </modepick> 
  
-<parm name="ExtraDimensionsTEV:nMax" default="10" min="1" max="100"> 
+<modeopen name="ExtraDimensionsTEV:nMax" default="10" min="1" max="100"> 
 The number of included KK excitations. 
-</parm> 
+</modeopen> 
  
 <parm name="ExtraDimensionsTEV:mStar" default="4000.0" min="1000.0"> 
 The KK mass <ei>m^*</ei>, given by the inverse of the single extra 

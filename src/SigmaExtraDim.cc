@@ -825,7 +825,7 @@ void Sigma2ffbar2TEVffbar::initProc() {
   gmZmode = settingsPtr->mode("ExtraDimensionsTEV:gmZmode");
   
   // Pick number of KK excitations
-  nexcitationmax  = (int)settingsPtr->parm("ExtraDimensionsTEV:nMax");
+  nexcitationmax  = settingsPtr->mode("ExtraDimensionsTEV:nMax");
   
   // Initialize the widths of the KK propogators.
   // partial width of the KK photon

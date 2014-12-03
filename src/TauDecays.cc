@@ -111,7 +111,7 @@ bool TauDecays::decay(int idxOut1, Event& event) {
   else {
     // If more then one sister, select by preference tau, nu_tau, lep, nu_lep.
     int tau(-1), tnu(-1), lep(-1), lnu(-1);
-    for (int i = 0; i < (int)sistersOut1.size(); ++i) {
+    for (int i = 0; i < int(sistersOut1.size()); ++i) {
       int sn = out1.id() == 15 ? -1 : 1;
       int id = event[sistersOut1[i]].id();
       if      (id == sn * 15 && tau == -1) tau = sistersOut1[i];

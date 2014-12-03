@@ -22,7 +22,7 @@ namespace Pythia8 {
 //--------------------------------------------------------------------------
 
 // The current Pythia (sub)version number, to agree with XML version.
-const double Pythia::VERSIONNUMBERCODE = 8.201;
+const double Pythia::VERSIONNUMBERCODE = 8.202;
 
 //--------------------------------------------------------------------------
 
@@ -1107,6 +1107,10 @@ bool Pythia::next() {
 
       // Parton-level evolution: ISR, FSR, MPI.
       if ( !partonLevel.next( process, event) ) {
+
+	// Abort event generation if parton level is set to abort.
+        if (info.getAbortPartonLevel()) return false;
+	
         // Skip to next hard process for failure owing to deliberate veto,
         // or alternatively retry for the same hard process.
         hasVetoed = partonLevel.hasVetoed();

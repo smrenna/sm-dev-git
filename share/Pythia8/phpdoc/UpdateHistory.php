@@ -39,6 +39,41 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
+<li>8.202: 3 December 2014 
+<ul> 
+
+<li>The <code>main61</code> example program has been removed,
+since now LHAPDF can be loaded dynamically for <code>main42</code>,
+so that the two become equivalent. Further <code>main62</code> 
+has been renamed <code>main43</code>, to gather HepMC-related
+examples.
+</li> 
+
+<li>Minor fixes in the LHEF version 3 reader. Introduce a new 
+matching writer of LHEF version 1 or 3 files.</li> 
+
+<li>Bug fix in check for colour sextets. Thanks to Alexander Belyaev 
+and Alexander Pukhov.</li> 
+
+<li>Bug fix in new beam remnant model, so that it basically
+operates like the old one for <i>e^+e^-</i> annihilation.</li> 
+
+<li>Two bug fixes in the new colour reconnection model, one for
+diquarks at the ends of junction strings, and another to check that 
+coloured resonances are processes with early resonance decays option.</li> 
+
+<li>Bug fix for multiple <code>Pythia::init()</code> calls, where
+beam contents were not properly reset. Thanks to Josh Bendavid.</li> 
+
+<li>Fix typo in constants of the <i>tau &rarr; 3 pi</i> current 
+for the amplitudes of the <i>rho</i>, <i>rho(1450)</i>, and 
+<i>f2</i>. Thanks to Ian Nugent.</li> 
+
+<li>Some further minor changes.</li> 
+
+</ul> 
+</li> 
+ 
 <li>8.201: 14 October 2014 
 <ul> 
 

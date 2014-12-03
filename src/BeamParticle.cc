@@ -112,6 +112,7 @@ void BeamParticle::init( int idIn, double pzIn, double eIn, double mIn,
   initBeamKind();
   pBeam             = Vec4( 0., 0., pzIn, eIn);
   mBeam             = mIn;
+  clear();
 
 }
 
@@ -980,6 +981,7 @@ void BeamParticle::findColSetup(Event& event) {
   }
   colStates[0][0][0].nTotal = 1;
 
+  bool noColouredParticles = true;
   // Find all possible multiplets and their degeneracies.
   for (int i = 0; i < size(); ++i) {
     for (int j = 0; j < int(colStates[i].size()); ++j) {
@@ -1055,6 +1057,12 @@ void BeamParticle::findColSetup(Event& event) {
 	    colStates[i+1][j + 1][k - 2].nTotal += colStates[i][j][k].nTotal;
 	  }
 	}
+	// If the parton is not a quark or a gluon.
+	if (idParton != 21 && abs(idParton) > 9) {
+	  colStates[i+1][j][k].lastSteps.push_back(make_pair(j,k));
+	  colStates[i+1][j][k].nTotal += colStates[i][j][k].nTotal;
+	} else
+	  noColouredParticles = false;
       }
     }
   }
@@ -1066,7 +1074,7 @@ void BeamParticle::findColSetup(Event& event) {
     for (int j = 0;j < int(colStates[size()][i].size()); ++j) {
       // Do not allow colour singlet states, since this will overlap 
       // with diffractive events described elsewhere in PYTHIA.
-      if (i == 0 && j == 0) continue;
+      if (i == 0 && j == 0 && !noColouredParticles) continue;
       
       double multipletSize = (i + 1) * (j + 1) * (i + j + 2) / 2.;
       totalSize += colStates[size()][i][j].nTotal *
@@ -1079,7 +1087,11 @@ void BeamParticle::findColSetup(Event& event) {
   double chosenSize = rndmPtr->flat() * totalSize;
   for (int i = 0;i < int(colStates[size()].size()); ++i) {
     for (int j = 0;j < int(colStates[size()][i].size()); ++j) {  
-      if (i == 0 && j == 0) continue;
+
+      // Do not allow singlets.
+      if (i == 0 && j == 0 && !noColouredParticles) continue;
+
+      // Reweight according to multiplet size.
       double multipletSize = (i + 1) * (j + 1) * (i + j + 2) / 2.;
       curSize += colStates[size()][i][j].nTotal *
 	multipletSize * exp(-multipletSize / beamSat);
@@ -1306,7 +1318,7 @@ bool BeamParticle::remnantFlavoursNew(Event& event) {
   }
   int beamJunc = 0;
   if (isBaryon()) beamJunc = 1;
-  if (id() < 0)   beamJunc = -1;
+  if (id() < 0)   beamJunc = -beamJunc;
 
   // Count the number of gluons that needs to be added.
   int nGluons =  (colSetup.first + colSetup.second - (size() - nInit) 

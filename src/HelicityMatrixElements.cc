@@ -1275,13 +1275,13 @@ void HMETau2ThreePions::initResonances() {
   rhoPp.push_back(0);         rhoPp.push_back(3.11018); rhoPp.push_back(0);
   rhoAp.push_back(1);         rhoAp.push_back(0.12);    rhoAp.push_back(0);
   rhoPd.push_back(-0.471239); rhoPd.push_back(1.66504); rhoPd.push_back(0);
-  rhoAd.push_back(3.7e-07);   rhoAd.push_back(8.7e-07); rhoAd.push_back(0);
+  rhoAd.push_back(0.37);      rhoAd.push_back(0.87);    rhoAd.push_back(0);
 
   // Scalar and tensor parameters.
   f0M  = 1.186;    f2M  = 1.275;   sigM = 0.860;
   f0G  = 0.350;    f2G  = 0.185;   sigG = 0.880;
   f0P  = -1.69646; f2P  = 1.75929; sigP = 0.722566;
-  f0A  = 0.77;     f2A  = 7.1e-07; sigA = 2.1;
+  f0A  = 0.77;     f2A  = 0.71;    sigA = 2.1;
 
   // Calculate the weights from the phases and amplitudes.
   calculateResonanceWeights(rhoPp, rhoAp, rhoWp);

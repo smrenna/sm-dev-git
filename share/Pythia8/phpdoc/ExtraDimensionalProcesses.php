@@ -331,7 +331,7 @@ processes.
 <input type="radio" name="39" value="4"><strong>4 </strong>: only pure <ei>gamma_{KK}</ei> contribution, with  SM interference included.<br/>
 <input type="radio" name="39" value="5"><strong>5 </strong>: only pure <ei>Z_{KK}</ei> contribution, with SM  interference included.<br/>
  
-<br/><br/><table><tr><td><strong>ExtraDimensionsTEV:nMax </td><td></td><td> <input type="text" name="40" value="10" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>10</strong></code>; <code>minimum = 1</code>; <code>maximum = 100</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>ExtraDimensionsTEV:nMax  </td><td></td><td> <input type="text" name="40" value="10" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>10</strong></code>; <code>minimum = 1</code>; <code>maximum = 100</code>)</td></tr></table>
 The number of included KK excitations. 
    
  

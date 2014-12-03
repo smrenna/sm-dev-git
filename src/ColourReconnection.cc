@@ -387,8 +387,10 @@ void ColourReconnection::setupDipoles( Event& event, int iFirst) {
  
   // Find all quarks and follow untill no more colour.
   for (int i = iFirst; i < event.size(); ++i) {
-    if (event[i].isFinal() && !inChain[i] && 
-        event[i].isQuark() && event[i].id() > 0) {
+    if ( (event[i].isFinal() && !inChain[i] 
+      &&  event[i].isQuark() && event[i].id() > 0) 
+      || (event[i].isFinal() && !inChain[i] 
+      &&  event[i].isDiquark() && event[i].id() < 0) ) {
       int curCol = event[i].col();
       inChain[i] = true;
       vector<int> chain;
@@ -509,9 +511,9 @@ void ColourReconnection::setupDipoles( Event& event, int iFirst) {
       if (j != int(chains[i].size() - 1)) {
 
 	// Start by picking new colour.
-        int newCol = lastCol;
+        int newCol = int(rndmPtr->flat() * nReconCols);
         while (newCol == lastCol && !sameNeighbourCol) {
-          newCol = (int)(rndmPtr->flat() * nReconCols); 
+          newCol = int(rndmPtr->flat() * nReconCols); 
         }
 
 	// Need to check whether the quark comes from a g->qqbar split.
@@ -535,7 +537,7 @@ void ColourReconnection::setupDipoles( Event& event, int iFirst) {
 	    
 	      // If the two colours are the same, pick a new.
 	      while (colSis == newCol && !sameNeighbourCol)
-		newCol = (int)(rndmPtr->flat() * nReconCols);
+		newCol = int(rndmPtr->flat() * nReconCols);
 	    }
 	  }
 	}
@@ -562,7 +564,7 @@ void ColourReconnection::setupDipoles( Event& event, int iFirst) {
 	      // If the two colours are the same, pick a new.
 	      while ((colSis == newCol || newCol == lastCol) 
 		     && !sameNeighbourCol)
-		newCol = (int)(rndmPtr->flat() * nReconCols);
+		newCol = int(rndmPtr->flat() * nReconCols);
 	    }
 	  }
 	}
@@ -610,7 +612,7 @@ void ColourReconnection::setupDipoles( Event& event, int iFirst) {
                    colSis3 == newCol || acolSis1 == newCol || 
                    acolSis2 == newCol || acolSis3 == newCol) 
 		   && !sameNeighbourCol)
-	      newCol = (int)(rndmPtr->flat() * nReconCols);
+	      newCol = int(rndmPtr->flat() * nReconCols);
 	  }
 	}
 
@@ -647,10 +649,10 @@ void ColourReconnection::setupDipoles( Event& event, int iFirst) {
       else 
       if (isGluonLoop[i]) 
       if (event[ chains[i][j] ].col() == event[ chains[i][0] ].acol()) {
-	int newCol = lastCol;
+	int newCol = int(rndmPtr->flat() * nReconCols);
 	while ( (newCol == lastCol || newCol == firstCol)
 		&& !sameNeighbourCol) {
-	  newCol = (int)(rndmPtr->flat() * nReconCols); 
+	  newCol = int(rndmPtr->flat() * nReconCols); 
 	}
 	dipoles.push_back(new ColourDipole(event[ chains[i][j] ].col(), 
 	  chains[i][j], chains[i][0], newCol));
@@ -1498,7 +1500,7 @@ bool sortFunc(ColourDipole* a, ColourDipole* b) {
 // Form all pseudoparticles below m0.
 
 void ColourReconnection::makeAllPseudoParticles( Event & event, int iFirst) {
-  
+
   // Make junctions.
   for (int i = 0; i < event.sizeJunction(); ++i) 
     junctions.push_back(event.getJunction(i));
@@ -1569,7 +1571,7 @@ void ColourReconnection::makeAllPseudoParticles( Event & event, int iFirst) {
           dipoles[j]);
       }
     }
-    
+
     // Tell whether dipoles are connected to other dipoles.
     if (event[i].isQuark() && event[i].id() > 0)
       particles.back().colEndIncluded.push_back(true);
@@ -1584,7 +1586,7 @@ void ColourReconnection::makeAllPseudoParticles( Event & event, int iFirst) {
   // pseudo particle setup.
   // This is mainly to avoid having to distinguish between combining
   // original particles and pseudoparticles.
-  
+
   // Set right dipole connections in junctions.
   for (int i = 0; i < int(dipoles.size()); ++i) {
     if (dipoles[i]->iCol < 0) {
@@ -1622,9 +1624,10 @@ void ColourReconnection::makeAllPseudoParticles( Event & event, int iFirst) {
     }
     if (finished) break;
   }
+
   // Sort the dipoles.
   sort(dipoles.begin(), dipoles.end(), sortFunc);
-  
+
   // Done.
   return;
 

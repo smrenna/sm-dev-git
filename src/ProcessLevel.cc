@@ -1052,13 +1052,14 @@ bool ProcessLevel::checkColours( Event& process) {
     else if (colType ==  1 && (col <= 0 || acol != 0)) physical = false;
     else if (colType == -1 && (col != 0 || acol <= 0)) physical = false;
     else if (colType ==  2 && (col <= 0 || acol <= 0)) physical = false;
-    // Preparations for colour-sextet assignments
-    // (colour,colour) = (colour,negative anticolour)
+    // Colour-sextet assignments (colType == 3 for sextet, -3 for antisextet)
+    // Sextet (two colours) represented by (colour tag, negative anticolour tag)
+    // Antisextet (two anticolours) by (negative colour tag, anticolour tag)
     else if (colType ==  3 && (col <= 0 || acol >= 0)) physical = false;
     else if (colType == -3 && (col >= 0 || acol <= 0)) physical = false;
     // All other cases
-    else if (colType < -1 || colType > 3)              physical = false;
-
+    else if (colType == -2 || colType < -3 || colType > 3) physical = false;
+    
     // Add to the list of colour tags.
     if (col > 0) {
       match = false;
@@ -1072,7 +1073,7 @@ bool ProcessLevel::checkColours( Event& process) {
       if (!match) colTags.push_back(acol);
     }
     // Colour sextets : map negative colour -> anticolour and vice versa
-    else if (col < 0) {
+    if (col < 0) {
       match = false;
       for (int ic = 0; ic < int(colTags.size()) ; ++ic)
         if (-col == colTags[ic]) match = true;

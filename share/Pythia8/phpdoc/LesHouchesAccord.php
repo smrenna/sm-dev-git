@@ -809,7 +809,9 @@ These three main methods build on a number of container classes and a
 generic LHEF reader class (called <code>Reader</code>) found in
 <code>LHEF3.h</code> and <code>LHEF3.cc</code>. The <code>Reader</code>
 handles all the parsing and storage necessary to adhere with 
-[<a href="Bibliography.php" target="page">But14</a>]. All parsing that is not strictly part of the LHEF format
+[<a href="Bibliography.php" target="page">But14</a>]. (A matching <code>Writer</code> class is also 
+available; see documentation in <code>LHEF3.h</code> how it can be 
+used.) All parsing that is not strictly part of the LHEF format
 (e.g. the reading of header information) is instead performed directly in
 the <code>LHAupLHEF</code> methods.
 

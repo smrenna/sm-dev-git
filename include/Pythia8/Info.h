@@ -29,7 +29,7 @@ public:
 
   // Constructor.
   Info() : LHEFversionSave(0), eCMSave(0.), lowPTmin(false), a0MPISave(0.),
-    weightCKKWLSave(1.), weightFIRSTSave(0.) {
+    abortPartonLevel(false), weightCKKWLSave(1.), weightFIRSTSave(0.) {
     for (int i = 0; i < 40; ++i) counters[i] = 0;}
 
   // Listing of most available information on current event.
@@ -306,6 +306,10 @@ public:
   void setHeader(const string &key, const string &val)
     { headers[key] = val; }
 
+  // Set abort in parton level.
+  void setAbortPartonLevel(bool abortIn) {abortPartonLevel = abortIn;}
+  bool getAbortPartonLevel() {return abortPartonLevel;}
+
 private:
 
   // Number of times the same error message is repeated, unless overridden.
@@ -334,7 +338,8 @@ private:
 
   // Store current-event quantities.
   bool   isRes, isDiffA, isDiffB, isDiffC, isND, isLH, hasSubSave[4],
-         bIsSet, evolIsSet, atEOF, isVal1, isVal2, hasHistorySave;
+         bIsSet, evolIsSet, atEOF, isVal1, isVal2, hasHistorySave,
+         abortPartonLevel;
   int    codeSave, codeSubSave[4], nFinalSave, nFinalSubSave[4], nTotal,
          id1Save[4], id2Save[4], id1pdfSave[4], id2pdfSave[4], nMPISave,
          nISRSave, nFSRinProcSave, nFSRinResSave;

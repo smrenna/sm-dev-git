@@ -85,7 +85,6 @@ int main( int argc, char* argv[] ){
   UserHooks* matching            = NULL;
 
   // Allow to set the number of addtional partons dynamically.
-  // THIS IS ONLY SENSIBLE AT LEADING ORDER!
   amcnlo_unitarised_interface* setting = NULL;
   if ( doMerge ) {
     // Store merging scheme.

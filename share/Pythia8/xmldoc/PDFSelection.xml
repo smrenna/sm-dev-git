@@ -70,7 +70,12 @@ for several reasons <ref>Kas10</ref>:
 <note>Warning 1:</note> the choice of PDF set affects a number of 
 properties of events. A change of PDF therefore requires a complete 
 retuning e.g.  of the multiparton-interactions model for minimum-bias and 
-underlying events. 
+underlying events. Conversely, the 
+<aloc href="Tunes">pp physics tunes</aloc> are all made for a specific
+PDF tune, and the chosen (or default) tune will therefore overwrite
+the <code>PDF:pSet</code> default value described below. If you want
+to set <code>PDF:pSet</code> differently it should be done <i>after</i> 
+the <code>Tune:pp</code> value, if any, has been set.  
 <note>Warning 2:</note> People often underestimate the differences 
 between different sets on the market. The sets for the same order are 
 constructed to behave more or less similarly at large <ei>x</ei> and 
