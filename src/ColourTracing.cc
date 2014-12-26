@@ -30,6 +30,9 @@ bool ColourTracing::setupColList(Event& event) {
       if (event[i].col() > 0 && event[i].acol() > 0) iColAndAcol.push_back(i);
       else if (event[i].col() > 0) iColEnd.push_back(i);
       else if (event[i].acol() > 0) iAcolEnd.push_back(i);
+      // Colour sextets have additional tags (store with negative numbers).
+      if (event[i].col() < 0) iAcolEnd.push_back(-i);
+      else if (event[i].acol() < 0) iColEnd.push_back(-i);
     }
   
   // Return true if zero particles were found.
@@ -58,16 +61,19 @@ bool ColourTracing::traceFromAcol(int indxCol, Event& event, int iJun,
     hasFound= false;
 
     // First check list of matching colour ends.
-    for (int i = 0; i < int(iColEnd.size()); ++i)
-    if (event[ iColEnd[i] ].col() == indxCol) {
-      iParton.push_back( iColEnd[i] );
-      indxCol = 0;
-      iColEnd[i] = iColEnd.back();
-      iColEnd.pop_back();
-      hasFound = true;
-      break;
-    }
-  
+    // Also check for sextets (negative anticolour tag = extra colour tag).
+    for (int i = 0; i < int(iColEnd.size()); ++i) {
+      if (event[ abs(iColEnd[i]) ].col() == indxCol
+          || event[ abs(iColEnd[i]) ].acol() == -indxCol) {
+        iParton.push_back( abs(iColEnd[i]) );
+        indxCol = 0;
+        iColEnd[i] = iColEnd.back();
+        iColEnd.pop_back();
+        hasFound = true;
+        break;
+      }
+    }    
+
     // Then check list of intermediate gluons.
     if (!hasFound)
     for (int i = 0; i < int(iColAndAcol.size()); ++i)
@@ -131,8 +137,12 @@ bool ColourTracing::traceFromAcol(int indxCol, Event& event, int iJun,
 bool ColourTracing::traceFromCol(int indxCol, Event& event, int iJun,
   int iCol, vector<int>& iParton) {
   
+  // If none specified, select next colour tag from back of list.
   if (iJun < 0  && iCol < 0) {
-    indxCol = event[iColEnd.back()].col();
+    int iColEndBack = iColEnd.back();
+    if (iColEndBack > 0) indxCol = event[iColEnd.back()].col();
+    // Negative index implies extra (sextet) colour tag in anticolour slot.
+    else                 indxCol = -event[-iColEnd.back()].acol();
     iParton.push_back(iColEnd.back());
     iColEnd.pop_back();
   }
@@ -149,16 +159,19 @@ bool ColourTracing::traceFromCol(int indxCol, Event& event, int iJun,
     hasFound= false;
 
     // First check list of matching anticolour ends.
-    for (int i = 0; i < int(iAcolEnd.size()); ++i)
-    if (event[ iAcolEnd[i] ].acol() == indxCol) {
-      iParton.push_back( iAcolEnd[i] );
-      indxCol = 0;
-      iAcolEnd[i] = iAcolEnd.back();
-      iAcolEnd.pop_back();
-      hasFound = true;
-      break;
+    // Also check for sextets (negative colour tag = extra anticolour tag).
+    for (int i = 0; i < int(iAcolEnd.size()); ++i) {
+      if (event[ abs(iAcolEnd[i]) ].acol() == indxCol
+          || event[ abs(iAcolEnd[i]) ].col() == -indxCol) {
+        iParton.push_back( abs(iAcolEnd[i]) );
+        indxCol = 0;
+        iAcolEnd[i] = iAcolEnd.back();
+        iAcolEnd.pop_back();
+        hasFound = true;
+        break;
+      }
     }
-  
+    
     // Then check list of intermediate gluons.
     if (!hasFound)
     for (int i = 0; i < int(iColAndAcol.size()); ++i)

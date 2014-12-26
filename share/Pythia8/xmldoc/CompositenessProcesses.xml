@@ -132,6 +132,36 @@ Scatterings <ei>q qbar &rarr; nu_tau^* nu_taubar</ei>.
 Code 4036. 
 </flag> 
  
+<flag name="ExcitedFermion:qqbar2eStareStar" default="off"> 
+Scatterings <ei>q qbar &rarr; e^*+- e^*-+</ei>. 
+Code 4051. 
+</flag> 
+ 
+<flag name="ExcitedFermion:qqbar2nueStarnueStar" default="off"> 
+Scatterings <ei>q qbar &rarr; nu_e^* nu_e^*bar</ei>. 
+Code 4052. 
+</flag> 
+ 
+<flag name="ExcitedFermion:qqbar2muStarmuStar" default="off"> 
+Scatterings <ei>q qbar &rarr; mu^*+- mu^*-+</ei>. 
+Code 4053. 
+</flag> 
+ 
+<flag name="ExcitedFermion:qqbar2numuStarnumuStar" default="off"> 
+Scatterings <ei>q qbar &rarr; nu_mu^* nu_mu^*bar</ei>. 
+Code 4054. 
+</flag> 
+ 
+<flag name="ExcitedFermion:qqbar2tauStartauStar" default="off"> 
+Scatterings <ei>q qbar &rarr; tau^*+- tau^*-+</ei>. 
+Code 4055. 
+</flag> 
+ 
+<flag name="ExcitedFermion:qqbar2nutauStarnutauStar" default="off"> 
+Scatterings <ei>q qbar &rarr; nu_tau^* nu_tau^*bar</ei>. 
+Code 4056. 
+</flag> 
+ 
 <h3>Excited fermions, parameters</h3> 
  
 The basic couplings of the model are 
@@ -150,6 +180,13 @@ Strength <ei>f'</ei> of the <ei>U(1)</ei> coupling.
  
 <parm name="ExcitedFermion:coupFcol" default="1.0" min="0.0"> 
 Strength <ei>f_c</ei> of the <ei>SU(3)</ei> coupling. 
+</parm> 
+ 
+<parm name="ExcitedFermion:contactDec" default="1.0" min="0.0"> 
+Strength of contact-interaction decay channels, implemented as
+three-body decays <ei>l^* &rarr; l f fbar</ei> for excited leptons 
+and neutrinos, where unity corresponds to the same normalization 
+as for the production channels.  
 </parm> 
  
 <h3>Contact interactions, production processes</h3> 

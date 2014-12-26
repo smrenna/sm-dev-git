@@ -39,8 +39,20 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.202: 3 December 2014 
+<li>8.202: 26 December 2014 
 <ul> 
+
+<li>The compositeness section has been expanded with six further 
+processes, describing the pair production of excited leptons or 
+neutrinos. Three-body contact-interaction decay modes of these 
+excited states have been introduced. A bug has been fixed that 
+gave the wrong helicity in decays for excited quarks, leptons and 
+neutrinos. Based on code provided by Olga Igonkina.</li> 
+
+<li>A new interface to the EvtGen decay package, primarily intended 
+for bottom and charm decays, has been implemented. It is available 
+in <code>include/Pythia8Plugins/EvtGen.h</code> and an example how 
+to set it up is found in <code>main48</code>.</li> 
 
 <li>The <code>main61</code> example program has been removed,
 since now LHAPDF can be loaded dynamically for <code>main42</code>,
@@ -49,11 +61,25 @@ has been renamed <code>main43</code>, to gather HepMC-related
 examples.
 </li> 
 
+<li>New example <code>main30</code> how to create a tailormade 
+copy of the ordinary event record, here with a history tracing
+of the hard process closer to the PYTHIA 6 conventions.
+</li> 
+
+<li>Change in the setup of final-state-shower colour dipoles for the 
+non-default case of no interleaving, whereby it becomes less likely
+to pick a colourless final-state particle as recoiler.
+Thanks to Mihoko Nojiri and Bryan Webber.</li> 
+
 <li>Minor fixes in the LHEF version 3 reader. Introduce a new 
 matching writer of LHEF version 1 or 3 files.</li> 
 
-<li>Bug fix in check for colour sextets. Thanks to Alexander Belyaev 
-and Alexander Pukhov.</li> 
+<li>Bug fix in check for colour sextets and transfer of such colour
+information. Thanks to Alexander Belyaev and Alexander Pukhov.</li> 
+
+<li>Improved handling of stray characters in the SUSY Les Houches 
+code. The check on the consistency of decay tables has been removed. 
+Improved warning/error printing in the SLHA interface.</li> 
 
 <li>Bug fix in new beam remnant model, so that it basically
 operates like the old one for <i>e^+e^-</i> annihilation.</li> 

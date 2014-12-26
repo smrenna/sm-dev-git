@@ -57,10 +57,6 @@ $(PREFIX_LIB)/libpythia8.a :
 main% : main%.cc $(PREFIX_LIB)/libpythia8.a
 	$(CXX) $^ -o $@ $(CXX_COMMON)
 
-# User-written examples for tutorials, without external dependencies.
-mymain% : mymain%.cc $(PREFIX_LIB)/libpythia8.a
-	$(CXX) $^ -o $@ $(CXX_COMMON)
-
 # HEPMC2.
 main41 main42 main43 main85 main86 main87 main88 main89: $$@.cc\
 	$(PREFIX_LIB)/libpythia8.a
@@ -90,6 +86,17 @@ else
 	@echo "Error: $@ requires FASTJET3 and HEPMC2"
 endif
 
+# EVTGEN (and HEPMC2).
+main48: $$@.cc $(PREFIX_LIB)/libpythia8.so
+ifeq ($(EVTGEN_USE)$(HEPMC2_USE),truetrue)
+	$(CXX) $< -o $@ -I$(EVTGEN_INCLUDE) $(CXX_COMMON)\
+	 -D EVTGEN_PYTHIA -D EVTGEN_EXTERNAL -Wl,-rpath $(HEPMC2_LIB)\
+	 -L$(PREFIX_LIB) -Wl,-rpath $(PREFIX_LIB) -lpythia8\
+	 -L$(EVTGEN_LIB) -Wl,-rpath $(EVTGEN_LIB) -lEvtGenExternal -lEvtGen
+else
+	@echo "Error: $@ requires EVTGEN and HEPMC2"
+endif
+
 # ROOT (turn off all warnings for readability).
 main91: $$@.cc $(PREFIX_LIB)/libpythia8.a
 ifeq ($(ROOT_USE),true)
@@ -108,8 +115,17 @@ else
 	@echo "Error: $@ requires ROOT"
 endif
 
+# User-written examples for tutorials, without external dependencies.
+mymain% : mymain%.cc $(PREFIX_LIB)/libpythia8.a
+	$(CXX) $^ -o $@ $(CXX_COMMON)
+
+# Internally used tests, without external dependencies.
+test% : test%.cc $(PREFIX_LIB)/libpythia8.a
+	$(CXX) $^ -o $@ $(CXX_COMMON)
+
 # Clean.
 clean:
 	@rm -f main[0-9][0-9]; rm -f out[0-9][0-9]; rm -f weakbosons.lhe;\
 	rm -f mymain[0-9][0-9]; rm -f myout[0-9][0-9]; rm -f hist.root;\
+	rm -f test[0-9][0-9][0-9]; rm -f out[0-9][0-9][0-9];\
 	rm -f *~; rm -f \#*; rm -f core*; rm -f *Dct.*

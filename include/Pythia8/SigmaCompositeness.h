@@ -185,6 +185,49 @@ private:
 
 //==========================================================================
 
+// A derived class for q qbar -> lStar lStarBar.
+// Code contributed by Olga Igonkina.
+
+class Sigma2qqbar2lStarlStarBar: public Sigma2Process {
+
+public:
+
+  // Constructor.
+  Sigma2qqbar2lStarlStarBar(int idlIn) : idl(idlIn) {}
+
+  // Initialize process.
+  void initProc();
+
+  // Calculate flavour-independent parts of cross section.
+  void sigmaKin();
+
+  // Evaluate sigmaHat(sHat).
+  virtual double sigmaHat() {return sigma;}
+
+  // Select flavour, colour and anticolour.
+  void setIdColAcol();
+
+  // Evaluate weight for l* decay angles (else inactive).
+  virtual double weightDecay(Event& process, int iResBeg, int iResEnd);
+
+  // Info on the subprocess.
+  virtual string name()       const {return nameSave;}
+  virtual int    code()       const {return codeSave;}
+  virtual string inFlux()     const {return "qqbarSame";}
+  virtual int    id3Mass()    const {return idRes;}
+  virtual int    id4Mass()    const {return idRes;}
+
+private:
+
+  // Parameters set at initialization or for current kinematics.
+  int    idl, idRes, codeSave;
+  string nameSave;
+  double Lambda, preFac, openFracPos, openFracNeg, sigma;
+
+};
+
+//==========================================================================
+
 // A derived class for q q -> q q (quark contact interactions).
 // Based on, Sigma2qq2qq (QCD).
 

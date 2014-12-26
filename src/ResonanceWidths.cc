@@ -1683,6 +1683,7 @@ void ResonanceExcited::initConstants() {
   coupF         = settingsPtr->parm("ExcitedFermion:coupF");
   coupFprime    = settingsPtr->parm("ExcitedFermion:coupFprime");
   coupFcol      = settingsPtr->parm("ExcitedFermion:coupFcol");
+  contactDec    = settingsPtr->parm("ExcitedFermion:contactDec");
   sin2tW        = couplingsPtr->sin2thetaW();
   cos2tW        = 1. - sin2tW;
 
@@ -1733,6 +1734,18 @@ void ResonanceExcited::calcWidth(bool) {
   // f^* -> f' W^+-.
   else if (id1Abs == 24) widNow  = preFac * (alpEM * pow2(coupF)
                  / (16. * sin2tW)) * ps*ps * (2. + mr1);
+
+  // f^* -> f f' fbar' contact interaction decays (code by Olga Igonkina).
+  else {
+    if (id1Abs < 17 && id2Abs < 17 && id3Abs > 0 && id3Abs < 17 ) { 
+      widNow = preFac * pow2(contactDec * mHat) / (pow2(Lambda) * 96. * M_PI);
+      if (id3Abs < 10) widNow *= 3.; 
+      if (id1Abs == id2Abs && id1Abs == id3Abs) {
+	if (idRes - 4000000 < 10) widNow *= 4./3.;
+	else                      widNow *= 2.;
+      }
+    }
+  }
 
 }
  

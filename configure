@@ -47,7 +47,8 @@ Optional external packages.
 --with-PACKAGE-version=VER : When using an LCG platform, set with the option
                              --lcg above, automatically set the PACKAGE path
                              for the given version VER.
-  fastjet3 : Jet building of jets using the FastJet package, version 3.
+  evtgen   : Particle decays with the EvtGen decay pacakge, requires HEPMC2.
+  fastjet3 : Building of jets using the FastJet package, version 3.
   hepmc2   : Export PYTHIA events to the HEPMC format, version 2.
   hepmc3   : Export PYTHIA events to the HEPMC format, version 3.
   lhapdf5  : Support the use of external PDF sets via LHAPDF, version 5.
@@ -80,7 +81,7 @@ BLOCKTEXT
 OPTIONS="-h --h -help --help --enable-debug --enable-64bit"
 OPTIONS+=" --enable-shared --lcg"
 OPTIONS+=" --prefix --prefix-bin --prefix-lib --prefix-include --prefix-share"
-for PKG in "fastjet3" "hepmc2" "hepmc3" "lhapdf5" "lhapdf6" "root"\
+for PKG in "evtgen" "fastjet3" "hepmc2" "hepmc3" "lhapdf5" "lhapdf6" "root"\
     "boost" "gzip"; do
     OPTIONS+=" --with-$PKG --with-$PKG-bin --with-$PKG-lib --with-$PKG-include"
     OPTIONS+=" --with-$PKG-version"; done
@@ -223,6 +224,9 @@ if [ -z "$PREFIX_LIB" ];      then PREFIX_LIB=$PREFIX/lib; fi
 if [ -z "$PREFIX_SHARE" ];    then PREFIX_SHARE=$PREFIX/share/Pythia8; fi
 
 # Configure the packages (order does not matter).
+configure_package "EVTGEN"\
+    "/afs/cern.ch/sw/lcg/releases/MCGenerators/evtgen/1.3.0-9000e"\
+    "bin" "include" "lib" "" "EvtGen/EvtGen.hh" "EvtGen" "HEPMC2"
 configure_package "FASTJET3" "/afs/cern.ch/sw/lcg/releases/fastjet"\
     "bin" "include" "lib" "" "fastjet/config.h" "fastjet" ""
 configure_package "HEPMC2" "/afs/cern.ch/sw/lcg/releases/HepMC"\

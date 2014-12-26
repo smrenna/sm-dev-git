@@ -4,10 +4,10 @@
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
-// Header file for SUSY Les Houches Accord Interface
-// Is independent of the rest of the PYTHIA implementation and thus could
-// be re-used stand-alone or merged into other applications, subject to
-// the MCnet Guidelines mentioned above.
+// Header file for SUSY Les Houches Accord functionality
+// This part of the SLHA interface basically contains the Pythia-independent SLHA
+// read/write and processing utilities, which would be common to any SLHA interface.
+// (The Pythia-specific components reside in the SLHAinterface class.)
 
 #ifndef SLHA_H
 #define SLHA_H
@@ -421,7 +421,6 @@ public:
 
   // Check spectrum and decays
   int checkSpectrum();
-  int checkDecays();
 
   // File Name (can be either SLHA or LHEF)
   string slhaFile;
@@ -645,6 +644,10 @@ public:
   // Output of messages from SLHA interface
   void message(int, string,string ,int line=0);
   
+  // Convert string to lowercase, removing junk characters
+  // Copied from PYTHIA 8 Settings class
+  void toLower(string& name);
+  
   //***************************** SLHA PRIVATE *****************************//
 private:
   //SLHA I/O
@@ -661,8 +664,7 @@ private:
 template <class T> int SusyLesHouches::set(string blockName, T val) {
 
   // Make sure everything is interpreted as lower case (for safety)
-  for (int iC=0; iC<int(blockName.size()); ++iC)
-    blockName[iC] = tolower(blockName[iC]);
+  toLower(blockName);
 
   // Add new generic block if not already existing
   if (genericBlocks.find(blockName) == genericBlocks.end()) {
@@ -680,8 +682,7 @@ template <class T> int SusyLesHouches::set(string blockName, T val) {
 template <class T> int SusyLesHouches::set(string blockName, int indx, T val) {
 
   // Make sure everything is interpreted as lower case (for safety)
-  for (int iC=0; iC<int(blockName.size()); ++iC)
-    blockName[iC] = tolower(blockName[iC]);
+  toLower(blockName);
 
   // Add new generic block if not already existing
   if (genericBlocks.find(blockName) == genericBlocks.end()) {
@@ -699,9 +700,8 @@ template <class T> int SusyLesHouches::set(string blockName, int indx, T val) {
 template <class T> int SusyLesHouches::set(string blockName, int indx,
                                            int jndx, T val) {
 
-  // Make sure everything is interpreted as lower case (for safety)
-  for (int iC=0; iC<int(blockName.size()); ++iC)
-    blockName[iC] = tolower(blockName[iC]);
+  // Make sure everything is interpreted as lower case (for safety)  
+  toLower(blockName);
 
   // Add new generic block if not already existing
   if (genericBlocks.find(blockName) == genericBlocks.end()) {
@@ -720,8 +720,7 @@ template <class T> int SusyLesHouches::set(string blockName, int indx,
                                            int jndx, int kndx, T val) {
 
   // Make sure everything is interpreted as lower case (for safety)
-  for (int iC=0; iC<int(blockName.size()); ++iC)
-    blockName[iC] = tolower(blockName[iC]);
+  toLower(blockName);
 
   // Add new generic block if not already existing
   if (genericBlocks.find(blockName) == genericBlocks.end()) {
@@ -741,8 +740,7 @@ template <class T> int SusyLesHouches::set(string blockName, int indx,
 template <class T> bool SusyLesHouches::getEntry(string blockName, T& val) {
 
   // Make sure everything is interpret as lower case (for safety)
-  for (int iC=0; iC<int(blockName.size()); ++iC)
-    blockName[iC] = tolower(blockName[iC]);
+  toLower(blockName);
 
   // Safety checks
   if (genericBlocks.find(blockName) == genericBlocks.end()) {
@@ -778,8 +776,7 @@ template <class T> bool SusyLesHouches::getEntry(string blockName, int indx,
                                                  T& val) {
 
   // Make sure everything is interpret as lower case (for safety)
-  for (int iC=0; iC<int(blockName.size()); ++iC)
-    blockName[iC] = tolower(blockName[iC]);
+  toLower(blockName);
 
   // Safety checks
   if (genericBlocks.find(blockName) == genericBlocks.end()) {
@@ -817,8 +814,7 @@ template <class T> bool SusyLesHouches::getEntry(string blockName, int indx,
                                                  int jndx, T& val) {
 
   // Make sure everything is interpret as lower case (for safety)
-  for (int iC=0; iC<int(blockName.size()); ++iC)
-    blockName[iC] = tolower(blockName[iC]);
+  toLower(blockName);
 
   // Safety checks
   if (genericBlocks.find(blockName) == genericBlocks.end()) {
@@ -856,8 +852,7 @@ template <class T> bool SusyLesHouches::getEntry(string blockName, int indx,
                                                  int jndx, int kndx, T& val) {
 
   // Make sure everything is interpret as lower case (for safety)
-  for (int iC=0; iC<int(blockName.size()); ++iC)
-    blockName[iC] = tolower(blockName[iC]);
+  toLower(blockName);
 
   // Safety checks
   if (genericBlocks.find(blockName) == genericBlocks.end()) {

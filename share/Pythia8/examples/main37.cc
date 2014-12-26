@@ -17,7 +17,7 @@ int main() {
 
   // Initialize Les Houches Event File run.
   pythia.readString("Beams:frameType = 4");
-  pythia.readString("Beams:LHEF = testlhef3.lhe");
+  pythia.readString("Beams:LHEF = wbj_lhef3.lhe");
   pythia.init();
 
   // Get number of event weights.

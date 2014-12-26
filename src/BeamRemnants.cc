@@ -804,6 +804,9 @@ bool BeamRemnants::checkColours( Event& event) {
     for (int iCol = 0; iCol < int(colFrom.size()); ++iCol) {
       if (col == colFrom[iCol]) {col = colTo[iCol]; event[i].col(col);}
       if (acol == colFrom[iCol]) {acol = colTo[iCol]; event[i].acol(acol);}
+      // Sextets have extra, negative, tags.
+      if (col == -colFrom[iCol]) {col = -colTo[iCol]; event[i].col(col);}
+      if (acol == -colFrom[iCol]) {acol = -colTo[iCol]; event[i].acol(acol);}
     }
   }
 
@@ -857,7 +860,7 @@ bool BeamRemnants::checkColours( Event& event) {
     if (acol < 0) colList.push_back( -acol );
   }
 
-  // Run though list of singlet gluons and put them on final-state dipole
+  // Run through list of singlet gluons and put them on final-state dipole
   // (i,j) that offers smallest (p_g p_i) * (p_g p_j) / (p_i p_j).
   for (int iS = 0; iS < int(iSingletGluon.size()); ++iS) {
     int    iGlu      = iSingletGluon[iS];
@@ -892,7 +895,7 @@ bool BeamRemnants::checkColours( Event& event) {
       if (event.kindJunction(iJun) % 2 == 0) continue;
       for (int leg = 0; leg < 3; ++leg) {
         int col = event.colJunction(iJun, leg);
-        if (col == event[iGlu].acol())
+        if (col == event[iGlu].acol()) 
           event.colJunction(iJun, leg, event[iGlu].col());
       }
     }
@@ -1004,16 +1007,26 @@ bool BeamRemnants::checkColours( Event& event) {
     int  colNew   = event.nextColTag();
     colList.pop_back();
     acolList.pop_back();
-    for (int i = oldSize; i < event.size(); ++i)
-    if (event[i].isFinal() && event[i].col() == colMatch) {
-      event[i].col( colNew);
-      break;
+    for (int i = oldSize; i < event.size(); ++i) {
+      if (event[i].isFinal() && event[i].col() == colMatch) {
+        event[i].col( colNew);
+        break;
+      }
+      else if (event[i].isFinal() && event[i].acol() == -colMatch) {
+        event[i].acol( -colNew);
+        break;
+      }
     }
-    for (int i = oldSize; i < event.size(); ++i)
-    if (event[i].isFinal() && event[i].acol() == acolMatch) {
-      event[i].acol( colNew);
-      break;
-    }
+    for (int i = oldSize; i < event.size(); ++i) {
+      if (event[i].isFinal() && event[i].acol() == acolMatch) {
+        event[i].acol( colNew);
+        break;
+      }
+      if (event[i].isFinal() && event[i].col() == -acolMatch) {
+        event[i].col( -colNew);
+        break;
+      }
+    }      
   }
 
   // Done.
@@ -1039,9 +1052,13 @@ void BeamRemnants::updateColEvent( Event& event,
     for (int j = 0; j < event.size(); ++j) {
       if (event[j].isFinal() && event[j].col() == oldCol) 
 	event[event.copy(j, 64)].col(newCol);
+      if (event[j].isFinal() && event[j].acol() == -oldCol) 
+	event[event.copy(j, 64)].acol(-newCol);
       
       if (event[j].isFinal() && event[j].acol() == oldCol)
 	event[event.copy(j,64)].acol(newCol);
+      if (event[j].isFinal() && event[j].col() == -oldCol)
+	event[event.copy(j,64)].col(-newCol);
     }
 
     // Update junction.

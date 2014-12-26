@@ -2060,6 +2060,34 @@ bool SetupContainers::init(vector<ProcessContainer*>& containerPtrs,
     sigmaPtr = new Sigma2qqbar2lStarlbar(16);
     containerPtrs.push_back( new ProcessContainer(sigmaPtr) );
   }
+  if (excitedfermions || settings.flag("ExcitedFermion:qqbar2eStareStar")) {
+    sigmaPtr = new Sigma2qqbar2lStarlStarBar(11);
+    containerPtrs.push_back( new ProcessContainer(sigmaPtr) );
+  }
+  if (excitedfermions 
+    || settings.flag("ExcitedFermion:qqbar2nueStarnueStar")) {
+    sigmaPtr = new Sigma2qqbar2lStarlStarBar(12);
+    containerPtrs.push_back( new ProcessContainer(sigmaPtr) );
+  }
+  if (excitedfermions || settings.flag("ExcitedFermion:qqbar2muStarmuStar")) {
+    sigmaPtr = new Sigma2qqbar2lStarlStarBar(13);
+    containerPtrs.push_back( new ProcessContainer(sigmaPtr) );
+  }
+  if (excitedfermions 
+    || settings.flag("ExcitedFermion:qqbar2numuStarnumuStar")) {
+    sigmaPtr = new Sigma2qqbar2lStarlStarBar(14);
+    containerPtrs.push_back( new ProcessContainer(sigmaPtr) );
+  }
+  if (excitedfermions 
+    || settings.flag("ExcitedFermion:qqbar2tauStartauStar")) {
+    sigmaPtr = new Sigma2qqbar2lStarlStarBar(15);
+    containerPtrs.push_back( new ProcessContainer(sigmaPtr) );
+  }
+  if (excitedfermions
+    || settings.flag("ExcitedFermion:qqbar2nutauStarnutauStar")) {
+    sigmaPtr = new Sigma2qqbar2lStarlStarBar(16);
+    containerPtrs.push_back( new ProcessContainer(sigmaPtr) );
+  }
 
   // Set up requested objects for contact interaction processes.
   if (settings.flag("ContactInteractions:QCqq2qq")) {

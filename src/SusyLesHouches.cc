@@ -31,7 +31,7 @@ namespace Pythia8 {
 
 // The SusyLesHouches class.
 
-//==========================================================================
+//--------------------------------------------------------------------------
 
 // Main routine to read in SLHA and LHEF+SLHA files
 
@@ -114,11 +114,9 @@ int SusyLesHouches::readFile(istream& is, int verboseIn,
   while ( getline(is, line) ) {
     iLine++;
 
-    //Rewrite string in lowercase
-    for (unsigned int i=0;i<line.length();i++) line[i]=tolower(line[i]);
-
-    // Remove extra blanks
-    while (line.find("  ") != string::npos) line.erase( line.find("  "), 1);
+    //Rewrite string in lowercase, removing initial and tralining blanks
+    //as well as garbage characters 
+    toLower(line);
 
     //Detect whether read-in is from a Les Houches Event File (LHEF).
     if (line.find("<leshouches") != string::npos
@@ -162,16 +160,18 @@ int SusyLesHouches::readFile(istream& is, int verboseIn,
 
     //Move comment to separate string
     if (line.find("#") != string::npos) {
-      if (line.find("#") + 1 < line.length() )
-        comment = line.substr(line.find("#")+1,line.length()-line.find("#")-2);
-      else
+      if (line.find("#") + 1 < line.length() ) {
+        int commentLength = line.length()-(line.find("#")+1);
+        comment = line.substr(line.find("#")+1,commentLength);
+      } else
         comment = "";
       line.erase(line.find("#"),line.length()-line.find("#")-1);
     }
 
-    // Remove blanks before and after an = sign.
+    // Remove blanks before and after an = sign. Also remove multiple blanks
     while (line.find(" =") != string::npos) line.erase( line.find(" ="), 1);
     while (line.find("= ") != string::npos) line.erase( line.find("= ")+1, 1);
+    while (line.find("  ") != string::npos) line.erase( line.find("  ")+1, 1);
 
     //New block.
     if (line.find("block") <= 1) {
@@ -1874,78 +1874,6 @@ int SusyLesHouches::checkSpectrum() {
 
 //--------------------------------------------------------------------------
 
-// Check consistency of decay tables
-
-int SusyLesHouches::checkDecays() {
-
-  if (! headerPrinted) printHeader();
-  int iFailDecays=0;
-  
-  // Loop over all particles read in
-  for (int i = 0; i < int(decays.size()); ++i) {
-    
-    // Shorthand
-    LHdecayTable decTab = decays[i];
-    int idRes = decTab.getId();
-    double width = decTab.getWidth();
-    if (width <= 0.0 || decTab.size() == 0) continue;
-    
-    // Check sum of branching ratios and phase spaces
-    double sum = 0.0;
-    double absSum = 0.0;
-    int decSize = decTab.size();
-    for (int j = 0; j < decSize; ++j) {
-      
-      double brat = decTab.getBrat(j);
-      
-      // Check phase space
-      if (abs(brat) > 0.0) {
-        vector<int> idDa = decTab.getIdDa(j);
-        double massSum=abs(mass(idRes));
-        for (int k=0; k<int(idDa.size()); ++k) {
-          if (mass.exists(idDa[k])) massSum -= mass(abs(idDa[k]));
-          // If no MASS information read, use lowish values for check
-          else if (abs(idDa[k]) == 24) massSum -=  79.0;
-          else if (abs(idDa[k]) == 23) massSum -=  91.0;
-          else if (abs(idDa[k]) ==  6) massSum -= 165.0;
-          else if (abs(idDa[k]) ==  5) massSum -=   4.0;
-          else if (abs(idDa[k]) ==  4) massSum -=   1.0;
-        }
-        if (massSum < 0.0) {
-          // String containing decay name
-          ostringstream errCode;
-          errCode  <<  idRes  << " ->";
-          for (int jDa=0; jDa<int(idDa.size()); ++jDa)
-            errCode << " " << idDa[jDa];
-          message(1,"checkDecays",errCode.str()
-                  +": Phase Space Closed, but BR != 0");
-          iFailDecays = 1;
-        }
-        
-      }
-
-      // Sum up branching rations
-      sum += brat;
-      absSum += abs(brat);
-      
-    }
-
-    if (abs(1.0-absSum) > 1e-6) {
-      message(1,"checkDecays","sum(BR) != 1");
-      cout << " | offending particle: " << idRes << " sum(BR) = "
-           << absSum << endl;
-      iFailDecays = 2;
-    }
-    
-  }
-  // End of loop over particles. Done.
-  
-  return iFailDecays;
-
-}
-
-//--------------------------------------------------------------------------
-
 // Simple utility to print messages, warnings, and errors
 
 void SusyLesHouches::message(int level, string place,string themessage,
@@ -1966,9 +1894,34 @@ void SusyLesHouches::message(int level, string place,string themessage,
   return;
 }
 
+//--------------------------------------------------------------------------
+
+// Convert string to lowercase for case-insensitive comparisons.
+// Also remove initial and trailing blanks and garbage characters, if any.
+// (eg removes DOS line break characters and similar)
+// Adapted from PYTHIA 8 Settings::toLower() method.
+
+void SusyLesHouches::toLower(string& name) {
+  
+  // Copy string without initial and trailing blanks.
+  if (name.find_first_not_of(" \n\t\v\b\r\f\a") == string::npos) {
+    name = "";
+    return;
+  }
+  int firstChar = name.find_first_not_of(" \n\t\v\b\r\f\a");
+  int lastChar  = name.find_last_not_of(" \n\t\v\b\r\f\a");
+  string temp   = name.substr( firstChar, lastChar + 1 - firstChar);
+
+  // Convert to lowercase letter by letter.
+  for (int i = 0; i < int(temp.length()); ++i) temp[i] = tolower(temp[i]);
+  // Copy to input string and return
+  name=temp;
+
 }
 
 //==========================================================================
+
+} // end namespace Pythia8
 
 
 

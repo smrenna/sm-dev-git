@@ -154,6 +154,10 @@ top production. Illustrates how to set up the user hooks in
 <code>include/Pythia8Plugins/ColourReconnectionHooks.h</code>, 
 with several models not found in the standard PYTHIA library.</li> 
  
+<li><code>main30.cc</code> : example how to create a tailormade 
+copy of the ordinary event record, here with hard-process history 
+tracing closer to the PYTHIA 6 conventions.</li> 
+ 
 <li><code>main31.cc</code> : exemplifies an improved matching of 
 parton showers to LHEF-style input based on the 
 <aloc href="POWHEGMerging">POWHEG approach</aloc>. 
@@ -204,6 +208,13 @@ example is included in this distribution.</li>
 where subruns are used to process several consecutive LHEF, 
 as in <code>main13.cc</code>, with information stored e.g in 
 <code>main43.cmnd</code>. Other comments as for <code>main42.cc</code>.</li> 
+
+<li><code>main48.cc</code> : demonstrates how to use
+the <code>EvtGenDecays</code> class provided
+by <code>include/Pythia8Plugins/EvtGen.h</code> to perform decays
+with the <code>EvtGen</code> package. The <code>main48.cc</code> header
+contains special instructions how to configure PYTHIA for use with 
+<code>EvtGen</code>.</li>
  
 <li><code>main51.cc</code> : a test of the shape of parton densities, 
 as a check prior to using a given PDF set in a generator.  Requires 

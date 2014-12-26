@@ -1120,14 +1120,13 @@ void TimeShower::setupQCDdip( int iSys, int i, int colTag, int colSign,
 
   // If no success then look for matching (anti)colour anywhere in final state.
   if ( iRec == 0 || (!doInterleave && !event[iRec].isFinal()) ) {
-    iRec = 0;
-    for (int j = 0; j < event.size(); ++j) if (event[j].isFinal()){
-    if ( (colSign > 0 && event[j].acol() == colTag)
-      || (colSign < 0 && event[j].col()  == colTag) ) {
-      iRec = j;
-      otherSystemRec = true;
-      break;
-    }
+    for (int j = 0; j < event.size(); ++j) if (event[j].isFinal()) {
+      if ( (colSign > 0 && event[j].acol() == colTag)
+        || (colSign < 0 && event[j].col()  == colTag) ) {
+        iRec = j;
+        otherSystemRec = true;
+        break;
+      }
     }
 
     // If no success then look for match to non-rescattered in initial state.

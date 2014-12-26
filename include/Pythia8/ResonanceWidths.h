@@ -434,7 +434,7 @@ public:
 private:
 
   // Locally stored properties and couplings.
-  double Lambda, coupF, coupFprime, coupFcol, sin2tW, cos2tW;
+  double Lambda, coupF, coupFprime, coupFcol, contactDec, sin2tW, cos2tW;
  
   // Initialize constants.
   virtual void initConstants();

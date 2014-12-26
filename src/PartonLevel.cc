@@ -1483,6 +1483,9 @@ bool PartonLevel::resonanceShowers( Event& process, Event& event,
       // Update colour and momentum information.
       if (now.col() == colBef) now.col( colAft);
       if (now.acol() == acolBef) now.acol( acolAft);
+      // Sextet mothers have additional (negative) tag
+      if (now.col() == -acolBef) now.col( -acolAft);
+      if (now.acol() == -colBef) now.acol( -colAft);
       now.rotbst( M);
 
       // Update vertex information.
