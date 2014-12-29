@@ -161,15 +161,15 @@ Currently, only <code>SlowJet</code> with the k<sub>T</sub> algorithm (and
 <code>useStandardR = false</code>) is supported for Madgraph-style 
 matching, while there is full freedom for the ALPGEN-style matching. 
 <br/>
-<input type="radio" name="4" value="1" checked="checked"><strong>1 </strong>: <br/>
-<input type="radio" name="4" value="2"><strong>2 </strong>: <br/>
+<input type="radio" name="4" value="1" checked="checked"><strong>1 </strong>: The <code>CellJet</code> cone algorithm.<br/>
+<input type="radio" name="4" value="2"><strong>2 </strong>: The <code>SlowJet</code> clustering algorithm.<br/>
  
 <br/><br/><table><tr><td><strong>JetMatching:slowJetPower  </td><td>  &nbsp;&nbsp;(<code>default = <strong>-1</strong></code>; <code>minimum = -1</code>; <code>maximum = 1</code>)</td></tr></table>
 The power to use in the <code>SlowJet</code> algorithm. 
 <br/>
-<input type="radio" name="5" value="-1" checked="checked"><strong>-1 </strong>: <br/>
-<input type="radio" name="5" value="0"><strong>0 </strong>: <br/>
-<input type="radio" name="5" value="1"><strong>1 </strong>: <br/>
+<input type="radio" name="5" value="-1" checked="checked"><strong>-1 </strong>: The anti-k<sub>T</sub> algorithm.<br/>
+<input type="radio" name="5" value="0"><strong>0 </strong>: The Cambridge/Aachen algorithm.<br/>
+<input type="radio" name="5" value="1"><strong>1 </strong>: The k<sub>T</sub> algorithm.<br/>
  
 <br/><br/><table><tr><td><strong>JetMatching:nEta  </td><td>  &nbsp;&nbsp;(<code>default = <strong>100</strong></code>; <code>minimum = 50</code>)</td></tr></table>
 Specific to the <code>CellJet</code> algorithm, the number of bins 

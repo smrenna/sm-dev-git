@@ -81,17 +81,17 @@ Allow or not selection of primordial <ei>kT</ei> according to the
 parameter values below. 
 </flag> 
  
-<parm name="BeamRemnants:primordialKTsoft" default="0.5" min="0."> 
+<parm name="BeamRemnants:primordialKTsoft" default="0.9" min="0."> 
 The width <ei>sigma_soft</ei> in the above equation, assigned as a 
 primordial <ei>kT</ei> to initiators in the soft-interaction limit. 
 </parm> 
  
-<parm name="BeamRemnants:primordialKThard" default="2.0" min="0."> 
+<parm name="BeamRemnants:primordialKThard" default="1.8" min="0."> 
 The width <ei>sigma_hard</ei> in the above equation, assigned as a 
 primordial <ei>kT</ei> to initiators in the hard-interaction limit. 
 </parm> 
  
-<parm name="BeamRemnants:halfScaleForKT" default="1." min="0."> 
+<parm name="BeamRemnants:halfScaleForKT" default="1.5" min="0."> 
 The scale <ei>Q_half</ei> in the equation above, defining the 
 half-way point between hard and soft interactions. 
 </parm> 

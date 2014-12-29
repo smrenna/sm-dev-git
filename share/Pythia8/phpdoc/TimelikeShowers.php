@@ -150,7 +150,7 @@ away from this value could do better in some processes.
  
 <p/> 
 The amount of QCD radiation in the shower is determined by 
-<br/><br/><table><tr><td><strong>TimeShower:alphaSvalue </td><td></td><td> <input type="text" name="6" value="0.1383" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.1383</strong></code>; <code>minimum = 0.06</code>; <code>maximum = 0.25</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>TimeShower:alphaSvalue </td><td></td><td> <input type="text" name="6" value="0.1365" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.1365</strong></code>; <code>minimum = 0.06</code>; <code>maximum = 0.25</code>)</td></tr></table>
 The <i>alpha_strong</i> value at scale <i>M_Z^2</i>. The default 
 value corresponds to a crude tuning to LEP data, to be improved. 
    
@@ -163,7 +163,7 @@ The actual value is then regulated by the running to the scale
 Order at which <ei>alpha_strong</ei> runs, 
 <br/>
 <input type="radio" name="7" value="0"><strong>0 </strong>: zeroth order, i.e. <ei>alpha_strong</ei> is kept  fixed.<br/>
-<input type="radio" name="7" value="1" checked="checked"><strong>1 </strong>: zeroth order, i.e. <ei>alpha_strong</ei> is kept  fixed.<br/>
+<input type="radio" name="7" value="1" checked="checked"><strong>1 </strong>: first order, which is the normal value.<br/>
 <input type="radio" name="7" value="2"><strong>2 </strong>: second order. Since other parts of the code do  not go to second order there is no strong reason to use this option,  but there is also nothing wrong with it.<br/>
  
 <p/> 
@@ -221,11 +221,11 @@ no emissions are allowed. The cutoff may be different for QCD and QED
 radiation off quarks, and is mainly a technical parameter for QED 
 radiation off leptons. 
  
-<br/><br/><table><tr><td><strong>TimeShower:pTmin </td><td></td><td> <input type="text" name="12" value="0.4" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.4</strong></code>; <code>minimum = 0.1</code>; <code>maximum = 2.0</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>TimeShower:pTmin </td><td></td><td> <input type="text" name="12" value="0.5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.5</strong></code>; <code>minimum = 0.1</code>; <code>maximum = 2.0</code>)</td></tr></table>
 Parton shower cut-off <i>pT</i> for QCD emissions. 
    
  
-<br/><br/><table><tr><td><strong>TimeShower:pTminChgQ </td><td></td><td> <input type="text" name="13" value="0.4" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.4</strong></code>; <code>minimum = 0.1</code>; <code>maximum = 2.0</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>TimeShower:pTminChgQ </td><td></td><td> <input type="text" name="13" value="0.5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.5</strong></code>; <code>minimum = 0.1</code>; <code>maximum = 2.0</code>)</td></tr></table>
 Parton shower cut-off <i>pT</i> for photon coupling to coloured particle. 
    
  
@@ -582,8 +582,8 @@ Allow a weak shower, yes or no.
 Determine which branchings are allowed. 
 <br/>
 <input type="radio" name="28" value="0" checked="checked"><strong>0 </strong>:  both <ei>W^+-</ei> and <ei>Z^0</ei> branchings.  <br/>
-<input type="radio" name="28" value="1"><strong>1 </strong>:  both <ei>W^+-</ei> and <ei>Z^0</ei> branchings.  <br/>
-<input type="radio" name="28" value="2"><strong>2 </strong>:  both <ei>W^+-</ei> and <ei>Z^0</ei> branchings.  <br/>
+<input type="radio" name="28" value="1"><strong>1 </strong>:  only <ei>W^+-</ei> branchings. <br/>
+<input type="radio" name="28" value="2"><strong>2 </strong>:  only <ei>Z^0</ei> branchings. <br/>
  
 <br/><br/><table><tr><td><strong> </td><td></td><td> <input type="text" name="29" value="1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.0</strong></code>; <code>minimum = 0.1</code>; <code>maximum = 2.0</code>)</td></tr></table>
 Parton shower cut-off <i>pT</i> for weak branchings. 
@@ -764,7 +764,7 @@ if($_POST["5"] != "1.0")
 $data = "TimeShower:pTdampFudge = ".$_POST["5"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["6"] != "0.1383")
+if($_POST["6"] != "0.1365")
 {
 $data = "TimeShower:alphaSvalue = ".$_POST["6"]."\n";
 fwrite($handle,$data);
@@ -794,12 +794,12 @@ if($_POST["11"] != "1.")
 $data = "TimeShower:factorMultFac = ".$_POST["11"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["12"] != "0.4")
+if($_POST["12"] != "0.5")
 {
 $data = "TimeShower:pTmin = ".$_POST["12"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["13"] != "0.4")
+if($_POST["13"] != "0.5")
 {
 $data = "TimeShower:pTminChgQ = ".$_POST["13"]."\n";
 fwrite($handle,$data);

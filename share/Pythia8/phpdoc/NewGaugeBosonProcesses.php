@@ -63,9 +63,9 @@ off, this process is reduced to what already exists among
 so those options are here only for crosschecks. 
 <br/>
 <input type="radio" name="2" value="0" checked="checked"><strong>0 </strong>: full <ei>gamma^*/Z^0/Z'^0</ei> structure,  with interference included.<br/>
-<input type="radio" name="2" value="1"><strong>1 </strong>: full <ei>gamma^*/Z^0/Z'^0</ei> structure,  with interference included.<br/>
-<input type="radio" name="2" value="2"><strong>2 </strong>: full <ei>gamma^*/Z^0/Z'^0</ei> structure,  with interference included.<br/>
-<input type="radio" name="2" value="3"><strong>3 </strong>: full <ei>gamma^*/Z^0/Z'^0</ei> structure,  with interference included.<br/>
+<input type="radio" name="2" value="1"><strong>1 </strong>: only pure <ei>gamma^*</ei> contribution.<br/>
+<input type="radio" name="2" value="2"><strong>2 </strong>: only pure <ei>Z^0</ei> contribution.<br/>
+<input type="radio" name="2" value="3"><strong>3 </strong>: only pure <ei>Z'^0</ei> contribution.<br/>
 <input type="radio" name="2" value="4"><strong>4 </strong>: only the <ei>gamma^*/Z^0</ei> contribution,  including interference.<br/>
 <input type="radio" name="2" value="5"><strong>5 </strong>: only the <ei>gamma^*/Z'^0</ei> contribution,  including interference.<br/>
 <input type="radio" name="2" value="6"><strong>6 </strong>: only the <ei>Z^0/Z'^0</ei> contribution,  including interference.<br/>

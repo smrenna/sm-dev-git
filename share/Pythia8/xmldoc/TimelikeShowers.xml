@@ -154,7 +154,7 @@ away from this value could do better in some processes.
  
 <p/> 
 The amount of QCD radiation in the shower is determined by 
-<parm name="TimeShower:alphaSvalue" default="0.1383" 
+<parm name="TimeShower:alphaSvalue" default="0.1365" 
 min="0.06" max="0.25"> 
 The <ei>alpha_strong</ei> value at scale <ei>M_Z^2</ei>. The default 
 value corresponds to a crude tuning to LEP data, to be improved. 
@@ -231,11 +231,11 @@ no emissions are allowed. The cutoff may be different for QCD and QED
 radiation off quarks, and is mainly a technical parameter for QED 
 radiation off leptons. 
  
-<parm name="TimeShower:pTmin" default="0.4" min="0.1" max="2.0"> 
+<parm name="TimeShower:pTmin" default="0.5" min="0.1" max="2.0"> 
 Parton shower cut-off <ei>pT</ei> for QCD emissions. 
 </parm> 
  
-<parm name="TimeShower:pTminChgQ" default="0.4" min="0.1" max="2.0"> 
+<parm name="TimeShower:pTminChgQ" default="0.5" min="0.1" max="2.0"> 
 Parton shower cut-off <ei>pT</ei> for photon coupling to coloured particle. 
 </parm> 
  

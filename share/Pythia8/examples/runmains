@@ -3,7 +3,7 @@
 # PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 # Please respect the MCnet Guidelines, see GUIDELINES for details. 
  
-# Simple script to run all the mainXX test programs
+# Simple script to run all the mainNN test programs
 # Several of the ones from main31 and higher need linkage to external 
 # libraries, however, and therefore the execution exits before them by default.
 # If you want to change that behaviour, comment out the "exit" line.
@@ -154,14 +154,19 @@ echo Now begin main29
 make main29
 time ./main29 > out29
 
-# This code section stops the testing before the mainXX programs
-# that need access to various external libraries (+ main31).  
+echo
+echo Now begin main30
+make main30
+time ./main30 > out30
+
+# This code section stops the testing before the mainNN programs
+# that need access to various external libraries (plus a few further).  
 # If you have ensured such linkage, feel free to comment out
 # the exit command below, to have the program continue to the end.
 echo 
 echo The testing stops here!
-echo Further checks require that you have external libraries linked,
-echo and edit this runmains file, by removing a single exit line.
+echo Most further checks require that you have external libraries linked,
+echo and that you edit this runmains file, by removing a single exit line.
 exit
 
 echo
@@ -174,6 +179,15 @@ echo Now begin main32
 make main32
 time ./main32 > out32
 
+echo
+echo Now begin main37
+make main37
+time ./main37 > out3
+
+echo
+echo Now begin main38
+make main38
+time ./main38 > out38
 
 echo
 echo Now begin main41
@@ -184,6 +198,11 @@ echo
 echo Now begin main42
 make main42
 time ./main42 main42.cmnd hepmcout42.dat > out42
+
+echo
+echo Now begin main43
+make main43
+time ./main43 main43.cmnd hepmcout43.dat > out43
 
 echo
 echo Now begin main51
@@ -206,16 +225,6 @@ make main54
 time ./main54 > out54
 
 echo
-echo Now begin main61
-make main61
-time ./main61 main61.cmnd hepmcout61.dat > out61
-
-echo
-echo Now begin main62
-make main62
-time ./main62 main62.cmnd hepmcout62.dat > out62
-
-echo
 echo Now begin main71
 make main71
 time ./main71 > out71
@@ -230,7 +239,7 @@ echo Now begin main80
 make main80
 time ./main80 > out80
 
-# main81 - main88 not yet implemented; requires file paths
+# main81 - main89 not yet implemented; requires file paths
 
 echo
 echo Now begin main91

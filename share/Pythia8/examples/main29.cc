@@ -64,7 +64,6 @@ int main() {
     UserHooks* myUserHooks;
 
     // Tuning parameters for CR scenarios have tune 4C as a starting point.
-    pythia.readString("Tune:ee = 3");
     pythia.readString("Tune:pp = 5");
     
     // No reconnection at all.

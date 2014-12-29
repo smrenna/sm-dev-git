@@ -115,10 +115,20 @@ bool Settings::init(string startFile, bool append, ostream& os) {
       // Check for occurence of an int and add to mode map.
       } else if (tag == "<mode" || tag == "<modeopen"
         || tag == "<modepick" || tag == "<modefix") {
-        int value  = intAttributeValue( line, "default=");
-        int minVal = intAttributeValue( line, "min=");
-        int maxVal = intAttributeValue( line, "max=");
-        addMode( name, value, hasMin, hasMax, minVal, maxVal);
+        int value    = intAttributeValue( line, "default=");
+        int minVal   = intAttributeValue( line, "min=");
+        int maxVal   = intAttributeValue( line, "max=");
+        // Enforce check that only allowed options are accepted.
+        bool optOnly = false;
+        if (tag == "<modepick" && hasMin && hasMax) optOnly = true;
+        if (tag == "<modefix") {
+          hasMin  = true;
+          hasMax  = true;
+          minVal  = value;
+          maxVal  = value;  
+          optOnly = true;
+        }
+        addMode( name, value, hasMin, hasMax, minVal, maxVal, optOnly);
     
       // Check for occurence of a double and add to parm map.
       } else if (tag == "<parm" || tag == "<parmfix") {
@@ -290,7 +300,12 @@ bool Settings::readString(string line, bool warn, ostream& os) {
       readingFailedSave = true;
       return false;
     }
-    mode(name, value);
+    if (!mode(name, value)) {
+      if (warn) os << "\n PYTHIA Error: variable recognized, but its value"
+        << " non-existing option:\n   " << line << endl;
+      readingFailedSave = true;
+      return false;
+    }
         
   // Update parm map.
   } else if (inDataBase == 3) {
@@ -1036,10 +1051,13 @@ void Settings::flag(string keyIn, bool nowIn) {
   if (keyLower == "print:quiet") printQuiet( nowIn);
 }
 
-void Settings:: mode(string keyIn, int nowIn) {
+bool Settings:: mode(string keyIn, int nowIn) {
   if (isMode(keyIn)) {
     string keyLower = toLower(keyIn);
     Mode& modeNow = modes[keyLower];
+    // For modepick and modefix fail if values are outside range.
+    if (modeNow.optOnly && (nowIn < modeNow.valMin || nowIn > modeNow.valMax) )
+      return false; 
     if (modeNow.hasMin && nowIn < modeNow.valMin)
       modeNow.valNow = modeNow.valMin;
     else if (modeNow.hasMax && nowIn > modeNow.valMax)
@@ -1049,6 +1067,8 @@ void Settings:: mode(string keyIn, int nowIn) {
     if (keyLower == "tune:ee") initTuneEE( modeNow.valNow);
     if (keyLower == "tune:pp") initTunePP( modeNow.valNow);
   }
+  return true;
+
 }
 
 void Settings::parm(string keyIn, double nowIn) {
@@ -1292,6 +1312,8 @@ void Settings::resetTunePP() {
   resetParm("SpaceShower:pT0Ref");
   resetParm("SpaceShower:ecmRef");
   resetParm("SpaceShower:ecmPow");
+  resetParm("SpaceShower:pTmaxFudge");
+  resetParm("SpaceShower:pTdampFudge");
   resetFlag("SpaceShower:rapidityOrder");
   resetFlag("SpaceShower:phiPolAsym");
   resetFlag("SpaceShower:phiIntAsym");
@@ -1563,6 +1585,15 @@ void Settings::initTunePP( int ppTune) {
   // Is first step for setting up a specific tune.
   if (ppTune != 0) resetTunePP();
 
+  // Set up e+e- tune that goes with the corresponding pp tune.
+  if (ppTune > 0) {
+    int eeTune = 3;
+    if (ppTune == 14 || ppTune >= 18) eeTune = 7;
+    // The mode setting is for documentation, the real action is by initTuneEE. 
+    mode("Tune:ee",                            eeTune );    
+    initTuneEE( eeTune);
+  }
+
   // Decide whether to use LHAPFD where possible.
   int preferLHAPDF = mode("Tune:preferLHAPDF");
 
@@ -1582,6 +1613,8 @@ void Settings::initTunePP( int ppTune) {
     parm("SpaceShower:pT0Ref",                  2.2   );
     parm("SpaceShower:ecmRef",                  1800.0);
     parm("SpaceShower:ecmPow",                  0.16  );
+    parm("SpaceShower:pTmaxFudge",              1.0   );
+    parm("SpaceShower:pTdampFudge",             1.0   );
     flag("SpaceShower:rapidityOrder",           false );
     flag("SpaceShower:phiPolAsym",              false );
     flag("SpaceShower:phiIntAsym",              false );
@@ -1616,6 +1649,8 @@ void Settings::initTunePP( int ppTune) {
     parm("SpaceShower:pT0Ref",                  2.0   );
     parm("SpaceShower:ecmRef",                  1800.0);
     parm("SpaceShower:ecmPow",                  0.0   );
+    parm("SpaceShower:pTmaxFudge",              1.0   );
+    parm("SpaceShower:pTdampFudge",             1.0   );
     flag("SpaceShower:rapidityOrder",           false );
     flag("SpaceShower:phiPolAsym",              false );
     flag("SpaceShower:phiIntAsym",              false );
@@ -1650,6 +1685,8 @@ void Settings::initTunePP( int ppTune) {
     parm("SpaceShower:pT0Ref",                  2.0   );
     parm("SpaceShower:ecmRef",                  1800.0);
     parm("SpaceShower:ecmPow",                  0.0   );
+    parm("SpaceShower:pTmaxFudge",              1.0   );
+    parm("SpaceShower:pTdampFudge",             1.0   );
     flag("SpaceShower:rapidityOrder",           true  );
     flag("SpaceShower:phiPolAsym",              true  );
     flag("SpaceShower:phiIntAsym",              true  );
@@ -1684,6 +1721,8 @@ void Settings::initTunePP( int ppTune) {
     parm("SpaceShower:pT0Ref",                  2.0   );
     parm("SpaceShower:ecmRef",                  1800.0);
     parm("SpaceShower:ecmPow",                  0.0   );
+    parm("SpaceShower:pTmaxFudge",              1.0   );
+    parm("SpaceShower:pTdampFudge",             1.0   );
     flag("SpaceShower:rapidityOrder",           true  );
     flag("SpaceShower:phiPolAsym",              true  );
     flag("SpaceShower:phiIntAsym",              true  );
@@ -1721,6 +1760,8 @@ void Settings::initTunePP( int ppTune) {
     parm("SpaceShower:pT0Ref",                  2.0   );
     parm("SpaceShower:ecmRef",                  1800.0);
     parm("SpaceShower:ecmPow",                  0.0   );
+    parm("SpaceShower:pTmaxFudge",              1.0   );
+    parm("SpaceShower:pTdampFudge",             1.0   );
     flag("SpaceShower:rapidityOrder",           true  );
     flag("SpaceShower:phiPolAsym",              true  );
     flag("SpaceShower:phiIntAsym",              true  );
@@ -1758,6 +1799,8 @@ void Settings::initTunePP( int ppTune) {
     parm("SpaceShower:pT0Ref",                  2.0   );
     parm("SpaceShower:ecmRef",                  1800.0);
     parm("SpaceShower:ecmPow",                  0.0   );
+    parm("SpaceShower:pTmaxFudge",              1.0   );
+    parm("SpaceShower:pTdampFudge",             1.0   );
     flag("SpaceShower:rapidityOrder",           true  );
     flag("SpaceShower:phiPolAsym",              true  );
     flag("SpaceShower:phiIntAsym",              true  );
@@ -1795,6 +1838,8 @@ void Settings::initTunePP( int ppTune) {
     parm("SpaceShower:pT0Ref",                  2.0   );
     parm("SpaceShower:ecmRef",                  7000.0);
     parm("SpaceShower:ecmPow",                  0.0   );
+    parm("SpaceShower:pTmaxFudge",              1.0   );
+    parm("SpaceShower:pTdampFudge",             1.0   );
     flag("SpaceShower:rapidityOrder",           true  );
     flag("SpaceShower:phiPolAsym",              true  );
     flag("SpaceShower:phiIntAsym",              true  );
@@ -1831,6 +1876,8 @@ void Settings::initTunePP( int ppTune) {
     parm("SpaceShower:pT0Ref",                  2.0   );
     parm("SpaceShower:ecmRef",                  1800.0);
     parm("SpaceShower:ecmPow",                  0.0   );
+    parm("SpaceShower:pTmaxFudge",              1.0   );
+    parm("SpaceShower:pTdampFudge",             1.0   );
     flag("SpaceShower:rapidityOrder",           true );
     flag("SpaceShower:phiPolAsym",              true  );
     flag("SpaceShower:phiIntAsym",              true  );
@@ -1965,7 +2012,7 @@ void Settings::initTunePP( int ppTune) {
     // see the note CMS PAS GEN-14-001 (April 2014).
     // CMS UE tune CUETP8S1-CTEQ6L1.
     else if (ppTune == 15) {
-      if (preferLHAPDF)
+      if (preferLHAPDF == 1)
         word("PDF:pSet",       "LHAPDF5:cteq6ll.LHpdf");
       else if (preferLHAPDF == 2)
 	word("PDF:pSet",             "LHAPDF6:cteq6l1");
@@ -1998,6 +2045,279 @@ void Settings::initTunePP( int ppTune) {
       parm("MultipartonInteractions:pT0Ref",    2.18  );
       parm("BeamRemnants:primordialKThard",     2.0   );
     }
+  }
+
+  // Several ATLAS and CMS tunes start out from Monash 2013 tune.
+  else if (ppTune == 18) {
+    word("PDF:pSet",                            "13"  );   // NNPDF
+    parm("SigmaProcess:alphaSvalue",            0.130 );   // same as PDF
+    flag("SigmaTotal:zeroAXB",                  true  );
+    flag("SigmaDiffractive:dampen",             true  );
+    parm("SigmaDiffractive:maxXB",              65.0  );
+    parm("SigmaDiffractive:maxAX",              65.0  );
+    parm("SigmaDiffractive:maxXX",              65.0  );
+    parm("Diffraction:largeMassSuppress",       4.0   );
+    flag("TimeShower:dampenBeamRecoil",         true  );
+    flag("TimeShower:phiPolAsym",               true  );
+    parm("SpaceShower:alphaSvalue",             0.1365);   // same as FSR
+    mode("SpaceShower:alphaSorder",             1     );
+    flag("SpaceShower:alphaSuseCMW",            false );
+    flag("SpaceShower:samePTasMPI",             false );
+    parm("SpaceShower:pT0Ref",                  2.0   );
+    parm("SpaceShower:ecmRef",                  7000.0);
+    parm("SpaceShower:ecmPow",                  0.0   );
+    parm("SpaceShower:pTmaxFudge",              1.0   );
+    parm("SpaceShower:pTdampFudge",             1.0   );
+    flag("SpaceShower:rapidityOrder",           true  );
+    flag("SpaceShower:phiPolAsym",              true  );
+    flag("SpaceShower:phiIntAsym",              true  );
+    parm("MultipartonInteractions:alphaSvalue", 0.130 );   // same as PDF
+    parm("MultipartonInteractions:pT0Ref",      2.28  );
+    parm("MultipartonInteractions:ecmRef",      7000. );
+    parm("MultipartonInteractions:ecmPow",      0.215 );
+    mode("MultipartonInteractions:bProfile",    3     );
+    parm("MultipartonInteractions:expPow",      1.85  );
+    parm("MultipartonInteractions:a1",          0.15  );
+    parm("BeamRemnants:primordialKTsoft",       0.9   );
+    parm("BeamRemnants:primordialKThard",       1.8   );
+    parm("BeamRemnants:halfScaleForKT",         1.5   );
+    parm("BeamRemnants:halfMassForKT",          1.0   );
+    mode("ColourReconnection:mode",             0     );
+    parm("ColourReconnection:range",            1.80  );
+
+    // CMS tune MonashStar = CUETP8M1-NNPDF2.3LO.
+    // See R.D. Field, presentation at MPI@LHC 2014, Krakow, Poland.
+    if (ppTune == 18) {
+      parm("MultipartonInteractions:pT0Ref",    2.4024);
+      parm("MultipartonInteractions:ecmPow",    0.2521);
+      parm("MultipartonInteractions:expPow",    1.60  );
+    }
+
+    // The ATLAS A14 tunes, central tune with CTEQL1.
+    // See ATL-PHYS-PUB-2014-021 (November 2014). 
+    // Warning: note that TimeShower:alphaSvalue is set here, although
+    // normally it would be in the domain of ee tunes. This makes the
+    // order of Tune:ee and Tune:pp commands relevant. 
+    else if (ppTune == 19) {   
+      if (preferLHAPDF == 1)
+        word("PDF:pSet",       "LHAPDF5:cteq6ll.LHpdf");
+      else if (preferLHAPDF == 2)
+	word("PDF:pSet",             "LHAPDF6:cteq6l1");
+      else word("PDF:pSet",                     "8"   );
+      parm("SigmaProcess:alphaSvalue",          0.144 );
+      parm("TimeShower:alphaSvalue",            0.126 );  
+      parm("SpaceShower:alphaSvalue",           0.125 );  
+      parm("SpaceShower:pT0Ref",                1.3   );
+      parm("SpaceShower:pTmaxFudge",            0.95   );
+      parm("SpaceShower:pTdampFudge",           1.21  );
+      parm("MultipartonInteractions:alphaSvalue",0.118); 
+      parm("MultipartonInteractions:pT0Ref",    1.98  );
+      parm("BeamRemnants:primordialKThard",     1.72  );
+      parm("ColourReconnection:range",          2.08  );
+    } 
+
+    // The ATLAS A14 tunes, central tune with MSTW2008LO.
+    else if (ppTune == 20) {   
+      if (preferLHAPDF == 1)
+	word("PDF:pSet", "LHAPDF5:MSTW2008lo68cl.LHgrid");
+      else if (preferLHAPDF == 2)
+	word("PDF:pSet",      "LHAPDF6:MSTW2008lo68cl");
+      else word("PDF:pSet",                     "5"   );
+      parm("SigmaProcess:alphaSvalue",          0.140 );
+      parm("TimeShower:alphaSvalue",            0.129 );  
+      parm("SpaceShower:alphaSvalue",           0.129 );  
+      parm("SpaceShower:pT0Ref",                1.62  );
+      parm("SpaceShower:pTmaxFudge",            0.92  );
+      parm("SpaceShower:pTdampFudge",           1.14  );
+      parm("MultipartonInteractions:alphaSvalue",0.130); 
+      parm("MultipartonInteractions:pT0Ref",    2.28  );
+      parm("BeamRemnants:primordialKThard",     1.82  );
+      parm("ColourReconnection:range",          1.87  );
+    } 
+
+    // The ATLAS A14 tunes, central tune with NNPDF2.3LO.
+    else if (ppTune == 21) { 
+      word("PDF:pSet",                          "13"  ); 
+      parm("SigmaProcess:alphaSvalue",          0.140 );
+      parm("TimeShower:alphaSvalue",            0.127 );  
+      parm("SpaceShower:alphaSvalue",           0.127 );  
+      parm("SpaceShower:pT0Ref",                1.56  );
+      parm("SpaceShower:pTmaxFudge",            0.91  );
+      parm("SpaceShower:pTdampFudge",           1.05  );
+      parm("MultipartonInteractions:alphaSvalue",0.126); 
+      parm("MultipartonInteractions:pT0Ref",    2.09  );
+      parm("BeamRemnants:primordialKThard",     1.88  );
+      parm("ColourReconnection:range",          1.71  );
+    } 
+
+    // The ATLAS A14 tunes, central tune with HERAPDF1.5LO.
+    else if (ppTune == 22) {   
+      if (preferLHAPDF == 2)
+	word("PDF:pSet",     "LHAPDF6:HERAPDF15LO_EIG");
+      else
+	word("PDF:pSet", "LHAPDF5:HERAPDF1.5LO_EIG.LHgrid");
+      parm("SigmaProcess:alphaSvalue",          0.141 );
+      parm("TimeShower:alphaSvalue",            0.130 );  
+      parm("SpaceShower:alphaSvalue",           0.128);  
+      parm("SpaceShower:pT0Ref",                1.61  );
+      parm("SpaceShower:pTmaxFudge",            0.95  );
+      parm("SpaceShower:pTdampFudge",           1.10  );
+      parm("MultipartonInteractions:alphaSvalue",0.123); 
+      parm("MultipartonInteractions:pT0Ref",    2.14  );
+      parm("BeamRemnants:primordialKThard",     1.83  );
+      parm("ColourReconnection:range",          1.78  );
+    } 
+
+    // The ATLAS A14 tunes, variation 1+.
+    else if (ppTune == 23) { 
+      word("PDF:pSet",                          "13"  ); 
+      parm("SigmaProcess:alphaSvalue",          0.140 );
+      parm("TimeShower:alphaSvalue",            0.127 );  
+      parm("SpaceShower:alphaSvalue",           0.127 );  
+      parm("SpaceShower:pT0Ref",                1.56  );
+      parm("SpaceShower:pTmaxFudge",            0.91  );
+      parm("SpaceShower:pTdampFudge",           1.05  );
+      parm("MultipartonInteractions:alphaSvalue",0.131); 
+      parm("MultipartonInteractions:pT0Ref",    2.09  );
+      parm("BeamRemnants:primordialKThard",     1.88  );
+      parm("ColourReconnection:range",          1.73  );
+    } 
+
+    // The ATLAS A14 tunes, variation 1-.
+    else if (ppTune == 24) { 
+      word("PDF:pSet",                          "13"  ); 
+      parm("SigmaProcess:alphaSvalue",          0.140 );
+      parm("TimeShower:alphaSvalue",            0.127 );  
+      parm("SpaceShower:alphaSvalue",           0.127 );  
+      parm("SpaceShower:pT0Ref",                1.56  );
+      parm("SpaceShower:pTmaxFudge",            0.91  );
+      parm("SpaceShower:pTdampFudge",           1.05  );
+      parm("MultipartonInteractions:alphaSvalue",0.121); 
+      parm("MultipartonInteractions:pT0Ref",    2.09  );
+      parm("BeamRemnants:primordialKThard",     1.88  );
+      parm("ColourReconnection:range",          1.69  );
+    } 
+
+    // The ATLAS A14 tunes, variation 2+.
+    else if (ppTune == 25) { 
+      word("PDF:pSet",                          "13"  ); 
+      parm("SigmaProcess:alphaSvalue",          0.140 );
+      parm("TimeShower:alphaSvalue",            0.139 );  
+      parm("SpaceShower:alphaSvalue",           0.127 );  
+      parm("SpaceShower:pT0Ref",                1.60  );
+      parm("SpaceShower:pTmaxFudge",            0.91  );
+      parm("SpaceShower:pTdampFudge",           1.04  );
+      parm("MultipartonInteractions:alphaSvalue",0.126); 
+      parm("MultipartonInteractions:pT0Ref",    2.09  );
+      parm("BeamRemnants:primordialKThard",     1.88  );
+      parm("ColourReconnection:range",          1.71  );
+    } 
+
+    // The ATLAS A14 tunes, variation 2-.
+    else if (ppTune == 26) { 
+      word("PDF:pSet",                          "13"  ); 
+      parm("SigmaProcess:alphaSvalue",          0.140 );
+      parm("TimeShower:alphaSvalue",            0.111 );  
+      parm("SpaceShower:alphaSvalue",           0.127 );  
+      parm("SpaceShower:pT0Ref",                1.50  );
+      parm("SpaceShower:pTmaxFudge",            0.91  );
+      parm("SpaceShower:pTdampFudge",           1.08  );
+      parm("MultipartonInteractions:alphaSvalue",0.126); 
+      parm("MultipartonInteractions:pT0Ref",    2.09  );
+      parm("BeamRemnants:primordialKThard",     1.88  );
+      parm("ColourReconnection:range",          1.71  );
+    } 
+
+    // The ATLAS A14 tunes, variation 3a+.
+    else if (ppTune == 27) { 
+      word("PDF:pSet",                          "13"  ); 
+      parm("SigmaProcess:alphaSvalue",          0.140 );
+      parm("TimeShower:alphaSvalue",            0.136 );  
+      parm("SpaceShower:alphaSvalue",           0.127 );  
+      parm("SpaceShower:pT0Ref",                1.67  );
+      parm("SpaceShower:pTmaxFudge",            0.98  );
+      parm("SpaceShower:pTdampFudge",           1.36  );
+      parm("MultipartonInteractions:alphaSvalue",0.125); 
+      parm("MultipartonInteractions:pT0Ref",    2.09  );
+      parm("BeamRemnants:primordialKThard",     1.88  );
+      parm("ColourReconnection:range",          1.71  );
+    } 
+
+    // The ATLAS A14 tunes, variation 3a-.
+    else if (ppTune == 28) { 
+      word("PDF:pSet",                          "13"  ); 
+      parm("SigmaProcess:alphaSvalue",          0.140 );
+      parm("TimeShower:alphaSvalue",            0.124 );  
+      parm("SpaceShower:alphaSvalue",           0.127 );  
+      parm("SpaceShower:pT0Ref",                1.51  );
+      parm("SpaceShower:pTmaxFudge",            0.88  );
+      parm("SpaceShower:pTdampFudge",           0.93  );
+      parm("MultipartonInteractions:alphaSvalue",0.127); 
+      parm("MultipartonInteractions:pT0Ref",    2.09  );
+      parm("BeamRemnants:primordialKThard",     1.88  );
+      parm("ColourReconnection:range",          1.71  );
+    } 
+
+    // The ATLAS A14 tunes, variation 3b+.
+    else if (ppTune == 29) { 
+      word("PDF:pSet",                          "13"  ); 
+      parm("SigmaProcess:alphaSvalue",          0.140 );
+      parm("TimeShower:alphaSvalue",            0.114 );  
+      parm("SpaceShower:alphaSvalue",           0.129 );  
+      parm("SpaceShower:pT0Ref",                1.56  );
+      parm("SpaceShower:pTmaxFudge",            1.00  );
+      parm("SpaceShower:pTdampFudge",           1.04  );
+      parm("MultipartonInteractions:alphaSvalue",0.126); 
+      parm("MultipartonInteractions:pT0Ref",    2.09  );
+      parm("BeamRemnants:primordialKThard",     1.88  );
+      parm("ColourReconnection:range",          1.71  );
+    } 
+
+    // The ATLAS A14 tunes, variation 3b-.
+    else if (ppTune == 30) { 
+      word("PDF:pSet",                          "13"  ); 
+      parm("SigmaProcess:alphaSvalue",          0.140 );
+      parm("TimeShower:alphaSvalue",            0.138 );  
+      parm("SpaceShower:alphaSvalue",           0.126 );  
+      parm("SpaceShower:pT0Ref",                1.56  );
+      parm("SpaceShower:pTmaxFudge",            0.83  );
+      parm("SpaceShower:pTdampFudge",           1.07  );
+      parm("MultipartonInteractions:alphaSvalue",0.126); 
+      parm("MultipartonInteractions:pT0Ref",    2.09  );
+      parm("BeamRemnants:primordialKThard",     1.88  );
+      parm("ColourReconnection:range",          1.71  );
+    } 
+
+    // The ATLAS A14 tunes, variation 3c+.
+    else if (ppTune == 31) { 
+      word("PDF:pSet",                          "13"  ); 
+      parm("SigmaProcess:alphaSvalue",          0.140 );
+      parm("TimeShower:alphaSvalue",            0.127 );  
+      parm("SpaceShower:alphaSvalue",           0.140 );  
+      parm("SpaceShower:pT0Ref",                1.56  );
+      parm("SpaceShower:pTmaxFudge",            0.91  );
+      parm("SpaceShower:pTdampFudge",           1.05  );
+      parm("MultipartonInteractions:alphaSvalue",0.126); 
+      parm("MultipartonInteractions:pT0Ref",    2.09  );
+      parm("BeamRemnants:primordialKThard",     1.88  );
+      parm("ColourReconnection:range",          1.71  );
+    } 
+
+    // The ATLAS A14 tunes, variation 3c-.
+    else if (ppTune == 32) { 
+      word("PDF:pSet",                          "13"  ); 
+      parm("SigmaProcess:alphaSvalue",          0.140 );
+      parm("TimeShower:alphaSvalue",            0.127 );  
+      parm("SpaceShower:alphaSvalue",           0.115 );  
+      parm("SpaceShower:pT0Ref",                1.56  );
+      parm("SpaceShower:pTmaxFudge",            0.91  );
+      parm("SpaceShower:pTdampFudge",           1.05  );
+      parm("MultipartonInteractions:alphaSvalue",0.126); 
+      parm("MultipartonInteractions:pT0Ref",    2.09  );
+      parm("BeamRemnants:primordialKThard",     1.88  );
+      parm("ColourReconnection:range",          1.71  );
+    } 
+ 
   }
  
 }

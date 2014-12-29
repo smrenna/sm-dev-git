@@ -235,7 +235,7 @@ everything.
 <br/><br/><table><tr><td><strong>TauDecays:mode  </td><td>  &nbsp;&nbsp;(<code>default = <strong>1</strong></code>; <code>minimum = 0</code>; <code>maximum = 5</code>)</td></tr></table>
 Choice of <ei>tau</ei> decay model. 
 <br/>
-<input type="radio" name="14" value="0"><strong>0 </strong>: <br/>
+<input type="radio" name="14" value="0"><strong>0 </strong>: old decay model, with isotropic decays.<br/>
 <input type="radio" name="14" value="1" checked="checked"><strong>1 </strong>: sophisticated decays where external and then internal determination is applied.<br/>
 <input type="radio" name="14" value="2"><strong>2 </strong>: sophisticated decays as above, but now <ei>tau</ei>s with a mother <code>TauDecays:tauMother</code> are forced into an uncorrelated decay with a polarization set by <code>TauDecays:tauPolarization</code>.<br/>
 <input type="radio" name="14" value="3"><strong>3 </strong>: sophisticated decays where all <ei>tau</ei>s, regardless of mother, are forced into an uncorrelated decay with a polarization set by <code>TauDecays:tauPolarization</code>.<br/>

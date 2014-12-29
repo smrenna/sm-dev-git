@@ -166,7 +166,7 @@ public:
       } else if (FSR && pTdefMode == 2 && j > 0 && k > 0 && r > 0) {
         pTemt = pTpythia(e, k, j, r, FSR);
 
-      // Otherwise need to try all possible combintations.
+      // Otherwise need to try all possible combinations.
       } else {
         // Start by finding incoming legs to the hard system after
         // branching (radiator after branching, i for ISR).

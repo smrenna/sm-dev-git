@@ -1070,7 +1070,7 @@ fermions, or <ei>tau^+ tau^-</ei> to any final state. Currently it
 does not affect the partial width of the channels, which is only based
 on the above parameters.
 <br/>
-<input type="radio" name="111" value="0"><strong>0 </strong>: <br/>
+<input type="radio" name="111" value="0"><strong>0 </strong>: isotropic decays.<br/>
 <input type="radio" name="111" value="1" checked="checked"><strong>1 </strong>: assuming the <ei>h^0(H_1)</ei> is a pure scalar  (CP-even), as in the MSSM.<br/>
 <input type="radio" name="111" value="2"><strong>2 </strong>: assuming the <ei>h^0(H_1)</ei> is a pure pseudoscalar  (CP-odd).<br/>
 <input type="radio" name="111" value="3"><strong>3 </strong>: assuming the <ei>h^0(H_1)</ei> is a mixture of the two,  including the CP-violating interference term. The parameter  <ei>eta</ei>, see below, sets the strength of the CP-odd admixture,  with the interference term being proportional to <ei>eta</ei>  and the CP-odd one to <ei>eta^2</ei>.<br/>
@@ -1093,7 +1093,7 @@ fermions, or <ei>tau^+ tau^-</ei> to any final state. Currently it
 does not affect the partial width of the channels, which is only based
 on the above parameters.
 <br/>
-<input type="radio" name="114" value="0"><strong>0 </strong>: <br/>
+<input type="radio" name="114" value="0"><strong>0 </strong>: isotropic decays.<br/>
 <input type="radio" name="114" value="1" checked="checked"><strong>1 </strong>: assuming the <ei>H^0(H_2)</ei> is a pure scalar  (CP-even), as in the MSSM.<br/>
 <input type="radio" name="114" value="2"><strong>2 </strong>: assuming the <ei>H^0(H_2)</ei> is a pure pseudoscalar  (CP-odd).<br/>
 <input type="radio" name="114" value="3"><strong>3 </strong>: assuming the <ei>H^0(H_2)</ei> is a mixture of the two,  including the CP-violating interference term. The parameter  <ei>eta</ei>, see below, sets the strength of the CP-odd admixture,  with the interference term being proportional to <ei>eta</ei>  and the CP-odd one to <ei>eta^2</ei>.<br/>
@@ -1116,7 +1116,7 @@ fermions, or <ei>tau^+ tau^-</ei> to any final state. Currently it
 does not affect the partial width of the channels, which is only based
 on the above parameters.
 <br/>
-<input type="radio" name="117" value="0"><strong>0 </strong>: <br/>
+<input type="radio" name="117" value="0"><strong>0 </strong>: isotropic decays.<br/>
 <input type="radio" name="117" value="1"><strong>1 </strong>: assuming the <ei>A^0(H_3)</ei> is a pure scalar  (CP-even).<br/>
 <input type="radio" name="117" value="2" checked="checked"><strong>2 </strong>: assuming the <ei>A^0(H_3)</ei> is a pure pseudoscalar  (CP-odd), as in the MSSM.<br/>
 <input type="radio" name="117" value="3"><strong>3 </strong>: assuming the <ei>A^0(H_3)</ei> is a mixture of the two,  including the CP-violating interference term. The parameter  <ei>eta</ei>, see below, sets the strength of the CP-odd admixture,  with the interference term being proportional to <ei>eta</ei>  and the CP-odd one to <ei>eta^2</ei>.<br/>

@@ -1,5 +1,15 @@
 ----------------------------------------------------------------------
 
+   LIST OF SAMPLE MAIN PROGRAMS
+
+For a list of the sample main programs, with a brief description
+of each of them, see the "Sample Main Programs" in the HTML manual. 
+From this examples subdirectory, the list should be located at 
+"../htmldoc/SampleMainPrograms.html".  
+For further details consult the source of each mainNN program.
+
+----------------------------------------------------------------------
+
    BASIC INSTRUCTIONS FOR RUNNING TEST PROGRAMS
 
 1) You are supposed to have already compiled PYTHIA 8, as described in 
@@ -16,11 +26,12 @@
 3) If you want to run your own programs from this directory you can edit
    the "Makefile", adding the name of your main program to the already
    existing ones. Note that different cases exist, depending on which 
-   external libraries are to be linked. There is no main00, but this 
-   name is defined in the Makefile, so it can be used for simple first 
-   tests.
+   external libraries are to be linked. The mymainNN.cc name series havs 
+   been predefined to link to PYTHIA 8 standalone and produce executables 
+   mymainNN, so programs with such names are free for you to create and 
+   use without having to modify the Makefile.
 
-4) With ./runmains all the 27 first mainXX program will be run,
+4) With ./runmains all the 30 first mainNN program will be run,
    plus main31, to get a thorough test of the installation. 
    The runmains file can easily be edited to run the others as well,
    but then you should first link to the appropriate external libraries.

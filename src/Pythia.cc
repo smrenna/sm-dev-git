@@ -535,8 +535,8 @@ bool Pythia::init() {
   nErrList         = settings.mode("Check:nErrList");
   epTolErr         = settings.parm("Check:epTolErr");
   epTolWarn        = settings.parm("Check:epTolWarn");
-  mTolErr         = settings.parm("Check:mTolErr");
-  mTolWarn        = settings.parm("Check:mTolWarn");
+  mTolErr          = settings.parm("Check:mTolErr");
+  mTolWarn         = settings.parm("Check:mTolWarn");
 
   // Initialise merging hooks.
   if ( doMerging && (hasMergingHooks || hasOwnMergingHooks) )

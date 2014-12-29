@@ -99,7 +99,7 @@ this point can be found in <a href="../pdfdoc/pdfwarning.pdf">this note</a>.
 In the list below you should therefore be extra cautious when using 
 set 6 or set 9. 
  
-<word name="PDF:pSet" default="2"> 
+<word name="PDF:pSet" default="13"> 
 Parton densities to be used for proton beams (and, by implication, 
 antiproton ones). Note that the choice of a string input (rather than
 e.g. an integer) allows to pick either an internal, LHAPDF5 or LHAPDF6

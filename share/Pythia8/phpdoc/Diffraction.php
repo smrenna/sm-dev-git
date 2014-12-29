@@ -232,7 +232,7 @@ separately that is assigned as a primordial <i>kT</i> to the two
 beam remnants when a gluon is kicked out of a diffractive system. 
    
  
-<br/><br/><table><tr><td><strong>Diffraction:largeMassSuppress </td><td></td><td> <input type="text" name="24" value="2." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>2.</strong></code>; <code>minimum = 0.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>Diffraction:largeMassSuppress </td><td></td><td> <input type="text" name="24" value="4." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>4.</strong></code>; <code>minimum = 0.</code>)</td></tr></table>
 The choice of longitudinal and transverse structure of a diffractive 
 beam remnant for a kicked-out gluon implies a remnant mass 
 <i>m_rem</i> distribution (i.e. quark plus diquark invariant mass 
@@ -331,7 +331,7 @@ options as for nondiffractive events, except that the
 <br/><br/><table><tr><td><strong>Diffraction:bProfile  </td><td>  &nbsp;&nbsp;(<code>default = <strong>1</strong></code>; <code>minimum = 0</code>; <code>maximum = 3</code>)</td></tr></table>
 Choice of impact parameter profile for the incoming hadron beams. 
 <br/>
-<input type="radio" name="28" value="0"><strong>0 </strong>: <br/>
+<input type="radio" name="28" value="0"><strong>0 </strong>: no impact parameter dependence at all.<br/>
 <input type="radio" name="28" value="1" checked="checked"><strong>1 </strong>: a simple Gaussian matter distribution;  no free parameters.<br/>
 <input type="radio" name="28" value="2"><strong>2 </strong>: a double Gaussian matter distribution,  with the two free parameters <ei>coreRadius</ei> and  <ei>coreFraction</ei>.<br/>
 <input type="radio" name="28" value="3"><strong>3 </strong>: an overlap function, i.e. the convolution of  the matter distributions of the two incoming hadrons, of the form  <ei>exp(- b^expPow)</ei>, where <ei>expPow</ei> is a free  parameter.<br/>
@@ -489,7 +489,7 @@ if($_POST["23"] != "0.5")
 $data = "Diffraction:primKTwidth = ".$_POST["23"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["24"] != "2.")
+if($_POST["24"] != "4.")
 {
 $data = "Diffraction:largeMassSuppress = ".$_POST["24"]."\n";
 fwrite($handle,$data);

@@ -121,8 +121,8 @@ Choice of full <ei>gamma^*/Z^0</ei> structure or not in relevant
 processes. 
 <br/>
 <input type="radio" name="8" value="0" checked="checked"><strong>0 </strong>: full <ei>gamma^*/Z^0</ei> structure,  with interference included.<br/>
-<input type="radio" name="8" value="1"><strong>1 </strong>: full <ei>gamma^*/Z^0</ei> structure,  with interference included.<br/>
-<input type="radio" name="8" value="2"><strong>2 </strong>: full <ei>gamma^*/Z^0</ei> structure,  with interference included.<br/>
+<input type="radio" name="8" value="1"><strong>1 </strong>: only pure <ei>gamma^*</ei> contribution.<br/>
+<input type="radio" name="8" value="2"><strong>2 </strong>: only pure <ei>Z^0</ei> contribution.<br/>
 <br/><b>Note</b>: irrespective of the option used, the particle produced 
 will always be assigned code 23 for <ei>Z^0</ei>, and open decay channels 
 is purely dictated by what is set for the <ei>Z^0</ei>. 

@@ -170,12 +170,11 @@ Number of outgoing particles of POWHEG Born level process,
 i.e. not counting additional POWHEG radiation.
    
 
-<br/><br/><table><tr><td><strong>POWHEG:veto  </td><td>  &nbsp;&nbsp;(<code>default = <strong>0</strong></code>; <code>minimum = 0</code>; <code>maximum = 2</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>POWHEG:veto  </td><td>  &nbsp;&nbsp;(<code>default = <strong>0</strong></code>; <code>minimum = 0</code>; <code>maximum = 1</code>)</td></tr></table>
 Master switch to perform vetoing or not.
 <br/>
 <input type="radio" name="2" value="0" checked="checked"><strong>0 </strong>: No vetoing is performed (the user hooks is not loaded). <br/>
 <input type="radio" name="2" value="1"><strong>1 </strong>: Showers are started at the kinematical limit.  Emissions are vetoed if <ei>pTemt > pThard</ei>. See also <code>POWHEG:vetoCount</code> below.<br/>
-<input type="radio" name="2" value="2"><strong>2 </strong>: Showers are started at the kinematical limit.  Emissions are vetoed if <ei>pTemt > pThard</ei>. See also <code>POWHEG:vetoCount</code> below.<br/>
   
 <br/><br/><table><tr><td><strong>POWHEG:vetoCount  </td><td></td><td> <input type="text" name="3" value="3" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>3</strong></code>; <code>minimum = 0</code>)</td></tr></table>
 After this many accepted emissions in a row, no more emissions
@@ -187,7 +186,7 @@ Selection of the <ei>pThard</ei> scale. For events where there is no
 radiation, <ei>pThard</ei> is always set to be the <code>SCALUP</code>
 value of the LHA/LHEF standard.
 <br/>
-<input type="radio" name="4" value="0" checked="checked"><strong>0 </strong>: <br/>
+<input type="radio" name="4" value="0" checked="checked"><strong>0 </strong>: Set <ei>pThard</ei> equal to <code>SCALUP</code>.<br/>
 <input type="radio" name="4" value="1"><strong>1 </strong>: The <ei>pT</ei> of the POWHEG emission is tested against  all other incoming and outgoing partons, with the minimal value chosen. <br/>
 <input type="radio" name="4" value="2"><strong>2 </strong>: The <ei>pT</ei> of all final-state partons is tested  against all other incoming and outgoing partons, with the minimal value  chosen.<br/>
 
@@ -203,22 +202,22 @@ in the final distributions, notably in the tail to large <ei>pT</ei> values.
 <br/><br/><table><tr><td><strong>POWHEG:emitted  </td><td>  &nbsp;&nbsp;(<code>default = <strong>0</strong></code>; <code>minimum = 0</code>; <code>maximum = 3</code>)</td></tr></table>
 Selection of emitted parton for FSR.
 <br/>
-<input type="radio" name="6" value="0" checked="checked"><strong>0 </strong>: <br/>
-<input type="radio" name="6" value="1"><strong>1 </strong>: <br/>
-<input type="radio" name="6" value="2"><strong>2 </strong>: <br/>
-<input type="radio" name="6" value="3"><strong>3 </strong>: <br/>
+<input type="radio" name="6" value="0" checked="checked"><strong>0 </strong>: The PYTHIA definition of emitted.<br/>
+<input type="radio" name="6" value="1"><strong>1 </strong>: The PYTHIA definition of radiator.<br/>
+<input type="radio" name="6" value="2"><strong>2 </strong>: A random selection of emitted or radiator.<br/>
+<input type="radio" name="6" value="3"><strong>3 </strong>: Both emitted and radiator are tried.<br/>
 
 <br/><br/><table><tr><td><strong>POWHEG:pTdef  </td><td>  &nbsp;&nbsp;(<code>default = <strong>0</strong></code>; <code>minimum = 0</code>; <code>maximum = 2</code>)</td></tr></table>
 Use of <ei>pT</ei> definitions. 
 <br/>
 <input type="radio" name="7" value="0" checked="checked"><strong>0 </strong>: The POWHEG ISR <ei>pT</ei> definition for  both ISR and FSR.<br/>
 <input type="radio" name="7" value="1"><strong>1 </strong>: The POWHEG ISR <ei>pT</ei> and FSR <ei>d_ij</ei>  definitions.<br/>
-<input type="radio" name="7" value="2"><strong>2 </strong>: The POWHEG ISR <ei>pT</ei> and FSR <ei>d_ij</ei>  definitions.<br/>
+<input type="radio" name="7" value="2"><strong>2 </strong>: The PYTHIA definitions.<br/>
 
 <br/><br/><table><tr><td><strong>POWHEG:MPIveto  </td><td>  &nbsp;&nbsp;(<code>default = <strong>0</strong></code>; <code>minimum = 0</code>; <code>maximum = 1</code>)</td></tr></table>
 MPI vetoing.
 <br/>
-<input type="radio" name="8" value="0" checked="checked"><strong>0 </strong>: <br/>
+<input type="radio" name="8" value="0" checked="checked"><strong>0 </strong>: No MPI vetoing is done.<br/>
 <input type="radio" name="8" value="1"><strong>1 </strong>: When there is no radiation, MPIs with a scale above <ei>pT_1</ei> are vetoed, else MPIs with a scale above  <ei>sum_i pT_i / 2 = (pT_1 + pT_2 + pT_3) / 2</ei> are vetoed.  This option is intended specifically for POWHEG simulations of  <ei>2 &rarr; 2 + 2 &rarr; 3</ei> QCD processes.   <br/>
 
 <input type="hidden" name="saved" value="1"/>

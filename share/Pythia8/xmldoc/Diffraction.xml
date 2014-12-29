@@ -232,7 +232,7 @@ separately that is assigned as a primordial <ei>kT</ei> to the two
 beam remnants when a gluon is kicked out of a diffractive system. 
 </parm> 
  
-<parm name="Diffraction:largeMassSuppress" default="2." min="0."> 
+<parm name="Diffraction:largeMassSuppress" default="4." min="0."> 
 The choice of longitudinal and transverse structure of a diffractive 
 beam remnant for a kicked-out gluon implies a remnant mass 
 <ei>m_rem</ei> distribution (i.e. quark plus diquark invariant mass 

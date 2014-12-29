@@ -39,11 +39,23 @@ and separate PDF scale choices. Also, in <i>2 &rarr; 2</i> and
 <i>2 &rarr; 3</i> processes where resonances are produced, their 
 couplings and thereby their Breit-Wigner shapes are always evaluated 
 with the resonance mass as scale, irrespective of the choices below. 
+
+<p/> 
+We stress that couplings and scales are set separately from the 
+values on this page for 
+<?php $filepath = $_GET["filepath"];
+echo "<a href='MultipartonInteractions.php?filepath=".$filepath."' target='page'>";?>multiparton interactions</a>, 
+<?php $filepath = $_GET["filepath"];
+echo "<a href='TimelikeShowers.php?filepath=".$filepath."' target='page'>";?>timelike showers</a>, and
+<?php $filepath = $_GET["filepath"];
+echo "<a href='SpacelikeShowers.php?filepath=".$filepath."' target='page'>";?>spacelike showers</a>.
+This allows a bigger flexibility, but also requires a bit more work 
+e.g. if you insist on using the same <i>alpha_s</i> everywhere. 
  
 <h3>Couplings and K factor</h3> 
  
 The size of QCD cross sections is mainly determined by 
-<br/><br/><table><tr><td><strong>SigmaProcess:alphaSvalue </td><td></td><td> <input type="text" name="1" value="0.1265" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.1265</strong></code>; <code>minimum = 0.06</code>; <code>maximum = 0.25</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>SigmaProcess:alphaSvalue </td><td></td><td> <input type="text" name="1" value="0.13" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.13</strong></code>; <code>minimum = 0.06</code>; <code>maximum = 0.25</code>)</td></tr></table>
 The <i>alpha_strong</i> value at scale <i>M_Z^2</i>. 
    
  
@@ -54,7 +66,7 @@ renormalization scale, at which <i>alpha_strong</i> is evaluated
 Order at which <ei>alpha_strong</ei> runs, 
 <br/>
 <input type="radio" name="2" value="0"><strong>0 </strong>: zeroth order, i.e. <ei>alpha_strong</ei> is kept  fixed.<br/>
-<input type="radio" name="2" value="1" checked="checked"><strong>1 </strong>: zeroth order, i.e. <ei>alpha_strong</ei> is kept  fixed.<br/>
+<input type="radio" name="2" value="1" checked="checked"><strong>1 </strong>: first order, which is the normal value.<br/>
 <input type="radio" name="2" value="2"><strong>2 </strong>: second order. Since other parts of the code do  not go to second order there is no strong reason to use this option,  but there is also nothing wrong with it.<br/>
  
 <p/> 
@@ -236,7 +248,7 @@ if($_POST["saved"] == 1)
 $filepath = $_POST["filepath"];
 $handle = fopen($filepath, 'a');
 
-if($_POST["1"] != "0.1265")
+if($_POST["1"] != "0.13")
 {
 $data = "SigmaProcess:alphaSvalue = ".$_POST["1"]."\n";
 fwrite($handle,$data);

@@ -130,7 +130,7 @@ this point can be found in <a href="../pdfdoc/pdfwarning.pdf">this note</a>.
 In the list below you should therefore be extra cautious when using 
 set 6 or set 9. 
  
-<br/><br/><table><tr><td><strong>PDF:pSet  </td><td></td><td> <input type="text" name="2" value="2" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>2</strong></code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>PDF:pSet  </td><td></td><td> <input type="text" name="2" value="13" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>13</strong></code>)</td></tr></table>
 Parton densities to be used for proton beams (and, by implication, 
 antiproton ones). Note that the choice of a string input (rather than
 e.g. an integer) allows to pick either an internal, LHAPDF5 or LHAPDF6
@@ -424,7 +424,7 @@ if($_POST["1"] != "off")
 $data = "PDF:extrapolate = ".$_POST["1"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["2"] != "2")
+if($_POST["2"] != "13")
 {
 $data = "PDF:pSet = ".$_POST["2"]."\n";
 fwrite($handle,$data);

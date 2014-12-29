@@ -12,7 +12,7 @@ using namespace Pythia8;
 
 //==========================================================================
 
-int main(int, char **) {
+int main() {
 
   // Generator
   Pythia pythia;

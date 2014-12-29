@@ -583,9 +583,8 @@ bool convertFile(string nameRoot, string convType) {
             int end = line.find("\"", beg + 8);
             value = line.substr(beg + 7, end - beg - 7);
             if (line.find("</option>") != string::npos)  {
-              if ((line.find("</option>")+9) == line.length())
-                desc = line.substr((line.find("value=")+value.length()+9),
-                  (line.length()-(line.find("value=")+value.length()+18)));
+              int lenlab = beg + value.length() + 9;
+              desc = line.substr( lenlab, line.find("</option>") - lenlab);
             }
             else {
               desc = line.substr(line.find(value)+ value.length()+2,

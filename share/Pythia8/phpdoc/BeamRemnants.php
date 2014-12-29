@@ -112,17 +112,17 @@ Allow or not selection of primordial <i>kT</i> according to the
 parameter values below. 
    
  
-<br/><br/><table><tr><td><strong>BeamRemnants:primordialKTsoft </td><td></td><td> <input type="text" name="2" value="0.5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.5</strong></code>; <code>minimum = 0.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>BeamRemnants:primordialKTsoft </td><td></td><td> <input type="text" name="2" value="0.9" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.9</strong></code>; <code>minimum = 0.</code>)</td></tr></table>
 The width <i>sigma_soft</i> in the above equation, assigned as a 
 primordial <i>kT</i> to initiators in the soft-interaction limit. 
    
  
-<br/><br/><table><tr><td><strong>BeamRemnants:primordialKThard </td><td></td><td> <input type="text" name="3" value="2.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>2.0</strong></code>; <code>minimum = 0.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>BeamRemnants:primordialKThard </td><td></td><td> <input type="text" name="3" value="1.8" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.8</strong></code>; <code>minimum = 0.</code>)</td></tr></table>
 The width <i>sigma_hard</i> in the above equation, assigned as a 
 primordial <i>kT</i> to initiators in the hard-interaction limit. 
    
  
-<br/><br/><table><tr><td><strong>BeamRemnants:halfScaleForKT </td><td></td><td> <input type="text" name="4" value="1." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.</strong></code>; <code>minimum = 0.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>BeamRemnants:halfScaleForKT </td><td></td><td> <input type="text" name="4" value="1.5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.5</strong></code>; <code>minimum = 0.</code>)</td></tr></table>
 The scale <i>Q_half</i> in the equation above, defining the 
 half-way point between hard and soft interactions. 
    
@@ -356,17 +356,17 @@ if($_POST["1"] != "on")
 $data = "BeamRemnants:primordialKT = ".$_POST["1"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["2"] != "0.5")
+if($_POST["2"] != "0.9")
 {
 $data = "BeamRemnants:primordialKTsoft = ".$_POST["2"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["3"] != "2.0")
+if($_POST["3"] != "1.8")
 {
 $data = "BeamRemnants:primordialKThard = ".$_POST["3"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["4"] != "1.")
+if($_POST["4"] != "1.5")
 {
 $data = "BeamRemnants:halfScaleForKT = ".$_POST["4"]."\n";
 fwrite($handle,$data);

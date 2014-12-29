@@ -12,8 +12,21 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.202: 26 December 2014 
+<li>8.202: 29 December 2014 
 <ul> 
+
+<li>Fifteen new <aloc href="Tunes">tunes</aloc> have been added, 
+the MonashStar tune from CMS and fourteen A14 tunes from ATLAS 
+<ref>ATL14a</ref>. The latter correspond to central tunes for 
+four different PDF sets and ten variations in five (approximate) 
+eigenvector directions. Furthermore, now the chosen  
+<code>Tune:pp</code> implies the <code>Tune:ee</code> value
+to which it is related, and thus the latter need not be set
+separately.</li> 
+
+<li>Default settings values have been updated to agree with the 
+Monash 2013 tune. Thus typically the list of changed settings is 
+significantly reduced. Thanks to Mikhail Kirsanov.</li> 
 
 <li>The compositeness section has been expanded with six further 
 processes, describing the pair production of excited leptons or 
@@ -27,14 +40,17 @@ for bottom and charm decays, has been implemented. It is available
 in <code>include/Pythia8Plugins/EvtGen.h</code> and an example how 
 to set it up is found in <code>main48</code>.</li> 
 
-<li>The <code>main61</code> example program has been removed,
-since now LHAPDF can be loaded dynamically for <code>main42</code>,
-so that the two become equivalent. Further <code>main62</code> 
-has been renamed <code>main43</code>, to gather HepMC-related
-examples.
+<li>Several minor changes in the <code>examples</code> subdirectory.
+This includes the <code>README</code>, <code>Makefile</code> an
+<code>runmains</code> files. The <code>main61</code> example program 
+has been removed, since now LHAPDF can be loaded dynamically for 
+<code>main42</code>, so that the two become equivalent. Further 
+<code>main62</code> has been renamed <code>main43</code>, to gather 
+HepMC-related examples, and <code>testlhef3.lhe</code> has been
+renamed <code>wbj_lhef3.lhe</code>.
 </li> 
 
-<li>New example <code>main30</code> how to create a tailormade 
+<li>A new example <code>main30</code> how to create a tailormade 
 copy of the ordinary event record, here with a history tracing
 of the hard process closer to the PYTHIA 6 conventions.
 </li> 
@@ -43,6 +59,20 @@ of the hard process closer to the PYTHIA 6 conventions.
 non-default case of no interleaving, whereby it becomes less likely
 to pick a colourless final-state particle as recoiler.
 Thanks to Mihoko Nojiri and Bryan Webber.</li> 
+
+<li>Initialization will now abort if a mode has been chosen with a
+non-allowed value. This applies to those modes that have been 
+defined with the <code>modepick</code> or <code>modefix</code>
+labels in the <code>xmldoc/*.xml</code> files and, for the former,
+where maximal and minimal values have been specified. The former
+label is used to represent a discrete set of options, and so any 
+value outside the allowed range is just plain wrong. Thanks to James 
+Monk for suggestion.</li> 
+
+<li>Bug fix in the conversion from the <code>xml</code> settings files
+to their <code>php</code> radio-button equivalents, whereby the text 
+describing some options was not set properly. (Typically the text of 
+the previous option was repeated.) Thanks to Radek Ziebcik.</li> 
 
 <li>Minor fixes in the LHEF version 3 reader. Introduce a new 
 matching writer of LHEF version 1 or 3 files.</li> 

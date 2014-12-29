@@ -114,7 +114,7 @@ energy-dependent dampening parameter as used for MPIs.
 Thus it is easy to merge a low-<i>pT</i> system with any other, 
 but difficult to merge two high-<i>pT</i> ones with each other. 
 
-<br/><br/><table><tr><td><strong>ColourReconnection:range </td><td></td><td> <input type="text" name="3" value="10.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>10.0</strong></code>; <code>minimum = 0.</code>; <code>maximum = 10.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>ColourReconnection:range </td><td></td><td> <input type="text" name="3" value="1.8" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.8</strong></code>; <code>minimum = 0.</code>; <code>maximum = 10.</code>)</td></tr></table>
 The <code>range</code> parameter defined above. The higher this number is
 the more reconnections can occur. For values above unity the reconnection
 rate tends to saturate, since then most systems are already connected with 
@@ -359,7 +359,7 @@ if($_POST["2"] != "0")
 $data = "ColourReconnection:mode = ".$_POST["2"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["3"] != "10.0")
+if($_POST["3"] != "1.8")
 {
 $data = "ColourReconnection:range = ".$_POST["3"]."\n";
 fwrite($handle,$data);

@@ -173,17 +173,17 @@ to be unity, for the others you can make your choice.
 The spin of the HV partners of the SM fermions, e.g. 
 <ei>Dv</ei>, <ei>Uv</ei>, <ei>Ev</ei> and <ei>nuEv</ei>. 
 <br/>
-<input type="radio" name="2" value="0"><strong>0 </strong>: <br/>
-<input type="radio" name="2" value="1" checked="checked"><strong>1 </strong>: <br/>
-<input type="radio" name="2" value="2"><strong>2 </strong>: <br/>
+<input type="radio" name="2" value="0"><strong>0 </strong>: spin 0.<br/>
+<input type="radio" name="2" value="1" checked="checked"><strong>1 </strong>: spin 1/2.<br/>
+<input type="radio" name="2" value="2"><strong>2 </strong>: spin 1.<br/>
   
 <br/><br/><table><tr><td><strong>HiddenValley:spinqv  </td><td>  &nbsp;&nbsp;(<code>default = <strong>0</strong></code>; <code>minimum = 0</code>; <code>maximum = 1</code>)</td></tr></table>
 The spin of <ei>qv</ei> when the <ei>Fv</ei> (the HV partners of 
 the SM fermions) have spin 1/2. (While, if they have spin 0 or 1, 
 the <ei>qv</ei> spin is fixed at 1/2.) 
 <br/>
-<input type="radio" name="3" value="0" checked="checked"><strong>0 </strong>: <br/>
-<input type="radio" name="3" value="1"><strong>1 </strong>: <br/>
+<input type="radio" name="3" value="0" checked="checked"><strong>0 </strong>: spin 0.<br/>
+<input type="radio" name="3" value="1"><strong>1 </strong>: spin 1.<br/>
  
 <br/><br/><table><tr><td><strong>HiddenValley:kappa </td><td></td><td> <input type="text" name="4" value="1." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.</strong></code>)</td></tr></table>
 If the <i>Fv</i> have spin 1 then their production 

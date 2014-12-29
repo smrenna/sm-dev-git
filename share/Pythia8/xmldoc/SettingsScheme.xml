@@ -79,7 +79,20 @@ usually rather well-defined for a <code>mode</code> or <code>mvec</code>,
 but less so for a <code>parm</code> or <code>pvec</code>. Often the allowed 
 range exaggerates the degree of our current knowledge, so as not to restrict 
 too much what the user can do. One may choose not to set the lower or 
-upper limit, in which case the range is open-ended.</li> 
+upper limit, in which case the range is open-ended.
+<br/>Normally input values outside the allowed range are changed 
+to the be at nearest limit. For <code>mode</code>s only, a further 
+boolean is stored to tell whether this should be allowed, or whether 
+out-of-range inputs should be forbidden, to the extent that the whole
+PYTHIA initialization would abort. The latter applies to those modes 
+that have been defined with the <code>modepick</code> label in the 
+<code>xmldoc/*.xml</code> files, and where maximal and minimal values 
+have been specified. Such labels are used to represent a discrete set 
+of options, and so any value outside the allowed range is just plain 
+wrong. Also attempts to change <code>modefix</code> fixed-value 
+<code>mode</code>s lead to aborts. By contrast those defined with 
+<code>mode</code> or <code>modeopen</code> follow the normal rules
+of being reset to fall into the allowed range, without any warnings.</li> 
 </ul> 
  
 <p/> 

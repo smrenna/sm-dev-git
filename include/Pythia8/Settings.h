@@ -48,15 +48,17 @@ public:
 
   // Constructor
   Mode(string nameIn = " ", int defaultIn = 0, bool hasMinIn = false,
-    bool hasMaxIn = false, int minIn = 0,  int maxIn = 0) :  name(nameIn),
-    valNow(defaultIn), valDefault(defaultIn), hasMin(hasMinIn),
-    hasMax(hasMaxIn), valMin(minIn), valMax(maxIn) { }
+    bool hasMaxIn = false, int minIn = 0,  int maxIn = 0, 
+    bool optOnlyIn = false) :  name(nameIn), valNow(defaultIn), 
+    valDefault(defaultIn), hasMin(hasMinIn), hasMax(hasMaxIn), 
+    valMin(minIn), valMax(maxIn), optOnly(optOnlyIn)  { }
 
   // Data members.
   string name;
   int    valNow, valDefault;
   bool   hasMin, hasMax;
   int    valMin, valMax;
+  bool   optOnly;
 
 };
 
@@ -229,8 +231,9 @@ public:
   void addFlag(string keyIn, bool defaultIn) {
     flags[toLower(keyIn)] = Flag(keyIn, defaultIn); }
   void addMode(string keyIn, int defaultIn, bool hasMinIn,
-    bool hasMaxIn, int minIn, int maxIn) { modes[toLower(keyIn)]
-    = Mode(keyIn, defaultIn, hasMinIn, hasMaxIn, minIn, maxIn); }
+    bool hasMaxIn, int minIn, int maxIn, bool optOnlyIn = false) { 
+    modes[toLower(keyIn)] = Mode(keyIn, defaultIn, hasMinIn, hasMaxIn, 
+    minIn, maxIn, optOnlyIn); }
   void addParm(string keyIn, double defaultIn, bool hasMinIn,
     bool hasMaxIn, double minIn, double maxIn) { parms[toLower(keyIn)]
     = Parm(keyIn, defaultIn, hasMinIn, hasMaxIn, minIn, maxIn); }
@@ -274,7 +277,7 @@ public:
 
   // Change current value, respecting limits.
   void flag(string keyIn, bool nowIn);
-  void mode(string keyIn, int nowIn);
+  bool mode(string keyIn, int nowIn);
   void parm(string keyIn, double nowIn);
   void word(string keyIn, string nowIn);
   void fvec(string keyIn, vector<bool> nowIn);

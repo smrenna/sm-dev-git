@@ -12,11 +12,20 @@ and separate PDF scale choices. Also, in <ei>2 &rarr; 2</ei> and
 <ei>2 &rarr; 3</ei> processes where resonances are produced, their 
 couplings and thereby their Breit-Wigner shapes are always evaluated 
 with the resonance mass as scale, irrespective of the choices below. 
+
+<p/> 
+We stress that couplings and scales are set separately from the 
+values on this page for 
+<aloc href="MultipartonInteractions">multiparton interactions</aloc>, 
+<aloc href="TimelikeShowers">timelike showers</aloc>, and
+<aloc href="SpacelikeShowers">spacelike showers</aloc>.
+This allows a bigger flexibility, but also requires a bit more work 
+e.g. if you insist on using the same <ei>alpha_s</ei> everywhere. 
  
 <h3>Couplings and K factor</h3> 
  
 The size of QCD cross sections is mainly determined by 
-<parm name="SigmaProcess:alphaSvalue" default="0.1265" 
+<parm name="SigmaProcess:alphaSvalue" default="0.13" 
 min="0.06" max="0.25"> 
 The <ei>alpha_strong</ei> value at scale <ei>M_Z^2</ei>. 
 </parm> 

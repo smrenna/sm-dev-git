@@ -143,14 +143,13 @@ Number of outgoing particles of POWHEG Born level process,
 i.e. not counting additional POWHEG radiation.
 </modeopen> 
 
-<modepick name="POWHEG:veto" default="0" min="0" max="2"> 
+<modepick name="POWHEG:veto" default="0" min="0" max="1"> 
 Master switch to perform vetoing or not.
 <option value="0">No vetoing is performed (the user hooks is not loaded).
 </option> 
 <option value="1">Showers are started at the kinematical limit. 
 Emissions are vetoed if <ei>pTemt > pThard</ei>.
 See also <code>POWHEG:vetoCount</code> below.</option> 
-<option value="2">??</option> 
 </modepick> 
   
 <modeopen name="POWHEG:vetoCount" default="3" min="0"> 

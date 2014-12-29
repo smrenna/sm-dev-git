@@ -88,7 +88,7 @@ energy-dependent dampening parameter as used for MPIs.
 Thus it is easy to merge a low-<ei>pT</ei> system with any other, 
 but difficult to merge two high-<ei>pT</ei> ones with each other. 
 
-<parm name="ColourReconnection:range" default="10.0" min="0." max="10."> 
+<parm name="ColourReconnection:range" default="1.8" min="0." max="10."> 
 The <code>range</code> parameter defined above. The higher this number is
 the more reconnections can occur. For values above unity the reconnection
 rate tends to saturate, since then most systems are already connected with 

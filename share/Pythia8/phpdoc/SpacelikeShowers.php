@@ -149,7 +149,7 @@ away from this value could do better in some processes.
  
 <p/> 
 The amount of QCD radiation in the shower is determined by 
-<br/><br/><table><tr><td><strong>SpaceShower:alphaSvalue </td><td></td><td> <input type="text" name="6" value="0.137" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.137</strong></code>; <code>minimum = 0.06</code>; <code>maximum = 0.25</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>SpaceShower:alphaSvalue </td><td></td><td> <input type="text" name="6" value="0.1365" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.1365</strong></code>; <code>minimum = 0.06</code>; <code>maximum = 0.25</code>)</td></tr></table>
 The <i>alpha_strong</i> value at scale <code>M_Z^2</code>. 
 Default value is picked equal to the one used in CTEQ 5L. 
    
@@ -161,7 +161,7 @@ The actual value is then regulated by the running to the scale
 Order at which <ei>alpha_strong</ei> runs, 
 <br/>
 <input type="radio" name="7" value="0"><strong>0 </strong>: zeroth order, i.e. <ei>alpha_strong</ei> is kept  fixed.<br/>
-<input type="radio" name="7" value="1" checked="checked"><strong>1 </strong>: zeroth order, i.e. <ei>alpha_strong</ei> is kept  fixed.<br/>
+<input type="radio" name="7" value="1" checked="checked"><strong>1 </strong>: first order, which is the normal value.<br/>
 <input type="radio" name="7" value="2"><strong>2 </strong>: second order. Since other parts of the code do  not go to second order there is no strong reason to use this option,  but there is also nothing wrong with it.<br/>
  
 <p/> 
@@ -256,7 +256,7 @@ so that <i>pT0Ref</i> is the <i>pT0</i> value for the reference
 cm energy, <i>pT0Ref = pT0(ecmRef)</i>. 
    
  
-<br/><br/><table><tr><td><strong>SpaceShower:ecmRef </td><td></td><td> <input type="text" name="14" value="1800.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1800.0</strong></code>; <code>minimum = 1.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>SpaceShower:ecmRef </td><td></td><td> <input type="text" name="14" value="7000.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>7000.0</strong></code>; <code>minimum = 1.</code>)</td></tr></table>
 The <i>ecmRef</i> reference energy scale introduced above. 
    
  
@@ -285,9 +285,9 @@ Parton shower cut-off mass for pure QED branchings.
 Assumed smaller than (or equal to) <i>pTminChgQ</i>. 
    
  
-<br/><br/><strong>SpaceShower:rapidityOrder</strong>  <input type="radio" name="19" value="on"><strong>On</strong>
-<input type="radio" name="19" value="off" checked="checked"><strong>Off</strong>
- &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
+<br/><br/><strong>SpaceShower:rapidityOrder</strong>  <input type="radio" name="19" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="19" value="off"><strong>Off</strong>
+ &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 Force emissions, after the first,  to be ordered in rapidity, 
 i.e. in terms of decreasing angles in a backwards-evolution sense. 
 Could be used to probe sensitivity to unordered emissions. 
@@ -490,7 +490,7 @@ if($_POST["5"] != "1.0")
 $data = "SpaceShower:pTdampFudge = ".$_POST["5"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["6"] != "0.137")
+if($_POST["6"] != "0.1365")
 {
 $data = "SpaceShower:alphaSvalue = ".$_POST["6"]."\n";
 fwrite($handle,$data);
@@ -530,7 +530,7 @@ if($_POST["13"] != "2.0")
 $data = "SpaceShower:pT0Ref = ".$_POST["13"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["14"] != "1800.0")
+if($_POST["14"] != "7000.0")
 {
 $data = "SpaceShower:ecmRef = ".$_POST["14"]."\n";
 fwrite($handle,$data);
@@ -555,7 +555,7 @@ if($_POST["18"] != "0.0005")
 $data = "SpaceShower:pTminChgL = ".$_POST["18"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["19"] != "off")
+if($_POST["19"] != "on")
 {
 $data = "SpaceShower:rapidityOrder = ".$_POST["19"]."\n";
 fwrite($handle,$data);
