@@ -1,5 +1,5 @@
 // LesHouches.cc is a part of the PYTHIA event generator.
-// Copyright (C) 2014 Torbjorn Sjostrand.
+// Copyright (C) 2015 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
@@ -305,7 +305,7 @@ bool LHAup::closeLHEF(bool updateInit) {
   if (updateInit) {
     const char* cstring = fileName.c_str();
     osLHEF.open(cstring, ios::in | ios::out);
-  
+
     // Rewrite header; identically with what openLHEF did.
     osLHEF << "<LesHouchesEvents version=\"1.0\">\n"
            << "<!--\n"
@@ -407,7 +407,7 @@ bool LHAup::setInitLHEF(istream& is, bool readHeaders) {
       // At this point we have a line that is not a tag; if no longer
       // reading headers then keep going
       if (!read) continue;
-      
+
       // Check for key change
       if (newKey) {
         if (keyVec.empty()) key = "base";
@@ -432,7 +432,7 @@ bool LHAup::setInitLHEF(istream& is, bool readHeaders) {
   // Read in first info line; done if empty.
   if (!getline(is, line)) return false;
   if (line.find("</init") != string::npos) return true;
-  
+
   // Read in beam and strategy info, and store it.
   int idbmupA, idbmupB;
   double ebmupA, ebmupB;
@@ -537,7 +537,7 @@ bool LHAup::setNewEventLHEF(istream& is, double mRecalculate ) {
               >> scalePDFInSave >> pdf1InSave >> pdf2InSave;
       if (!getinfo) return false;
       getPDFSave = true;
-    
+
     // Extract scale info if present.
     } else if (tag == "#" && !getScale) {
       double scaleIn = 0;
@@ -561,7 +561,7 @@ bool LHAup::setNewEventLHEF(istream& is, double mRecalculate ) {
     pdf1InSave     = 0.;
     pdf2InSave     = 0.;
   }
-  
+
   // Reading worked.
   return true;
 
@@ -678,7 +678,7 @@ bool LHAupLHEF::setInitLHEF( istream & isIn, bool readHead ) {
   // Loop over lines until an <init (or optionally <header>) tag
   // is found first on a line.
   string tag = " ";
-  do { 
+  do {
     if (!getline(iss, line)) return false;
     if (line.find_first_not_of(" \n\t\v\b\r\f\a") != string::npos) {
       istringstream getfirst(line);
@@ -696,7 +696,7 @@ bool LHAupLHEF::setInitLHEF( istream & isIn, bool readHead ) {
     bool read = true, newKey = false;
     string key = "base";
     vector < string > keyVec;
-    while (true) { 
+    while (true) {
       if (!getline(iss, line)) return false;
 
       // Check if this line is a tag; '<' as first character,
@@ -715,7 +715,7 @@ bool LHAupLHEF::setInitLHEF( istream & isIn, bool readHead ) {
         // Tag present, so handle here
         if (getfirst) {
 
-          // Exit condition 
+          // Exit condition
           if (tag == "init") break;
 
           // End of header block; keep reading until <init> tag,
@@ -743,7 +743,7 @@ bool LHAupLHEF::setInitLHEF( istream & isIn, bool readHead ) {
       // At this point we have a line that is not a tag; if no longer
       // reading headers then keep going
       if (!read) continue;
-      
+
       // Check for key change
       if (newKey) {
         if (keyVec.empty()) key = "base";
@@ -765,7 +765,7 @@ bool LHAupLHEF::setInitLHEF( istream & isIn, bool readHead ) {
 
   } // if (readHead == true && tag == headerTag)
 
-  // Extract beam and strategy info, and store it. 
+  // Extract beam and strategy info, and store it.
   int idbmupA, idbmupB;
   double ebmupA, ebmupB;
   int pdfgupA, pdfgupB, pdfsupA, pdfsupB, idwtup, nprup;
@@ -789,9 +789,9 @@ bool LHAupLHEF::setInitLHEF( istream & isIn, bool readHead ) {
   double xsecup, xerrup, xmaxup;
   xSecSumSave = 0.;
   xErrSumSave = 0.;
-  int lprup; 
+  int lprup;
   infoPtr->sigmaLHEFSave.resize(0);
-  for (int ip = 0; ip < nprup; ++ip) { 
+  for (int ip = 0; ip < nprup; ++ip) {
     xsecup = reader.heprup.XSECUP[ip];
     xerrup = reader.heprup.XERRUP[ip];
     xmaxup = reader.heprup.XMAXUP[ip];
@@ -830,7 +830,7 @@ bool LHAupLHEF::setNewEventLHEF(double mRecalculate ) {
   xwgtupSave  = reader.hepeup.XWGTUP;
   scalupSave  = reader.hepeup.SCALUP;
   aqedupSave  = reader.hepeup.AQEDUP;
-  aqcdupSave  = reader.hepeup.AQCDUP; 
+  aqcdupSave  = reader.hepeup.AQCDUP;
 
   // Reset particlesSave vector, add slot-0 empty particle.
   particlesSave.clear();
@@ -901,7 +901,7 @@ bool LHAupLHEF::setNewEventLHEF(double mRecalculate ) {
     }
   }
 
-  // Set production scales from <scales> tag. 
+  // Set production scales from <scales> tag.
   if ( setScalesFromLHEF && reader.version > 1 ){
     if(&reader.hepeup.scales)
     for ( map<string,double>::const_iterator
@@ -933,7 +933,7 @@ bool LHAupLHEF::setNewEventLHEF(double mRecalculate ) {
   infoPtr->setLHEF3EventInfo();
   // Set everything for 2.0 and 3.0
   if (reader.version > 1) {
-    infoPtr->setLHEF3EventInfo( &reader.hepeup.attributes, 
+    infoPtr->setLHEF3EventInfo( &reader.hepeup.attributes,
       &reader.hepeup.weights_detailed, &reader.hepeup.weights_compressed,
       &reader.hepeup.scales, &reader.hepeup.weights, &reader.hepeup.rwgt);
   // Try to at least set the event attributes for 1.0
@@ -955,7 +955,7 @@ bool LHAupLHEF::setNewEventLHEF(double mRecalculate ) {
 // Read in initialization information from PYTHIA 8.
 
 bool LHAupFromPYTHIA8::setInit() {
-  
+
   // Read in beam from Info class. Parton density left empty.
   int    idbmupA = infoPtr->idA();
   int    idbmupB = infoPtr->idB();
@@ -1067,7 +1067,7 @@ bool LHAupFromPYTHIA8::updateSigma() {
   return true;
 
 }
- 
+
 //==========================================================================
 
 } // end namespace Pythia8

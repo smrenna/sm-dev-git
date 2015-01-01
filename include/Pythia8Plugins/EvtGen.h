@@ -1,5 +1,5 @@
 // EvtGen.h is a part of the PYTHIA event generator.
-// Copyright (C) 2014 Torbjorn Sjostrand.
+// Copyright (C) 2015 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 // Author: Philip Ilten.
@@ -30,10 +30,10 @@ public:
 
   // Constructor.
   EvtGenRandom(Rndm *rndmPtrIn) {rndmPtr = rndmPtrIn;}
-  
+
   // Return a random number.
   double random() {if (rndmPtr) return rndmPtr->flat(); else return -1.0;}
-  
+
   // The random number pointer.
   Rndm *rndmPtr;
 
@@ -57,9 +57,9 @@ class EvtGenDecays {
 public:
 
   // Constructor.
-  EvtGenDecays(Pythia *pythiaPtrIn, string decayFile, string particleDataFile, 
-	       EvtAbsRadCorr *isrPtr = 0, int mixing = 1, bool xml = false,
-	       bool limit = true);
+  EvtGenDecays(Pythia *pythiaPtrIn, string decayFile, string particleDataFile,
+               EvtAbsRadCorr *isrPtr = 0, int mixing = 1, bool xml = false,
+               bool limit = true);
 
   // Perform all decays.
   void decay();
@@ -75,7 +75,7 @@ public:
 
   // Update the EvtGen particle database from Pythia.
   void updateEvtGen();
-  
+
   // Read an EvtGen user decay file.
   void readDecayFile(string decayFile, bool xml = false) {
     evtgen.readUDecay(decayFile.c_str(), xml);}
@@ -138,11 +138,11 @@ protected:
 //   limit:            flag to limit particle decays based on Pythia criteria.
 
 EvtGenDecays::EvtGenDecays(Pythia *pythiaPtrIn, string decayFile,
-			   string particleDataFile, EvtAbsRadCorr *isrPtr,
-			   int mixing, bool xml, bool limit) :
+                           string particleDataFile, EvtAbsRadCorr *isrPtr,
+                           int mixing, bool xml, bool limit) :
   models(genlist.getListOfModels()), pythiaPtr(pythiaPtrIn),
   rndm(&pythiaPtr->rndm), evtgen(decayFile.c_str(), particleDataFile.c_str(),
-				   &rndm, isrPtr, &models, mixing, xml) {
+                                   &rndm, isrPtr, &models, mixing, xml) {
 
   if (!pythiaPtr) return;
   for (int iPrt = 0; iPrt < (int)EvtPDL::entries(); ++iPrt) {
@@ -159,8 +159,8 @@ EvtGenDecays::EvtGenDecays(Pythia *pythiaPtrIn, string decayFile,
   limitCylinder = pythiaPtr->settings.flag("ParticleDecays:limitCylinder");
   xyMax         = pythiaPtr->settings.parm("ParticleDecays:xyMax");
   zMax          = pythiaPtr->settings.parm("ParticleDecays:zMax");
-  limitDecay    = limit && (limitTau0 || limitTau || 
-			    limitRadius || limitCylinder);
+  limitDecay    = limit && (limitTau0 || limitTau ||
+                            limitRadius || limitCylinder);
 
 }
 
@@ -187,7 +187,7 @@ void EvtGenDecays::decay() {
 
     // Perform the decay of the progenitor.
     EvtParticle *egPro = EvtParticleFactory::particleFactory
-      (EvtPDL::evtIdFromStdHep(pyPro->id()), 
+      (EvtPDL::evtIdFromStdHep(pyPro->id()),
        EvtVector4R(pyPro->e(), pyPro->px(), pyPro->py(), pyPro->pz()));
     egPro->setDiagonalSpinDensity();
     evtgen.generateDecay(egPro);
@@ -195,23 +195,23 @@ void EvtGenDecays::decay() {
     pyPro->tau(egPro->getLifetime());
 
     // Add the decay tree to the event record.
-    vector< pair<EvtParticle*, int> > 
+    vector< pair<EvtParticle*, int> >
       moms(1, pair<EvtParticle*, int>(egPro, iPro));
     while (moms.size() != 0) {
-      
+
       // Check if particle should decay.
       EvtParticle* egMom = moms.back().first;
       int          iMom  = moms.back().second;
       Particle*    pyMom = &event[iMom];
       moms.pop_back();
       if (limitDecay) {
-	if (limitTau0 && pyMom->tau0() > tau0Max)    continue;
-	else if (limitTau && pyMom->tau() > tauMax)  continue;
-	else if (limitRadius && pow2(pyMom->xDec()) 
-		 + pow2(pyMom->zDec()) > pow2(rMax)) continue;
-	else if (limitCylinder && (pow2(pyMom->xDec()) + pow2(pyMom->yDec())
-				   > pow2(xyMax) || abs(pyMom->zDec()) > zMax))
-	  continue;
+        if (limitTau0 && pyMom->tau0() > tau0Max)    continue;
+        else if (limitTau && pyMom->tau() > tauMax)  continue;
+        else if (limitRadius && pow2(pyMom->xDec())
+                 + pow2(pyMom->zDec()) > pow2(rMax)) continue;
+        else if (limitCylinder && (pow2(pyMom->xDec()) + pow2(pyMom->yDec())
+                                   > pow2(xyMax) || abs(pyMom->zDec()) > zMax))
+          continue;
       }
 
       // Set the children of the mother.
@@ -219,16 +219,16 @@ void EvtGenDecays::decay() {
       pyMom->statusNeg();
       Vec4 vProd = pyMom->vDec();
       for (int iDtr = 0 ; iDtr < (int)egMom->getNDaug(); ++iDtr) {
-	EvtParticle *egDtr = egMom->getDaug(iDtr);
-	int          id    = egDtr->getPDGId();
-	EvtVector4R  p     = egDtr->getP4Lab();
-	int idx = event.append(id, 93, iMom, 0, 0, 0, 0, 0, p.get(1),
-			       p.get(2), p.get(3), p.get(0), egDtr->mass());
-	Particle *pyDtr = &event.back();
-	pyDtr->vProd(vProd);
-	pyDtr->tau(egDtr->getLifetime());
-	if(egDtr->getNDaug() > 0) 
-	  moms.push_back(pair<EvtParticle*, int>(egDtr, idx));
+        EvtParticle *egDtr = egMom->getDaug(iDtr);
+        int          id    = egDtr->getPDGId();
+        EvtVector4R  p     = egDtr->getP4Lab();
+        int idx = event.append(id, 93, iMom, 0, 0, 0, 0, 0, p.get(1),
+                               p.get(2), p.get(3), p.get(0), egDtr->mass());
+        Particle *pyDtr = &event.back();
+        pyDtr->vProd(vProd);
+        pyDtr->tau(egDtr->getLifetime());
+        if(egDtr->getNDaug() > 0)
+          moms.push_back(pair<EvtParticle*, int>(egDtr, idx));
       }
     }
     egPro->deleteTree();

@@ -1,5 +1,5 @@
 // SusyCouplings.cc is a part of the PYTHIA event generator.
-// Copyright (C) 2014 Torbjorn Sjostrand.
+// Copyright (C) 2015 Torbjorn Sjostrand.
 // Main authors of this file: N. Desai, P. Skands
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
@@ -36,7 +36,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
   slhaPtr         = slhaPtrIn;
   settingsPtr     = settingsPtrIn;
   particleDataPtr = particleDataPtrIn;
-  
+
   // Only initialize SUSY parts if SUSY is actually switched on
   if (!slhaPtr->modsel.exists()) return;
 
@@ -51,7 +51,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
   wZpole    = particleDataPtr->mWidth(23);
   mWpole    = particleDataPtr->m0(24);
   wWpole    = particleDataPtr->mWidth(24);
-  
+
   // Running masses and weak mixing angle
   // (default to pole values if no running available)
   mW        = mWpole;
@@ -101,7 +101,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
   sinb = sqrt( max(0.0, 1.0 - cosb*cosb));
 
   double beta = acos(cosb);
-  
+
   // Verbose output
   if (DBSUSY) {
     cout << " sin2W(Q) = " << sin2W << "  mW(Q) = " << mW
@@ -115,7 +115,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
       }
     }
   }
-  
+
   // Higgs sector
   if(slhaPtr->alpha.exists()) {
     alphaHiggs = slhaPtr->alpha();
@@ -177,17 +177,17 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
   settingsPtr->parm("HiggsA3:coup2H1Z", cba);
   settingsPtr->parm("HiggsA3:coup2H2Z", sba);
   settingsPtr->parm("HiggsA3:coup2HchgW", 1.0);
-  
+
   // H^+
   settingsPtr->parm("HiggsHchg:tanBeta", tanb);
   settingsPtr->parm("HiggsHchg:coup2H1W", cba);
   settingsPtr->parm("HiggsHchg:coup2H2W", sba);
-  
+
   // Triple higgs couplings
-  
+
   double cbpa = cos(beta+alphaHiggs);
   double sbpa = sin(beta+alphaHiggs);
-  
+
   settingsPtr->parm("HiggsH1:coup2Hchg", cos(2*beta)*sbpa + 2*pow2(cosW)*sba);
   settingsPtr->parm("HiggsH2:coup2Hchg", -cos(2*beta)*cbpa + 2*pow2(cosW)*cba);
   settingsPtr->parm("HiggsH2:coup2H1H1", 2*sin(2*alphaHiggs)*sbpa
@@ -196,13 +196,13 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
   settingsPtr->parm("HiggsH2:coup2A3H1", 0.0);
   settingsPtr->parm("HiggsA3:coup2H1H1", 0.0);
   settingsPtr->parm("HiggsA3:coup2Hchg", 0.0);
-  
+
   // Shorthand for squark mixing matrices
   LHmatrixBlock<6> Ru(slhaPtr->usqmix);
   LHmatrixBlock<6> Rd(slhaPtr->dsqmix);
   LHmatrixBlock<6> imRu(slhaPtr->imusqmix);
   LHmatrixBlock<6> imRd(slhaPtr->imdsqmix);
-  
+
   // Construct ~g couplings
   for (int i=1; i<=6; i++) {
     for (int j=1; j<=3; j++) {
@@ -226,7 +226,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
 
   // Construct qqZ couplings
   for (int i=1 ; i<=6 ; i++) {
-    
+
     // q[i] q[i] Z (def with extra factor 2 compared to [Okun])
     LqqZ[i] = af(i) - 2.0*ef(i)*sin2W ;
     RqqZ[i] =       - 2.0*ef(i)*sin2W ;
@@ -245,7 +245,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
 
     // Squarks can have off-diagonal couplings as well
     for (int j=1 ; j<=6 ; j++) {
-      
+
       // ~d[i] ~d[j] Z
       LsdsdZ[i][j] = 0.0;
       RsdsdZ[i][j] = 0.0;
@@ -257,7 +257,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
         LsdsdZ[i][j] += LqqZ[1] * (Rdik*conj(Rdjk));
         RsdsdZ[i][j] += RqqZ[1] * (Rdik3*conj(Rdjk3));
       }
-      
+
       // ~u[i] ~u[j] Z
       LsusuZ[i][j] = 0.0;
       RsusuZ[i][j] = 0.0;
@@ -269,7 +269,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
         LsusuZ[i][j] += LqqZ[2] * (Ruik*conj(Rujk));
         RsusuZ[i][j] += RqqZ[2] * (Ruik3*conj(Rujk3));
       }
-      
+
       // tmp: verbose output
       if (DBSUSY) {
         if (max(abs(LsdsdZ[i][j]),abs(RsdsdZ[i][j])) > 1e-6) {
@@ -290,7 +290,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
 
   LHmatrixBlock<6> Rsl(slhaPtr->selmix);
   LHmatrixBlock<3> Rsv(slhaPtr->snumix);
-  
+
   // In RPV, the slepton mixing matrices include Higgs bosons
   // Here we just extract the entries corresponding to the slepton PDG codes
   // I.e., slepton-Higgs mixing is not supported.
@@ -351,7 +351,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
 
   // Construct llZ couplings;
   for (int i=11 ; i<=16 ; i++) {
-    
+
     LllZ[i-10] = af(i) - 2.0*ef(i)*sin2W ;
     RllZ[i-10] =       - 2.0*ef(i)*sin2W ;
 
@@ -363,7 +363,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
            << scientific << setw(10) << RllZ[i-10] << endl;
     }
   }
-  
+
   // Construct ~l~lZ couplings
   // Initialize
   for(int i=1;i<=6;i++){
@@ -375,7 +375,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
         LslslZ[i][j] += LllZ[1] * Rsl(i,k) * Rsl(j,k);
         RslslZ[i][j] += RllZ[1] * Rsl(i,k+3) * Rsl(j,k+3);
       }
-      
+
       // ~v[i] ~v[j] Z
       LsvsvZ[i][j] = 0.0;
       RsvsvZ[i][j] = 0.0;
@@ -383,7 +383,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
         LsvsvZ[i][j] += LllZ[2] * Rsv(i,k)*Rsv(j,k);
     }
   }
- 
+
   for(int i=1;i<=6;i++){
     for(int j=1;j<=6;j++){
       if (DBSUSY) {
@@ -407,7 +407,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
   // Loop over up [i] and down [j] quark generation
   for (int i=1;i<=3;i++) {
     for (int j=1;j<=3;j++) {
-      
+
       // CKM matrix (use Pythia one if no SLHA)
       // (NB: could also try input one if no running one found, but
       // would then need to compute from Wolfenstein)
@@ -415,11 +415,11 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
       if (slhaPtr->vckm.exists()) {
         Vij=complex(slhaPtr->vckm(i,j),slhaPtr->imvckm(i,j));
       }
-      
+
       // u[i] d[j] W
       LudW[i][j] = sqrt(2.0) * cosW * Vij;
       RudW[i][j] = 0.0;
-            
+
       // tmp: verbose output
       if (DBSUSY) {
         cout << " LudW  [" << i << "][" << j << "] = "
@@ -435,14 +435,14 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
   // Loop over ~u[k] and ~d[l] flavours
   for (int k=1;k<=6;k++) {
     for (int l=1;l<=6;l++) {
-          
+
       LsusdW[k][l]=0.0;
       RsusdW[k][l]=0.0;
 
       // Loop over u[i] and d[j] flavours
       for (int i=1;i<=3;i++) {
         for (int j=1;j<=3;j++) {
-          
+
           // CKM matrix (use Pythia one if no SLHA)
           // (NB: could also try input one if no running one found, but
           // would then need to compute from Wolfenstein)
@@ -450,13 +450,13 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
           if (slhaPtr->vckm.exists()) {
             Vij=complex(slhaPtr->vckm(i,j),slhaPtr->imvckm(i,j));
           }
-      
+
           // ~u[k] ~d[l] W (add one term for each quark flavour i,j)
           complex Ruki = complex(Ru(k,i),imRu(k,i));
           complex Rdlj = complex(Rd(l,j),imRd(l,j));
           LsusdW[k][l] += sqrt(2.0) * cosW * Vij * Ruki * conj(Rdlj);
           RsusdW[k][l] += 0.0;
-          
+
         }
       }
 
@@ -513,7 +513,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
   }
 
   // Now we come to the ones with really many indices
-  
+
   // RPV: check for lepton-neutralino mixing (not supported)
   if (slhaPtr->modsel(4) >= 1 && slhaPtr->rvnmix.exists()) {
     bool hasCrossTerms = false;
@@ -527,13 +527,13 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
       infoPtr->errorMsg("Warning from CoupSUSY::initSUSY: "
                         "Neutrino-Neutralino mixing not supported in PYTHIA");
   }
-  
+
   // Construct ~chi0 couplings (allow for 5 neutralinos in NMSSM)
   for (int i=1;i<=nNeut;i++) {
-    
+
     // Ni1, Ni2, Ni3, Ni4, Ni5
     complex ni1,ni2,ni3,ni4,ni5;
-    
+
     // In RPV, ignore neutrino-neutralino mixing
     if (slhaPtr->modsel(4) >= 1 && slhaPtr->rvnmix.exists()) {
       ni1=complex( slhaPtr->rvnmix(i+3,4), 0.0 );
@@ -555,7 +555,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
       ni4=complex( slhaPtr->nmnmix(i,4), slhaPtr->imnmnmix(i,4) );
       ni5=complex( slhaPtr->nmnmix(i,5), slhaPtr->imnmnmix(i,5) );
     }
-    
+
     // Change to positive mass convention
     complex iRot( 0., 1.);
     if (slhaPtr->mass(idNeut(i)) < 0.) {
@@ -565,10 +565,10 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
       ni4 *= iRot;
       ni5 *= iRot;
     }
-    
+
     // ~chi0 [i] ~chi0 [j] Z : loop over [j]
     for (int j=1; j<=nNeut; j++) {
-      
+
       // neutralino [j] higgsino components
       complex nj3, nj4;
       if (slhaPtr->modsel(4) >= 1 && slhaPtr->rvnmix.exists()) {
@@ -587,11 +587,11 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
         nj3 *= iRot;
         nj4 *= iRot;
       }
-      
+
       // ~chi0 [i] ~chi0 [j] Z : couplings
       OLpp[i][j] = -0.5 * ni3 * conj(nj3) + 0.5 * ni4 * conj(nj4);
       ORpp[i][j] = 0.5 * conj(ni3) * nj3 - 0.5 * conj(ni4) * nj4;
-      
+
       // tmp: verbose output
       if (DBSUSY) {
         cout << " OL''  [" << i << "][" << j << "] = "
@@ -599,12 +599,12 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
              << " OR''  [" << i << "][" << j << "] = "
              << scientific << setw(10) << ORpp[i][j] << endl;
       }
-        
+
     }
-    
+
     // ~chi0 [i] ~chi+ [j] W : loop over [j]
     for (int j=1; j<=nChar; j++) {
-      
+
       // Chargino mixing
       complex uj1, uj2, vj1, vj2;
       if (slhaPtr->modsel(4)<1 || !slhaPtr->rvumix.exists()) {
@@ -624,7 +624,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
       // ~chi0 [i] ~chi+ [j] W : couplings
       OL[i][j] = -1.0/sqrt(2.0)*ni4*conj(vj2)+ni2*conj(vj1);
       OR[i][j] = 1.0/sqrt(2.0)*conj(ni3)*uj2+conj(ni2)*uj1;
-      
+
       // tmp: verbose output
       if (DBSUSY) {
         cout << " OL    [" << i << "][" << j << "] = "
@@ -641,17 +641,17 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
     double T3d = -0.5;
     double eu  =  2.0/3.0;
     double T3u =  0.5;
-    
+
     // Loop over quark [k] generation
     for (int k=1;k<=3;k++) {
-      
+
       // Set quark masses
       // Initial guess 0,0,0,mc,mb,mt with the latter from the PDT
       double mu = particleDataPtr->m0(2*k);
       double md = particleDataPtr->m0(2*k-1);
       if (k == 1) { mu=0.0 ; md=0.0; }
       if (k == 2) { md=0.0 ; mu=0.0; }
-      
+
       // Compute running mass from Yukawas and vevs if possible.
       if (slhaPtr->yd.exists() && slhaPtr->hmix.exists(3)) {
         double ykk=slhaPtr->yd(k,k);
@@ -663,23 +663,23 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
         double v2=slhaPtr->hmix(3)/sqrt(1.0+1.0/pow(tanb,2));
         if (ykk > 0.0) mu = ykk * v2 / sqrt(2.0) ;
       }
-      
+
       // tmp: verbose output
       if (DBSUSY) {
         cout  <<  " Gen = " << k << " mu = " << mu << " md = " << md
               << " yUU,DD = " << slhaPtr->yu(k,k) << ","
               << slhaPtr->yd(k,k) << endl;
       }
-      
+
       // Loop over squark [j] flavour
       for (int j=1;j<=6;j++) {
-        
+
         // Squark mixing
         complex Rdjk  = complex(Rd(j,k),  imRd(j,k)  );
         complex Rdjk3 = complex(Rd(j,k+3),imRd(j,k+3));
         complex Rujk  = complex(Ru(j,k),  imRu(j,k)  );
         complex Rujk3 = complex(Ru(j,k+3),imRu(j,k+3));
-        
+
         // ~d[j] d[k] ~chi0[i]
         // Changed according to new notation
         LsddX[j][k][i] = ((ed-T3d)*sinW*ni1 + T3d*cosW*ni2)*conj(Rdjk)
@@ -770,7 +770,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
       }
     }
   }
-  
+
   // RPV: check for lepton-chargino mixing (not supported)
   if (slhaPtr->modsel(4) >= 1 && slhaPtr->rvumix.exists()) {
     bool hasCrossTerms = false;
@@ -791,30 +791,30 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
   double rt2 = sqrt(2.0);
 
   for (int i=1;i<=nChar;i++) {
-    
+
     // Ui1, Ui2, Vi1, Vi2
     complex ui1,ui2,vi1,vi2;
     ui1=complex( slhaPtr->umix(i,1), slhaPtr->imumix(i,1) );
     ui2=complex( slhaPtr->umix(i,2), slhaPtr->imumix(i,2) );
     vi1=complex( slhaPtr->vmix(i,1), slhaPtr->imvmix(i,1) );
     vi2=complex( slhaPtr->vmix(i,2), slhaPtr->imvmix(i,2) );
-    
+
     // ~chi+ [i] ~chi- [j] Z : loop over [j]
     for (int j=1; j<=nChar; j++) {
-      
+
       // Chargino mixing
       complex uj1, uj2, vj1, vj2;
       uj1=complex( slhaPtr->umix(j,1), slhaPtr->imumix(j,1) );
       uj2=complex( slhaPtr->umix(j,2), slhaPtr->imumix(j,2) );
       vj1=complex( slhaPtr->vmix(j,1), slhaPtr->imvmix(j,1) );
       vj2=complex( slhaPtr->vmix(j,2), slhaPtr->imvmix(j,2) );
-      
+
       // ~chi+ [i] ~chi- [j] Z : couplings
       OLp[i][j] = -vi1*conj(vj1) - 0.5*vi2*conj(vj2)
         + ( (i == j) ? sin2W : 0.0);
       ORp[i][j] = -conj(ui1)*uj1 - 0.5*conj(ui2)*uj2
         + ( (i == j) ? sin2W : 0.0);
-      
+
       if (DBSUSY) {
         // tmp: verbose output
         cout << " OL'   [" << i << "][" << j << "] = "
@@ -823,16 +823,16 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
              << scientific << setw(10) << ORp[i][j] << endl;
       }
     }
-    
+
     // Loop over quark [l] flavour
     for (int l=1;l<=3;l++) {
-      
+
       // Set quark [l] masses
       // Initial guess 0,0,0,mc,mb,mt with the latter from the PDT
       double mul = particleDataPtr->m0(2*l);
       double mdl = particleDataPtr->m0(2*l-1);
       if (l == 1 || l == 2) { mul=0.0 ; mdl=0.0; }
-      
+
       // Compute running mass from Yukawas and vevs if possible.
       if (slhaPtr->yd.exists() && slhaPtr->hmix.exists(3)) {
         double yll=slhaPtr->yd(l,l);
@@ -844,7 +844,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
         double v2=slhaPtr->hmix(3)/sqrt(1.0+1.0/pow(tanb,2));
         if (yll > 0.0) mul = yll * v2 / sqrt(2.0) ;
       }
-      
+
       // Loop over squark [j] flavour
       for (int j=1;j<=6;j++) {
 
@@ -857,7 +857,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
           double mdk = particleDataPtr->m0(2*k-1);
           if (k == 1) { muk=0.0 ; mdk=0.0; }
           if (k == 2) { mdk=0.0 ; muk=0.0; }
-      
+
           // Compute running mass from Yukawas and vevs if possible.
           if (slhaPtr->yd.exists() && slhaPtr->hmix.exists(3)) {
             double ykk=slhaPtr->yd(k,k);
@@ -879,14 +879,14 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
             Vlk=complex(slhaPtr->vckm(l,k),slhaPtr->imvckm(l,k));
             Vkl=complex(slhaPtr->vckm(k,l),slhaPtr->imvckm(k,l));
           }
-      
+
           // Squark mixing
           complex Rdjk  = complex(Rd(j,k),  imRd(j,k)  );
           complex Rdjk3 = complex(Rd(j,k+3),imRd(j,k+3));
           complex Rujk  = complex(Ru(j,k),  imRu(j,k)  );
           complex Rujk3 = complex(Ru(j,k+3),imRu(j,k+3));
 
-          
+
           // ~d[j] u[l] ~chi+[i]
           LsduX[j][l][i] += (ui1*conj(Rdjk)
                              - mdk*ui2*conj(Rdjk3)/rt2/mW/cosb)*Vlk;
@@ -921,7 +921,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
     // Loop over slepton [j] flavour
     for (int j=1;j<=6;j++) {
       for (int k=1;k<=3;k++) {
-        
+
         LslvX[j][k][i] = 0.0;
         RslvX[j][k][i] = 0.0;
         LsvlX[j][k][i] = 0.0;
@@ -930,13 +930,13 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
         // Set lepton [k] masses
         double ml = 0.0;
         if (k == 3) ml = particleDataPtr->m0(15);
-        
+
         if(j==k || j==k+3){ // No lepton mixing
-          
+
           // ~l[j] v[l] ~chi+[i]
           LslvX[j][k][i] += ui1- ml*ui2/rt2/mW/cosb;
           RslvX[j][k][i] -= ml*conj(vi2)/rt2/mW/sinb;
-          
+
           // ~v[j] l[l] ~chi+[i]
           if(j<=3){ // No right handed sneutrinos
             LsvlX[j][k][i] += conj(vi1) - ml*conj(vi2)/rt2/mW/sinb;
@@ -1036,7 +1036,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
       }
     }
   }
-  
+
   //lambda''(k,j,i)=-lambda''(k,i,j)
 
   if(rvudd.exists()){
@@ -1054,7 +1054,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
       }
     }
   }
-  
+
   if(DBSUSY){
     for(int i=1;i<=3;i++){
       for(int j=1;j<=3;j++){
@@ -1080,7 +1080,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
       Rdsq[i][j+3] = complex(Rd(i,j+3),imRd(i,j+3));
     }
   }
-                        
+
   if(DBSUSY){
     cout<<"Ru"<<endl;
     for(int i=1;i<=6;i++){

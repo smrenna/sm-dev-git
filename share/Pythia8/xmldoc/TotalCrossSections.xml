@@ -157,7 +157,7 @@ As above, a reduced diffractive cross section automatically translates
 into an increased nondiffractive one, such that the total (and elastic) 
 cross section remains fixed. 
  
-  
+ 
 <h3>Set elastic cross section</h3> 
  
 <p/> 
@@ -209,4 +209,4 @@ This constant is model dependent <ref>Cah82</ref>.
  
 </chapter> 
  
-<!-- Copyright (C) 2014 Torbjorn Sjostrand --> 
+<!-- Copyright (C) 2015 Torbjorn Sjostrand --> 

@@ -238,7 +238,7 @@ excludes graph like
 Common switch for the group of pair production of <i>gamma^*/Z^0</i> 
 and <i>W^+-</i>. 
    
-  
+ 
 <br/><br/><strong>WeakDoubleBoson:ffbar2gmZgmZ</strong>  <input type="radio" name="19" value="on"><strong>On</strong>
 <input type="radio" name="19" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
@@ -253,7 +253,7 @@ Scattering <i>f fbar' &rarr; Z^0 W^+-</i>. Note that here the
 <i>gamma^*</i> contribution is not (currently) included. 
 Code 232. 
    
-  
+ 
 <br/><br/><strong>WeakDoubleBoson:ffbar2WW</strong>  <input type="radio" name="21" value="on"><strong>On</strong>
 <input type="radio" name="21" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
@@ -277,56 +277,56 @@ gauge-boson production processes (for LHC applications at least
 <i>pT</i> > 20 GeV), while the ones in <code>WeakSingleBoson</code> 
 should be used for inclusive production. 
    
-  
+ 
 <br/><br/><strong>WeakBosonAndParton:qqbar2gmZg</strong>  <input type="radio" name="23" value="on"><strong>On</strong>
 <input type="radio" name="23" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
 Scattering <i>q qbar &rarr; gamma^*/Z^0 g</i>. 
 Code 241. 
    
-  
+ 
 <br/><br/><strong>WeakBosonAndParton:qg2gmZq</strong>  <input type="radio" name="24" value="on"><strong>On</strong>
 <input type="radio" name="24" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
 Scattering <i>q g &rarr; gamma^*/Z^0 q </i>. 
 Code 242. 
    
-  
+ 
 <br/><br/><strong>WeakBosonAndParton:ffbar2gmZgm</strong>  <input type="radio" name="25" value="on"><strong>On</strong>
 <input type="radio" name="25" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
 Scattering <i>f fbar &rarr; gamma^*/Z^0 gamma</i>. 
 Code 243. 
    
-  
+ 
 <br/><br/><strong>WeakBosonAndParton:fgm2gmZf</strong>  <input type="radio" name="26" value="on"><strong>On</strong>
 <input type="radio" name="26" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
 Scattering <i>f gamma &rarr;  gamma^*/Z^0 f</i>. 
 Code 244. 
    
-  
+ 
 <br/><br/><strong>WeakBosonAndParton:qqbar2Wg</strong>  <input type="radio" name="27" value="on"><strong>On</strong>
 <input type="radio" name="27" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
 Scattering <i>q qbar &rarr; W^+- g</i>. 
 Code 251. 
    
-  
+ 
 <br/><br/><strong>WeakBosonAndParton:qg2Wq</strong>  <input type="radio" name="28" value="on"><strong>On</strong>
 <input type="radio" name="28" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
 Scattering <i>q g &rarr; W^+- q</i>. 
 Code 252. 
    
-  
+ 
 <br/><br/><strong>WeakBosonAndParton:ffbar2Wgm</strong>  <input type="radio" name="29" value="on"><strong>On</strong>
 <input type="radio" name="29" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
 Scattering <i>f fbar &rarr; W^+- gamma</i>. 
 Code 253. 
    
-  
+ 
 <br/><br/><strong>WeakBosonAndParton:fgm2Wf</strong>  <input type="radio" name="30" value="on"><strong>On</strong>
 <input type="radio" name="30" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
@@ -597,5 +597,5 @@ fclose($handle);
 </body>
 </html>
  
-<!-- Copyright (C) 2014 Torbjorn Sjostrand --> 
+<!-- Copyright (C) 2015 Torbjorn Sjostrand --> 
  

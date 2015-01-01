@@ -1,5 +1,5 @@
 // main21.cc is a part of the PYTHIA event generator.
-// Copyright (C) 2014 Torbjorn Sjostrand.
+// Copyright (C) 2015 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
@@ -106,7 +106,7 @@ void fillPartons(int type, double ee, Event& event, ParticleData& pdt,
 
       // Minimal cos(q-g opening angle), allows more or less nasty events.
       double cosThetaMin =0.;
-      
+
       // Add a few gluons (almost) at random.
       for (int nglu = 0; nglu < 5; ++nglu) {
         int iq = 1 + int( 2.99999 * rndm.flat() );
@@ -128,7 +128,7 @@ void fillPartons(int type, double ee, Event& event, ParticleData& pdt,
       }
       // Update daughter range of mother.
       event[1].daughters(2, event.size() - 1);
- 
+
     }
 
   // Information on a q q qbar qbar dijunction system, to be hadronized.
@@ -229,7 +229,7 @@ int main() {
   pythia.readString("Next:numberShowInfo = 0");
   pythia.readString("Next:numberShowProcess = 0");
   pythia.readString("Next:numberShowEvent = 0");
- 
+
   // Initialize.
   pythia.init();
 
@@ -248,7 +248,7 @@ int main() {
   Hist dndyAnti("dn/dy primaries antijunction",100, -10., 10.);
   Hist dndyJun("dn/dy primaries junction",100, -10., 10.);
   Hist dndySum("dn/dy all primaries",100, -10., 10.);
-  
+
   // Begin of event loop.
   for (int iEvent = 0; iEvent < nEvent; ++iEvent) {
 
@@ -264,7 +264,7 @@ int main() {
       cout << " Event generation aborted prematurely, owing to error!\n";
       break;
     }
- 
+
     // List first few events.
     if (iEvent < nList) {
       event.list();
@@ -282,7 +282,7 @@ int main() {
     int n86 = 0;
     int n83 = 0;
     int n84 = 0;
-                          
+
     // Loop over all particles.
     for (int i = 0; i < event.size(); ++i) {
       int status = event[i].statusAbs();
@@ -317,7 +317,7 @@ int main() {
         double thetaXZ = event[i].thetaXZ();
         dndtheta.fill(thetaXZ);
         dedtheta.fill(thetaXZ, eAbs);
- 
+
         // Rapidity distribution of primary hadrons.
         double y = event[i].y();
         dndySum.fill(y);
@@ -337,7 +337,7 @@ int main() {
         dnparticledp.fill(pAbs);
       }
     }
- 
+
     // Fill histograms once for each event.
     double epDev = abs(pSum.e()) + abs(pSum.px()) + abs(pSum.py())
       + abs(pSum.pz());
@@ -349,7 +349,7 @@ int main() {
     status83.fill(n83);
     status84.fill(n84);
     if (epDev > 1e-3  || abs(chargeSum) > 0.1) event.list();
-                       
+
   // End of event loop.
   }
 

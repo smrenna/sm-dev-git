@@ -93,7 +93,7 @@ but there is also nothing wrong with it.</option>
 <p/> 
 QED interactions are regulated by the <ei>alpha_electromagnetic</ei> 
 value at the <ei>pT^2</ei> scale of an interaction. 
-  
+ 
 <modepick name="MultipartonInteractions:alphaEMorder" default="1" 
 min="-1" max="1"> 
 The running of <ei>alpha_em</ei> used in hard processes. 
@@ -253,7 +253,7 @@ for the latter provided that <code>SpaceShower:samePTasMPI</code> is on
 </modepick> 
  
 <h4>Impact-parameter dependence</h4> 
-  
+ 
 The choice of impact-parameter dependence is regulated by several 
 parameters. The ones listed here refer to nondiffractive topologies 
 only, while their equivalents for diffractive events are put in the 
@@ -347,7 +347,7 @@ be associated with the hard process.</option>
 </modepick> 
  
 <h4>Rescattering</h4> 
-  
+ 
 It is possible that a parton may rescatter, i.e. undergo a further 
 interaction subsequent to the first one. The machinery to model this 
 kind of physics has only recently become fully operational 
@@ -573,4 +573,4 @@ interactions.
  
 </chapter> 
  
-<!-- Copyright (C) 2014 Torbjorn Sjostrand --> 
+<!-- Copyright (C) 2015 Torbjorn Sjostrand --> 

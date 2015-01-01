@@ -1,5 +1,5 @@
 // main86.cc is a part of the PYTHIA event generator.
-// Copyright (C) 2014 Torbjorn Sjostrand.
+// Copyright (C) 2015 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
@@ -190,7 +190,7 @@ int main( int argc, char* argv[] ){
       weight *= evtweight;
       // Do not print zero-weight events.
       if ( weight == 0. ) continue;
-      
+
       // Construct new empty HepMC event.
       HepMC::GenEvent* hepmcevt = new HepMC::GenEvent();
       // Get correct cross section from previous estimate.

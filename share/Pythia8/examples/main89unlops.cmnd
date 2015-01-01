@@ -8,8 +8,8 @@ Beams:frameType             = 4
 ! Specify merging parameters for CKKW-L, UMEPS, UNLOPS.
 Merging:TMS                 = 10.                  ! merging scale value
 Merging:Process             = pp>LEPTONS,NEUTRINOS ! process definition
-Merging:nJetMax             = 2                    ! maximal number of additional LO jets
-Merging:nJetMaxNLO          = 1                    ! maximal number of additional NLO jets
+Merging:nJetMax             = 2        ! maximal number of additional LO jets
+Merging:nJetMaxNLO          = 1        ! maximal number of additional NLO jets
 
 ! Wimpy shower
 TimeShower:pTmaxMatch       = 1
@@ -34,7 +34,7 @@ Check:epTolErr               = 2e-2
 
 ! Subruns for UNLOPS NLO merging
 Merging:doUNLOPSTilde     = on
-LHEFInputs:nSubruns       = 2 
+LHEFInputs:nSubruns       = 2
 Main:subrun               = 0
 Merging:doUNLOPSTree      = off
 Merging:doUNLOPSSubt      = off

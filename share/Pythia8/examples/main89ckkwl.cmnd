@@ -8,7 +8,7 @@ Beams:frameType             = 4
 ! Specify merging parameters for CKKW-L, UMEPS, UNLOPS.
 Merging:TMS                 = 10.                  ! merging scale value
 Merging:Process             = pp>LEPTONS,NEUTRINOS ! process definition
-Merging:nJetMax             = 2                    ! maximal number of additional LO jets
+Merging:nJetMax             = 2         ! maximal number of additional LO jets
 TimeShower:pTmaxMatch       = 1
 SpaceShower:pTmaxMatch      = 1
 
@@ -30,7 +30,7 @@ SpaceShower:rapidityOrder = off
 Check:epTolErr               = 2e-2
 
 ! Subruns for CKKW-L merging.
-LHEFInputs:nSubruns       = 1 
+LHEFInputs:nSubruns       = 1
 Main:subrun               = 0
 Merging:doPTLundMerging   = on
 Beams:LHEF                = zProduction_Ckkwl_012.lhe.gz

@@ -1,5 +1,5 @@
 // main48.cc is a part of the PYTHIA event generator.
-// Copyright (C) 2014 Torbjorn Sjostrand.
+// Copyright (C) 2015 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 // Author: Philip Ilten.
@@ -37,12 +37,12 @@ int main(int argc, char* argv[]) {
          << " expected to provide the arguments \n"
          << " 1. EvtGen decay file (e.g. DECAY_2010.DEC) \n"
          << " 2. EvtGen particle data (e.g. evt.pdl) \n"
-	 << " 3. PYTHIA8DATA path \n"
-	 << " 4. Flag to use EvtGen (true or false) \n"
+         << " 3. PYTHIA8DATA path \n"
+         << " 4. Flag to use EvtGen (true or false) \n"
          << " Program stopped. " << endl;
     return 1;
   }
-  bool use(string(argv[4]) == "true"); 
+  bool use(string(argv[4]) == "true");
 
   // Intialize Pythia.
   Pythia pythia;
@@ -80,25 +80,25 @@ int main(int argc, char* argv[]) {
       if (event[iPrt].idAbs() != 511) continue;
       int iB0(event[iPrt].iBotCopyId()), iDsm(-1), iDm(-1), iE(-1), iPi0(-1);
       for (int iDtr = event[iB0].daughter1(); iDtr <= event[iB0].daughter2();
-	   ++ iDtr) {
-	if (event[iDtr].idAbs() == 413) {
-	  iDsm = event[iDtr].iBotCopyId();
-	  continue;
-	}
+           ++ iDtr) {
+        if (event[iDtr].idAbs() == 413) {
+          iDsm = event[iDtr].iBotCopyId();
+          continue;
+        }
       }
       if (iDsm == -1) continue;
       for (int iDtr = event[iDsm].daughter1(); iDtr <= event[iDsm].daughter2();
-	   ++ iDtr) {
-	if (event[iDtr].idAbs() == 411) {
-	  iDm = event[iDtr].iBotCopyId();
-	  continue;
-	}
+           ++ iDtr) {
+        if (event[iDtr].idAbs() == 411) {
+          iDm = event[iDtr].iBotCopyId();
+          continue;
+        }
       }
       if (iDm == -1) continue;
       for (int iDtr = event[iDm].daughter1(); iDtr <= event[iDm].daughter2();
-	   ++ iDtr) {
-	if (event[iDtr].idAbs() == 11)  iE   = event[iDtr].iBotCopyId();
-	if (event[iDtr].idAbs() == 111) iPi0 = event[iDtr].iBotCopyId();
+           ++ iDtr) {
+        if (event[iDtr].idAbs() == 11)  iE   = event[iDtr].iBotCopyId();
+        if (event[iDtr].idAbs() == 111) iPi0 = event[iDtr].iBotCopyId();
       }
       if (iE == -1 || iPi0 == -1) continue;
       mass.fill((event[iE].p() + event[iPi0].p()).mCalc());

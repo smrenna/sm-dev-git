@@ -1,5 +1,5 @@
 // BeamRemnants.cc is a part of the PYTHIA event generator.
-// Copyright (C) 2014 Torbjorn Sjostrand.
+// Copyright (C) 2015 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
@@ -36,7 +36,7 @@ const bool   BeamRemnants::CORRECTMISMATCH  = false;
 // Initialization.
 
 bool BeamRemnants::init( Info* infoPtrIn, Settings& settings, Rndm* rndmPtrIn,
-  BeamParticle* beamAPtrIn, BeamParticle* beamBPtrIn, 
+  BeamParticle* beamAPtrIn, BeamParticle* beamBPtrIn,
   PartonSystems* partonSystemsPtrIn, ParticleData* particleDataPtrIn,
   ColourReconnection* colourReconnectionPtrIn) {
 
@@ -67,8 +67,8 @@ bool BeamRemnants::init( Info* infoPtrIn, Settings& settings, Rndm* rndmPtrIn,
 
   // Check that remnant model and colour reconnection model work together.
   if (remnantMode == 1 && reconnectMode == 0) {
-    infoPtr->errorMsg("Abort from BeamRemnants::init:"
-      "The remnant model and colour reconnection model does not work together");
+    infoPtr->errorMsg("Abort from BeamRemnants::init: The remnant model"
+      " and colour reconnection model does not work together");
     return false;
   }
 
@@ -78,7 +78,7 @@ bool BeamRemnants::init( Info* infoPtrIn, Settings& settings, Rndm* rndmPtrIn,
 
   // Initialize junction splitting class.
   junctionSplitting.init(infoPtr, settings, rndmPtr, particleDataPtrIn);
-  
+
   // Done.
   return true;
 
@@ -136,11 +136,11 @@ bool BeamRemnants::add( Event& event, int iFirst, bool isDiff) {
   for (int i = 0;i < 10;++i) {
     if (doReconnect && isDiff && reconnectMode > 0)
       colourReconnectionPtr->next(event, iFirst);
-    
+
     // Check that the new colour structure is physical.
-    if (!junctionSplitting.checkColours(event)) 
+    if (!junctionSplitting.checkColours(event))
       event = eventTmpSave;
-    else { 
+    else {
       colCorrect = true;
       break;
     }
@@ -152,7 +152,7 @@ bool BeamRemnants::add( Event& event, int iFirst, bool isDiff) {
     (*beamAPtr) = beamAsave;
     (*beamBPtr) = beamBsave;
     (*partonSystemsPtr) = partonSystemsSave;
-    infoPtr->errorMsg("Error in BeamRemnants::Add: " 
+    infoPtr->errorMsg("Error in BeamRemnants::Add: "
       "failed to find physical colour state after colour reconnection");
     return false;
   }
@@ -180,7 +180,7 @@ bool BeamRemnants::addOld( Event& event) {
   if (!setKinematics(event)) return false;
 
   // Allow colour reconnections.
-  if (doReconnect && reconnectMode == 0) 
+  if (doReconnect && reconnectMode == 0)
     colourReconnectionPtr->next(event, oldSize);
 
   // Save current modifiable colour configuration for fast restoration.
@@ -191,7 +191,7 @@ bool BeamRemnants::addOld( Event& event) {
     acolSave.push_back( event[i].acol() );
   }
   event.saveJunctionSize();
-  
+
   // Allow several tries to match colours of initiators and remnants.
   // Frequent "failures" since shortcutting colours separately on
   // the two event sides may give "colour singlet gluons" etc.
@@ -237,7 +237,7 @@ bool BeamRemnants::addOld( Event& event) {
 // New function for adding beam remnant.
 
 bool BeamRemnants::addNew( Event& event) {
-  
+
    // Start by saving a copy of the event, if the beam remnant fails.
   Event eventSave = event;
   BeamParticle beamAsave = (*beamAPtr);
@@ -253,20 +253,20 @@ bool BeamRemnants::addNew( Event& event) {
     // Set the initial colours.
     beamAPtr->setInitialCol(event);
     beamBPtr->setInitialCol(event);
-    
+
     // Find colour state of outgoing partons and reconnect colours to match it.
     beamAPtr->findColSetup(event);
     beamBPtr->updateCol(beamAPtr->getColUpdates());
-    
+
     beamBPtr->findColSetup(event);
     beamAPtr->updateCol(beamBPtr->getColUpdates());
-    
+
     // Add beam remnants.
     beamAPtr->remnantFlavoursNew(event);
     beamBPtr->remnantFlavoursNew(event);
 
     // It is possible junctions were added, so update list.
-    event.saveJunctionSize(); 
+    event.saveJunctionSize();
 
     // Do the kinematics of the collision subsystems and two beam remnants.
     if (!setKinematics(event)) {
@@ -288,7 +288,7 @@ bool BeamRemnants::addNew( Event& event) {
       break;
     }
 
-    // If failed, restore earlier configuration and try to find new 
+    // If failed, restore earlier configuration and try to find new
     // colour structure.
     else {
       event = eventSave;
@@ -309,7 +309,7 @@ bool BeamRemnants::addNew( Event& event) {
     (*partonSystemsPtr) = partonSystemsSave;
     return false;
   }
-  
+
   // Done.
   return true;
 }
@@ -402,7 +402,7 @@ bool BeamRemnants::setKinematics( Event& event) {
     for (int iBeam = 0; iBeam < 2; ++iBeam) {
       BeamParticle& beam = (iBeam == 0) ? beamA : beamB;
       int nPar = beam.size();
- 
+
       // Generate Gaussian pT for initiator partons inside hadrons.
       // Store/restore rescattered parton momenta before primordial kT.
       if (beam.isHadron() && doPrimordialKT) {
@@ -454,7 +454,7 @@ bool BeamRemnants::setKinematics( Event& event) {
 
       // Squared transverse mass for each beam, using lightcone x.
       w2Beam[iBeam] = xSum[iBeam] * xInvM[iBeam];
-  
+
     // End separate treatment of the two beams.
     }
 
@@ -569,7 +569,7 @@ bool BeamRemnants::setKinematics( Event& event) {
         wNegRem        -= wNegAft - wNegBefRes;
         double wPosA    = 0.5 * (sHatTAft + w2A - w2B + lamRoot) / wNegAft;
         double wNegB    = 0.5 * (sHatTAft + w2B - w2A + lamRoot) / wPosAft;
-  
+
         // Store modified beam parton momenta.
         beamA[iSys].e(  0.5 * (wPosA + w2A / wPosA) );
         beamA[iSys].pz( 0.5 * (wPosA - w2A / wPosA) );
@@ -588,7 +588,7 @@ bool BeamRemnants::setKinematics( Event& event) {
           beamB[iSys].pz( 0.5 * (w2B / wNegB - wNegB) );
           wPosRem      -= w2B / wNegB;
           wNegRem      -= wNegB;
-     
+
 
         // Rescattering on side B: preserve already scattered parton.
         } else if (normalA) {
@@ -796,7 +796,7 @@ bool BeamRemnants::checkColours( Event& event) {
     }
     if (colTo[iCol] == colFrom[iColRef]) colTo[iCol] = colTo[iColRef];
   }
-  
+
   // Transform event record colours from beam remnant colour collapses.
   for (int i = oldSize; i < event.size(); ++i) {
     int col = event[i].col();
@@ -821,7 +821,7 @@ bool BeamRemnants::checkColours( Event& event) {
         }
       }
     }
-  
+
   // Arrays for current colours and anticolours, and for singlet gluons.
   vector<int> colList;
   vector<int> acolList;
@@ -890,16 +890,16 @@ bool BeamRemnants::checkColours( Event& event) {
 
     // Update any junction legs that match reconnected dipole.
     for (int iJun = 0; iJun < event.sizeJunction(); ++iJun) {
-      
+
       // Only junctions need to be updated, not antijunctions.
       if (event.kindJunction(iJun) % 2 == 0) continue;
       for (int leg = 0; leg < 3; ++leg) {
         int col = event.colJunction(iJun, leg);
-        if (col == event[iGlu].acol()) 
+        if (col == event[iGlu].acol())
           event.colJunction(iJun, leg, event[iGlu].col());
       }
     }
-    
+
   }
 
   // Check that not the same colour or anticolour appears twice.
@@ -1026,7 +1026,7 @@ bool BeamRemnants::checkColours( Event& event) {
         event[i].col( -colNew);
         break;
       }
-    }      
+    }
   }
 
   // Done.
@@ -1038,7 +1038,7 @@ bool BeamRemnants::checkColours( Event& event) {
 
 // Update colours of outgoing particles in the event record.
 
-void BeamRemnants::updateColEvent( Event& event, 
+void BeamRemnants::updateColEvent( Event& event,
   vector<pair <int,int> > colChanges) {
 
   for (int iCol = 0; iCol < int(colChanges.size()); ++iCol) {
@@ -1050,22 +1050,22 @@ void BeamRemnants::updateColEvent( Event& event,
 
     // Add a copy of final particles with old colour and change the colour.
     for (int j = 0; j < event.size(); ++j) {
-      if (event[j].isFinal() && event[j].col() == oldCol) 
-	event[event.copy(j, 64)].col(newCol);
-      if (event[j].isFinal() && event[j].acol() == -oldCol) 
-	event[event.copy(j, 64)].acol(-newCol);
-      
+      if (event[j].isFinal() && event[j].col() == oldCol)
+        event[event.copy(j, 64)].col(newCol);
+      if (event[j].isFinal() && event[j].acol() == -oldCol)
+        event[event.copy(j, 64)].acol(-newCol);
+
       if (event[j].isFinal() && event[j].acol() == oldCol)
-	event[event.copy(j,64)].acol(newCol);
+        event[event.copy(j,64)].acol(newCol);
       if (event[j].isFinal() && event[j].col() == -oldCol)
-	event[event.copy(j,64)].col(-newCol);
+        event[event.copy(j,64)].col(-newCol);
     }
 
     // Update junction.
-    for (int j = 0;j < event.sizeJunction(); ++j) 
-      for (int jCol = 0; jCol < 3; ++jCol) 
-	if (event.colJunction(j,jCol) == oldCol) 
-	  event.colJunction(j,jCol,newCol);	
+    for (int j = 0;j < event.sizeJunction(); ++j)
+      for (int jCol = 0; jCol < 3; ++jCol)
+        if (event.colJunction(j,jCol) == oldCol)
+          event.colJunction(j,jCol,newCol);     
   }
 
 }

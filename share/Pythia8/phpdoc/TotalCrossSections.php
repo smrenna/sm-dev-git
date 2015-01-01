@@ -192,7 +192,7 @@ As above, a reduced diffractive cross section automatically translates
 into an increased nondiffractive one, such that the total (and elastic) 
 cross section remains fixed. 
  
-  
+ 
 <h3>Set elastic cross section</h3> 
  
 <p/> 
@@ -366,4 +366,4 @@ fclose($handle);
 </body>
 </html>
  
-<!-- Copyright (C) 2014 Torbjorn Sjostrand --> 
+<!-- Copyright (C) 2015 Torbjorn Sjostrand --> 

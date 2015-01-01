@@ -1,5 +1,5 @@
 // LHEF3.h is a part of the PYTHIA event generator.
-// Copyright (C) 2014 Torbjorn Sjostrand.
+// Copyright (C) 2015 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
@@ -18,8 +18,8 @@ namespace Pythia8 {
 
 //==========================================================================
 
-// The XMLTag struct is used to represent all information within an XML tag. 
-// It contains the attributes as a map, any sub-tags as a vector of pointers 
+// The XMLTag struct is used to represent all information within an XML tag.
+// It contains the attributes as a map, any sub-tags as a vector of pointers
 // to other XMLTag objects, and any other information as a single string.
 // The XMLTag struct written by Leif Lonnblad.
 
@@ -120,7 +120,7 @@ struct XMLTag {
 
       if ( leftover ) *leftover += str.substr(curr, begin - curr);
       if ( begin == end || begin > str.length() - 3 || str[begin + 1] == '/' )
-        return tags; 
+        return tags;
 
       pos_t close = str.find(">", curr);
       if ( close == end ) return tags;
@@ -601,7 +601,7 @@ public:
 
 //==========================================================================
 
-// The HEPEUP class is a simple container corresponding to the Les Houches 
+// The HEPEUP class is a simple container corresponding to the Les Houches
 // accord (<A HREF="http://arxiv.org/abs/hep-ph/0109068">hep-ph/0109068</A>)
 // common block with the same name. The members are named in the same
 // way as in the common block. However, fortran arrays are represented
@@ -873,7 +873,7 @@ private:
 //
 //   writer.version = <value>;
 //
-// The header block (called "someHeaderString" below) is assigned by  
+// The header block (called "someHeaderString" below) is assigned by
 //
 //   writer.headerBlock() << someHeaderString;
 //
@@ -987,7 +987,7 @@ private:
 
   // The default constructor should never be used.
   Writer();
- 
+
   // The copy constructor should never be used.
   Writer(const Writer &);
 

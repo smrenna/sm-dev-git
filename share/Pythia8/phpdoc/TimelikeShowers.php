@@ -26,7 +26,7 @@ echo "<font color='red'>NO FILE SELECTED YET.. PLEASE DO SO </font><a href='Save
 ?>
 
 <form method='post' action='TimelikeShowers.php'>
-     
+ 
 <h2>Timelike Showers</h2> 
  
 The PYTHIA algorithm for timelike final-state showers is based on 
@@ -96,7 +96,7 @@ accuracy. A modification of this behaviour would require you to work with
 <code>UserHooks</code>. However, for Les Houches input the optional 
 <code><aloc href="BeamParameters">Beams:strictLHEFscale = on</aloc></code> 
 setting restricts all emissions, also in resonance decays, to be below 
-the input <code>scale</code> value.
+the input <code>scale</code> value. 
  
 <br/><br/><table><tr><td><strong>TimeShower:pTmaxFudge </td><td></td><td> <input type="text" name="2" value="1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.0</strong></code>; <code>minimum = 0.25</code>; <code>maximum = 2.0</code>)</td></tr></table>
 In cases where the above <code>pTmaxMatch</code> rules would imply 
@@ -185,7 +185,7 @@ timelike showers. Note that tunes using this option need lower values of
 <p/> 
 QED radiation is regulated by the <i>alpha_electromagnetic</i> 
 value at the <i>pT^2</i> scale of a branching. 
-  
+ 
 <br/><br/><table><tr><td><strong>TimeShower:alphaEMorder  </td><td>  &nbsp;&nbsp;(<code>default = <strong>1</strong></code>; <code>minimum = -1</code>; <code>maximum = 1</code>)</td></tr></table>
 The running of <ei>alpha_em</ei>. 
 <br/>
@@ -212,7 +212,7 @@ remain at fixed scales).
 The default <i>pT^2</i> factorization scale is multiplied by 
 this prefactor. 
    
-  
+ 
 <p/> 
 The rate of radiation if divergent in the <i>pT &rarr; 0</i> limit. Here, 
 however, perturbation theory is expected to break down. Therefore an 
@@ -405,7 +405,7 @@ interaction, and only while the number of particles in the final state
 is at most <code>TimeShower:nMaxGlobalRecoil</code> before the 
 branching. 
    
-   
+ 
 <br/><br/><table><tr><td><strong>TimeShower:nMaxGlobalRecoil  </td><td></td><td> <input type="text" name="20" value="2" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>2</strong></code>; <code>minimum = 1</code>)</td></tr></table>
 Represents the maximum number of particles in the final state for which 
 the next final-state emission can be performed with the global recoil 
@@ -487,7 +487,7 @@ come to be used. Instead, without ME corrections,  a process-independent
 emission rate is obtained, and  <?php $filepath = $_GET["filepath"];
 echo "<a href='UserHooks.php?filepath=".$filepath."' target='page'>";?>user hooks</a> 
 can provide the desired process-specific rejection factors. 
-  
+ 
 <h3>Radiation off octet onium states</h3> 
  
 In the current implementation, charmonium and bottomonium production 
@@ -561,7 +561,7 @@ states that are allowed to radiate, normalized to the <i>q &rarr; q g</i>
 splitting kernel. Thus the default corresponds to twice the radiation 
 off a quark. The physically preferred range would be between 1 and 9/4. 
    
-  
+ 
 <h3>Weak showers</h3> 
  
 The emission of weak gauge bosons is an integrated part of the initial- 
@@ -613,28 +613,29 @@ Number of allowed quark flavours in <i>g &rarr; q qbar</i> branchings
 Different options to assign kinematics distributions and weights 
 for <ei>g &rarr; q qbar</ei> branchings, notably for charm and bottom 
 quarks. These options also have the corresponding effect on 
-<ei>gamma &rarr; f fbar</ei> branchings. The rationale for the options
-is described in <a href="../pdfdoc/g2qqbarsplit.pdf">this note</a>.
+<ei>gamma &rarr; f fbar</ei> branchings. The rationale for the options 
+is described in <a href="../pdfdoc/g2qqbarsplit.pdf">this note</a>. 
 <br/>Notation: <ei>r_q = m_q^2/m_qq^2</ei>, <ei>beta = sqrt(1 - 4r_q)</ei>, 
 with <ei>m_q</ei> the quark mass and <ei>m_qq</ei> the <ei>q qbar</ei> pair 
 invariant mass. The scale factor <ei>k</ei> is described below, 
-<code>TimeShower:scaleGluonToQuark</code>.
+<code>TimeShower:scaleGluonToQuark</code>. 
 <br/>
 <input type="radio" name="32" value="1"><strong>1 </strong>: same splitting kernel <ei>(1/2) (z^2 + (1-z)^2)</ei> for  massive as massless quarks, only with an extra <ei>beta</ei> phase  space factor.<br/>
 <input type="radio" name="32" value="2"><strong>2 </strong>: a splitting kernel  <ei>(beta/2) (z^2 + (1-z)^2 + 8r_q z(1-z))</ei>.<br/>
-<input type="radio" name="32" value="3"><strong>3 </strong>: a splitting kernel <ei>z^2 + (1-z)^2 + 8r_q z(1-z)</ei>, normalized so that the <ei>z</ei>-integrated rate is <ei>(beta/3) (1 + r/2)</ei>.<br/>
-<input type="radio" name="32" value="4" checked="checked"><strong>4 </strong>: same as 3, but additionally a suppression factor <ei>(1 - m_qq^2/m_dipole^2)^3</ei>, which reduces the rate of high-mass  <ei>q qbar</ei> pairs.<br/>
-<input type="radio" name="32" value="5"><strong>5 </strong>: same as 1, but reweighted to an <ei>alpha_s(k m_qq^2)</ei> rather than the normal <ei>alpha_s(pT^2)</ei>.<br/>
-<input type="radio" name="32" value="6"><strong>6 </strong>: same as 2, but reweighted to an <ei>alpha_s(k m_qq^2)</ei> rather than the normal <ei>alpha_s(pT^2)</ei>.<br/>
-<input type="radio" name="32" value="7"><strong>7 </strong>: same as 3, but reweighted to an <ei>alpha_s(k m_qq^2)</ei> rather than the normal <ei>alpha_s(pT^2)</ei>.<br/>
-<input type="radio" name="32" value="8"><strong>8 </strong>: same as 4, but reweighted to an <ei>alpha_s(k m_qq^2)</ei> rather than the normal <ei>alpha_s(pT^2)</ei>.<br/>
+<input type="radio" name="32" value="3"><strong>3 </strong>: a splitting kernel <ei>z^2 + (1-z)^2 + 8r_q z(1-z)</ei>,  normalized so that the <ei>z</ei>-integrated rate is  <ei>(beta/3) (1 + r/2)</ei>.<br/>
+<input type="radio" name="32" value="4" checked="checked"><strong>4 </strong>: same as 3, but additionally a suppression factor  <ei>(1 - m_qq^2/m_dipole^2)^3</ei>, which reduces the rate of high-mass  <ei>q qbar</ei> pairs.<br/>
+<input type="radio" name="32" value="5"><strong>5 </strong>: same as 1, but reweighted to an <ei>alpha_s(k m_qq^2)</ei>  rather than the normal <ei>alpha_s(pT^2)</ei>.<br/>
+<input type="radio" name="32" value="6"><strong>6 </strong>: same as 2, but reweighted to an <ei>alpha_s(k m_qq^2)</ei>  rather than the normal <ei>alpha_s(pT^2)</ei>.<br/>
+<input type="radio" name="32" value="7"><strong>7 </strong>: same as 3, but reweighted to an <ei>alpha_s(k m_qq^2)</ei>  rather than the normal <ei>alpha_s(pT^2)</ei>.<br/>
+<input type="radio" name="32" value="8"><strong>8 </strong>: same as 4, but reweighted to an <ei>alpha_s(k m_qq^2)</ei>  rather than the normal <ei>alpha_s(pT^2)</ei>.<br/>
  
 <br/><br/><table><tr><td><strong>TimeShower:scaleGluonToQuark </td><td></td><td> <input type="text" name="33" value="1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.0</strong></code>; <code>minimum = 0.25</code>; <code>maximum = 1.0</code>)</td></tr></table>
-Extra scale parameter <i>k</i> for <code>TimeShower:weightGluonToQuark</code>
-options 5 - 8. Comes on top of <code>TimeShower:renormMultFac</code>, which
-affects <i>alpha_s(pT^2)</i> alike.
+Extra scale parameter <i>k</i> for 
+<code>TimeShower:weightGluonToQuark</code> options 5 - 8. Comes on top of 
+<code>TimeShower:renormMultFac</code>, which affects <i>alpha_s(pT^2)</i> 
+alike. 
    
-
+ 
 <br/><br/><strong>TimeShower:QEDshowerByQ</strong>  <input type="radio" name="34" value="on" checked="checked"><strong>On</strong>
 <input type="radio" name="34" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
@@ -966,4 +967,4 @@ fclose($handle);
 </body>
 </html>
  
-<!-- Copyright (C) 2014 Torbjorn Sjostrand --> 
+<!-- Copyright (C) 2015 Torbjorn Sjostrand --> 

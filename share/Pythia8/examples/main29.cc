@@ -1,5 +1,5 @@
 // main29.cc is a part of the PYTHIA event generator.
-// Copyright (C) 2014 Torbjorn Sjostrand.
+// Copyright (C) 2015 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
@@ -101,7 +101,7 @@ int main() {
       else {
         if ( flip > 0 ) 
              pythia.readString("MultipartonInteractions:pT0Ref = 2.15");
-	else pythia.readString("MultipartonInteractions:pT0Ref = 2.25");  
+        else pythia.readString("MultipartonInteractions:pT0Ref = 2.25");  
       }
       myUserHooks = new MBReconUserHooks(mode, flip, dLamCut, fracGluon);
       pythia.setUserHooksPtr( myUserHooks);
@@ -131,8 +131,8 @@ int main() {
 
     // Top and W masses. Semileptonic top decay chosen by W decay.
     // (One of two charge states, so properly ought to symmetrize.)
-    // Trick: only allow decay to stable tau, standing in for e and mu as well,
-    // but the tau is easy to remove before jet finding. 
+    // Trick: only allow decay to stable tau, standing in for e and mu 
+    // as well, but the tau is easy to remove before jet finding. 
     pythia.readString("6:m0 = 173.3");
     pythia.readString("24:m0 = 80.385");
     pythia.readString("24:onPosIfAny = 1 2 3 4 5");
@@ -168,12 +168,12 @@ int main() {
       // Charged multiplicity.
       int nch = 0;
       for (int i = 0; i < event.size(); ++i)
-	if (event[i].isFinal() && event[i].isCharged()) ++nch;
+        if (event[i].isFinal() && event[i].isCharged()) ++nch;
       nchH.fill(nch);
 
       // Remove tau leptons. (Recall: they were put stable, so simple.)
       for (int i = 0; i < event.size(); ++i)
-	if (event[i].idAbs() == 15) event[i].statusNeg();
+        if (event[i].idAbs() == 15) event[i].statusNeg();
 
       // Find number of jets. At least four to keep going.
       sJet.analyze(event);
@@ -188,13 +188,13 @@ int main() {
       double diff   = 1e10;
       for (int i1 = 0; i1 < nJet - 1; ++i1)
       for (int i2 = i1 + 1; i2 < nJet; ++i2) {
-	double m12 = (sJet.p(i1) + sJet.p(i2)).mCalc();
-	if (abs(m12 - mW) < diff) {
-	  i1min  = i1;
-	  i2min  = i2;
-	  m12min = m12;
-	  diff   = abs(m12 - mW);
-	}
+        double m12 = (sJet.p(i1) + sJet.p(i2)).mCalc();
+        if (abs(m12 - mW) < diff) {
+          i1min  = i1;
+          i2min  = i2;
+          m12min = m12;
+          diff   = abs(m12 - mW);
+        }
       }
       mWH.fill( m12min);
       mWerrH.fill( m12min - mW);
@@ -208,12 +208,12 @@ int main() {
       diff           = 1e10;
       for (int i3 = 0; i3 < nJet; ++i3)
       if (i3 != i1min && i3 != i2min) {
-	double m123 = (sJet.p(i1min) + sJet.p(i2min) + sJet.p(i3)).mCalc();
-	if (abs(m123 - mT) < diff) {
-	  i3min   = i3;
-	  m123min = m123;
-	  diff    = abs(m123 - mT);
-	}
+        double m123 = (sJet.p(i1min) + sJet.p(i2min) + sJet.p(i3)).mCalc();
+        if (abs(m123 - mT) < diff) {
+          i3min   = i3;
+          m123min = m123;
+          diff    = abs(m123 - mT);
+        }
       }
       mTH.fill( m123min);
       mTerrH.fill( m123min - mT);

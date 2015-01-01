@@ -36,19 +36,19 @@ which information should be stored has been defined in a Fortran context,
 as two commonblocks. Here a C++ equivalent is defined, as a single class. 
 The most common application is to read input from a Les Houches Event File 
 (LHEF) [<a href="Bibliography.php" target="page">Alw06</a>], but it is also possible to have a runtime 
-interface to another program.
-
+interface to another program. 
+ 
 <p/> 
 A "no-beams" extension, currently not part of the standard, has been 
 implemented. In this case only one part of a complete event is studied, 
-and so no meaningful beam information can be set. The prime example is
-to study the decay properties of a resonance, where a parton-level decay
-chain is provided as input, and then showers and nadronization should be
+and so no meaningful beam information can be set. The prime example is 
+to study the decay properties of a resonance, where a parton-level decay 
+chain is provided as input, and then showers and nadronization should be 
 added. Another example would be where a given partonic configuration 
 would be hadronized, without any previous showers. See further below and 
 in the <?php $filepath = $_GET["filepath"];
 echo "<a href='HadronLevelStandalone.php?filepath=".$filepath."' target='page'>";?>Hadron-Level Standalone</a> 
-description.
+description. 
  
 <p/> 
 The <code>LHAup</code> class is a base class, containing reading and 
@@ -104,9 +104,9 @@ fundamental is changed.
 <p/><strong>virtual bool LHAup::setInit() &nbsp;</strong> <br/>
 this pure virtual method has to be implemented in the derived class, 
 to set relevant information when called. It should return false if it 
-fails to set the info. In the no-beams extension this method need not
-do anything, since by default strategy 3 is chosen and the rest is set
-vanishing, but the method must exist.
+fails to set the info. In the no-beams extension this method need not 
+do anything, since by default strategy 3 is chosen and the rest is set 
+vanishing, but the method must exist. 
    
  
 <p/> 
@@ -479,32 +479,32 @@ in their names, see explanation in the
 echo "<a href='EventInformation.php?filepath=".$filepath."' target='page'>";?>Event Information</a> description. 
    
  
-<p/>
+<p/> 
 The maximum scale for parton-shower evolution of a Les Houches event is 
 regulated by the 
 <code><?php $filepath = $_GET["filepath"];
-echo "<a href='TimelikeShowers.php?filepath=".$filepath."' target='page'>";?>TimeShower:pTmaxMatch</a></code>
-and
+echo "<a href='TimelikeShowers.php?filepath=".$filepath."' target='page'>";?>TimeShower:pTmaxMatch</a></code> 
+and 
 <code><?php $filepath = $_GET["filepath"];
-echo "<a href='SpacelikeShowers.php?filepath=".$filepath."' target='page'>";?>SpaceShower:pTmaxMatch</a></code>
-modes. If you want to guarantee that the input <code>scale</code> value
+echo "<a href='SpacelikeShowers.php?filepath=".$filepath."' target='page'>";?>SpaceShower:pTmaxMatch</a></code> 
+modes. If you want to guarantee that the input <code>scale</code> value 
 is respected, as is often the case in matching/merging procedures, you 
-should set both of these modes to 1. That only affects the hard process,
-while resonance decays are still processed using the resonance mass to
+should set both of these modes to 1. That only affects the hard process, 
+while resonance decays are still processed using the resonance mass to 
 set the upper limit. However, the optional 
 <code><?php $filepath = $_GET["filepath"];
 echo "<a href='BeamParameters.php?filepath=".$filepath."' target='page'>";?>Beams:strictLHEFscale = on</a></code> 
 setting restricts also resonance-decay emissions to be below the input 
-<code>scale</code> value.
-  
+<code>scale</code> value. 
+ 
 <p/> 
-As a further non-standard feature, it is also possible to read in the
+As a further non-standard feature, it is also possible to read in the 
 separate scale values of all final particles. Such scale values could be used 
-e.g. to restrict the maximum scale for shower evolutions for each parton
-separately. This reading will only be applied if the <code>
-Beams:setProductionScaleFromLHEF</code> switch is true (see <code>
+e.g. to restrict the maximum scale for shower evolutions for each parton 
+separately. This reading will only be applied if the <code> 
+Beams:setProductionScaleFromLHEF</code> switch is true (see <code> 
 <?php $filepath = $_GET["filepath"];
-echo "<a href='BeamParameters.php?filepath=".$filepath."' target='page'>";?>Beam Parameters</a></code> for details).
+echo "<a href='BeamParameters.php?filepath=".$filepath."' target='page'>";?>Beam Parameters</a></code> for details). 
 This information is returned by the method 
 <code>double LHAup::scale(int i)</code>. When no such information 
 has been read from the LHEF, the scale defaults to -1. 
@@ -563,11 +563,11 @@ or <i>t &rarr; b W</i>), then decay is still isotropic.
 There are two settings available for event input. 
  
 <br/><br/><table><tr><td><strong>LesHouches:idRenameBeams  </td><td></td><td> <input type="text" name="1" value="1000022" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1000022</strong></code>; <code>minimum = 0</code>)</td></tr></table>
-PYTHIA only implements a certain number of incoming beam particles.
-Specifically it needs to have PDFs for every composite particle to
+PYTHIA only implements a certain number of incoming beam particles. 
+Specifically it needs to have PDFs for every composite particle to 
 be used. Sometimes exotic beam particles are used, e.g. when a 
-neutralino is supposed to be the Dark Matter particle and therefore
-neutralino pairs can collide and annihilate. Such a particle identity
+neutralino is supposed to be the Dark Matter particle and therefore 
+neutralino pairs can collide and annihilate. Such a particle identity 
 code, picked by this mode, is mapped onto an incoming tau neutrino 
 beam (or antineutrino for the second beam), to bring it to a familiar 
 situation. The trick cannot be used for composite particles, nor for 
@@ -603,56 +603,56 @@ value will have the mass recalculated and reset from the four-momentum,
 numerically for light particles, so it should only be used for the 
 programs and particles where it is needed. Thus the value ought to be 
 at least 10 GeV, so that only massive particles like <i>W^+-</i>, 
-<i>Z^0</i> and <i>t</i> are affected. If a particle does not have
-its mass recalculated, currently instead the energy is recalculated
-from its three-momntum and mass. This is to avoid spurious mismatches
-from limited numerical precision in an LHEF.
+<i>Z^0</i> and <i>t</i> are affected. If a particle does not have 
+its mass recalculated, currently instead the energy is recalculated 
+from its three-momntum and mass. This is to avoid spurious mismatches 
+from limited numerical precision in an LHEF. 
    
  
 <h3>An interface to Les Houches Event Files</h3> 
-
-The LHEF standard ([<a href="Bibliography.php" target="page">Alw06</a>], [<a href="Bibliography.php" target="page">But14</a>]) specifies a format
+ 
+The LHEF standard ([<a href="Bibliography.php" target="page">Alw06</a>], [<a href="Bibliography.php" target="page">But14</a>]) specifies a format 
 where a single file packs initialization and event information. This has 
-become the most frequently used procedure to process external parton-level
-events in Pythia. To access this, you must set <code>Beams:frameType = 4</code> 
-and <code>Beams:LHEF</code> to be the file name, see 
-<?php $filepath = $_GET["filepath"];
-echo "<a href='BeamParameters.php?filepath=".$filepath."' target='page'>";?>Beam Parameters</a>. Internally this name is
-then used to create an instance of the derived class <code>LHAupLHEF</code>,
-which can do the job of reading an LHEF. 
-
-<p/>
+become the most frequently used procedure to process external parton-level 
+events in Pythia. To access this, you must set 
+<code>Beams:frameType = 4</code> and <code>Beams:LHEF</code> to be the file 
+name, see <?php $filepath = $_GET["filepath"];
+echo "<a href='BeamParameters.php?filepath=".$filepath."' target='page'>";?>Beam Parameters</a>. Internally 
+this name is then used to create an instance of the derived class 
+<code>LHAupLHEF</code>, which can do the job of reading an LHEF. 
+ 
+<p/> 
 As some information in a Les Houches Event File init block is only known 
 at the end of generation, some programs choose to output this as a 
-separate file. If so, the name of this file can be specified by  
+separate file. If so, the name of this file can be specified by 
 <code><?php $filepath = $_GET["filepath"];
 echo "<a href='BeamParameters.php?filepath=".$filepath."' target='page'>";?>Beams:LHEFheader</a></code>. 
-
+ 
 <p/> 
-The two key compulsory parts of an LHEF is the initialization information
-stored in an init block, enclosed by a matching <code>&lt;init&gt;</code>
+The two key compulsory parts of an LHEF is the initialization information 
+stored in an init block, enclosed by a matching <code>&lt;init&gt;</code> 
 - <code>&lt;/init&gt;</code> pair of lines, and the event input, with each 
 event enclosed by a matching <code>&lt;event&gt;</code> - 
 <code>&lt;/event&gt;</code> pair of lines. In the case of the no-beams 
-extension the init block may be empty, but the <code>&lt;init&gt;</code>
-and <code>&lt;/init&gt;</code> lines must be included for the file parsing
+extension the init block may be empty, but the <code>&lt;init&gt;</code> 
+and <code>&lt;/init&gt;</code> lines must be included for the file parsing 
 to work as expected. It is also possible to have a non-empty init block, 
 with the beams assigned code 0, and optionally a number of specified 
-"processes".
-
-<p/>
-The latest update of the LHEF format [<a href="Bibliography.php" target="page">But14</a>] introduced a
-multitude of different optional features. This means that apart
-from the <code>&lt;init&gt;</code> and <code>&lt;event&gt;</code>
-tags, a plethora of new, optional information is available.
-Furthermore, the inclusion of an arbitrary number of attributes into
-the tags should be supported. The LHEF reader in Pythia adheres to
-the updated LHEF format without any restriction. The new generation
+"processes". 
+ 
+<p/> 
+The latest update of the LHEF format [<a href="Bibliography.php" target="page">But14</a>] introduced a 
+multitude of different optional features. This means that apart 
+from the <code>&lt;init&gt;</code> and <code>&lt;event&gt;</code> 
+tags, a plethora of new, optional information is available. 
+Furthermore, the inclusion of an arbitrary number of attributes into 
+the tags should be supported. The LHEF reader in Pythia adheres to 
+the updated LHEF format without any restriction. The new generation 
 information available through the updated LHEF format can be 
-retrieved by using Pythia's <code>Info</code> class. For a detailed
-description, please consult the section "Les Houches Event File 3.0
+retrieved by using Pythia's <code>Info</code> class. For a detailed 
+description, please consult the section "Les Houches Event File 3.0 
 information" in <?php $filepath = $_GET["filepath"];
-echo "<a href='EventInformation.php?filepath=".$filepath."' target='page'>";?>Event Information</a>.
+echo "<a href='EventInformation.php?filepath=".$filepath."' target='page'>";?>Event Information</a>. 
  
 <p/> 
 The LHEF reader can also read in and store header blocks. By default 
@@ -734,7 +734,7 @@ LHEF has been processed.
 <p/> 
 To allow the sequential use of several event files, the 
 <code><?php $filepath = $_GET["filepath"];
-echo "<a href='BeamParameters.php?filepath=".$filepath."' target='page'>";?>Beams:newLHEFsameInit</a></code>
+echo "<a href='BeamParameters.php?filepath=".$filepath."' target='page'>";?>Beams:newLHEFsameInit</a></code> 
 can be set <code>true</code>. Then there will be no 
 initialization, except that the existing <code>LHAupLHEF</code> class 
 instance will be deleted and replaced by one pointing to the new file. 
@@ -757,7 +757,7 @@ one-line command
   sed -e 's/\([0-9]\.\{0,1\}\)[dD]\([+-]\{0,1\}[0-9]\)/\1E\2/g' old.lhe &gt; new.lhe 
 </pre> 
 This replaces a 'd' or 'D' with an 'E' only when it occurs in the combination 
-<br/>
+<br/> 
 <i>(digit) ('.' or absent) ('d' or 'D') ('+', '-' or absent) (digit)</i> 
 <br/>It will work on all parts of the file, also inside a 
 <code>&lt;header&gt;...&lt;/header&gt;</code> block. For conversion only 
@@ -779,7 +779,7 @@ and run it with
 <p/> 
 The workhorses of the <code>LHAupLHEF</code> class are three methods 
 found in the base class, so as to allow them to be reused in other 
-contexts.
+contexts. 
  
 <a name="method32"></a>
 <p/><strong>bool LHAup::setInitLHEF(ifstream& is, bool readHeaders = false) &nbsp;</strong> <br/>
@@ -803,21 +803,21 @@ process the same configuration several times. This method currently
 only returns true, i.e. any errors should be caught by the preceding 
 <code>setNewEventLHEF</code> call. 
    
-
+ 
 <p/> 
-These three main methods build on a number of container classes and a
-generic LHEF reader class (called <code>Reader</code>) found in
-<code>LHEF3.h</code> and <code>LHEF3.cc</code>. The <code>Reader</code>
+These three main methods build on a number of container classes and a 
+generic LHEF reader class (called <code>Reader</code>) found in 
+<code>LHEF3.h</code> and <code>LHEF3.cc</code>. The <code>Reader</code> 
 handles all the parsing and storage necessary to adhere with 
 [<a href="Bibliography.php" target="page">But14</a>]. (A matching <code>Writer</code> class is also 
 available; see documentation in <code>LHEF3.h</code> how it can be 
-used.) All parsing that is not strictly part of the LHEF format
-(e.g. the reading of header information) is instead performed directly in
-the <code>LHAupLHEF</code> methods.
-
+used.) All parsing that is not strictly part of the LHEF format 
+(e.g. the reading of header information) is instead performed directly in 
+the <code>LHAupLHEF</code> methods. 
+ 
 <p/> 
-Two other small utility routines are:
-
+Two other small utility routines are: 
+ 
 <a name="method35"></a>
 <p/><strong>bool LHAup::fileFound() &nbsp;</strong> <br/>
 always returns true in the base class, but in <code>LHAupLHEF</code> 
@@ -855,7 +855,7 @@ decompression layer is needed.
 <p/><strong>void LHAupLHEF::closeAllFiles() &nbsp;</strong> <br/>
 close main event file (LHEF) and, if present, separate header file. 
    
-  
+ 
 <h3>A runtime Fortran interface</h3> 
  
 The runtime Fortran interface requires linking to an external Fortran 
@@ -947,7 +947,7 @@ another process in between, the file will be corrupted.
  
 <a name="method44"></a>
 <p/><strong>string LHAup::getFileName() &nbsp;</strong> <br/>
-Return the name of the LHE file above.
+Return the name of the LHE file above. 
    
  
 <h3>PYTHIA 8 output to an LHEF</h3> 
@@ -997,7 +997,7 @@ that the above initialization is replaced by
 In addition, the <code>PartonLevel:all = off</code> command found in 
 <code>main20.cc</code> obviously must be removed if one wants to 
 obtain complete events. 
-  
+ 
 <input type="hidden" name="saved" value="1"/>
 
 <?php
@@ -1035,4 +1035,4 @@ fclose($handle);
 </body>
 </html>
  
-<!-- Copyright (C) 2014 Torbjorn Sjostrand --> 
+<!-- Copyright (C) 2015 Torbjorn Sjostrand --> 

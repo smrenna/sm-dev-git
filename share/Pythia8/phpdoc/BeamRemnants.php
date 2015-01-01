@@ -184,58 +184,58 @@ first approach, so the second is always used.
    
  
 <h3>Colour flow</h3> 
-
-The colour in the separate subproccsses are tied together via the assignment
-of colour flow in the beam remnants. The assignment of colour flow is not known
-from first principles and therefore it is not an unambiguous procedure. Thus
-two differnet models have been implemented in <code>Pythia</code>. These 
-will be referred to as new and old, based on the time of the implementation.
-
+ 
+The colour in the separate subproccsses are tied together via the assignment 
+of colour flow in the beam remnants. The assignment of colour flow is not 
+known from first principles and therefore it is not an unambiguous procedure. 
+Thus two different models have been implemented in <code>Pythia</code>. These 
+will be referred to as new and old, based on the time of the implementation. 
+ 
 <p/> 
 The old model tries to reconstruct the colour flow in a way that a LO PS would 
-produce the beam remnants. The starting point is the junction structure of the
+produce the beam remnants. The starting point is the junction structure of the 
 beam particle (if it is a baryon). The gluons are attached to a quark line and 
-quark-antiquark pairs are added as if coming from a gluon splittings. Thus this 
-model captures the qualitative behaviour that is expected from leading colour 
-QCD. The model is described in more detail in [<a href="Bibliography.php" target="page">Sjo04</a>].
-
+quark-antiquark pairs are added as if coming from a gluon splittings. Thus 
+this model captures the qualitative behaviour that is expected from leading 
+colour QCD. The model is described in more detail in [<a href="Bibliography.php" target="page">Sjo04</a>]. 
+ 
 <p/> 
 The new model is built on the full SU(3) colour structure of QCD. The 
-starting point is the scattered partons from the MPI. Each of these are
+starting point is the scattered partons from the MPI. Each of these are 
 initially assumed uncorrelated in colour space, allowing the total outgoing 
-colour configuration to be calculated as an SU(3) product. Since the beam
-particle is a colour singlet, the beam remnant colour configuration has to be
-the inverse of the outgoing colour configuration. The minimum amount of gluons
-are added to the beam remnant in order to obtain this colour configuration.
-
+colour configuration to be calculated as an SU(3) product. Since the beam 
+particle is a colour singlet, the beam remnant colour configuration has to be 
+the inverse of the outgoing colour configuration. The minimum amount of gluons 
+are added to the beam remnant in order to obtain this colour configuration. 
+ 
 <p/> 
-The above assumption of uncorrelated MPIs in colour space is a good
+The above assumption of uncorrelated MPIs in colour space is a good 
 assumption for a few well separated hard MPIs. However if the number of MPIs 
 become large and ISR is included, such that the energy scale becomes lower 
-(and thus distances becomes larger), the assumption loses its validity. This is
-due to saturation effects. The modelling of saturation is done in crude 
-manner, as an exponential suppresion of high multiplet states.
-
+(and thus distances becomes larger), the assumption loses its validity. This 
+is due to saturation effects. The modelling of saturation is done in crude 
+manner, as an exponential suppresion of high multiplet states. 
+ 
 <p/> 
-None of the models above can provide a full description of the colour
+None of the models above can provide a full description of the colour 
 flow in an event, however. Therefore additional colour reconfiguration 
 is needed. This is referred to as colour reconnection. Several different 
 models for colour reconnection are implemented, see 
 <?php $filepath = $_GET["filepath"];
-echo "<a href='ColourReconnection.php?filepath=".$filepath."' target='page'>";?>Colour Reconection</a>.
+echo "<a href='ColourReconnection.php?filepath=".$filepath."' target='page'>";?>Colour Reconection</a>. 
  
 <br/><br/><table><tr><td><strong>BeamRemnants:remnantMode  </td><td></td><td> <input type="text" name="8" value="0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0</strong></code>; <code>minimum = 0</code>; <code>maximum = 1</code>)</td></tr></table>
-Switch to choose between the two different colour models for the beam remnant.
+Switch to choose between the two different colour models for the beam remnant. 
 <br/><code>option </code><strong> 0</strong> :  The old beam remnant model.    
 <br/><code>option </code><strong> 1</strong> :  The new beam remnant model.    
-  
-
+   
+ 
 <br/><br/><table><tr><td><strong>BeamRemnants:saturation </td><td></td><td> <input type="text" name="9" value="5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>5</strong></code>; <code>minimum = 0.1</code>; <code>maximum = 100000</code>)</td></tr></table>
-Controls the suppresion due to saturation in the new model. The exact formula
+Controls the suppresion due to saturation in the new model. The exact formula 
 used is <i>exp(-M / k)</i>, where M is the multiplet size and k is this 
-parameter. Thus a small number will result in a large saturation.
-  
-
+parameter. Thus a small number will result in a large saturation. 
+   
+ 
 <h3>Further variables</h3> 
  
 <br/><br/><table><tr><td><strong>BeamRemnants:maxValQuark  </td><td></td><td> <input type="text" name="10" value="3" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>3</strong></code>; <code>minimum = 0</code>; <code>maximum = 5</code>)</td></tr></table>
@@ -293,15 +293,15 @@ simple sum of the two constituent quarks.
    
  
 <br/><br/><table><tr><td><strong>BeamRemnants:gluonPower </td><td></td><td> <input type="text" name="16" value="4.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>4.0</strong></code>; <code>minimum = 0.</code>)</td></tr></table>
-The abovementioned power for gluons.
+The abovementioned power for gluons. 
    
-
+ 
 <br/><br/><table><tr><td><strong>BeamRemnants:xGluonCutoff </td><td></td><td> <input type="text" name="17" value="1E-7" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1E-7</strong></code>; <code>minimum = 1E-10</code>; <code>maximum = 1</code>)</td></tr></table>
 The gluon PDF is approximated with <i>g(x) ~ (1 - x)^p / x</i>, which 
 integrates to infinity when integrated from 0 to 1. This cut-off is 
-introduced as a minimum to avoid the problems with infinities.
-  
-
+introduced as a minimum to avoid the problems with infinities. 
+   
+ 
 <br/><br/><strong>BeamRemnants:allowJunction</strong>  <input type="radio" name="18" value="on" checked="checked"><strong>On</strong>
 <input type="radio" name="18" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
@@ -316,24 +316,24 @@ an error message that the remnant flavour setup failed), and the
 multiparton interactions and showers are redone until a 
 junction-free topology is found. 
    
-
+ 
 <br/><br/><strong>BeamRemnants:beamJunction</strong>  <input type="radio" name="19" value="on"><strong>On</strong>
 <input type="radio" name="19" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
-This parameter is only relevant if the new colour reconnection scheme is used.
+This parameter is only relevant if the new colour reconnection scheme is used. 
 (see  <?php $filepath = $_GET["filepath"];
-echo "<a href='ColourReconnection.php?filepath=".$filepath."' target='page'>";?>colour reconnection</a>)
+echo "<a href='ColourReconnection.php?filepath=".$filepath."' target='page'>";?>colour reconnection</a>) 
 This parameter tells whether to form a junction or a di-quark if more 
 than two valence quarks are found in the beam remnants. If off a di-quark is 
-formed and if on a junction will be formed.
+formed and if on a junction will be formed. 
    
-
+ 
 <br/><br/><strong>BeamRemnants:allowBeamJunction</strong>  <input type="radio" name="20" value="on" checked="checked"><strong>On</strong>
 <input type="radio" name="20" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
-This parameter is only relevant if the new Beam remnant model is used.
+This parameter is only relevant if the new Beam remnant model is used. 
 This parameter tells whether to allow the formation of junction structures 
-in the colour configuration of the scattered partons.
+in the colour configuration of the scattered partons. 
    
  
 <input type="hidden" name="saved" value="1"/>
@@ -458,4 +458,4 @@ fclose($handle);
 </body>
 </html>
  
-<!-- Copyright (C) 2014 Torbjorn Sjostrand --> 
+<!-- Copyright (C) 2015 Torbjorn Sjostrand --> 

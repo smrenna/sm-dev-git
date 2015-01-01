@@ -63,7 +63,7 @@ and hadronization are kept the same as for normal nondiffractive events,
 with only one exception. This may be questioned, especially for the 
 multiparton interactions, but we do not believe that there are currently 
 enough good diffractive data that would allow detailed separate tunes. 
-  
+ 
 <p/> 
 The above subdivision may not represent the way "physics comes about". 
 For instance, the total diffractive cross section can be viewed as a 
@@ -75,7 +75,7 @@ further multiparton interactions ("cut Pomerons") will screen the rate of
 diffractive systems. In the end, our set of parameters refers to the 
 effective description that emerges out of these effects, rather than 
 to the underlying "bare" parameters. 
-  
+ 
 <p/> 
 In the event record the diffractive system in the case of an excited 
 proton is denoted <code>p_diffr</code>, code 9902210, whereas 
@@ -136,7 +136,7 @@ the Pomeron-proton coupling, and the total Pomeron-proton cross section.
 <br/><br/><table><tr><td><strong>Diffraction:MBRm2Min </td><td></td><td> <input type="text" name="8" value="1.5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.5</strong></code>; <code>minimum = 0.0</code>; <code>maximum = 3.0</code>)</td></tr></table>
 the lowest value of the mass squared of the dissociated system. 
    
-
+ 
 <br/><br/><table><tr><td><strong>Diffraction:MBRdyminSDflux </td><td></td><td> <input type="text" name="9" value="2.3" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>2.3</strong></code>; <code>minimum = 0.0</code>; <code>maximum = 5.0</code>)</td></tr></table>
 <br/><br/><table><tr><td><strong>Diffraction:MBRdyminDDflux </td><td></td><td> <input type="text" name="10" value="2.3" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>2.3</strong></code>; <code>minimum = 0.0</code>; <code>maximum = 5.0</code>)</td></tr></table>
 <br/><br/><table><tr><td><strong>Diffraction:MBRdyminCDflux </td><td></td><td> <input type="text" name="11" value="2.3" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>2.3</strong></code>; <code>minimum = 0.0</code>; <code>maximum = 5.0</code>)</td></tr></table>
@@ -536,4 +536,4 @@ fclose($handle);
 </body>
 </html>
  
-<!-- Copyright (C) 2014 Torbjorn Sjostrand --> 
+<!-- Copyright (C) 2015 Torbjorn Sjostrand --> 

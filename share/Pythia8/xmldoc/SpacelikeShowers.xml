@@ -185,7 +185,7 @@ Note that tunes using this option need lower values of
 <p/> 
 QED radiation is regulated by the <ei>alpha_electromagnetic</ei> 
 value at the <ei>pT^2</ei> scale of a branching. 
-  
+ 
 <modepick name="SpaceShower:alphaEMorder" default="1" min="-1" max="1"> 
 The running of <ei>alpha_em</ei>. 
 <option value="1">first-order running, constrained to agree with 
@@ -298,7 +298,7 @@ i.e. in terms of decreasing angles in a backwards-evolution sense.
 Could be used to probe sensitivity to unordered emissions. 
 Only affects QCD emissions. 
 </flag> 
-  
+ 
 <h3>Weak showers</h3> 
  
 The emission of weak gauge bosons is an integrated part of the initial- 
@@ -438,5 +438,5 @@ photon backwards-evolution in lepton beams.
  
 </chapter> 
  
-<!-- Copyright (C) 2014 Torbjorn Sjostrand --> 
+<!-- Copyright (C) 2015 Torbjorn Sjostrand --> 
  

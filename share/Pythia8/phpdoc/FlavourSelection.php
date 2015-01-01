@@ -65,22 +65,22 @@ the suppression of strange diquark production relative to light
 diquark production, over and above the one already given by 
 <code>probStoU</code>. 
    
-  
+ 
 <br/><br/><table><tr><td><strong>StringFlav:probQQ1toQQ0 </td><td></td><td> <input type="text" name="4" value="0.0275" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.0275</strong></code>; <code>minimum = 0.0</code>; <code>maximum = 1.0</code>)</td></tr></table>
 the suppression of spin 1 diquark production relative to spin 0 one, 
 apart from the factor of 3 enhancement of spin 1 from counting the 
 number of states. 
    
-
+ 
 <br/><br/><table><tr><td><strong>StringFlav:probQQ1toQQ0join </td><td></td><td> <input type="text" name="5" value="0.5,0.7,0.9,1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.5,0.7,0.9,1.0</strong></code>; <code>minimum = 0.0</code>; <code>maximum = 1.0</code>)</td></tr></table>
-when two already produced quarks are to be combined to a diquark,
+when two already produced quarks are to be combined to a diquark, 
 e.g. in the junction framework, these numbers give the suppression 
 of spin 1 diquark production relative to spin 0 one, apart from the 
-factor of 3 enhancement of spin 1 from counting the number of states.
-The four components give the suppression when the heaviest quark is
-<i>u/d</i>, <i>s</i>, <i>c</i> or <i>b</i>, respectively.
+factor of 3 enhancement of spin 1 from counting the number of states. 
+The four components give the suppression when the heaviest quark is 
+<i>u/d</i>, <i>s</i>, <i>c</i> or <i>b</i>, respectively. 
 These parameters are seldom used and currently not constrained by any 
-data, so very much a guesswork.
+data, so very much a guesswork. 
    
  
 <h3>Standard-meson production</h3> 
@@ -377,21 +377,21 @@ below. This suppresses the production of first-rank baryons by the same
 amount. Indirectly also the second-rank and, if popcorn production is 
 switched on, third-rank (anti)baryon production is affected.    
    
-  
+ 
 <br/><br/><table><tr><td><strong>StringFlav:lightLeadingBSup </td><td></td><td> <input type="text" name="39" value="0.5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.5</strong></code>; <code>minimum = 0.</code>; <code>maximum = 1.0</code>)</td></tr></table>
 extra suppression of leading-baryon production for a light-quark 
 jet, i.e. <i>d</i>, <i>u</i> or <i>s</i>, when 
 <code>suppressLeadingB = on</code>. Thus 0 means no leading-baryon 
 production at all, while 1 means full rate. 
    
-  
+ 
 <br/><br/><table><tr><td><strong>StringFlav:heavyLeadingBSup </td><td></td><td> <input type="text" name="40" value="0.9" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.9</strong></code>; <code>minimum = 0.</code>; <code>maximum = 1.0</code>)</td></tr></table>
 extra suppression of leading-baryon production for a heavy-quark 
 jet, i.e. <i>c</i> or <i>b</i>, when 
 <code>suppressLeadingB = on</code>. Thus 0 means no leading-baryon 
 production at all, while 1 means full rate. 
    
-   
+ 
 <input type="hidden" name="saved" value="1"/>
 
 <?php
@@ -614,4 +614,4 @@ fclose($handle);
 </body>
 </html>
  
-<!-- Copyright (C) 2014 Torbjorn Sjostrand --> 
+<!-- Copyright (C) 2015 Torbjorn Sjostrand --> 

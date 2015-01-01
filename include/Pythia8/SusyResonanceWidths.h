@@ -1,5 +1,5 @@
 // SusyResonanceWidths.h is a part of the PYTHIA event generator.
-// Copyright (C) 2014 Torbjorn Sjostrand
+// Copyright (C) 2015 Torbjorn Sjostrand
 // Main author of this file: N. Desai
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
@@ -34,7 +34,7 @@ public:
 
   virtual double function(double m12);
   virtual double function(double m12, double m23);
-  
+
 protected:
 
   void setInternal2(int idResIn, int id1In, int id2In, int id3In, int idIntIn);
@@ -130,10 +130,10 @@ protected:
 
   // Gaussian integrator
   double integrateGauss( WidthFunction* widthFn, double, double, double);
-  
+
   // SUSY couplings
   CoupSUSY* coupSUSYPtr;
-  
+
   static const bool DBSUSY;
 
 };
@@ -155,7 +155,7 @@ private:
 
   // Initialize constants.
   virtual void initConstants();
- 
+
   // Calculate various common prefactors for the current mass.
   virtual void calcPreFac(bool = false);
 
@@ -165,7 +165,7 @@ private:
   double s2W;
 
 };
-  
+
 //==========================================================================
 
 // The ResonanceGluino class handles the Gluino resonances.
@@ -180,18 +180,18 @@ public:
 private:
 
   // Locally stored properties and couplings.
- 
+
   // Initialize constants.
   virtual void initConstants();
- 
+
   // Calculate various common prefactors for the current mass.
   virtual void calcPreFac(bool = false);
 
   // Caclulate width for currently considered channel.
   virtual void calcWidth(bool calledFromInit = false);
-  
+
 };
-  
+
 //==========================================================================
 
 // The ResonanceNeut class handles the Neutralino resonances.
@@ -210,7 +210,7 @@ private:
 
   // Initialize constants.
   virtual void initConstants();
- 
+
   // Calculate various common prefactors for the current mass.
   virtual void calcPreFac(bool = false);
 
@@ -225,7 +225,7 @@ private:
   Upsilon upsil;
 
 };
-  
+
 //==========================================================================
 
 // The ResonanceChar class handles the Chargino resonances.
@@ -244,7 +244,7 @@ private:
 
   // Initialize constants.
   virtual void initConstants();
- 
+
   // Calculate various common prefactors for the current mass.
   virtual void calcPreFac(bool = false);
 
@@ -259,7 +259,7 @@ private:
   Upsilon upsil;
 
 };
-  
+
 //==========================================================================
 
 // The ResonanceSlepton class handles the Slepton/Sneutrino resonances.
@@ -277,7 +277,7 @@ private:
 
   // Initialize constants.
   virtual void initConstants();
- 
+
   // Calculate various common prefactors for the current mass.
   virtual void calcPreFac(bool = false);
 
@@ -287,7 +287,7 @@ private:
   double s2W;
 
 };
-  
+
 //==========================================================================
 
 } // end namespace Pythia8

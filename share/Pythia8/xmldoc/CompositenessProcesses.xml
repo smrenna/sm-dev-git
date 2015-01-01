@@ -183,10 +183,10 @@ Strength <ei>f_c</ei> of the <ei>SU(3)</ei> coupling.
 </parm> 
  
 <parm name="ExcitedFermion:contactDec" default="1.0" min="0.0"> 
-Strength of contact-interaction decay channels, implemented as
+Strength of contact-interaction decay channels, implemented as 
 three-body decays <ei>l^* &rarr; l f fbar</ei> for excited leptons 
 and neutrinos, where unity corresponds to the same normalization 
-as for the production channels.  
+as for the production channels. 
 </parm> 
  
 <h3>Contact interactions, production processes</h3> 
@@ -260,5 +260,5 @@ Helicity parameter.
  
 </chapter> 
  
-<!-- Copyright (C) 2014 Torbjorn Sjostrand --> 
+<!-- Copyright (C) 2015 Torbjorn Sjostrand --> 
  

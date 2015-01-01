@@ -1,5 +1,5 @@
 // main52.cc is a part of the PYTHIA event generator.
-// Copyright (C) 2014 Torbjorn Sjostrand.
+// Copyright (C) 2015 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
@@ -86,7 +86,7 @@ int main() {
     pythia.settings.parm("Beams:eCM", eCM);
     if (machine == 1) pythia.readString("Beams:idB = -2212");
     pythia.init();
-   
+
     // Begin event loop.
     for (int iEvent = 0; iEvent < nEvent; ++iEvent) {
 
@@ -110,7 +110,7 @@ int main() {
           pTSpecNew.fill( event[i].pT()  );
         }
       }
-      
+
       // Fill histograms for summed quantities.
       if (iRun == 0) {
         nChargedOld.fill( nCh );
@@ -184,7 +184,7 @@ int main() {
   Hist effFlogOld("F_effective( x, Q2 = 10) old", 80 , -8., 0.);
   Hist effFlogNew("F_effective( x, Q2 = 10) new", 80 , -8., 0.);
   Hist effFlogRat("F_effective( x, Q2 = 10) new/old", 80 , -8., 0.);
-    
+
   // Loop over x values, in a linear scale.
   for (int iX = 0; iX < 99; ++iX) {
     double x = 0.005 + 0.01 * iX;
@@ -203,7 +203,7 @@ int main() {
 
   //End loop over x values, in a linear scale.
   }
-    
+
   // Loop over x values, in a logarithmic scale
   for (int iX = 0; iX < 80; ++iX) {
     double xLog = -(0.1 * iX + 0.05);

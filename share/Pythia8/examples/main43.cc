@@ -1,5 +1,5 @@
 // main43.cc is a part of the PYTHIA event generator.
-// Copyright (C) 2014 Torbjorn Sjostrand.
+// Copyright (C) 2015 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
@@ -8,7 +8,7 @@
 // Pythia8.  It is similar to main42, except that it allows for
 // several subruns, e.g. from related LHEF. Input and output files are
 // specified on the command line, e.g. like
-//     ./main43 main43.cmnd hepmcout43.dat > out 
+//     ./main43 main43.cmnd hepmcout43.dat > out
 // The main program contains no analysis; this is intended to happen
 // later. It therefore "never" has to be recompiled to handle
 // different tasks.
@@ -55,7 +55,7 @@ int main(int argc, char* argv[]) {
 
   // Read in subrun-independent commands from external file.
   pythia.readFile( argv[1]);
-                          
+
   // Extract data to be used in main program. Set counters.
   int nSubrun = pythia.mode("Main:numberOfSubruns");
   int nAbort  = pythia.mode("Main:timesAllowErrors");
@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
 
   // Begin loop over subruns.
   for (int iSubrun = 1; iSubrun <= nSubrun; ++iSubrun) {
- 
+
     // Read in subrun-specific data from external file.
     pythia.readFile( argv[1], iSubrun);
 
@@ -103,7 +103,7 @@ int main(int argc, char* argv[]) {
 
     // End of event loop.
     }
-  
+
   // End of subrun loop.
   }
 

@@ -1,5 +1,5 @@
 // main42.cc is a part of the PYTHIA event generator.
-// Copyright (C) 2014 Torbjorn Sjostrand.
+// Copyright (C) 2015 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
 
   // Specify file where HepMC events will be stored.
   HepMC::IO_GenEvent ascii_io(argv[2], std::ios::out);
- 
+
   // Generator.
   Pythia pythia;
 
@@ -57,7 +57,7 @@ int main(int argc, char* argv[]) {
   // Extract settings to be used in the main program.
   int    nEvent    = pythia.mode("Main:numberOfEvents");
   int    nAbort    = pythia.mode("Main:timesAllowErrors");
- 
+
   // Initialization.
   pythia.init();
 

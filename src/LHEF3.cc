@@ -1,5 +1,5 @@
 // LHEF3.cc is a part of the PYTHIA event generator.
-// Copyright (C) 2014 Torbjorn Sjostrand.
+// Copyright (C) 2015 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
@@ -13,8 +13,8 @@ namespace Pythia8 {
 
 //==========================================================================
 
-// The XMLTag struct is used to represent all information within an XML tag. 
-// It contains the attributes as a map, any sub-tags as a vector of pointers 
+// The XMLTag struct is used to represent all information within an XML tag.
+// It contains the attributes as a map, any sub-tags as a vector of pointers
 // to other XMLTag objects, and any other information as a single string.
 
 //==========================================================================
@@ -214,7 +214,7 @@ LHAweightgroup::LHAweightgroup(const XMLTag & tag) {
   }
 
   contents = tag.contents;
-    
+
   // Now add the weight's step by step.
   string s;
   vector<XMLTag*> tags = XMLTag::findXMLTags(tag.contents, &s);
@@ -629,8 +629,10 @@ bool Reader::init() {
     }
   }
 
-  for ( int i = 0, N = tags1.size(); i < N; ++i ) if (tags1[i]) delete tags1[i];
-  for ( int i = 0, N = tags2.size(); i < N; ++i ) if (tags2[i]) delete tags2[i];
+  for ( int i = 0, N = tags1.size(); i < N; ++i ) 
+    if (tags1[i]) delete tags1[i];
+  for ( int i = 0, N = tags2.size(); i < N; ++i ) 
+    if (tags2[i]) delete tags2[i];
 
   // Done
   return true;
@@ -673,7 +675,8 @@ bool Reader::readEvent(HEPEUP * peup) {
       string v = it->second.c_str();
       eup.attributes[it->first] = v;
     }
-    for ( int i = 0, N = evtags.size(); i < N; ++i ) if (evtags[i]) delete evtags[i];
+    for ( int i = 0, N = evtags.size(); i < N; ++i ) 
+      if (evtags[i]) delete evtags[i];
   }
 
   if ( !getLine()  ) return false;
@@ -715,7 +718,7 @@ bool Reader::readEvent(HEPEUP * peup) {
 
   eventComments = "";
   istringstream f(leftovers);
-  string l;    
+  string l;
   while (getline(f, l)) {
      size_t p = l.find_first_not_of(" \t");
      l.erase(0, p);
@@ -765,7 +768,7 @@ bool Reader::readEvent(HEPEUP * peup) {
   for ( int i = 0, N = tags.size(); i < N; ++i ) if (tags[i]) delete tags[i];
 
   return true;
-    
+
 }
 
 //==========================================================================
@@ -790,11 +793,11 @@ void Writer::init() {
 
   // Print headercomments and header init information.
   file << "<header>" << endl;
-  file << hashline(headerStream.str(),true) << std::flush; 
+  file << hashline(headerStream.str(),true) << std::flush;
   if ( version != 1 ) heprup.initrwgt.print(file);
   file << "</header>" << endl;
 
-  file << "<init>"<< endl 
+  file << "<init>"<< endl
        << " " << setw(8) << heprup.IDBMUP.first
        << " " << setw(8) << heprup.IDBMUP.second
        << " " << setw(14) << heprup.EBMUP.first

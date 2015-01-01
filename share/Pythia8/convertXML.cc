@@ -1,13 +1,13 @@
 // File: convert.cc
 // This program should be used to convert existing .xml files
 // to simple .html and .php analogues for preliminary use.
-// Copyright (C) 2014 Torbjorn Sjostrand/Ben Lloyd
-   
+// Copyright (C) 2015 Torbjorn Sjostrand/Ben Lloyd
+
 //**************************************************************************
- 
+
 // Stdlib header files for character manipulation.
 #include <cctype>
- 
+
 // Stdlib header files for input/output.
 #include <iostream>
 #include <iomanip>
@@ -15,17 +15,17 @@
 #include <sstream>
 #include <map>
 #include <vector>
- 
+
 // Generic utilities.
 using std::tolower;
 using std::swap;
- 
+
 // Standard containers.
 using std::string;
 using std::map;
 using std::vector;
 using std::iterator;
- 
+
 // Input/output streams.
 using std::cin;
 using std::cout;
@@ -37,10 +37,10 @@ using std::ifstream;
 using std::ofstream;
 using std::istringstream;
 using std::ostringstream;
- 
+
 // Input/output formatting.
 using std::endl;
-   
+
 //**************************************************************************
 
 // Generic facilities.
@@ -68,17 +68,17 @@ string toLower(const string& name) {
 //*********
 
 // Extract XML value string following XML attribute.
- 
+
 string attributeValue(string line, string attribute) {
- 
+
   if (line.find(attribute) == string::npos) return "";
   int iBegAttri = line.find(attribute);
   int iBegQuote = line.find_first_of("\"'", iBegAttri + 1);
   int iEndQuote = line.find_first_of("\"'", iBegQuote + 1);
   return line.substr(iBegQuote + 1, iEndQuote - iBegQuote - 1);
- 
+
 }
-   
+
 //**************************************************************************
 
 // Classes and methods used to build an index of all documented methods,
@@ -105,7 +105,7 @@ map<string, MethodInfo> methodsMap;
 // Generate index.
 
 bool constructMethods(string convType) {
- 
+
   // Conversion to .html or to .php.
   bool toHTML = (convType == "html");
   bool toPHP  = (convType == "php");
@@ -113,7 +113,7 @@ bool constructMethods(string convType) {
     cout << "Error: unknown conversion type " << convType << "\n";
     return false;
   }
- 
+
   // Open output file.
   string nameOut = (toHTML) ? "htmldoc/ProgramMethods.html"
     : "phpdoc/ProgramMethods.php";
@@ -123,7 +123,7 @@ bool constructMethods(string convType) {
     cout << "Error: user update file " << nameOut << " not found \n";
     return false;
   }
-  
+
   // Write header material of file.
   os << "<html>\n<head>\n<title>Program Methods</title>\n"
      << "<link rel=\"stylesheet\" type=\"text/css\" href=\"pythia.css\"/>\n"
@@ -192,19 +192,19 @@ bool constructMethods(string convType) {
   }
 
   // Write footer material of file.
-  os << "</table>\n\n<!-- Copyright (C) 2014 Torbjorn Sjostrand -->\n";
+  os << "</table>\n\n<!-- Copyright (C) 2015 Torbjorn Sjostrand -->\n";
 
   // Done.
   return true;
 
 }
- 
+
 //**************************************************************************
-  
+
 // Convert from xml to html or php: the key method of this program.
 
 bool convertFile(string nameRoot, string convType) {
- 
+
   // Conversion to .html or to .php.
   bool toHTML = (convType == "html");
   bool toPHP  = (convType == "php");
@@ -212,7 +212,7 @@ bool convertFile(string nameRoot, string convType) {
     cout << "Error: unknown conversion type " << convType << "\n";
     return false;
   }
- 
+
   // Open input file.
   string nameIn = "xmldoc/" + nameRoot + ".xml";
   const char* nameInCstring = nameIn.c_str();
@@ -221,7 +221,7 @@ bool convertFile(string nameRoot, string convType) {
     cout << "Error: user update file " << nameIn << " not found \n";
     return false;
   }
- 
+
   // Open output file.
   string nameOut = (toHTML) ? "htmldoc/" + nameRoot + ".html"
     : "phpdoc/" + nameRoot + ".php";
@@ -235,19 +235,19 @@ bool convertFile(string nameRoot, string convType) {
   // Current anchor for methods index.
   int    methodNumber = 0;
   string methodAnchor = "method";
- 
+
   // Number of settings picked up.
   int settingnum = 0;
   vector<string> names;
   vector<string> defaultnames;
- 
+
   // Read in one line at a time.
   string line;
   string line2;
   int searchEndPDT = 0;
   bool insideComment = false;
   while ( getline(is, line) ) {
- 
+
     // Everything should be unchanged inside comment. For simplicity
     // assume that comments are on separate lines, i.e. not inside text.
     if (line.find("<!--") != string::npos) insideComment = true;
@@ -256,7 +256,7 @@ bool convertFile(string nameRoot, string convType) {
       if (line.find("-->") != string::npos) insideComment = false;
       continue;
     }
- 
+
     // PHP: This following if statement is to insert a huge PHP script
     // to deal with the file opening, permissions, closing and deleting.
     // Do not amend unless you know php!
@@ -276,7 +276,7 @@ bool convertFile(string nameRoot, string convType) {
       }
       continue;
     }
- 
+
     // PHP: Replace chapter tokens, preserving chapter name.
     // Welcome page should not have body, only contain frames.
     if (toPHP && line.find("<chapter") != string::npos) {
@@ -322,7 +322,7 @@ bool convertFile(string nameRoot, string convType) {
             << ".php\'>" << endl;
       continue;
     }
- 
+
     // PHP: Replace end-of-chapter token with save-button if > 0 to save.
     if (toPHP && line.find("</chapter") != string::npos) {
       if(settingnum > 0) {
@@ -349,7 +349,7 @@ bool convertFile(string nameRoot, string convType) {
       os << "</html>" << endl;
       continue;
     }
- 
+
     // HTML: Replace chapter tokens, preserving chapter name.
     // Welcome page should not have body, only contain frames.
     if (line.find("<chapter") != string::npos) {
@@ -371,7 +371,7 @@ bool convertFile(string nameRoot, string convType) {
       os << "</html>" << endl;
       continue;
     }
- 
+
     // PHP: Sections of index that allow save operations.
     if (toPHP && line.find("<INDEXPHP>") != string::npos) {
       os << "<?php" << endl << "$filepath = \"files/\".$_GET[\"filename\"];"
@@ -382,12 +382,12 @@ bool convertFile(string nameRoot, string convType) {
       os << endl << "\";?>" << endl;
       continue;
     }
- 
+
     // HTML: Remove tags used specifically for PHP code.
     if (line.find("<PHPFILECODE/>") != string::npos) continue;
     if (line.find("<INDEXPHP>") != string::npos) continue;
     if (line.find("</INDEXPHP>") != string::npos) continue;
- 
+
     // Links to pages from index.
     if (line.find("<aidx") != string::npos) {
       int iBeg = line.find("<aidx");
@@ -403,11 +403,11 @@ bool convertFile(string nameRoot, string convType) {
       linetmp += line.substr(iEnd + 1, line.length() - iEnd);
       line = linetmp;
     }
- 
+
     // End of links from index.
     while (line.find("</aidx>") != string::npos)
       line.replace( line.find("</aidx>"), 7, "</a>");
- 
+
     // Local links between pages in online manual.
     while (line.find("<aloc") != string::npos) {
       int iBeg = line.find("<aloc");
@@ -422,11 +422,11 @@ bool convertFile(string nameRoot, string convType) {
       linetmp += line.substr(iEnd + 1, line.length() - iEnd);
       line = linetmp;
     }
-  
+
     // End of local links.
     while (line.find("</aloc>") != string::npos)
       line.replace( line.find("</aloc>"), 7, "</a>");
- 
+
     // Replace anchors to .xml files by ones to .html/.php in Welcome.xml.
     if(nameRoot == "Welcome") {
       if (toHTML) while (line.find(".xml") != string::npos)
@@ -434,7 +434,7 @@ bool convertFile(string nameRoot, string convType) {
       if (toPHP)  while (line.find(".xml") != string::npos)
         line.replace( line.find(".xml"), 4, ".php");
     }
- 
+
     // PHP: Interactive parameters with fill-in boxes.
     if (toPHP && (line.find("<parm ") != string::npos
                || line.find("<pvec ") != string::npos)) {
@@ -464,7 +464,7 @@ bool convertFile(string nameRoot, string convType) {
       os << "</td></tr></table>" << endl;
       continue;
     }
- 
+
     // PHP: Interactive flags with radio buttons or fill-in boxes.
     if (toPHP && ( (line.find("<flag") != string::npos)
       || (line.find("<fvec") != string::npos) ) ) {
@@ -496,27 +496,27 @@ bool convertFile(string nameRoot, string convType) {
 
       // PHP: Flags with radio buttons.
       else {
-	settingnum++;
-	names.push_back(name);
-	defaultnames.push_back(defaultname);
-	os << "<br/><br/><strong>" << name
-	   << "</strong>  <input type=\"radio\" name=\"" << settingnum
-	   << "\" value=\"on\"";
-	if (defaultname == "on") os << " checked=\"checked\">";
-	else os << ">";
-	os << "<strong>On</strong>" << endl;
-	os << "<input type=\"radio\" name=\"" << settingnum
-	   << "\" value=\"off\"";
-	if (defaultname == "off") os << " checked=\"checked\">";
-	else os << ">";
-	os << "<strong>Off</strong>" << endl;
-	if (defaultname != "")  os << " &nbsp;&nbsp;(<code>default = <strong>"
-				   << defaultname << "</strong></code>)";
-	os << "<br/>" << endl;
-	continue;
+        settingnum++;
+        names.push_back(name);
+        defaultnames.push_back(defaultname);
+        os << "<br/><br/><strong>" << name
+           << "</strong>  <input type=\"radio\" name=\"" << settingnum
+           << "\" value=\"on\"";
+        if (defaultname == "on") os << " checked=\"checked\">";
+        else os << ">";
+        os << "<strong>On</strong>" << endl;
+        os << "<input type=\"radio\" name=\"" << settingnum
+           << "\" value=\"off\"";
+        if (defaultname == "off") os << " checked=\"checked\">";
+        else os << ">";
+        os << "<strong>Off</strong>" << endl;
+        if (defaultname != "")  os << " &nbsp;&nbsp;(<code>default = <strong>"
+                                   << defaultname << "</strong></code>)";
+        os << "<br/>" << endl;
+        continue;
       }
     }
- 
+
     // PHP: Interactive modes and words: begin common identification.
     if (toPHP && ( (line.find("<modeopen") != string::npos)
       || (line.find("<modepick") != string::npos)
@@ -532,7 +532,7 @@ bool convertFile(string nameRoot, string convType) {
       string min = attributeValue(line, "min=");
       string max = attributeValue(line, "max=");
       bool makeBracket = (defaultname != "" || min != "" || max != "");
- 
+
       // PHP: Modes and words with fill-in boxes.
       if ( (line.find("<modeopen") != string::npos)
         || (line.find("<word") != string::npos)
@@ -553,7 +553,7 @@ bool convertFile(string nameRoot, string convType) {
         os << "</td></tr></table>" << endl;
         continue;
       }
- 
+
       // PHP: Modes with radio buttons.
       else if (line.find("<modepick") != string::npos) {
         string value = "";
@@ -603,7 +603,7 @@ bool convertFile(string nameRoot, string convType) {
             else os << ">";
             os << "<strong>" << value << " </strong>: " << desc
                << "<br/>" << endl;
- 
+
           // Output lines not part of option. Limited conversion.
           } else {
             while (line.find("<note>") != string::npos)
@@ -623,7 +623,7 @@ bool convertFile(string nameRoot, string convType) {
         continue;
       }
     }
- 
+
     // Identify several begintags for new section.
     // Many of these already covered above for PHP, but also there
     // some leftover cases (e.g. flagfix, modefix, parmfix, wordfix).
@@ -670,7 +670,7 @@ bool convertFile(string nameRoot, string convType) {
       if (makeBracket)  linetmp += ")";
       linetmp += "<br/>";
       line = linetmp;
- 
+
       // Fill map of all methods and insert anchors to them.
       if (tagVal == "method" || tagVal == "methodmore") {
 
@@ -730,7 +730,7 @@ bool convertFile(string nameRoot, string convType) {
       linetmp += " : " + line.substr(iEnd + 1, line.length() - iEnd);
       line = linetmp;
     }
- 
+
     // Identify other kinds of begintags for new line.
     tagVal = "void";
     if ( line.find("<option") != string::npos) tagVal = "option";
@@ -748,7 +748,7 @@ bool convertFile(string nameRoot, string convType) {
         + line.substr(iEnd + 1, line.length() - iEnd);
       line = linetmp;
     }
- 
+
     // Replace <ref>...</ref> by [...] for references,
     // and additionally make them anchors to the reference section.
     if (toHTML) while (line.find("<ref>") != string::npos)
@@ -759,7 +759,7 @@ bool convertFile(string nameRoot, string convType) {
       "[<a href=\"Bibliography.php\" target=\"page\">");
     while (line.find("</ref>") != string::npos)
       line.replace( line.find("</ref>"), 6, "</a>]");
- 
+
     // Replace equations by italics.
     while (line.find("<ei>") != string::npos)
       line.replace( line.find("<ei>"), 4, "<i>");
@@ -769,7 +769,7 @@ bool convertFile(string nameRoot, string convType) {
       line.replace( line.find("<eq>"), 4, "<br/><i>");
     while (line.find("</eq>") != string::npos)
       line.replace( line.find("</eq>"), 5, "</i><br/>");
- 
+
     // Replace note by boldface, with or without new line.
     while (line.find("<note>") != string::npos)
       line.replace( line.find("<note>"), 6, "<br/><b>");
@@ -779,7 +779,7 @@ bool convertFile(string nameRoot, string convType) {
       line.replace( line.find("<notenl>"), 8, "<b>");
     while (line.find("</notenl>") != string::npos)
       line.replace( line.find("</notenl>"), 9, "</b>");
- 
+
     // Replace unused endtags by empty space.
     while (line.find("</flag>") != string::npos)
       line.replace( line.find("</flag>"), 7, "  ");
@@ -823,10 +823,10 @@ bool convertFile(string nameRoot, string convType) {
       line.replace( line.find("</argoption>"), 12, "  ");
     while (line.find("</option>") != string::npos)
       line.replace( line.find("</option>"), 9, "  ");
- 
+
     // Remove </particle> lines.
     if (line.find("</particle>") != string::npos) continue;
- 
+
     // Replace particle table tags by simple text.
     if (line.find("<particle ") != string::npos) {
       line.replace( line.find("<particle "), 10, "<p/>particle: ");
@@ -836,7 +836,7 @@ bool convertFile(string nameRoot, string convType) {
       line.replace( line.find("<channel "), 9, "<br/>      channel: ");
       ++searchEndPDT;
     }
- 
+
     // Search for endtags if in PDT environment.
     if (searchEndPDT > 0 && line.rfind("/>") != string::npos
       && line.rfind("/>") > 4) {
@@ -848,34 +848,34 @@ bool convertFile(string nameRoot, string convType) {
       line.erase( line.rfind(">"), 1 );
       --searchEndPDT;
     }
- 
+
     // Default case: write original or modified line to output.
     os << line << endl;
- 
+
   // End of loop over lines in file. Done.
   }
- 
- 
+
+
   return true;
 }
-  
+
 //**************************************************************************
- 
+
 // Convert files from xml to html and php one at a time.
 int main() {
- 
+
   // Flags for what to do.
   bool convert2HTML = true;
   bool convert2PHP = true;
- 
+
   // Convert from xml to html.
   if (convert2HTML) {
     methodsMap.clear();
- 
+
     // These two file names do not appear in the Index.xml file.
     convertFile("Welcome", "html");
     convertFile("Index", "html");
- 
+
     // Extract other file names from the Index.xml file.
     ifstream is("xmldoc/Index.xml");
     string line;
@@ -891,15 +891,15 @@ int main() {
     // Construct index of methods.
     constructMethods("html");
   }
- 
+
   // Convert from xml to php.
   if (convert2PHP) {
     methodsMap.clear();
- 
+
     // These two file names do not appear in the Index.xml file.
     convertFile("Welcome", "php");
     convertFile("Index", "php");
- 
+
     // Extract other file names from the Index.xml file.
     ifstream is("xmldoc/Index.xml");
     string line;
@@ -915,10 +915,10 @@ int main() {
     // Construct index of methods.
     constructMethods("php");
   }
- 
+
   // Done.
   return 0;
 }
- 
+
 //**************************************************************************
- 
+

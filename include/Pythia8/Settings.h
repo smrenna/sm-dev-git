@@ -1,5 +1,5 @@
 // Settings.h is a part of the PYTHIA event generator.
-// Copyright (C) 2014 Torbjorn Sjostrand.
+// Copyright (C) 2015 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
@@ -48,9 +48,9 @@ public:
 
   // Constructor
   Mode(string nameIn = " ", int defaultIn = 0, bool hasMinIn = false,
-    bool hasMaxIn = false, int minIn = 0,  int maxIn = 0, 
-    bool optOnlyIn = false) :  name(nameIn), valNow(defaultIn), 
-    valDefault(defaultIn), hasMin(hasMinIn), hasMax(hasMaxIn), 
+    bool hasMaxIn = false, int minIn = 0,  int maxIn = 0,
+    bool optOnlyIn = false) :  name(nameIn), valNow(defaultIn),
+    valDefault(defaultIn), hasMin(hasMinIn), hasMax(hasMaxIn),
     valMin(minIn), valMax(maxIn), optOnly(optOnlyIn)  { }
 
   // Data members.
@@ -111,7 +111,7 @@ class FVec {
 public:
 
   // Constructor
-  FVec(string nameIn = " ", vector<bool> defaultIn = vector<bool>(1, false)) : 
+  FVec(string nameIn = " ", vector<bool> defaultIn = vector<bool>(1, false)) :
     name(nameIn), valNow(defaultIn) , valDefault(defaultIn) { }
 
   // Data members.
@@ -169,7 +169,7 @@ public:
 //==========================================================================
 
 // This class holds info on flags (bool), modes (int), parms (double),
-// words (string), fvecs (vector of bool), mvecs (vector of int) and pvecs 
+// words (string), fvecs (vector of bool), mvecs (vector of int) and pvecs
 // (vector of double).
 
 class Settings {
@@ -181,7 +181,7 @@ public:
 
   // Initialize Info pointer.
   void initPtr(Info* infoPtrIn) {infoPtr = infoPtrIn;}
- 
+
   // Read in database from specific file.
   bool init(string startFile = "../xmldoc/Index.xml", bool append = false,
     ostream& os = cout) ;
@@ -194,7 +194,7 @@ public:
 
   // Keep track whether any readings have failed, invalidating run setup.
   bool readingFailed() {return readingFailedSave;}
- 
+
   // Write updates or everything to user-defined file.
   bool writeFile(string toFile, bool writeAll = false) ;
   bool writeFile(ostream& os = cout, bool writeAll = false) ;
@@ -226,13 +226,13 @@ public:
     return (mvecs.find(toLower(keyIn)) != mvecs.end()); }
   bool isPVec(string keyIn) {
     return (pvecs.find(toLower(keyIn)) != pvecs.end()); }
- 
+
   // Add new entry.
   void addFlag(string keyIn, bool defaultIn) {
     flags[toLower(keyIn)] = Flag(keyIn, defaultIn); }
   void addMode(string keyIn, int defaultIn, bool hasMinIn,
-    bool hasMaxIn, int minIn, int maxIn, bool optOnlyIn = false) { 
-    modes[toLower(keyIn)] = Mode(keyIn, defaultIn, hasMinIn, hasMaxIn, 
+    bool hasMaxIn, int minIn, int maxIn, bool optOnlyIn = false) {
+    modes[toLower(keyIn)] = Mode(keyIn, defaultIn, hasMinIn, hasMaxIn,
     minIn, maxIn, optOnlyIn); }
   void addParm(string keyIn, double defaultIn, bool hasMinIn,
     bool hasMaxIn, double minIn, double maxIn) { parms[toLower(keyIn)]
@@ -265,7 +265,7 @@ public:
   vector<bool>   fvecDefault(string keyIn);
   vector<int>    mvecDefault(string keyIn);
   vector<double> pvecDefault(string keyIn);
-    
+
   // Give back a map of all entries whose names match the string "match".
   map<string, Flag> getFlagMap(string match);
   map<string, Mode> getModeMap(string match);
@@ -289,7 +289,7 @@ public:
   void forceParm(string keyIn, double nowIn);
   void forceMVec(string keyIn, vector<int> nowIn);
   void forcePVec(string keyIn, vector<double> nowIn);
-     
+
   // Restore current value to default.
   void resetFlag(string keyIn);
   void resetMode(string keyIn);

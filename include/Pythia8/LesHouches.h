@@ -1,5 +1,5 @@
 // LesHouches.h is a part of the PYTHIA event generator.
-// Copyright (C) 2014 Torbjorn Sjostrand.
+// Copyright (C) 2015 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
@@ -23,7 +23,7 @@ namespace Pythia8 {
 //==========================================================================
 
 // A class for the processes stored in LHAup.
-  
+
 class LHAProcess {
 
 public:
@@ -83,11 +83,11 @@ public:
 
   // Set info pointer.
   void setPtr(Info* infoPtrIn) {infoPtr = infoPtrIn;}
- 
+
   // Method to be used for LHAupLHEF derived class.
   virtual void newEventFile(const char*) {}
   virtual bool fileFound() {return true;}
- 
+
   // A pure virtual method setInit, wherein all initialization information
   // is supposed to be set in the derived class. Can do this by reading a
   // file or some other way, as desired. Returns false if it did not work.
@@ -102,7 +102,7 @@ public:
   int    pdfGroupBeamB() const {return pdfGroupBeamBSave;}
   int    pdfSetBeamA()   const {return pdfSetBeamASave;}
   int    pdfSetBeamB()   const {return pdfSetBeamBSave;}
-    
+
   // Give back weight strategy.
   int    strategy()      const {return strategySave;}
 
@@ -114,7 +114,7 @@ public:
   double xMax(int proc)  const {return processes[proc].xMaxProc;}
   double xSecSum()       const {return xSecSumSave;}
   double xErrSum()       const {return xErrSumSave;}
-   
+
   // Print the initialization info; useful to check that setting it worked.
   void   listInit(ostream& os = cout);
 
@@ -183,13 +183,13 @@ public:
   bool   closeLHEF(bool updateInit = false);
 
   // Get access to the Les Houches Event file name.
-  string getFileName()     const {return fileName;}  
+  string getFileName()     const {return fileName;}
 
 protected:
 
   // Constructor. Sets default to be that events come with unit weight.
   LHAup(int strategyIn = 3) : fileName("void"), strategySave(strategyIn)
-    { processes.reserve(10); particles.reserve(20); 
+    { processes.reserve(10); particles.reserve(20);
     setBeamA( 0, 0., 0, 0); setBeamB( 0, 0., 0, 0); }
 
   // Allow conversion from mb to pb.
@@ -218,7 +218,7 @@ protected:
   void setXSec(int iP, double xSecIn) {processes[iP].xSecProc = xSecIn;}
   void setXErr(int iP, double xErrIn) {processes[iP].xErrProc = xErrIn;}
   void setXMax(int iP, double xMaxIn) {processes[iP].xMaxProc = xMaxIn;}
- 
+
   // Input info on the selected process.
   void setProcess(int idProcIn = 0, double weightIn = 1., double
     scaleIn = 0., double alphaQEDIn = 0.0073, double alphaQCDIn = 0.12) {
@@ -277,7 +277,7 @@ protected:
   int    id1InSave, id2InSave, id1pdfInSave, id2pdfInSave;
   double x1InSave, x2InSave, x1pdfInSave, x2pdfInSave, scalePDFInSave,
          pdf1InSave, pdf2InSave;
- 
+
   // File to which to write Les Houches Event File information.
   string fileName;
   fstream osLHEF;
@@ -322,7 +322,7 @@ class LHAupLHEF : public LHAup {
 public:
 
   // Constructor.
-  LHAupLHEF(Pythia8::Info* infoPtrIn, const char* filenameIn, 
+  LHAupLHEF(Pythia8::Info* infoPtrIn, const char* filenameIn,
     const char* headerIn = NULL, bool readHeadersIn = false,
     bool setScalesFromLHEFIn = false ) :
     infoPtr(infoPtrIn), filename(filenameIn), headerfile(headerIn),

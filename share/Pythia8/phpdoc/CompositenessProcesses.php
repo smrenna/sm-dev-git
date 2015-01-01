@@ -262,10 +262,10 @@ Strength <i>f_c</i> of the <i>SU(3)</i> coupling.
    
  
 <br/><br/><table><tr><td><strong>ExcitedFermion:contactDec </td><td></td><td> <input type="text" name="31" value="1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.0</strong></code>; <code>minimum = 0.0</code>)</td></tr></table>
-Strength of contact-interaction decay channels, implemented as
+Strength of contact-interaction decay channels, implemented as 
 three-body decays <i>l^* &rarr; l f fbar</i> for excited leptons 
 and neutrinos, where unity corresponds to the same normalization 
-as for the production channels.  
+as for the production channels. 
    
  
 <h3>Contact interactions, production processes</h3> 
@@ -574,5 +574,5 @@ fclose($handle);
 </body>
 </html>
  
-<!-- Copyright (C) 2014 Torbjorn Sjostrand --> 
+<!-- Copyright (C) 2015 Torbjorn Sjostrand --> 
  

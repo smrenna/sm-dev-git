@@ -71,16 +71,16 @@
          compilation statements. This is equivalent to the GNU
          configuration variable CXXFLAGS, which is not supported here.
      --cxx-shared='FLAGS' : the flags that are passed when building
-     	 shared dynamic libraries. These are only used when building
-     	 "lib/libpythia8.[so,dylib]" and
-     	 "lib/libpythia8lhapdf[5,6].so".
+         shared dynamic libraries. These are only used when building
+         "lib/libpythia8.[so,dylib]" and
+         "lib/libpythia8lhapdf[5,6].so".
      --cxx-soname='FLAGS' : these flags are passed to the linker when
          setting the shared library names. Normally this should not
          need to be changed.
      --lib-suffix=SUF : the shared library suffix to use. This only
          effects the name of "lib/libpythia8.SUF". Typically for *nix
          systems this is ".so" and for OS X this is ".dylib".
-	 
+         
 1.2) All of the options listed above are formatted into
      "Makefile.inc", which is also copied to
      "share/Pythia8/examples/Makefile.inc" whenever "gmake" is run and
@@ -133,13 +133,13 @@
      arguments that begin with "--with". When an external package
      interface is enabled, "configure" takes the following steps.
      a) It looks for the necessary binaries, headers, and libraries
-     	that are needed for the external package. If no paths for the
-     	package have been defined it looks along the default paths
-     	for the system. If it can not find the necessary files, it
-     	disables the external package and issues a warning as to why.
+        that are needed for the external package. If no paths for the
+        package have been defined it looks along the default paths
+        for the system. If it can not find the necessary files, it
+        disables the external package and issues a warning as to why.
      b) It looks for any external packages that this package might
-     	require, and enables them if needed. It then checks to see if
-     	these packages fulfill a). If not, it disables both packages.
+        require, and enables them if needed. It then checks to see if
+        these packages fulfill a). If not, it disables both packages.
      If any "--with-PACKAGE" option is passed to "configure" it will
      attempt to enable the package. For example, "--with-LHAPDF6" will
      enable LHAPDF6, while "--with-LHAPDF6-lib=/lib/foo" will also

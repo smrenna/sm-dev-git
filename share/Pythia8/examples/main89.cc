@@ -1,5 +1,5 @@
 // main89.cc is a part of the PYTHIA event generator.
-// Copyright (C) 2014 Torbjorn Sjostrand.
+// Copyright (C) 2015 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
@@ -10,7 +10,7 @@
 // b) MLM jet-matched events (kT-MLM, shower-kT, FxFx)
 // c) CKKW-L and UMEPS-merged events
 // d) UNLOPS NLO merged events
-// see the respective sections in the online manual for details. 
+// see the respective sections in the online manual for details.
 
 #include "Pythia8/Pythia.h"
 #include "Pythia8Plugins/HepMC2.h"
@@ -48,7 +48,7 @@ int main( int argc, char* argv[] ){
   // Input parameters:
   pythia.readFile(argv[1],0);
 
-  // Interface for conversion from Pythia8::Event to HepMC one. 
+  // Interface for conversion from Pythia8::Event to HepMC one.
   HepMC::Pythia8ToHepMC ToHepMC;
   // Specify file where HepMC events will be stored.
   HepMC::IO_GenEvent ascii_io(argv[2], std::ios::out);
@@ -64,7 +64,8 @@ int main( int argc, char* argv[] ){
   bool doMatch   = pythia.settings.flag("JetMatching:merge");
 
   // Check if internal merging should be applied.
-  bool doMerge   = !(pythia.settings.word("Merging:Process").compare("void")==0);
+  bool doMerge   = !(pythia.settings.word("Merging:Process").compare("void")
+    == 0);
 
   // Currently, only one scheme at a time is allowed.
   if (doMatch && doMerge) {
@@ -189,7 +190,7 @@ int main( int argc, char* argv[] ){
     cout << endl << " Contribution of sample " << iMerge
          << " to the inclusive cross section : "
          << scientific << setprecision(8)
-         << sigmaSample << "  +-  " << sqrt(errorSample)  << endl; 
+         << sigmaSample << "  +-  " << sqrt(errorSample)  << endl;
 
   }
 

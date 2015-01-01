@@ -1,5 +1,5 @@
 // SigmaCompositeness.cc is a part of the PYTHIA event generator.
-// Copyright (C) 2014 Torbjorn Sjostrand.
+// Copyright (C) 2015 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
@@ -18,7 +18,7 @@ namespace Pythia8 {
 //--------------------------------------------------------------------------
 
 // Initialize process.
-  
+
 void Sigma1qg2qStar::initProc() {
 
   // Set up process properties from the chosen quark flavour.
@@ -95,13 +95,13 @@ void Sigma1qg2qStar::setIdColAcol() {
 //--------------------------------------------------------------------------
 
 // Evaluate weight for q* decay angle.
-  
+
 double Sigma1qg2qStar::weightDecay( Event& process, int iResBeg,
   int iResEnd) {
 
   // q* should sit in entry 5. Sequential Z/W decay assumed isotropic.
   if (iResBeg != 5 || iResEnd != 5) return 1.;
-   
+
   // Sign of asymmetry.
   int sideIn    = (process[3].idAbs() < 20) ? 1 : 2;
   int sideOut   = (process[6].idAbs() < 20) ? 1 : 2;
@@ -143,7 +143,7 @@ double Sigma1qg2qStar::weightDecay( Event& process, int iResBeg,
 //--------------------------------------------------------------------------
 
 // Initialize process.
-  
+
 void Sigma1lgm2lStar::initProc() {
 
   // Set up process properties from the chosen lepton flavour.
@@ -218,13 +218,13 @@ void Sigma1lgm2lStar::setIdColAcol() {
 //--------------------------------------------------------------------------
 
 // Evaluate weight for l* decay angle.
-  
+
 double Sigma1lgm2lStar::weightDecay( Event& process, int iResBeg,
   int iResEnd) {
 
   // l* should sit in entry 5. Sequential Z/W decay assumed isotropic.
   if (iResBeg != 5 || iResEnd != 5) return 1.;
-   
+
   // Sign of asymmetry.
   int sideIn    = (process[3].idAbs() < 20) ? 1 : 2;
   int sideOut   = (process[6].idAbs() < 20) ? 1 : 2;
@@ -266,7 +266,7 @@ double Sigma1lgm2lStar::weightDecay( Event& process, int iResBeg,
 //--------------------------------------------------------------------------
 
 // Initialize process.
-  
+
 void Sigma2qq2qStarq::initProc() {
 
   // Set up process properties from the chosen quark flavour.
@@ -323,7 +323,7 @@ double Sigma2qq2qStarq::sigmaHat() {
 
   // Done.
   return sigma;
- 
+
 }
 
 //--------------------------------------------------------------------------
@@ -379,7 +379,7 @@ void Sigma2qq2qStarq::setIdColAcol() {
 // Evaluate weight for q* decay angle.
 // SA: Angles dist. for decay q* -> q V, based on Eq. 1.7
 // in CERN Yellow Reports 90-10 vol.2, p. 1014 to 1021.
-  
+
 double Sigma2qq2qStarq::weightDecay( Event& process, int iResBeg,
   int iResEnd) {
 
@@ -392,7 +392,7 @@ double Sigma2qq2qStarq::weightDecay( Event& process, int iResBeg,
 
   // Reconstruct decay angle in q* CoM frame.
   int  idAbs3 = process[7].idAbs();
-  // Olga Igonkina: flip sign of helicity for agreement with Baur et al. 
+  // Olga Igonkina: flip sign of helicity for agreement with Baur et al.
   // Vec4 pQStarCom = (idAbs3 < 20) ? process[7].p() : process[8].p();
   Vec4 pQStarCom = (idAbs3 < 20) ? process[8].p() : process[7].p();
   pQStarCom.bstback(process[5].p());
@@ -421,7 +421,7 @@ double Sigma2qq2qStarq::weightDecay( Event& process, int iResBeg,
 //--------------------------------------------------------------------------
 
 // Initialize process.
-  
+
 void Sigma2qqbar2lStarlbar::initProc() {
 
   // Set up process properties from the chosen lepton flavour.
@@ -481,7 +481,7 @@ void Sigma2qqbar2lStarlbar::setIdColAcol() {
 // Evaluate weight for l* decay angle.
 // SA: Angles dist. for decay l* -> l V, based on Eq. 1.7
 // in CERN Yellow Reports 90-10 vol.2, p. 1014 to 1021.
-  
+
 double Sigma2qqbar2lStarlbar::weightDecay( Event& process, int iResBeg,
   int iResEnd) {
 
@@ -494,7 +494,7 @@ double Sigma2qqbar2lStarlbar::weightDecay( Event& process, int iResBeg,
 
   // Reconstruct decay angle in l* CoM frame.
   int  idAbs3 = process[7].idAbs();
-  // Olga Igonkina: flip sign of helicity for agreement with Baur et al. 
+  // Olga Igonkina: flip sign of helicity for agreement with Baur et al.
   // Vec4 pLStarCom = (idAbs3 < 20) ? process[7].p() : process[8].p();
   Vec4 pLStarCom = (idAbs3 < 20) ? process[8].p() : process[7].p();
   pLStarCom.bstback(process[5].p());
@@ -524,7 +524,7 @@ double Sigma2qqbar2lStarlbar::weightDecay( Event& process, int iResBeg,
 //--------------------------------------------------------------------------
 
 // Initialize process.
-  
+
 void Sigma2qqbar2lStarlStarBar::initProc() {
 
   // Set up process properties from the chosen lepton flavour.
@@ -576,7 +576,7 @@ void Sigma2qqbar2lStarlStarBar::setIdColAcol() {
 //--------------------------------------------------------------------------
 
 // Evaluate weight for l* -> l V decay angles.
-  
+
 double Sigma2qqbar2lStarlStarBar::weightDecay( Event& process, int iResBeg,
   int iResEnd) {
 
@@ -601,7 +601,7 @@ double Sigma2qqbar2lStarlStarBar::weightDecay( Event& process, int iResBeg,
     double cosThe = costheta(pLStarCom, process[iResNow].p());
 
     // Decay, l* -> l + gamma/Z^0/W^+-.
-    int idBoson   = (idAbs3 < 20) ? process[iDau2].idAbs() 
+    int idBoson   = (idAbs3 < 20) ? process[iDau2].idAbs()
       : process[iDau1].idAbs();
     if (idBoson == 22) {
       wt         *= 0.5 * (1. + cosThe);
@@ -625,7 +625,7 @@ double Sigma2qqbar2lStarlStarBar::weightDecay( Event& process, int iResBeg,
 //--------------------------------------------------------------------------
 
 // Initialize process.
-  
+
 void Sigma2QCqq2qq::initProc() {
 
   qCLambda2  = settingsPtr->parm("ContactInteractions:Lambda");
@@ -647,7 +647,7 @@ void Sigma2QCqq2qq::sigmaKin() {
   sigU   = (4./9.) * (sH2 + tH2) / uH2;
   sigTU  = - (8./27.) * sH2 / (tH * uH);
   sigST  = - (8./27.) * uH2 / (sH * tH);
-  
+
   sigQCSTU = sH2 * (1 / tH + 1 / uH);
   sigQCUTS = uH2 * (1 / tH + 1 / sH);
 
@@ -670,7 +670,7 @@ double Sigma2QCqq2qq::sigmaHat() {
 
     // SM terms.
     sigSum = 0.5 * (sigT + sigU + sigTU);
-    
+
     // Contact terms.
     sigQCLL = (8./9.) * alpS * (qCetaLL/qCLambda2) * sigQCSTU
             + (8./3.) * pow2(qCetaLL/qCLambda2) * sH2;
@@ -746,7 +746,7 @@ void Sigma2QCqq2qq::setIdColAcol() {
 //--------------------------------------------------------------------------
 
 // Initialize process.
-  
+
 void Sigma2QCqqbar2qqbar::initProc() {
 
   qCnQuarkNew = settingsPtr->mode("ContactInteractions:nQuarkNew");
@@ -808,7 +808,7 @@ void Sigma2QCqqbar2qqbar::setIdColAcol() {
 //--------------------------------------------------------------------------
 
 // Initialize process.
-  
+
 void Sigma2QCffbar2llbar::initProc() {
 
   qCLambda2   = settingsPtr->parm("ContactInteractions:Lambda");
@@ -896,7 +896,7 @@ double Sigma2QCffbar2llbar::sigmaHat() {
   sigma += sigma0 * uH2 * real(meRR*conj(meRR));
   sigma += sigma0 * tH2 * real(meLR*conj(meLR));
   sigma += sigma0 * tH2 * real(meRL*conj(meRL));
-  
+
   // If f fbar are quarks.
   if (idAbs < 9) sigma /= 3.;
 

@@ -1,5 +1,5 @@
 // SusyCouplings.h is a part of the PYTHIA event generator.
-// Copyright (C) 2014 Torbjorn Sjostrand.
+// Copyright (C) 2015 Torbjorn Sjostrand.
 // Main authors of this file: N. Desai, P. Skands
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
@@ -31,7 +31,7 @@ public:
   CoupSUSY() {isInit=false; isNMSSM = false; isSUSY=true;}
 
   // Initialize
-  void initSUSY(SusyLesHouches* slhaPtrIn, Info* infoPtrIn, 
+  void initSUSY(SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
                 ParticleData* particleDataPtrIn, Settings* settingsPtrIn);
 
   // Status flag. Flag for NMSSM.
@@ -121,7 +121,7 @@ public:
 
   // ~l~vW couplings
   complex LslsvW[7][7], RslsvW[7][7];
- 
+
   // ~ll~chi0 couplings
   complex LsvvX[7][4][6], RsvvX[7][4][6];
   complex LsllX[7][4][6], RsllX[7][4][6];

@@ -97,7 +97,7 @@ The order at which <ei>alpha_strong</ei> runs at scales away from
 <p/> 
 QED interactions are regulated by the <i>alpha_electromagnetic</i> 
 value at the <i>pT^2</i> scale of an interaction. 
-  
+ 
 <br/><br/><table><tr><td><strong>MultipartonInteractions:alphaEMorder  </td><td>  &nbsp;&nbsp;(<code>default = <strong>1</strong></code>; <code>minimum = -1</code>; <code>maximum = 1</code>)</td></tr></table>
 The running of <ei>alpha_em</ei> used in hard processes. 
 <br/>
@@ -225,7 +225,7 @@ effective <ei>pT0</ei> for consecutive interactions.
 <input type="radio" name="11" value="2"><strong>2 </strong>: Both MPI and ISR influence and are influenced by the  screening. That is, the dampening is reduced based on the total number  of MPI and ISR steps considered so far, including the current one.  This dampening is implemented both for MPI and for ISR emissions,  for the latter provided that <code>SpaceShower:samePTasMPI</code> is on  (default).  <br/>
  
 <h4>Impact-parameter dependence</h4> 
-  
+ 
 The choice of impact-parameter dependence is regulated by several 
 parameters. The ones listed here refer to nondiffractive topologies 
 only, while their equivalents for diffractive events are put in the 
@@ -296,7 +296,7 @@ for MPIs (<code>MultipartonInteractions:pTmaxMatch</code>).
 <input type="radio" name="17" value="3"><strong>3 </strong>: use the same scale as chosen by the rules for  <code>MultipartonInteractions:pTmaxMatch</code>.<br/>
  
 <h4>Rescattering</h4> 
-  
+ 
 It is possible that a parton may rescatter, i.e. undergo a further 
 interaction subsequent to the first one. The machinery to model this 
 kind of physics has only recently become fully operational 
@@ -656,4 +656,4 @@ fclose($handle);
 </body>
 </html>
  
-<!-- Copyright (C) 2014 Torbjorn Sjostrand --> 
+<!-- Copyright (C) 2015 Torbjorn Sjostrand --> 

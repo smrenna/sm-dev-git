@@ -1,5 +1,5 @@
 // main30.cc is a part of the PYTHIA event generator.
-// Copyright (C) 2014 Torbjorn Sjostrand.
+// Copyright (C) 2015 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 // Author: Steve Mrenna.
@@ -7,7 +7,7 @@
 // Example how to create a copy of the event record, where the original one
 // is translated to another format, to meet various analysis needs.
 // In this specific case the idea is to set up the history information
-// of the underlying hard process to be close to the PYTHIA 6 structure. 
+// of the underlying hard process to be close to the PYTHIA 6 structure.
 
 #include "Pythia8/Pythia.h"
 
@@ -42,7 +42,7 @@ int main() {
   Event hard;
   hard.init("(Pythia 6 conventions)", &pythia.particleData);
 
-  // Begin event loop.  
+  // Begin event loop.
   int iAbort = 0;
   for (int iEvent = 0; iEvent < nEvent; ++iEvent) {
 
@@ -53,14 +53,14 @@ int main() {
       break;
     }
 
-    // Reset record for this event. List first few.    
+    // Reset record for this event. List first few.
     translate( event, hard );
     if (iEvent < nShow) hard.list();
 
   // End of event loop.
   }
-   
-  // Final statistics. 
+
+  // Final statistics.
   pythia.stat();
 
   // Done.
@@ -95,13 +95,13 @@ void translate(Event& event, Event& hard) {
       // Identify hard process by status in the 20s.
       int iStatus = event[iEv].status();
       if ( abs(iStatus) > 20 && abs(iStatus) < 30 ) {
-	hard.append(event[iEv]);
-	if ( iStatus==-21 ) {
- 	  hard[hard.size()-1].mothers(0,0);
-	} else {
- 	  hard[hard.size()-1].mothers(1,2);
-	}
-	continue;
+        hard.append(event[iEv]);
+        if ( iStatus==-21 ) {
+          hard[hard.size()-1].mothers(0,0);
+        } else {
+          hard[hard.size()-1].mothers(1,2);
+        }
+        continue;
       }
 
       // Follow the flow of the hard event.
@@ -113,21 +113,21 @@ void translate(Event& event, Event& hard) {
       // Status -61 is the primordial parton with kT smearing
       // Status -53 is a recoil in initial-final dipole radiation
       if ( iStatus == -41 && hardTest ) {
-	i41 = iEv;
+        i41 = iEv;
       } else if ( iStatus == -42 && hardTest ) {
-	i42 = iEv;
+        i42 = iEv;
       } else if ( iStatus == -61 && hardTest ) {
-	if ( i41 == 0 ) {
-	  i41 = iEv;
-	} else {
-	  i42 = iEv;
-	}
+        if ( i41 == 0 ) {
+          i41 = iEv;
+        } else {
+          i42 = iEv;
+        }
       } else if ( iStatus == -53 ) {
-	if ( iDa1 == iP1 ) {
-	  iP1 = iEv;
-	} else if ( iDa1 == iP2 ) {
-	  iP2 = iEv;
-	}  
+        if ( iDa1 == iP1 ) {
+          iP1 = iEv;
+        } else if ( iDa1 == iP2 ) {
+          iP2 = iEv;
+        }
       }
 
       if ( !(i41 > 0 && i42 > 0) ) continue;
@@ -135,9 +135,9 @@ void translate(Event& event, Event& hard) {
       int ik1 = event[i42].daughter2();
 
       if ( event[ik2].pz() > 0 ) {
-	int iTemp=ik1;
-	ik1=ik2;
-	ik2=iTemp;
+        int iTemp=ik1;
+        ik1=ik2;
+        ik2=iTemp;
       }
 
       // Boost to CM frame of hard partons.
@@ -149,16 +149,16 @@ void translate(Event& event, Event& hard) {
       Vec4 pBoost = event[i41].p()-event[i43].p();
       RotBstMatrix toHard;
       if ( event[i41].pz() > 0 ) {
-	toHard.fromCMframe(pBoost,event[i42].p());
+        toHard.fromCMframe(pBoost,event[i42].p());
       } else {
-	toHard.fromCMframe(event[i42].p(),pBoost);
+        toHard.fromCMframe(event[i42].p(),pBoost);
       }
 
       // Boost to CM frame of old initiators,
       // then boost from frame of new initiators.
       for( int i = 0; i< hard.size(); ++i ) {
-	hard[i].rotbst(toCMS);
-	hard[i].rotbst(toHard);
+        hard[i].rotbst(toCMS);
+        hard[i].rotbst(toHard);
       }
 
       // Update counter to location of new parton
@@ -166,11 +166,11 @@ void translate(Event& event, Event& hard) {
       // Update event history
       iDa1 = event[i41].daughter2();
       if ( iDa1 == iP1 ) {
-	iP1 = i41;
-	iP2 = i42;
+        iP1 = i41;
+        iP2 = i42;
       } else {
-	iP2 = i41;
-	iP1 = i42;
+        iP2 = i41;
+        iP1 = i42;
       }
       i41=0; i42=0;
 
@@ -202,48 +202,48 @@ void translate(Event& event, Event& hard) {
       int ilast = -1;
       int ida1, ida2 = -1;
       if ( hard[i].status()!=-22 ) {
-	hard[i].statusPos();
-	continue;
+        hard[i].statusPos();
+        continue;
       }
       if ( hard[i].mother1()==3 ) {
-	ilast = hard[i].daughter1();
-	ida1 = event[ilast].daughter1();
-	ida2 = event[ilast].daughter2();
+        ilast = hard[i].daughter1();
+        ida1 = event[ilast].daughter1();
+        ida2 = event[ilast].daughter2();
       } else {
-	ilast = i;
-	ida1 = hard[ilast].daughter1();
-	ida2 = hard[ilast].daughter2();	
+        ilast = i;
+        ida1 = hard[ilast].daughter1();
+        ida2 = hard[ilast].daughter2(); 
       }
 
       // Resonance decays occur when there are multiple daughters and
       // it is NOT FSR.
       while( ilast > 0 && ilast < event.size() ) {
-	if ( ida1 != ida2 && event[ida1].status() != -51 ) break;
-	ilast = ida1;
-	ida1 = event[ilast].daughter1();
-	ida2 = event[ilast].daughter2();
+        if ( ida1 != ida2 && event[ida1].status() != -51 ) break;
+        ilast = ida1;
+        ida1 = event[ilast].daughter1();
+        ida2 = event[ilast].daughter2();
       }
 
       // Add daughters to the event record, boosting to the frame
       // of the mother.
       if ( ilast > 0 ) {
-	Vec4 pall = Vec4(0,0,0,0);
-	for(int ida = ida1; ida <= ida2; ++ida) {
-	  pall += event[ida].p();
-	}
-	RotBstMatrix toResonance;
-	toResonance.bst( pall, hard[i].p() );
-	int nDau = 0;
-	for(int ida = ida1; ida <= ida2; ++ida) {
-	  Particle tmp = Particle(event[ida]);
-	  tmp.rotbst(toResonance);
-	  hard.append( tmp );
-	  hard[hard.size()-1].mothers(i,i);
-	  iMax++;
-	  nDau++;
-	}
-	int ip1 = hard.size() - nDau;
-	hard[i].daughters(ip1,ip1+nDau-1);
+        Vec4 pall = Vec4(0,0,0,0);
+        for(int ida = ida1; ida <= ida2; ++ida) {
+          pall += event[ida].p();
+        }
+        RotBstMatrix toResonance;
+        toResonance.bst( pall, hard[i].p() );
+        int nDau = 0;
+        for(int ida = ida1; ida <= ida2; ++ida) {
+          Particle tmp = Particle(event[ida]);
+          tmp.rotbst(toResonance);
+          hard.append( tmp );
+          hard[hard.size()-1].mothers(i,i);
+          iMax++;
+          nDau++;
+        }
+        int ip1 = hard.size() - nDau;
+        hard[i].daughters(ip1,ip1+nDau-1);
       }
     }
 }

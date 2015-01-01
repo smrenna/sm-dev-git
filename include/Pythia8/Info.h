@@ -1,5 +1,5 @@
 // Info.h is a part of the PYTHIA event generator.
-// Copyright (C) 2014 Torbjorn Sjostrand.
+// Copyright (C) 2015 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
@@ -13,7 +13,7 @@
 #include "Pythia8/LHEF3.h"
 
 namespace Pythia8 {
- 
+
 //==========================================================================
 
 // The Info class contains a mixed bag of information on the event
@@ -34,7 +34,7 @@ public:
 
   // Listing of most available information on current event.
   void   list(ostream& os = cout) const;
-  
+
   // Beam particles (in rest frame). CM energy of event.
   int    idA()                const {return idASave;}
   int    idB()                const {return idBSave;}
@@ -148,7 +148,7 @@ public:
 
   // Cross section estimate, optionally process by process.
   vector<int> codesHard();
-  string nameProc(int i = 0)  {return (i == 0) ? "sum" 
+  string nameProc(int i = 0)  {return (i == 0) ? "sum"
     : ( (procNameM[i] == "") ? "unknown process" : procNameM[i] );}
   long   nTried(int i = 0)    {return (i == 0) ? nTry : nTryM[i];}
   long   nSelected(int i = 0) {return (i == 0) ? nSel : nSelM[i];}
@@ -165,7 +165,7 @@ public:
 
   // Reset to empty map of error messages.
   void   errorReset() {messages.clear();}
-  
+
   // Print a message the first few times. Insert in database.
   void   errorMsg(string messageIn, string extraIn = " ",
     bool showAlways = false, ostream& os = cout);
@@ -448,7 +448,7 @@ private:
 
   // Set info on cross section: from ProcessLevel (reset in Pythia).
   void sigmaReset() { nTry = nSel = nAcc = 0; sigGen = sigErr = wtAccSum = 0.;
-    procNameM.clear(); nTryM.clear(); nSelM.clear(); nAccM.clear(); 
+    procNameM.clear(); nTryM.clear(); nSelM.clear(); nAccM.clear();
     sigGenM.clear(); sigErrM.clear();}
   void setSigma( int i, string procNameIn, long nTryIn, long nSelIn,
     long nAccIn, double sigGenIn, double sigErrIn, double wtAccSumIn) {
@@ -457,7 +457,7 @@ private:
     else {procNameM[i] = procNameIn; nTryM[i] = nTryIn; nSelM[i] = nSelIn;
       nAccM[i] = nAccIn; sigGenM[i] = sigGenIn; sigErrM[i] = sigErrIn;} }
   void addSigma( int i, long nTryIn, long nSelIn, long nAccIn, double sigGenIn,
-    double sigErrIn) { nTryM[i] += nTryIn; nSelM[i] += nSelIn; 
+    double sigErrIn) { nTryM[i] += nTryIn; nSelM[i] += nSelIn;
     nAccM[i] += nAccIn; sigGenM[i] += sigGenIn;
     sigErrM[i] = sqrtpos(sigErrM[i]*sigErrM[i] + sigErrIn*sigErrIn); }
 
@@ -493,7 +493,7 @@ private:
   double weightCKKWLSave, weightFIRSTSave;
 
 };
- 
+
 //==========================================================================
 
 } // end namespace Pythia8
