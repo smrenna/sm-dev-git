@@ -471,7 +471,7 @@ bool LHAup::setInitLHEF(istream& is, bool readHeaders) {
 // Read in event information from a Les Houches Event File,
 // into a staging area where it can be reused by setOldEventLHEF.
 
-bool LHAup::setNewEventLHEF(istream& is, double mRecalculate ) {
+bool LHAup::setNewEventLHEF(istream& is) {
 
   // Loop over lines until an <event tag is found first on a line.
   string line, tag;
@@ -500,18 +500,12 @@ bool LHAup::setNewEventLHEF(istream& is, double mRecalculate ) {
   // (Recall that process(...) above added empty particle at index 0.)
   int idup, istup, mothup1, mothup2, icolup1, icolup2;
   double pup1, pup2, pup3, pup4, pup5, vtimup, spinup;
-  bool doRecalculate = (mRecalculate > 0.);
   for (int ip = 1; ip <= nupSave; ++ip) {
     if (!getline(is, line)) return false;
     istringstream getall(line);
     getall >> idup >> istup >> mothup1 >> mothup2 >> icolup1 >> icolup2
       >> pup1 >> pup2 >> pup3 >> pup4 >> pup5 >> vtimup >> spinup;
     if (!getall) return false;
-    // Optionally recalculate mass from four-momentum.
-    if (doRecalculate && pup5 > mRecalculate)
-      pup5 = sqrtpos( pup4*pup4 - pup1*pup1 - pup2*pup2 - pup3*pup3);
-    // If not, recalculate energy from three-momentum and mass.
-    else pup4 = sqrt( pup1*pup1 + pup2*pup2 + pup3*pup3 + pup5*pup5);
     particlesSave.push_back( LHAParticle( idup, istup, mothup1, mothup2,
       icolup1, icolup2, pup1, pup2, pup3, pup4, pup5, vtimup, spinup, -1.) );
   }
@@ -819,7 +813,7 @@ bool LHAupLHEF::setInitLHEF( istream & isIn, bool readHead ) {
 
 // Routine for doing the job of reading and setting info on next event.
 
-bool LHAupLHEF::setNewEventLHEF(double mRecalculate ) {
+bool LHAupLHEF::setNewEventLHEF() {
 
   // Done if the reader finished preemptively.
   if(!reader.readEvent()) return false;
@@ -841,7 +835,6 @@ bool LHAupLHEF::setNewEventLHEF(double mRecalculate ) {
   // (Recall that process(...) above added empty particle at index 0.)
   int idup, istup, mothup1, mothup2, icolup1, icolup2;
   double pup1, pup2, pup3, pup4, pup5, vtimup, spinup;
-  bool doRecalculate = (mRecalculate > 0.);
   for ( int i = 0; i < reader.hepeup.NUP; ++i ) {
     // Extract information stored in reader.
     idup     = reader.hepeup.IDUP[i];
@@ -857,11 +850,6 @@ bool LHAupLHEF::setNewEventLHEF(double mRecalculate ) {
     pup5     = reader.hepeup.PUP[i][4];
     vtimup   = reader.hepeup.VTIMUP[i];
     spinup   = reader.hepeup.SPINUP[i];
-    // Optionally recalculate mass from four-momentum.
-    if (doRecalculate && pup5 > mRecalculate)
-      pup5 = Pythia8::sqrtpos( pup4*pup4 - pup1*pup1 - pup2*pup2 - pup3*pup3);
-    // If not, recalculate energy from three-momentum and mass.
-    else pup4 = sqrt( pup1*pup1 + pup2*pup2 + pup3*pup3 + pup5*pup5);
     particlesSave.push_back( Pythia8::LHAParticle( idup,istup,mothup1,mothup2,
       icolup1, icolup2, pup1, pup2, pup3, pup4, pup5, vtimup, spinup, -1.) );
   }
@@ -988,7 +976,7 @@ bool LHAupFromPYTHIA8::setInit() {
 
 // Read in event information from PYTHIA 8.
 
-bool LHAupFromPYTHIA8::setEvent( int, double ) {
+bool LHAupFromPYTHIA8::setEvent( int) {
 
   // Read process information from Info class, and store it.
   // Note: renormalization scale here, factorization further down.

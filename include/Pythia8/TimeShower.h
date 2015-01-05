@@ -200,7 +200,7 @@ private:
          doInterleave, allowBeamRecoil, dampenBeamRecoil, recoilToColoured,
          useFixedFacScale, allowRescatter, canVetoEmission, doHVshower,
          brokenHVsym, globalRecoil, useLocalRecoilNow, doSecondHard,
-         singleWeakEmission, alphaSuseCMW, vetoWeakJets;
+         singleWeakEmission, alphaSuseCMW, vetoWeakJets, allowMPIdipole;
   int    pTmaxMatch, pTdampMatch, alphaSorder, alphaSnfmax, nGluonToQuark,
          weightGluonToQuark, alphaEMorder, nGammaToQuark, nGammaToLepton,
          nCHV, idHV, nMaxGlobalRecoil, weakMode;

@@ -111,7 +111,7 @@ A multiplicative factor <ei>f</ei> such that
 non-hardest interactions (when multiparton interactions are allowed). 
 </parm> 
  
-<modepick name="TimeShower:pTdampMatch" default="0" min="0" max="2"> 
+<modepick name="TimeShower:pTdampMatch" default="0" min="0" max="4"> 
 These options only take effect when a process is allowed to radiate up 
 to the kinematical limit by the above <code>pTmaxMatch</code> choice, 
 and no matrix-element corrections are available. Then, in many processes, 
@@ -136,6 +136,16 @@ multiplicative fudge factor stored in <code>pTdampFudge</code> below.
 but dampened by a factor <ei>k^2 Q^2_ren/(pT^2 + k^2 Q^2_ren)</ei>, 
 where <ei>Q_ren</ei> is the renormalization scale and <ei>k</ei> is a 
 multiplicative fudge factor stored in <code>pTdampFudge</code> below. 
+</option> 
+<option value="3">as option 1, but in addition to the standard requirements
+for dampening it is further necessary to have ar least two top or 
+beyond-the-Standard-Model coloured particles in the final state. 
+Examples include <ei>t tbar</ei> and <ei>squark gluino</ei> production.  
+</option> 
+<option value="4">as option 2, but in addition to the standard requirements
+for dampening it is further necessary to have ar least two top or 
+beyond-the-Standard-Model coloured particles in the final state. 
+Examples include <ei>t tbar</ei> and <ei>squark gluino</ei> production. 
 </option> 
 <note>Note:</note> These options only apply to the hard interaction. 
 Specifically, a "second hard" interaction would not be affected. 
@@ -350,6 +360,31 @@ of the radiating parton and <ei>m</ei> the off-shell mass it acquires
 by the branching, <ei>m2 = pT2/(z(1-z))</ei>. Note that 
 <ei>m2 = 4 pT2_hard</ei> is the kinematical limit for a scattering 
 at 90 degrees without beam recoil. 
+</flag> 
+ 
+<p/> 
+When there is no interleaving, a number of MPIs may have been generated
+before FSR is considered. In principle there could be colour correlations 
+between the MPIs, such that a final-state colour of one MPI could be
+matched by the corresponding final-state anticolour of another MPI.
+These thereby would form a colour dipole, but one that does not come out
+from a common vertex, and therefore presumably could not radiate in full.
+Currently the standard procedure is to match colours between MPIs
+only after FSR, so MPI systems would radiate independently, with 
+recoils taken by the beam remnant, where necessary. This could change,
+however, and the following switch would then regulate the choice of 
+behaviour.
+ 
+<flag name="TimeShower:allowMPIdipole" default="off"> 
+If on, and if interleaving is off, then dipoles are allowed to be
+formed between matching final-state colour-anticolour pairs also
+between two different MPIs. Else dipoles can normally only form
+inside the same MPI, and the could-have-been dipoles between different
+MPIs instead appear as dipoles stretched to the beam remnants. 
+In either case a dipole can still form between two MPIs if a final-state 
+colour cannot be matched inside the same MPI. This should normally
+not happen, except if rescattering is allowed, whereby two or more 
+MPIs get interconnected.
 </flag> 
  
 <h3>Global recoil</h3> 

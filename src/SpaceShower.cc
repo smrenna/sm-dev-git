@@ -243,6 +243,7 @@ bool SpaceShower::limitPTmax( Event& event, double Q2Fac, double Q2Ren) {
   // Find whether to limit pT. Begin by user-set cases.
   bool dopTlimit = false;
   dopTlimit1 = dopTlimit2 = false;
+  int nHeavyCol = 0;
   if      (pTmaxMatch == 1) dopTlimit = dopTlimit1 = dopTlimit2 = true;
   else if (pTmaxMatch == 2) dopTlimit = dopTlimit1 = dopTlimit2 = false;
 
@@ -252,6 +253,7 @@ bool SpaceShower::limitPTmax( Event& event, double Q2Fac, double Q2Ren) {
     dopTlimit = dopTlimit1 = dopTlimit2 = true;
 
   // Look if any quark (u, d, s, c, b), gluon or photon in final state.
+  // Also count number of heavy coloured particles, like top. 
   else {
     int n21 = 0;
     for (int i = 5; i < event.size(); ++i) {
@@ -259,6 +261,8 @@ bool SpaceShower::limitPTmax( Event& event, double Q2Fac, double Q2Ren) {
       else if (n21 == 0) {
         int idAbs = event[i].idAbs();
         if (idAbs <= 5 || idAbs == 21 || idAbs == 22) dopTlimit1 = true;
+        if ( (event[i].col() != 0 || event[i].acol() != 0)
+          && idAbs > 5 && idAbs != 21 ) ++nHeavyCol; 
       } else if (n21 == 2) {
         int idAbs = event[i].idAbs();
         if (idAbs <= 5 || idAbs == 21 || idAbs == 22) dopTlimit2 = true;
@@ -270,9 +274,13 @@ bool SpaceShower::limitPTmax( Event& event, double Q2Fac, double Q2Ren) {
   // Dampening at factorization or renormalization scale; only for hardest.
   dopTdamp   = false;
   pT2damp    = 0.;
-  if ( !dopTlimit1 && (pTdampMatch == 1 || pTdampMatch == 2) ) {
+  if (!dopTlimit1 && (pTdampMatch == 1 || pTdampMatch == 2)) {
     dopTdamp = true;
     pT2damp  = pow2(pTdampFudge) * ((pTdampMatch == 1) ? Q2Fac : Q2Ren);
+  }
+  if (!dopTlimit1 && nHeavyCol > 1 && (pTdampMatch == 3 || pTdampMatch == 4)) {
+    dopTdamp = true;
+    pT2damp  = pow2(pTdampFudge) * ((pTdampMatch == 3) ? Q2Fac : Q2Ren);
   }
 
   // Done.

@@ -1010,6 +1010,12 @@ bool Pythia::next() {
   beamPomA.clear();
   beamPomB.clear();
 
+  // Pick current beam valence flavours (for pi0, K0S, K0L, Pomeron).
+  beamA.newValenceContent();
+  beamB.newValenceContent();
+  beamPomA.newValenceContent();
+  beamPomB.newValenceContent();
+
   // Can only generate event if initialization worked.
   if (!isInit) {
     info.errorMsg("Abort from Pythia::next: "
@@ -1539,8 +1545,8 @@ void Pythia::banner(ostream& os) {
      << "                                      |  | \n"
      << " |  |   An archive of program versions and do"
      << "cumentation is found on the web:      |  | \n"
-     << " |  |   http://www.thep.lu.se/~torbjorn/Pythi"
-     << "a.html                                |  | \n"
+     << " |  |   http://www.thep.lu.se/Pythia         "
+     << "                                      |  | \n"
      << " |  |                                        "
      << "                                      |  | \n"
      << " |  |   This program is released under the GN"

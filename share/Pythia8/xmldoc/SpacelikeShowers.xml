@@ -109,7 +109,7 @@ A multiplicative factor <ei>f</ei> such that
 non-hardest interactions (when multiparton interactions are allowed). 
 </parm> 
  
-<modepick name="SpaceShower:pTdampMatch" default="0" min="0" max="2"> 
+<modepick name="SpaceShower:pTdampMatch" default="3" min="0" max="4"> 
 These options only take effect when a process is allowed to radiate up 
 to the kinematical limit by the above <code>pTmaxMatch</code> choice, 
 and no matrix-element corrections are available. Then, in many processes, 
@@ -133,6 +133,16 @@ multiplicative fudge factor stored in <code>pTdampFudge</code> below.
 but dampened by a factor <ei>k^2 Q^2_ren/(pT^2 + k^2 Q^2_ren)</ei>, 
 where <ei>Q_ren</ei> is the renormalization scale and <ei>k</ei> is a 
 multiplicative fudge factor stored in <code>pTdampFudge</code> below. 
+</option> 
+<option value="3">as option 1, but in addition to the standard requirements
+for dampening it is further necessary to have ar least two top or 
+beyond-the-Standard-Model coloured particles in the final state. 
+Examples include <ei>t tbar</ei> and <ei>squark gluino</ei> production.  
+</option> 
+<option value="4">as option 2, but in addition to the standard requirements
+for dampening it is further necessary to have ar least two top or 
+beyond-the-Standard-Model coloured particles in the final state. 
+Examples include <ei>t tbar</ei> and <ei>squark gluino</ei> production. 
 </option> 
 <note>Note:</note> These options only apply to the hard interaction. 
 Specifically, a "second hard" interaction would not be affected. 

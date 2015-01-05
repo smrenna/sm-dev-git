@@ -125,7 +125,7 @@ public:
   // The method can find the next event by a runtime interface to another
   // program, or by reading a file, as desired.
   // The method should return false if it did not work.
-  virtual bool setEvent(int idProcIn = 0, double mRecalculate = -1.) = 0;
+  virtual bool setEvent(int idProcIn = 0) = 0;
 
   // Give back process number, weight, scale, alpha_em, alpha_s.
   int    idProcess()       const {return idProc;}
@@ -251,7 +251,7 @@ protected:
 
   // Three routines for LHEF files, but put here for flexibility.
   bool setInitLHEF(istream& is, bool readHeaders = false);
-  bool setNewEventLHEF(istream& is, double mRecalculate = -1.);
+  bool setNewEventLHEF(istream& is);
   bool setOldEventLHEF();
 
   // Helper routines to open and close a file handling GZIPSUPPORT:
@@ -367,8 +367,8 @@ public:
   bool setInitLHEF( istream & isIn, bool readHead );
 
   // Routine for doing the job of reading and setting info on next event.
-  bool setEvent(int = 0, double mRecalculate = -1.) {
-    if (!setNewEventLHEF(mRecalculate)) return false;
+  bool setEvent(int = 0) {
+    if (!setNewEventLHEF()) return false;
     return setOldEventLHEF();
   }
 
@@ -377,14 +377,14 @@ public:
     if (!setNewEventLHEF()) return false; return true;}
 
   // Routine for doing the job of reading and setting info on next event.
-  bool setNewEventLHEF(double mRecalculate = -1.);
+  bool setNewEventLHEF();
 
   // Update cross-section information at the end of the run.
   bool updateSigma();
 
 private:
 
-  Pythia8::Info*  infoPtr;
+  Info*  infoPtr;
   const char* filename;
   const char* headerfile;
 
@@ -425,7 +425,7 @@ public:
   bool setInit();
 
   // Routine for doing the job of reading and setting info on next event.
-  bool setEvent(int = 0, double = -1.);
+  bool setEvent(int = 0);
 
   // Update cross-section information at the end of the run.
   bool updateSigma();

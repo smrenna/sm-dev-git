@@ -59,8 +59,8 @@ output.
  
 <p/> Please note that a detailed tutorial on merging in Pythia is available 
 from 
-<a href="http://home.thep.lu.se/~torbjorn/pythia8/mergingworksheet8160.pdf"> 
-http://home.thep.lu.se/~torbjorn/pythia8/mergingworksheet8160.pdf</a>. 
+<a href="http://home.thep.lu.se/Pythia/pythia8/mergingworksheet8160.pdf"> 
+http://home.thep.lu.se/Pythia/pythia8/mergingworksheet8160.pdf</a>. 
  
 <p/> Three very short LHE files (<code>w+_production_lhc_0.lhe</code>, 
 <code>w+_production_lhc_1.lhe</code>, <code>w+_production_lhc_2.lhe</code>) 

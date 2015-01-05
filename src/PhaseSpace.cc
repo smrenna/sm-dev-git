@@ -163,9 +163,6 @@ void PhaseSpace::init(bool isFirst, SigmaProcess* sigmaProcessPtrIn,
   bias2SelPow      = settingsPtr->parm("PhaseSpace:bias2SelectionPow");
   bias2SelRef      = settingsPtr->parm("PhaseSpace:bias2SelectionRef");
 
-  // Possibility to recalculate mass for Les Houches input.
-  mRecalculate     = settingsPtr->parm("LesHouches:mRecalculate");
-
   // Default event-specific kinematics properties.
   x1H             = 1.;
   x2H             = 1.;
@@ -3895,7 +3892,7 @@ bool PhaseSpaceLHA::trialKin( bool, bool repeatSame ) {
   }
 
   // Generate Les Houches event. Return if fail (= end of file).
-  bool physical = lhaUpPtr->setEvent(idProcNow, mRecalculate);
+  bool physical = lhaUpPtr->setEvent(idProcNow);
   if (!physical) return false;
 
   // Find which process was generated.

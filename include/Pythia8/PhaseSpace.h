@@ -155,7 +155,7 @@ protected:
          increaseMaximum;
   int    gmZmodeGlobal;
   double mHatGlobalMin, mHatGlobalMax, pTHatGlobalMin, pTHatGlobalMax,
-         pTHatMinDiverge, minWidthBreitWigners, mRecalculate;
+         pTHatMinDiverge, minWidthBreitWigners;
 
   // Information on incoming beams.
   int    idA, idB;

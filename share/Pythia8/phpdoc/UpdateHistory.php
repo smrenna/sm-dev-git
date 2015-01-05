@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.203: 1 January 2015 
+<li>8.203: 5 January 2015 
 <ul> 
  
 <li>Fifteen new <?php $filepath = $_GET["filepath"];
@@ -80,13 +80,20 @@ renamed <code>wbj_lhef3.lhe</code>.
  
 <li>A new example <code>main30</code> how to create a tailormade 
 copy of the ordinary event record, here with a history tracing 
-of the hard process closer to the PYTHIA 6 conventions. 
-</li> 
+of the hard process closer to the PYTHIA 6 conventions.</li> 
  
 <li>Change in the setup of final-state-shower colour dipoles for the 
 non-default case of no interleaving, whereby it becomes less likely 
-to pick a colourless final-state particle as recoiler. 
+to pick a colourless final-state particle as recoiler. New option
+<code>TimeShower:allowMPIdipole</code> gives more flexibility.
 Thanks to Mihoko Nojiri and Bryan Webber.</li> 
+ 
+<li>New options 3 and 4 for <code>TimeShower:pTdampMatch</code>
+and <code>SpaceShower:pTdampMatch</code>, with new default 3 for the
+latter. The main effect is that, by default, <i>t tbar</i> 
+production (as a <i>2 &rarr; 2</i> process) obtains damped 
+radiation above the process scale. Thanks to Andy Buckley
+for suggestion.</li> 
  
 <li>Initialization will now abort if a mode has been chosen with a 
 non-allowed value. This applies to those modes that have been 
@@ -105,6 +112,19 @@ the previous option was repeated.) Thanks to Radek Ziebcik.</li>
 <li>Minor fixes in the LHEF version 3 reader. Introduce a new 
 matching writer of LHEF version 1 or 3 files.</li> 
  
+<li>Introduction of a new mode <code>LesHouches:setLeptonMass</code>,
+such that by default final-state charged leptons acquire sensible 
+masses, even when the matrix-element calculations have been 
+performed with massless leptons. This and other energy-momentum
+adjustments, e.g. for limited-precision storage, are now located in
+<code>ProcessContainer::constructProcess</code>.</li> 
+
+<li><code>http://home.thep.lu.se/Pythia</code> has been introduced 
+as a simpler but (hopefully) equivalent address to
+<code>http://home.thep.lu.se/~torbjorn/Pythia.html</code>, and 
+various documentation has been updated accordingly. Thanks to
+Leif L&ouml;nnblad.</li> 
+
 <li>Bug fix in check for colour sextets and transfer of such colour 
 information. Thanks to Alexander Belyaev and Alexander Pukhov.</li> 
  
@@ -122,9 +142,15 @@ coloured resonances are processes with early resonance decays option.</li>
 <li>Bug fix for multiple <code>Pythia::init()</code> calls, where 
 beam contents were not properly reset. Thanks to Josh Bendavid.</li> 
  
+<li>Bug fix such that the valence content of a <i>pi^0</i>,
+<i>K^0_S</i>, <i>K^0_L</i> and Pomeron is reselected for each
+new event. Thanks to Radek Ziebcik.</li>
+ 
 <li>Fix typo in constants of the <i>tau &rarr; 3 pi</i> current 
 for the amplitudes of the <i>rho</i>, <i>rho(1450)</i>, and 
 <i>f2</i>. Thanks to Ian Nugent.</li> 
+ 
+<li>Small bug fix in the global-recoil option for timelike showers.</li> 
  
 <li>Update year to 2015, remove tabs and superfluous blanks, break long 
 lines where meaningful, and some further minor changes.</li> 

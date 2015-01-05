@@ -139,9 +139,14 @@ bool ProcessContainer::init(bool isFirst, Info* infoPtrIn,
     phaseSpacePtr->setSigmaMax(sigmaMx);
   }
 
-  // Allow Pythia to overwrite incoming beams or Les Houches lifetime input.
+  // Allow Pythia to overwrite incoming beams or parts of Les Houches input.
   idRenameBeams = settings.mode("LesHouches:idRenameBeams");
   setLifetime   = settings.mode("LesHouches:setLifetime");
+  setLeptonMass = settings.mode("LesHouches:setLeptonMass");
+  mRecalculate  = settings.parm("LesHouches:mRecalculate");
+  idLep[0] = 11; mLep[0] = particleDataPtr->m0(11);
+  idLep[1] = 13; mLep[1] = particleDataPtr->m0(13);
+  idLep[2] = 15; mLep[2] = particleDataPtr->m0(15);
 
   // Done.
   return physical;
@@ -458,6 +463,7 @@ bool ProcessContainer::constructProcess( Event& process, bool isHardest) {
       int id = lhaUpPtr->id(iOld);
       if (i == 1 && abs(id) == idRenameBeams) id = 16;
       if (i == 2 && abs(id) == idRenameBeams) id = -16;
+      int idAbs = abs(id);
 
       // Translate from LHA status codes.
       int lhaStatus =  lhaUpPtr->status(iOld);
@@ -504,12 +510,18 @@ bool ProcessContainer::constructProcess( Event& process, bool isHardest) {
       int col2   = (colType == -1 || colType == 2 || abs(colType) == 3)
                  ?  lhaUpPtr->col2(iOld) : 0;
 
-      // Momentum trivial.
+      // Copy momentum, ensure lepton masses and consistent (E, p m) set.
       double px  = lhaUpPtr->px(iOld);
       double py  = lhaUpPtr->py(iOld);
       double pz  = lhaUpPtr->pz(iOld);
       double e   = lhaUpPtr->e(iOld);
       double m   = lhaUpPtr->m(iOld);
+      for (int idL = 0; idL < 3; ++idL) 
+        if (idAbs == idLep[idL] && setLeptonMass > 0 && (setLeptonMass == 2
+          || m < 0.9 * mLep[idL] || m > 1.1 * mLep[idL])) m = mLep[idL]; 
+      if (mRecalculate > 0. && m > mRecalculate)
+        m = sqrtpos( e*e - px*px - py*py - pz*pz);   
+      else e = sqrt( m*m + px*px + py*py + pz*pz); 
 
       // Polarization.
       double pol = lhaUpPtr->spin(iOld);
@@ -528,7 +540,7 @@ bool ProcessContainer::constructProcess( Event& process, bool isHardest) {
 
       // Check if need to store lifetime.
       double tau = lhaUpPtr->tau(iOld);
-      if ( (setLifetime == 1 && abs(id) == 15) || setLifetime == 2)
+      if ( (setLifetime == 1 && idAbs == 15) || setLifetime == 2)
          tau = process[iNow].tau0() * rndmPtr->exp();
       if (tau > 0.) process[iNow].tau(tau);
     }

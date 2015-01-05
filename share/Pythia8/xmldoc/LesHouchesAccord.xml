@@ -500,7 +500,9 @@ the decay chain has already been set, however (e.g. <ei>H &rarr; WW/ZZ</ei>
 or <ei>t &rarr; b W</ei>), then decay is still isotropic. 
  
 <p/> 
-There are two settings available for event input. 
+There are four settings available for event input. They take effect when 
+the LHA event record is translated to the PYTHIA <code>process</code>
+event record. 
  
 <modeopen name="LesHouches:idRenameBeams" default="1000022" min="0"> 
 PYTHIA only implements a certain number of incoming beam particles. 
@@ -535,22 +537,40 @@ correctly.
 </option> 
 </modepick> 
  
-<p/> 
-There is also one parameter that can be used to modify the setting 
-of event information, if implemented in the derived class. It is 
-prompted by an unforeseen choice made in some programs (like CalcHEP) 
-of storing the nominal mass of a particle species rather than the 
-mass of the current member of that species. This is likely to 
-induce energy-momentum nonconservation when the event is further 
-processed. 
- 
+<modepick name="LesHouches:setLeptonMass" default="1" min="0" max="2"> 
+setting of mass for final-state charged leptons. The reason here is that 
+some matrix-element generators assume leptons to be massless, so as to 
+simplify calculations. This is particularly common for the <ei>e</ei> and
+<ei>mu</ei> leptons, but sometimes also the <ei>tau</ei> lepton is
+afflicted. Incoming leptons are not affected by this procedure. 
+<option value="0"> all lepton masses are taken from the Les Houches input. 
+</option> 
+<option value="1"> if the input lepton mass deviates by more than 10% 
+from the PYTHIA (data table) mass then its mass is reset according to the 
+PYTHIA value, and the energy is recalculated from this mass and the 
+three-momentum. This should catch weird masses, while allowing sensible  
+variations.
+</option> 
+<option value="2"> each lepton mass is reset according to the PYTHIA value, 
+and the energy is recalculated from this mass and the three-momentum. 
+</option> 
+<note>Warning:</note> the change of masses and the resultant change of 
+energies can result in energy-momentum non-conservation warnings and, 
+in extreme cases, also to aborts. One possibility then is to change the 
+<aloc href="ErrorChecks">tolerance</aloc> to such errors.
+</modepick> 
+
 <parm name="LesHouches:mRecalculate" default="-1."> 
 Does not have any effect by default, or more generally when it is negative. 
 If it is positive then all particles with an input mass above this 
 value will have the mass recalculated and reset from the four-momentum, 
-<ei>m^2 = E^2 - p^2</ei>. Obviously such a step is problematic 
-numerically for light particles, so it should only be used for the 
-programs and particles where it is needed. Thus the value ought to be 
+<ei>m^2 = E^2 - p^2</ei>. This step is prompted by an unforeseen choice 
+made in some programs (like CalcHEP) of storing the nominal mass of a 
+particle species rather than the mass of the current member of that 
+species, a choice that is likely to induce energy-momentum nonconservation 
+when the event is further processed. Obviously such a recalculation is 
+problematic numerically for light particles, so it should only be used for 
+the programs and particles where it is needed. Thus the value ought to be 
 at least 10 GeV, so that only massive particles like <ei>W^+-</ei>, 
 <ei>Z^0</ei> and <ei>t</ei> are affected. If a particle does not have 
 its mass recalculated, currently instead the energy is recalculated 

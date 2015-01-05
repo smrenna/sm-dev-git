@@ -302,7 +302,7 @@ void Info::setLHEF3EventInfo( map<string, string> *eventAttributesIn,
 // Retrieve events tag information.
 
 string Info::getEventAttribute(string key, bool doRemoveWhitespace) {
-  if (!eventAttributes) {cout << "aaaa" << endl; return "";}
+  if (!eventAttributes) return "";
   if ( eventAttributes->find(key) != eventAttributes->end() ) {
     string res = (*eventAttributes)[key];
     if (doRemoveWhitespace)
