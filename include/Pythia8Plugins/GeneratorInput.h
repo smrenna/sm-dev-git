@@ -96,7 +96,7 @@ public:
 
   // Override setInit/setEvent routines from LHAup.
   bool setInit();
-  bool setEvent(int, double);
+  bool setEvent(int);
 
   // Print list of particles; mainly intended for debugging
   void printParticles();
@@ -549,7 +549,7 @@ inline bool LHAupAlpgen::setInit() {
 // setEvent is a virtual method that must be finalised here.
 // Read in an event from the 'unw' file and setup.
 
-inline bool LHAupAlpgen::setEvent(int, double) {
+inline bool LHAupAlpgen::setEvent(int) {
 
   // Read in the first line of the event
   int    nEvent, iProc, nParton;

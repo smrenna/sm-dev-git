@@ -66,15 +66,15 @@ to be dependent on the hard scale of the central process and on the mass
 of the whole subsystem defined by the two initiators: 
 <eq> 
 sigma = (sigma_soft * Q_half + sigma_hard * Q) / (Q_half + Q) 
-  * m / (m_half + m) 
+  * m / (m + m_half * y_damp) 
 </eq> 
 Here <ei>Q</ei> is the hard-process renormalization scale for the 
 hardest process and the <ei>pT</ei> scale for subsequent multiparton 
 interactions, <ei>m</ei> the mass of the system, and 
-<ei>sigma_soft</ei>, <ei>sigma_hard</ei>, <ei>Q_half</ei> and 
-<ei>m_half</ei> parameters defined below. Furthermore each separately 
-defined beam remnant has a distribution of width <ei>sigma_remn</ei>, 
-independently of kinematical variables. 
+<ei>sigma_soft</ei>, <ei>sigma_hard</ei>, <ei>Q_half</ei>, 
+<ei>m_half</ei> and <ei>y_damp</ei> parameters defined below. 
+Furthermore each separately defined beam remnant has a distribution 
+of width <ei>sigma_remn</ei>, independently of kinematical variables. 
  
 <flag name="BeamRemnants:primordialKT" default="on"> 
 Allow or not selection of primordial <ei>kT</ei> according to the 
@@ -102,6 +102,17 @@ half-way point between low-mass and high-mass subsystems.
 (Kinematics construction can easily fail if a system is assigned 
 a primordial <ei>kT</ei> value higher than its mass, so the 
 mass-dampening is intended to reduce some troubles later on.) 
+</parm> 
+ 
+<parm name="BeamRemnants:reducedKTatHighY" default="0.5" min="0." max="1."> 
+For a system of mass <ei>m</ei> and energy <ei>E</ei> the
+dampening factor <ei>y_damp</ei> above is defined as
+<ei>y_damp = pow( E/m, r_red)</ei>, where <ei>r_red</ei> is the
+current parameter. The effect is to reduce the primordial <ei>kT</ei>
+of low-mass systems extra much if they are at large rapidities (recall 
+that <ei>E/m = cosh(y)</ei> before <ei>kT</ei> is added). The reason 
+for this dampening is purely technical, and for reasonable values 
+should not have dramatic consequences overall.
 </parm> 
  
 <parm name="BeamRemnants:primordialKTremnant" default="0.4" min="0."> 

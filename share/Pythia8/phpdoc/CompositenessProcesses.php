@@ -54,6 +54,21 @@ when the contact interaction contributions are close to zero, e.g.
 <code>HardQCD:qq2qq</code> and <code>HardQCD:qqbar2qqbarNew</code> in 
 the case of quark scattering. 
  
+<p/> 
+It should also be noted that the <i>gamma*/Z/Z'</i> production process
+available with <i>NewGaugeBoson:ffbar2gmZZprime</i> is prepared for
+pair-production of excited quarks and leptons, assuming the same gauge 
+couplings as for the non-excited fermions. What is missing is the 
+actual decay channels in the list of <i>Z'</i> decay modes, which
+have to be added by hand, e.g. by
+<br/>32:addChannel = 1 1. 100 4000001 -4000001
+<br/>You can use <i>Zprime:gmZmode</i> to decide which gauge boson 
+propagators actually are included in the simulation, and thus e.g. 
+switch off the <i>Z'</i> part of the propagator. You may also want to
+switch off other decay channels and set the minimal mass to be at the 
+threshold for the studied pair production (or suitably below it, 
+if the excited fermions have a non-negligible width).
+ 
 <h3>Excited fermions, production processes</h3> 
  
 A few different production processes have been implemented, which normally 

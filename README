@@ -263,7 +263,37 @@ PYTHIA8DATA=`pythia8-config --xmldoc` ./myprog
 
    FOR WINDOWS USERS
 
-Unforunately PYTHIA 8 is not currently supported for Windows platforms.
+PYTHIA 8 is primarily intended to be run in a Unix-based environment,
+such as Linux or Mac OS X. Unfortunately it is not currently supported
+for Windows platforms. If you want to experiment, and do not have the
+knowledge to set everything up from scratch yourself, we are aware of
+three possible approaches to take.
+
+1) Install Linux in a Virtual Machine (VM) on your Windows system,
+and then work within this virtual environment as on any regular
+Linux platform. You could e.g. download the VirtualBox
+    https://www.virtualbox.org/
+and install either Ubuntu or CernVM (Scientific Linux)
+    http://cernvm.cern.ch/
+on it. Make sure your installation includes the g++ compiler.
+
+2) Install the Cygwin package, intended to allow Linux apps to run
+under Windows, see
+    https://www.cygwin.com/
+Be sure to install the Dev tools, which appears in the list of options
+to include, but won't be installed by default. Then put the Pythia
+folder in the Cygwin/home directory, and compile and work with it
+as usual. (The include/Pythia8Plugins/execinfo.h file provides dummy
+versions of methods needed for proper compilation.)
+
+3) The nuget.org website
+    http://www.nuget.org/packages/Pythia8/
+contains pre-built PYTHIA packages ready to be used under Windows
+Visual Studio.
+
+We take no responsibility for either of these solutions. 
+Also note that linking with other libraries may involve further 
+problems, in particular for the dynamic loading of LHAPDF. 
 
 ----------------------------------------------------------------------
 

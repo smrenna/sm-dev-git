@@ -287,7 +287,7 @@ const double StringFragmentation::CLOSEDM2FRAC  = 0.1;
 const double StringFragmentation::EXPMAX        = 50.;
 
 // Matching criterion that p+ and p- not the same (can happen in gg loop).
-const double StringFragmentation::MATCHPOSNEG   = 1e-6;
+const double StringFragmentation::MATCHPOSNEG   = 1e-4;
 
 // For pull on junction, do not trace too far down each leg.
 const double StringFragmentation::EJNWEIGHTMAX  = 10.;
@@ -797,6 +797,18 @@ StringRegion StringFragmentation::finalRegion() {
     Vec4 delta
       = system.regionLowPos(posEnd.iPosOld + 1).pHad( 1., 0., 0., 0.)
       - system.regionLowNeg(negEnd.iNegOld + 1).pHad( 0., 1., 0., 0.);
+    // If reshuffle did not help then pick random axis to break tie.
+    // (Needed for low-mass q-g-qbar with q-qbar perfectly parallel.)
+    if ( abs(delta.px()) + abs(delta.py()) + abs(delta.pz()) + abs(delta.e())
+      < MATCHPOSNEG * (pPosJoin.e() + pNegJoin.e()) ) {
+      double cthe = 2. * rndmPtr->flat() - 1.;
+      double sthe = sqrtpos(1. - cthe * cthe);
+      double phi  = 2. * M_PI * rndmPtr->flat();
+      delta = 0.5 * min( pPosJoin.e(), pNegJoin.e()) 
+        * Vec4( sthe * sin(phi), sthe * cos(phi), cthe, 0.);
+      infoPtr->errorMsg("Warning in StringFragmentation::finalRegion: "
+        "random axis needed to break tie");
+    }  
     pPosJoin -= delta;
     pNegJoin += delta;
   }

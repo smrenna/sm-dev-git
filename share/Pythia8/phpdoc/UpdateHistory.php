@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.203: 5 January 2015 
+<li>8.203: 11 January 2015 
 <ul> 
  
 <li>Fifteen new <?php $filepath = $_GET["filepath"];
@@ -61,7 +61,9 @@ processes, describing the pair production of excited leptons or
 neutrinos. Three-body contact-interaction decay modes of these 
 excited states have been introduced. A bug has been fixed that 
 gave the wrong helicity in decays for excited quarks, leptons and 
-neutrinos. Based on code provided by Olga Igonkina.</li> 
+neutrinos. Further, the <i>gamma^*/Z^0/Z'^0</i> can decay to a pair
+of excited fermions provided that the channels are added to the 
+list of allowed ones. Based on code provided by Olga Igonkina.</li> 
  
 <li>A new interface to the EvtGen decay package, primarily intended 
 for bottom and charm decays, has been implemented. It is available 
@@ -125,6 +127,13 @@ as a simpler but (hopefully) equivalent address to
 various documentation has been updated accordingly. Thanks to
 Leif L&ouml;nnblad.</li> 
 
+<li>New file <code>include/Pythia8Plugins/execinfo.h</code> contains
+trivial copies of three backtrace methods needed to be able to compile
+PYTHIA under Cygwin. The <code>README</code> file and the worksheet
+updated with brief information on three (non-supported) ways of working 
+with PYTHIA under Windows. Thanks to and Theo Hughes and Gordon Watts.
+</li> 
+
 <li>Bug fix in check for colour sextets and transfer of such colour 
 information. Thanks to Alexander Belyaev and Alexander Pukhov.</li> 
  
@@ -149,6 +158,15 @@ new event. Thanks to Radek Ziebcik.</li>
 <li>Fix typo in constants of the <i>tau &rarr; 3 pi</i> current 
 for the amplitudes of the <i>rho</i>, <i>rho(1450)</i>, and 
 <i>f2</i>. Thanks to Ian Nugent.</li> 
+ 
+<li>Small bug fixes for string and ministring fragmentation, for the 
+case when a low-mass (order 2 GeV) system contains at least three
+partons, which fail to define a unique direction for the final
+string region.</li> 
+ 
+<li>New parameter <code>BeamRemnants:reducedKTatHighY</code> introduced
+to reduce technical problems with low-mass MPIs produced at high
+rapidities when primordial <i>kT</i> is introduced.</li> 
  
 <li>Small bug fix in the global-recoil option for timelike showers.</li> 
  

@@ -78,7 +78,7 @@ public:
   }
 
   // Routine for doing the job of setting info on next event.
-  bool setEvent(int idProcIn = 0, double = -1.) {
+  bool setEvent(int idProcIn = 0) {
     // In some strategies the type of the next event has been set.
     hepeup_.idprup = idProcIn;
     // Call the routine that does the job.

@@ -55,9 +55,10 @@ bool BeamRemnants::init( Info* infoPtrIn, Settings& settings, Rndm* rndmPtrIn,
   primordialKTremnant = settings.parm("BeamRemnants:primordialKTremnant");
   halfScaleForKT      = settings.parm("BeamRemnants:halfScaleForKT");
   halfMassForKT       = settings.parm("BeamRemnants:halfMassForKT");
+  reducedKTatHighY    = settings.parm("BeamRemnants:reducedKTatHighY");
 
   // Handling of rescattering kinematics uncertainties from primodial kT.
-  allowRescatter    = settings.flag("MultipartonInteractions:allowRescatter");
+  allowRescatter      = settings.flag("MultipartonInteractions:allowRescatter");
   doRescatterRestoreY = settings.flag("BeamRemnants:rescatterRestoreY");
 
   // Choice of beam remnant and colour reconnection scenarios.
@@ -364,7 +365,9 @@ bool BeamRemnants::setKinematics( Event& event) {
     // (for hardest interaction pT -> renormalization scale so also 2 -> 1).
     if (doPrimordialKT) {
       double mHat     = sqrt(sHatNow);
-      mHatDamp        = mHat / (mHat + halfMassForKT);
+      double yDamp    = pow( (event[iInA].e() + event[iInB].e()) / mHat, 
+                        reducedKTatHighY );
+      mHatDamp        = mHat / (mHat + halfMassForKT * yDamp);
       double scale    = (iSys == 0) ? infoPtr->QRen(iDS)
                       : partonSystemsPtr->getPTHat(iSys);
       kTwidthNow      = ( (halfScaleForKT * primordialKTsoft

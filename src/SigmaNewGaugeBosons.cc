@@ -227,9 +227,13 @@ void Sigma1ffbar2gmZZprime::sigmaKin() {
     if (onMode != 1 && onMode != 2) continue;
     idAbs = abs( particlePtr->channel(i).product(0) );
 
-    // Contributions from three/four fermion generations.
+    // Contributions from three/four fermion generations,
+    // and optionally also from excited fermions.
     if ( (idAbs >  0 && idAbs <= maxZpGen)
-      || (idAbs > 10 && idAbs <= maxZpGen+10) ) {
+      || (idAbs > 10 && idAbs <= maxZpGen+10) 
+      || (idAbs > 4000000 && idAbs <= 4000006) 
+      || (idAbs > 4000010 && idAbs <= 4000016) ) {
+      int idAbs4 = (idAbs < 4000000) ? idAbs : idAbs - 4000000;
       mf = particleDataPtr->m0(idAbs);
 
       // Check that above threshold.
@@ -238,11 +242,11 @@ void Sigma1ffbar2gmZZprime::sigmaKin() {
         ps        = sqrtpos(1. - 4. * mr);
 
         // Couplings of gamma^*/Z^0/Z'^0  to final flavour
-        ef        = couplingsPtr->ef(idAbs);
-        af        = couplingsPtr->af(idAbs);
-        vf        = couplingsPtr->vf(idAbs);
-        apf       = afZp[idAbs];
-        vpf       = vfZp[idAbs];
+        ef        = couplingsPtr->ef(idAbs4);
+        af        = couplingsPtr->af(idAbs4);
+        vf        = couplingsPtr->vf(idAbs4);
+        apf       = afZp[idAbs4];
+        vpf       = vfZp[idAbs4];
 
         // Combine couplings with kinematical factors.
         kinFacA   = pow3(ps);
@@ -254,11 +258,10 @@ void Sigma1ffbar2gmZZprime::sigmaKin() {
         vafvapf   = vf * vpf * kinFacV + af * apf * kinFacA;
         vapf2     = vpf * vpf * kinFacV + apf * apf * kinFacA;
 
-        // Colour factor. Additionally secondary width for top.
-        colf      = (idAbs < 9) ? colQ : 1.;
-        if (idAbs > 5 && idAbs < 9)
-          colf *= particleDataPtr->resOpenFrac(idAbs, -idAbs);
-        if (idAbs > 17 && idAbs < 19)
+        // Colour factor. Additionally secondary width for heavy particles.
+        colf      = (idAbs4 < 9) ? colQ : 1.;
+        if ( (idAbs > 5 && idAbs < 9) || (idAbs > 17 && idAbs < 19) 
+          || idAbs > 4000000)
           colf *= particleDataPtr->resOpenFrac(idAbs, -idAbs);
 
         // Store sum of combinations.
@@ -368,8 +371,8 @@ double Sigma1ffbar2gmZZprime::weightDecay( Event& process, int iResBeg,
   int idOutAbs = process[6].idAbs();
 
   // Angular weight for outgoing fermion pair.
-  if (iResBeg == 5 && iResEnd == 5 &&
-    (idOutAbs <= maxZpGen || ( idOutAbs > 10 && idOutAbs <= maxZpGen+10)) ) {
+  if (iResBeg == 5 && iResEnd == 5 && (idOutAbs <= maxZpGen 
+    || (idOutAbs > 10 && idOutAbs <= maxZpGen+10) || idOutAbs > 4000000) ) {
 
     // Couplings for in- and out-flavours.
     double ei  = couplingsPtr->ef(idInAbs);
@@ -377,11 +380,12 @@ double Sigma1ffbar2gmZZprime::weightDecay( Event& process, int iResBeg,
     double ai  = couplingsPtr->af(idInAbs);
     double vpi = vfZp[idInAbs];
     double api = afZp[idInAbs];
-    double ef  = couplingsPtr->ef(idOutAbs);
-    double vf  = couplingsPtr->vf(idOutAbs);
-    double af  = couplingsPtr->af(idOutAbs);
-    double vpf = vfZp[idOutAbs];
-    double apf = afZp[idOutAbs];
+    int idOutAbs4 = (idOutAbs < 4000000) ? idOutAbs : idOutAbs - 4000000;
+    double ef  = couplingsPtr->ef(idOutAbs4);
+    double vf  = couplingsPtr->vf(idOutAbs4);
+    double af  = couplingsPtr->af(idOutAbs4);
+    double vpf = vfZp[idOutAbs4];
+    double apf = afZp[idOutAbs4];
 
     // Phase space factors. (One power of beta left out in formulae.)
     double mr1 = pow2(process[6].m()) / sH;
@@ -488,6 +492,7 @@ double Sigma1ffbar2gmZZprime::weightDecay( Event& process, int iResBeg,
   else if (process[process[iResBeg].mother1()].idAbs() == 6)
     return weightTopDecay( process, iResBeg, iResEnd);
 
+  // Angular weight for fourth generation or excited fermions not implemented.
 
   // Done.
   return (wt / wtMax);
