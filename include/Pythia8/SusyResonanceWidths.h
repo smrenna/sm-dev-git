@@ -10,105 +10,12 @@
 #ifndef Pythia8_SusyResonanceWidths_H
 #define Pythia8_SusyResonanceWidths_H
 
+#include "Pythia8/ParticleData.h"
 #include "Pythia8/ResonanceWidths.h"
+#include "Pythia8/SusyWidthFunctions.h"
 #include "Pythia8/SusyCouplings.h"
 
 namespace Pythia8 {
-
-class ParticleData;
-
-//==========================================================================
-
-class WidthFunction {
-
-public:
-
-  // Constructor and destructor.
-  WidthFunction() { };
-  virtual ~WidthFunction() { };
-
-  void init( ParticleData* particleDataPtrIn, CoupSUSY* coupSUSYPtrIn);
-
-  virtual void setInternal(int idResIn, int id1In, int id2In, int id3In,
-    int idIntIn, int) {setInternal2(idResIn, id1In, id2In, id3In, idIntIn);}
-
-  virtual double function(double m12);
-  virtual double function(double m12, double m23);
-
-protected:
-
-  void setInternal2(int idResIn, int id1In, int id2In, int id3In, int idIntIn);
-
-  ParticleData* particleDataPtr;
-  CoupSUSY* coupSUSYPtr;
-  int id1,id2,id3;
-
-  // Variables for 3-body decays
-  double mRes, mInt, gammaInt, m1,m2,m3;
-  int idRes, idInt,iSq,iQ,iX;
-  bool isSqDown;
-
-};
-
-//==========================================================================
-
-class Psi: public WidthFunction {
-
-public:
-
-  // Destructor.
-  virtual ~Psi() { };
-
-  virtual void setInternal(int idResIn, int id1In, int id2In, int id3In,
-    int idIntIn, int);
-  virtual double function(double m12);
-
-};
-
-//==========================================================================
-
-class Upsilon: public WidthFunction {
-
-public:
-
-  // Destructor.
-  virtual ~Upsilon() { };
-
-  virtual void setInternal(int idResIn, int id1In, int id2In, int id3In,
-    int idIntIn, int idInt2);
-  virtual double function(double m12);
-
-protected:
-
-  int iSq2, idInt2;
-  double mInt2, gammaInt2;
-
-};
-
-//==========================================================================
-
-class Phi: public WidthFunction {
-
-public:
-
-  // Destructor.
-  virtual ~Phi() { };
-
-  virtual void setInternal(int idResIn, int id1In, int id2In, int id3In,
-    int idIntIn, int idInt2);
-  virtual double function(double m12sqIn);
-
-protected:
-
-  int iSq2, idInt2;
-  double mInt2, gammaInt2, m12sq;
-
-private:
-
-  double function2(double m23sq);
-  double integrateGauss(double m23min, double m23max, double tol);
-
-};
 
 //==========================================================================
 
@@ -118,22 +25,17 @@ public:
 
   SUSYResonanceWidths() {}
 
-  // Return particle type
-  int typeNeut(int idPDG);
-  int typeChar(int idPDG);
-
 protected:
 
   // Virtual methods to handle model-specific (non-SM) part of initialization
   virtual bool initBSM();
   virtual bool allowCalc();
+  virtual bool getChannels(int) { return false; }; 
 
-  // Gaussian integrator
   double integrateGauss( WidthFunction* widthFn, double, double, double);
 
   // SUSY couplings
   CoupSUSY* coupSUSYPtr;
-
   static const bool DBSUSY;
 
 };
@@ -149,6 +51,7 @@ public:
   // Constructor.
   ResonanceSquark(int idResIn) {initBasic(idResIn);}
 
+
 private:
 
   // Locally stored properties and couplings.
@@ -159,8 +62,11 @@ private:
   // Calculate various common prefactors for the current mass.
   virtual void calcPreFac(bool = false);
 
+  bool getChannels(int idPDG);
+
   // Caclulate width for currently considered channel.
   virtual void calcWidth(bool calledFromInit = false);
+
 
   double s2W;
 
@@ -178,6 +84,8 @@ public:
   ResonanceGluino(int idResIn) {initBasic(idResIn);}
 
 private:
+
+  bool getChannels(int idPDG);
 
   // Locally stored properties and couplings.
 
@@ -205,6 +113,7 @@ public:
 
 private:
 
+  bool getChannels(int idPDG);
   // Locally stored properties and couplings.
   double kinFac2;
 
@@ -220,9 +129,9 @@ private:
   double s2W;
 
   // Functions for 3-body decays
-  Psi psi;
-  Phi phi;
-  Upsilon upsil;
+  /* Psi psi; */
+  /* Phi phi; */
+  /* Upsilon upsil; */
 
 };
 
@@ -239,6 +148,8 @@ public:
 
 private:
 
+  bool getChannels(int idPDG);
+
   // Locally stored properties and couplings.
   double kinFac2;
 
@@ -254,9 +165,9 @@ private:
   double s2W;
 
   //Functions for 3-body decays
-  Psi psi;
-  Phi phi;
-  Upsilon upsil;
+  /* Psi psi; */
+  /* Phi phi; */
+  /* Upsilon upsil; */
 
 };
 
@@ -273,6 +184,8 @@ public:
 
 private:
 
+  bool getChannels(int idPDG);
+
   // Locally stored properties and couplings.
 
   // Initialize constants.
@@ -285,6 +198,9 @@ private:
   virtual void calcWidth(bool calledFromInit = false);
 
   double s2W;
+
+  // Three-body stau decaywidth classes
+  StauWidths stauWidths;
 
 };
 

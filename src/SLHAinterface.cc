@@ -138,6 +138,36 @@ bool SLHAinterface::initSLHA(Settings& settings,
     slha.printSpectrum(ifailSpc);
   }
 
+  // SLHA1 : SLHA2 compatibility
+  // Check whether scalar particle masses are ordered
+  bool isOrderedQ = true;
+  bool isOrderedL = true;
+  int idSdown[6]={1000001,1000003,1000005,2000001,2000003,2000005};
+  int idSup[6]={1000002,1000004,1000006,2000002,2000004,2000006};
+  int idSlep[6]={1000011,1000013,1000015,2000011,2000013,2000015};
+  for (int j=0;j<=4;j++) {
+    if (slha.mass(idSlep[j+1]) < slha.mass(idSlep[j]))
+      isOrderedL  = false;
+    if (slha.mass(idSup[j+1]) < slha.mass(idSup[j]))
+      isOrderedQ  = false;
+    if (slha.mass(idSdown[j+1]) < slha.mass(idSdown[j]))
+      isOrderedQ  = false;
+  }
+
+  // If ordered, change sparticle labels to mass-ordered enumeration
+  for (int i=1;i<=6;i++) {
+    ostringstream indx;
+    indx << i;
+    string uName = "~u_"+indx.str();
+    string dName = "~d_"+indx.str();
+    string lName = "~e_"+indx.str();
+    if (isOrderedQ) {
+      particleDataPtr->names(idSup[i],uName,uName+"bar");
+      particleDataPtr->names(idSdown[i],dName,dName+"bar");
+    }
+    if (isOrderedL) particleDataPtr->names(idSlep[i],lName+"-",lName+"+");
+  }
+
   // NMSSM spectrum (modify existing Higgs names and add particles)
   if ( (ifailSpc == 1 || ifailSpc == 0) &&  slha.modsel(3) >= 1 ) {
     // Modify Higgs names
@@ -155,29 +185,37 @@ bool SLHAinterface::initSLHA(Settings& settings,
     if ( (slha.modsel(6) == 1 || slha.modsel(6) >= 3)
          && slha.usqmix.exists() && slha.dsqmix.exists() ) {
       // Modify squark names
-      particleDataPtr->names(1000001,"~d1","~d1bar");
-      particleDataPtr->names(1000002,"~u1","~u1bar");
-      particleDataPtr->names(1000003,"~d2","~d2bar");
-      particleDataPtr->names(1000004,"~u2","~u2bar");
-      particleDataPtr->names(1000005,"~d3","~d3bar");
-      particleDataPtr->names(1000006,"~u3","~u3bar");
-      particleDataPtr->names(2000001,"~d4","~d4bar");
-      particleDataPtr->names(2000002,"~u4","~u4bar");
-      particleDataPtr->names(2000003,"~d5","~d5bar");
-      particleDataPtr->names(2000004,"~u5","~u5bar");
-      particleDataPtr->names(2000005,"~d6","~d6bar");
-      particleDataPtr->names(2000006,"~u6","~u6bar");
+      particleDataPtr->names(1000001,"~d_1","~d_1bar");
+      particleDataPtr->names(1000002,"~u_1","~u_1bar");
+      particleDataPtr->names(1000003,"~d_2","~d_2bar");
+      particleDataPtr->names(1000004,"~u_2","~u_2bar");
+      particleDataPtr->names(1000005,"~d_3","~d_3bar");
+      particleDataPtr->names(1000006,"~u_3","~u_3bar");
+      particleDataPtr->names(2000001,"~d_4","~d_4bar");
+      particleDataPtr->names(2000002,"~u_4","~u_4bar");
+      particleDataPtr->names(2000003,"~d_5","~d_5bar");
+      particleDataPtr->names(2000004,"~u_5","~u_5bar");
+      particleDataPtr->names(2000005,"~d_6","~d_6bar");
+      particleDataPtr->names(2000006,"~u_6","~u_6bar");
     }
     // Slepton flavour violation
     if ( (slha.modsel(6) == 2 || slha.modsel(6) >= 3)
          && slha.selmix.exists()) {
       // Modify slepton names
-      particleDataPtr->names(1000011,"~e1-","~e1+");
-      particleDataPtr->names(1000013,"~e2-","~e2+");
-      particleDataPtr->names(1000015,"~e3-","~e3+");
-      particleDataPtr->names(2000011,"~e4-","~e4+");
-      particleDataPtr->names(2000013,"~e5-","~e5+");
-      particleDataPtr->names(2000015,"~e6-","~e6+");
+      particleDataPtr->names(1000011,"~e_1-","~e_1+");
+      particleDataPtr->names(1000013,"~e_2-","~e_2+");
+      particleDataPtr->names(1000015,"~e_3-","~e_3+");
+      particleDataPtr->names(2000011,"~e_4-","~e_4+");
+      particleDataPtr->names(2000013,"~e_5-","~e_5+");
+      particleDataPtr->names(2000015,"~e_6-","~e_6+");
+    }
+    // Neutrino flavour violation
+    if ( (slha.modsel(6) == 2 || slha.modsel(6) >= 3)
+         && slha.upmns.exists()) {
+      // Modify neutrino names (note that SM processes may not use UPMNS)
+      particleDataPtr->names(12,"nu_1","nu_1bar");
+      particleDataPtr->names(14,"nu_2","nu_2bar");
+      particleDataPtr->names(16,"nu_3","nu_3bar");
     }
     // Sneutrino flavour violation
     if ( (slha.modsel(6) == 2 || slha.modsel(6) >= 3)
@@ -204,36 +242,38 @@ bool SLHAinterface::initSLHA(Settings& settings,
   if ( (ifailSpc == 1 || ifailSpc == 0) &&  slha.modsel(4) >= 1 ) {
     if ( slha.rvnmix.exists() ) {
       // Neutralinos -> neutrinos
+      // Maintain R-conserving names since mass-ordering unlikely to change.
       particleDataPtr->names(12,"nu_1","nu_1bar");
       particleDataPtr->names(14,"nu_2","nu_2bar");
       particleDataPtr->names(16,"nu_3","nu_3bar");
-      particleDataPtr->names(1000022,"nu_4","nu_4bar");
-      particleDataPtr->names(1000023,"nu_5","nu_5bar");
-      particleDataPtr->names(1000025,"nu_6","nu_6bar");
-      particleDataPtr->names(1000035,"nu_7","nu_7bar");
+      particleDataPtr->name(1000022,"~chi_10");
+      particleDataPtr->name(1000023,"~chi_20");
+      particleDataPtr->name(1000025,"~chi_30");
+      particleDataPtr->name(1000035,"~chi_40");
     }
     if ( slha.rvumix.exists() && slha.rvvmix.exists() ) {
       // Charginos -> charged leptons (note sign convention)
-      particleDataPtr->names(11,"e_1-","e_1+");
-      particleDataPtr->names(13,"e_2-","e_2+");
-      particleDataPtr->names(15,"e_3-","e_3+");
-      particleDataPtr->names(1000024,"e_4+","e_4-");
-      particleDataPtr->names(1000037,"e_5+","e_5-");
+      // Maintain R-conserving names since mass-ordering unlikely to change.
+      particleDataPtr->names(11,"e-","e+");
+      particleDataPtr->names(13,"mu-","mu+");
+      particleDataPtr->names(15,"tau-","tau+");
+      particleDataPtr->names(1000024,"~chi_1+","~chi_1-");
+      particleDataPtr->names(1000037,"~chi_2+","~chi_2-");
     }
     if ( slha.rvhmix.exists() ) {
-      // Sneutrinos -> higgses
-      particleDataPtr->name(25,"H_1");
-      particleDataPtr->name(35,"H_2");
-      particleDataPtr->name(1000012,"H_3");
-      particleDataPtr->name(1000014,"H_4");
-      particleDataPtr->name(1000016,"H_5");
+      // Sneutrinos -> higgses (general mass-ordered names)
+      particleDataPtr->name(25,"H_10");
+      particleDataPtr->name(35,"H_20");
+      particleDataPtr->names(1000012,"H_30","H_30");
+      particleDataPtr->names(1000014,"H_40","H_40");
+      particleDataPtr->names(1000016,"H_50","H_50");
     }
     if ( slha.rvamix.exists() ) {
-      // Sneutrinos -> higgses
-      particleDataPtr->name(36,"A_1");
-      particleDataPtr->name(1000017,"A_2");
-      particleDataPtr->name(1000018,"A_3");
-      particleDataPtr->name(1000019,"A_4");
+      // Sneutrinos -> higgses (general mass-ordered names)
+      particleDataPtr->name(36,"A_10");
+      particleDataPtr->names(1000017,"A_20","A_20");
+      particleDataPtr->names(1000018,"A_30","A_30");
+      particleDataPtr->names(1000019,"A_40","A_40");
     }
     if ( slha.rvlmix.exists() ) {
       // sleptons -> charged higgses (note sign convention)
@@ -250,10 +290,11 @@ bool SLHAinterface::initSLHA(Settings& settings,
   // SLHA2 spectrum with CPV
   if ( (ifailSpc == 1 || ifailSpc == 0) &&  slha.modsel(5) >= 1 ) {
     // no scalar/pseudoscalar distinction
-    particleDataPtr->name(25,"H_1");
-    particleDataPtr->name(35,"H_2");
-    particleDataPtr->name(36,"H_3");
+    particleDataPtr->name(25,"H_10");
+    particleDataPtr->name(35,"H_20");
+    particleDataPtr->name(36,"H_30");
   }
+
 
   // Import qnumbers
   vector<int> isQnumbers;

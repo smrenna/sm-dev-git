@@ -2271,7 +2271,7 @@ void Sigma1qq2antisquark::initProc(){
 
   //Construct name of the process from lambda'' couplings
 
-  nameSave = "q q' -> " + coupSUSYPtr->getName(idRes)+"* + c.c";
+  nameSave = "q q' -> " + particleDataPtr->name(-idRes)+" + c.c";
   codeSave = 2000 + 10*abs(idRes)/1000000 + abs(idRes)%10;
 }
 
@@ -2715,7 +2715,7 @@ void Sigma2qqbar2sleptonantislepton::initProc() {
   //Typecast to the correct couplings
   coupSUSYPtr = (CoupSUSY*) couplingsPtr;
 
-  // Is this a ~u_i ~d*_j, ~d_i ~u*_j final state or ~d_i ~d*_j, ~u_i ~u*_j
+  // Is this a ~e_i ~nu*_j, ~nu_i ~e*_j final state or ~e_i ~e*_j, ~nu_i ~nu*_j
   if (abs(id3Sav) % 2 == abs(id4Sav) % 2) isUD = false;
   else isUD = true;
 

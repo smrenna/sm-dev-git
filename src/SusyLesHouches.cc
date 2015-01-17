@@ -686,7 +686,7 @@ void SusyLesHouches::printHeader() {
   if (! headerPrinted) {
     cout << " *-----------------------  SusyLesHouches SUSY/BSM"
          << " Interface  ------------------------*\n";
-    message(0,"","Last Change 31 Jul 2014 - S. Mrenna",0);
+    message(0,"","Last Change 14 Jan 2015 - P. Skands",0);
     if (!filePrinted && slhaFile != "" && slhaFile != " ") {
       message(0,"","Parsing: "+slhaFile,0);
       filePrinted=true;

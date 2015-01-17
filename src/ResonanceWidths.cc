@@ -126,8 +126,10 @@ bool ResonanceWidths::init(Info* infoPtrIn, Settings* settingsPtrIn,
 
     // Warn if not relevant meMode.
     if ( meMode < 0 || meMode > 103 || (isGeneric && meMode < 100) ) {
+      stringstream ssIdRes;
+      ssIdRes << "for " << idRes;
       infoPtr->errorMsg("Error in ResonanceWidths::init:"
-        " resonance meMode not acceptable");
+        " resonance meMode not acceptable", ssIdRes.str());
     }
 
     // Channels with meMode < 100 must be implemented in derived classes.

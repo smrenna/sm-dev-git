@@ -1881,6 +1881,9 @@ bool SetupContainers::init(vector<ProcessContainer*>& containerPtrs,
               // Update process number counter
               iproc++;
               if (iso == jso && id1 != id2) iproc++;
+              // Exclude RH neutrinos from allowed final states
+              if (abs(id1) >= 2000012 && id1 % 2 == 0) continue; 
+              if (abs(id2) >= 2000012 && id2 % 2 == 0) continue; 
               // Skip if outgoing codes not asked for
               if (!allowIdVals( id1, id2)) continue;
               if (iso == jso && id1 != id2) {

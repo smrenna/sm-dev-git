@@ -82,14 +82,15 @@ bool DecayChannel::contains(int id1, int id2, int id3) const {
 // A particle is invisible if it has neither strong nor electric charge,
 // and is not made up of constituents that have it. Only relevant for
 // long-lived particles. This list may need to be extended.
-const int ParticleDataEntry::INVISIBLENUMBER = 50;
-const int ParticleDataEntry::INVISIBLETABLE[50] = { 12, 14, 16, 18, 23, 25,
-  32, 33, 35, 36, 39, 41,    1000012, 1000014, 1000016, 1000018, 1000022,
-  1000023, 1000025, 1000035, 1000045, 1000039, 2000012, 2000014, 2000016,
-  2000018, 4900012, 4900014, 4900016, 4900021, 4900022, 4900101, 4900102,
-  4900103, 4900104, 4900105, 4900106, 4900107, 4900108, 4900111, 4900113,
-  4900211, 4900213, 4900991, 5000039, 5100039, 9900012, 9900014, 9900016,
-  9900023 };
+const int ParticleDataEntry::INVISIBLENUMBER = 52;
+const int ParticleDataEntry::INVISIBLETABLE[52] = {
+       12,      14,      16,      18,      23,      25,      32,      33,
+       35,      36,      39,      41,      45,      46, 1000012, 1000014,
+  1000016, 1000018, 1000022, 1000023, 1000025, 1000035, 1000045, 1000039,
+  2000012, 2000014, 2000016, 2000018, 4900012, 4900014, 4900016, 4900021,
+  4900022, 4900101, 4900102, 4900103, 4900104, 4900105, 4900106, 4900107,
+  4900108, 4900111, 4900113, 4900211, 4900213, 4900991, 5000039, 5100039,
+  9900012, 9900014, 9900016, 9900023 };
 
 // For some particles we know it is necessary to switch off width,
 // although they do have one, so do not warn.
@@ -607,6 +608,10 @@ void ParticleData::initWidths( vector<ResonanceWidths*> resonancePtrs) {
     setResonancePtr( 36, resonancePtr);
     resonancePtr = new ResonanceHchg(37);
     setResonancePtr( 37, resonancePtr);
+    resonancePtr = new ResonanceH(4, 45);
+    setResonancePtr( 45, resonancePtr);
+    resonancePtr = new ResonanceH(5, 46);
+    setResonancePtr( 46, resonancePtr);
   }
 
   // A fourth generation: b', t', tau', nu'_tau.

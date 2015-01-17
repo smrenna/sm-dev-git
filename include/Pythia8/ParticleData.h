@@ -286,7 +286,7 @@ public:
 private:
 
   // Constants: could only be changed in the code itself.
-  static const int    INVISIBLENUMBER, INVISIBLETABLE[50], KNOWNNOWIDTH[3];
+  static const int    INVISIBLENUMBER, INVISIBLETABLE[52], KNOWNNOWIDTH[3];
   static const double MAXTAU0FORDECAY,MINMASSRESONANCE, NARROWMASS,
                       CONSTITUENTMASSTABLE[10];
 

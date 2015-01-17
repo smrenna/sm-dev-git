@@ -288,9 +288,18 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
     }
   }
 
-  LHmatrixBlock<6> Rsl(slhaPtr->selmix);
-  LHmatrixBlock<3> Rsv(slhaPtr->snumix);
+  for(int i = 1; i < 7; i++)
+    for(int j = 1; j < 7; j++){
+      Rsl[i][j] = slhaPtr->selmix(i,j);
+    }
 
+
+  for(int i = 1; i < 7; i++)
+    for(int j = 1; j < 7; j++){
+      if (i < 4 && j < 4) Rsv[i][j] = slhaPtr->snumix(i,j);
+      else Rsv[i][j] = 0.0;
+    }
+  
   // In RPV, the slepton mixing matrices include Higgs bosons
   // Here we just extract the entries corresponding to the slepton PDG codes
   // I.e., slepton-Higgs mixing is not supported.
@@ -299,7 +308,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
   if (slhaPtr->modsel(4) >= 1 && slhaPtr->rvlmix.exists()) {
     for (int i=1; i<=6; ++i)
       for (int j=1; j<=6; ++j)
-        Rsl.set(i,j,slhaPtr->rvlmix(i+1,j+2));
+        Rsl[i][j] = slhaPtr->rvlmix(i+1,j+2);
     // Check for Higgs-slepton mixing in RVLMIX
     bool hasCrossTerms = false;
     for (int i=2; i<=7; ++i)
@@ -310,14 +319,14 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
         }
     if (hasCrossTerms)
       infoPtr->errorMsg("Warning from CoupSUSY::initSUSY: "
-                        "slepton-Higgs mixing not supported in PYTHIA");
+                        "slepton-Higgs mixing not supported internally in PYTHIA");
   }
 
   // Neutral sleptons
   if (slhaPtr->modsel(4) >= 1 && slhaPtr->rvhmix.exists()) {
     for (int i=1; i<=3; ++i)
       for (int j=1; j<=3; ++j)
-        Rsv.set(i,j,slhaPtr->rvhmix(i+2,j+2));
+        Rsv[i][j] = slhaPtr->rvhmix(i+2,j+2);
     // Check for Higgs-sneutrino mixing in RVHMIX
     bool hasCrossTerms = false;
     for (int i=3; i<=7; ++i)
@@ -328,21 +337,21 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
         }
     if (hasCrossTerms)
       infoPtr->errorMsg("Warning from CoupSUSY::initSUSY: "
-                        "sneutrino-Higgs mixing not supported in PYTHIA");
+                        "sneutrino-Higgs mixing not supported internally in PYTHIA");
   }
 
   if(DBSUSY){
     cout<<"Rsl"<<endl;
     for(int i=1;i<=6;i++){
       for(int j=1;j<=6;j++){
-        cout << scientific << setw(10) << Rsl(i,j)<<"  ";
+        cout << scientific << setw(10) << Rsl[i][j]<<"  ";
       }
       cout<<endl;
     }
     cout<<"Rsv"<<endl;
     for(int i=1;i<=6;i++){
       for(int j=1;j<=6;j++){
-        cout << scientific << setw(10) << Rsv(i,j)<<"  ";
+        cout << scientific << setw(10) << Rsv[i][j]<<"  ";
       }
       cout<<endl;
     }
@@ -372,15 +381,15 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
       RslslZ[i][j] = 0.0;
 
       for (int k=1;k<=3;k++) {
-        LslslZ[i][j] += LllZ[1] * Rsl(i,k) * Rsl(j,k);
-        RslslZ[i][j] += RllZ[1] * Rsl(i,k+3) * Rsl(j,k+3);
+        LslslZ[i][j] += LllZ[1] * Rsl[i][k] * Rsl[j][k];
+        RslslZ[i][j] += RllZ[1] * Rsl[i][k+3] * Rsl[j][k+3];
       }
 
       // ~v[i] ~v[j] Z
       LsvsvZ[i][j] = 0.0;
       RsvsvZ[i][j] = 0.0;
       for (int k=1;k<=3;k++)
-        LsvsvZ[i][j] += LllZ[2] * Rsv(i,k)*Rsv(j,k);
+        LsvsvZ[i][j] += LllZ[2] * Rsv[i][k]*Rsv[j][k];
     }
   }
 
@@ -499,7 +508,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
 
       if(l<=3) // Only left-handed sneutrinos
         for(int i=1;i<=3;i++)
-          LslsvW[k][l] += sqrt(2.0) * cosW * Rsl(k,i) * Rsv(l,i);
+          LslsvW[k][l] += sqrt(2.0) * cosW * Rsl[k][i] * Rsv[l][i];
 
 
       // tmp: verbose output
@@ -525,7 +534,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
         }
     if (hasCrossTerms)
       infoPtr->errorMsg("Warning from CoupSUSY::initSUSY: "
-                        "Neutrino-Neutralino mixing not supported in PYTHIA");
+                        "Neutrino-Neutralino mixing not supported internally in PYTHIA");
   }
 
   // Construct ~chi0 couplings (allow for 5 neutralinos in NMSSM)
@@ -739,10 +748,10 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
 
         // ~l[j] l[k] ~chi0[i]
         // Changed according to new notation
-        LsllX[j][k][i] = ((el-T3l)*sinW*ni1 + T3l*cosW*ni2)*Rsl(j,k)
-          + ml*cosW*ni3/2.0/mW/cosb*Rsl(j,k+3);
-        RsllX[j][k][i] = -el*sinW*conj(ni1)*Rsl(j,k+3)
-          + ml*cosW*conj(ni3)/2.0/mW/cosb*Rsl(j,k);
+        LsllX[j][k][i] = ((el-T3l)*sinW*ni1 + T3l*cosW*ni2)*Rsl[j][k]
+          + ml*cosW*ni3/2.0/mW/cosb*Rsl[j][k+3];
+        RsllX[j][k][i] = -el*sinW*conj(ni1)*Rsl[j][k+3]
+          + ml*cosW*conj(ni3)/2.0/mW/cosb*Rsl[j][k];
 
         if(j<3 && j==k){
           // No sneutrino mixing; only left handed
@@ -783,7 +792,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
         }
     if (hasCrossTerms)
       infoPtr->errorMsg("Warning from CoupSUSY::initSUSY: "
-                        "Lepton-Chargino mixing not supported in PYTHIA");
+                        "Lepton-Chargino mixing not supported internally in PYTHIA");
   }
 
   // Construct ~chi+ couplings
@@ -960,39 +969,6 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
           }
         }
       }
-    }
-  }
-
-  // SLHA2 compatibility
-  // Check whether scalar particle masses are ordered
-  bool orderedQ = true;
-  bool orderedL = true;
-  for (int j=1;j<=5;j++) {
-    if (particleDataPtr->m0(idSlep(j+1)) < particleDataPtr->m0(idSlep(j)))
-      orderedL  = false;
-    if (particleDataPtr->m0(idSup(j+1)) < particleDataPtr->m0(idSup(j)))
-      orderedQ  = false;
-    if (particleDataPtr->m0(idSdown(j+1)) <particleDataPtr->m0(idSdown(j)))
-      orderedQ  = false;
-  }
-
-  // If ordered, change sparticle labels to mass-ordered enumeration
-  for (int i=1;i<=6;i++) {
-    ostringstream indx;
-    indx << i;
-    string uName = "~u_"+indx.str();
-    string dName = "~d_"+indx.str();
-    string lName = "~e_"+indx.str();
-    ParticleDataEntry* pdePtr;
-    if (orderedQ) {
-      pdePtr = particleDataPtr->particleDataEntryPtr(idSup(i));
-      pdePtr->setNames(uName,uName+"bar");
-      pdePtr = particleDataPtr->particleDataEntryPtr(idSdown(i));
-      pdePtr->setNames(dName,dName+"bar");
-    }
-    if (orderedL) {
-      pdePtr = particleDataPtr->particleDataEntryPtr(idSlep(i));
-      pdePtr->setNames(lName,lName+"bar");
     }
   }
 
@@ -1187,101 +1163,7 @@ int CoupSUSY::idSlep(int iSlep) {
 
 //--------------------------------------------------------------------------
 
-// Return a particle name, given the PDG code.
-
-string CoupSUSY::getName(int pdgCode) {
-
-  // Absolute value and corresponding SM code
-  int codeA = abs(pdgCode);
-  int idSM  = codeA % 1000000;
-
-  // Name
-  string name;
-
-  // Flag to indicate whether SLHA1 or SLHA2
-  bool slha1 = false;
-
-  // SM particles
-  if (codeA == idSM) {
-    // Neutrinos
-    if (!slhaPtr->upmns.exists()) slha1=true;
-    if (codeA == 12) name = (slha1) ? "nu_e" : "nu_1";
-    if (codeA == 14) name = (slha1) ? "nu_mu" : "nu_2";
-    if (codeA == 16) name = (slha1) ? "nu_tau" : "nu_3";
-  }
-
-  // Squarks
-  else if ( idSM <= 6) {
-    // up squarks
-    if (idSM % 2 == 0) {
-      // If SLHA1, return old PDG names
-      if (slhaPtr->stopmix.exists()) slha1 = true;
-      if (codeA == 1000002) name = (slha1) ? "~u_L" : "~u_1";
-      if (codeA == 1000004) name = (slha1) ? "~c_L" : "~u_2";
-      if (codeA == 1000006) name = (slha1) ? "~t_1" : "~u_3";
-      if (codeA == 2000002) name = (slha1) ? "~u_R" : "~u_4";
-      if (codeA == 2000004) name = (slha1) ? "~c_R" : "~u_5";
-      if (codeA == 2000006) name = (slha1) ? "~t_2" : "~u_6";
-    }
-    // down squarks
-    else {
-      // If SLHA1, return old PDG names
-      if (slhaPtr->sbotmix.exists()) slha1 = true;
-      if (codeA == 1000001) name = (slha1) ? "~d_L" : "~d_1";
-      if (codeA == 1000003) name = (slha1) ? "~s_L" : "~d_2";
-      if (codeA == 1000005) name = (slha1) ? "~b_1" : "~d_3";
-      if (codeA == 2000001) name = (slha1) ? "~d_R" : "~d_4";
-      if (codeA == 2000003) name = (slha1) ? "~s_R" : "~d_5";
-      if (codeA == 2000005) name = (slha1) ? "~b_2" : "~d_6";
-    }
-    if (pdgCode < 0) name += "bar";
-  }
-
-  // Sleptons
-  else if ( idSM <= 19 ) {
-
-    // Sneutrinos
-   if (idSM % 2 == 0) {
-      // If SLHA1, return old PDG names
-      if (slhaPtr->staumix.exists()) slha1 = true;
-      if (codeA == 1000012) name = (slha1) ? "~nu_eL" : "~nu_1";
-      if (codeA == 1000014) name = (slha1) ? "~nu_muL" : "~nu_2";
-      if (codeA == 1000016) name = (slha1) ? "~nu_tauL" : "~nu_3";
-      if (codeA == 2000012) name = (slha1) ? "~nu_eR" : "~nu_4";
-      if (codeA == 2000014) name = (slha1) ? "~nu_muR" : "~nu_5";
-      if (codeA == 2000016) name = (slha1) ? "~nu_tauR" : "~nu_6";
-      if (pdgCode < 0) name += "bar";
-    }
-    // charged sleptons
-    else {
-      // If SLHA1, return old PDG names
-      if (slhaPtr->staumix.exists()) slha1 = true;
-      if (codeA == 1000011) name = (slha1) ? "~e_L" : "~e_1";
-      if (codeA == 1000013) name = (slha1) ? "~mu_L" : "~e_2";
-      if (codeA == 1000015) name = (slha1) ? "~tau_1" : "~e_3";
-      if (codeA == 2000011) name = (slha1) ? "~e_R" : "~e_4";
-      if (codeA == 2000013) name = (slha1) ? "~mu_R" : "~e_5";
-      if (codeA == 2000015) name = (slha1) ? "~tau_2" : "~e_6";
-      if (pdgCode < 0) name += "-";
-      else name += "+";
-    }
-  }
-
-  else if (codeA == 1000021) name = "~g";
-  else if (codeA == 1000022) name = "~chi_10";
-  else if (codeA == 1000023) name = "~chi_20";
-  else if (codeA == 1000024) name = (pdgCode > 0) ? "~chi_1+" : "~chi_1-";
-  else if (codeA == 1000025) name = "~chi_30";
-  else if (codeA == 1000035) name = "~chi_40";
-  else if (codeA == 1000037) name = (pdgCode > 0) ? "~chi_2+" : "~chi_2-";
-
-  return name;
-
-}
-
-//--------------------------------------------------------------------------
-
-// Return neutralino code; zero if not a neutralino
+// Return neutralino code; zero if not a (recognized) neutralino
 
 int CoupSUSY::typeNeut(int idPDG) {
   int type = 0;

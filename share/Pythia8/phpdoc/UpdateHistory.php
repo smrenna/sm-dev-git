@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.203: 11 January 2015 
+<li>8.203: 17 January 2015 
 <ul> 
  
 <li>Fifteen new <?php $filepath = $_GET["filepath"];
@@ -54,7 +54,7 @@ separately.</li>
  
 <li>Default settings values have been updated to agree with the 
 Monash 2013 tune. Thus typically the list of changed settings is 
-significantly reduced. Thanks to Mikhail Kirsanov.</li> 
+significantly reduced. Thanks to Mikhail Kirsanov for suggestion.</li> 
  
 <li>The compositeness section has been expanded with six further 
 processes, describing the pair production of excited leptons or 
@@ -105,6 +105,28 @@ where maximal and minimal values have been specified. The former
 label is used to represent a discrete set of options, and so any 
 value outside the allowed range is just plain wrong. Thanks to James 
 Monk for suggestion.</li> 
+
+<li>Added <code>getChannels()</code> in <code>SusyResonanceWidths</code> 
+to dynamically create the decay table for SUSY particles and thereby
+to remove duplication in the XML file.</li> 
+
+<li>New file <code>SusyWidthfunctions</code>. Added new class 
+<code>WidthFunction</code> to handle calculation of three- and four-body 
+decay widths.</li>  
+
+<li>In <code>main24.cc</code> the example spectrum file format has been 
+updated from SLHA1 to SLHA2, obtained from SoftSusy 3.5.1. The two new
+<code>slha1-example.spc</code> and <code>slha2-example.spc</code> files
+replace the older <code>cmssm.spc</code>, <code>snowmass2.spc</code> 
+and <code>softsusy.spc</code> ones. </li> 
+
+<li>In <code>LesHouches.cc</code> the read-in of LHEF headers 
+containing tags that open and close on the same line (e.g., a single 
+line containing <code>&lt;tag&gt;blabla&lt;/tag&gt;</code>) has been 
+enabled. This could previously lead to improper initialization and 
+crashes. Also implemented a check for forgotten close-tag statements, 
+with a warning issued to the user. Thanks to Alexander Belyaev and 
+Alexander Pukhov.</li> 
  
 <li>Bug fix in the conversion from the <code>xml</code> settings files 
 to their <code>php</code> radio-button equivalents, whereby the text 

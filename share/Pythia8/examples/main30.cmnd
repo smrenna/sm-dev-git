@@ -25,7 +25,7 @@ Beams:eCM = 8000.                 ! CM energy of collision
 
 ! 4) Settings for the hard-process generation.
 
- SLHA:file = cmssm.spc              ! Sample SLHA1 spectrum for CMSSM-10.1.1
+ SLHA:file = slha1-example.spc      ! Sample SLHA1 spectrum
  SUSY:all = on                      ! Switches on ALL (~400) SUSY processes
 
 

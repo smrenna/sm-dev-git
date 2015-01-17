@@ -543,7 +543,7 @@ void Sigma2qqbar2lStarlStarBar::initProc() {
 
   // Locally stored properties and couplings.
   Lambda        = settingsPtr->parm("ExcitedFermion:Lambda");
-  preFac        = (M_PI / pow4(Lambda)) * (openFracPos + openFracNeg) / 12.;
+  preFac        = (M_PI / pow4(Lambda)) * openFracPos * openFracNeg / 12.;
 
 }
 
@@ -554,7 +554,7 @@ void Sigma2qqbar2lStarlStarBar::initProc() {
 void Sigma2qqbar2lStarlStarBar::sigmaKin() {
 
   // Only one possible expression.
-  sigma = preFac * (1. + (pow2(sH - s3 - s4) - 4. * s3 * s4) / (3. * sH));
+  sigma = preFac * 2. * (tH2 + uH2 + sH * (s3 + s4) - 2. * s3 * s4) / sH2;
 
 }
 
