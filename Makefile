@@ -119,6 +119,7 @@ clean:
 	rm -f $(LOCAL_SHARE)/examples/test[0-9][0-9][0-9]
 	rm -f $(LOCAL_SHARE)/examples/out[0-9][0-9][0-9]
 	rm -f $(LOCAL_SHARE)/examples/weakbosons.lhe 
+	rm -f $(LOCAL_SHARE)/examples/Pythia8.promc 
 	rm -f $(LOCAL_SHARE)/examples/hist.root
 
 # Clean all temporary and generated files.

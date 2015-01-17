@@ -67,6 +67,27 @@ else
 	@echo "Error: $@ requires HEPMC2"
 endif
 
+# PROMC
+main46: $$@.cc $(PREFIX_LIB)/libpythia8.a
+ifeq ($(PROMC_USE),true)
+  ifdef PROMC
+	$(CXX) $^ -o $@ $(PROMC_INCLUDE) $(CXX_COMMON) -Wno-long-long -L$(PROMC_LIB)
+  else
+	@echo "Error: $@ requires PROMC installed and/or PROMC variable should be set"
+  endif
+endif
+
+# EVTGEN (and HEPMC2).
+main48: $$@.cc $(PREFIX_LIB)/libpythia8.so
+ifeq ($(EVTGEN_USE)$(HEPMC2_USE),truetrue)
+	$(CXX) $< -o $@ -I$(EVTGEN_INCLUDE) $(CXX_COMMON)\
+	 -D EVTGEN_PYTHIA -D EVTGEN_EXTERNAL -Wl,-rpath $(HEPMC2_LIB)\
+	 -L$(PREFIX_LIB) -Wl,-rpath $(PREFIX_LIB) -lpythia8\
+	 -L$(EVTGEN_LIB) -Wl,-rpath $(EVTGEN_LIB) -lEvtGenExternal -lEvtGen
+else
+	@echo "Error: $@ requires EVTGEN and HEPMC2"
+endif
+
 # FASTJET3.
 main71 main72: $$@.cc $(PREFIX_LIB)/libpythia8.a
 ifeq ($(FASTJET3_USE),true)
@@ -84,17 +105,6 @@ ifeq ($(FASTJET3_USE)$(HEPMC2_USE),truetrue)
 	 -L$(FASTJET3_LIB) -Wl,-rpath $(FASTJET3_LIB) -lfastjet
 else
 	@echo "Error: $@ requires FASTJET3 and HEPMC2"
-endif
-
-# EVTGEN (and HEPMC2).
-main48: $$@.cc $(PREFIX_LIB)/libpythia8.so
-ifeq ($(EVTGEN_USE)$(HEPMC2_USE),truetrue)
-	$(CXX) $< -o $@ -I$(EVTGEN_INCLUDE) $(CXX_COMMON)\
-	 -D EVTGEN_PYTHIA -D EVTGEN_EXTERNAL -Wl,-rpath $(HEPMC2_LIB)\
-	 -L$(PREFIX_LIB) -Wl,-rpath $(PREFIX_LIB) -lpythia8\
-	 -L$(EVTGEN_LIB) -Wl,-rpath $(EVTGEN_LIB) -lEvtGenExternal -lEvtGen
-else
-	@echo "Error: $@ requires EVTGEN and HEPMC2"
 endif
 
 # ROOT (turn off all warnings for readability).
@@ -125,7 +135,8 @@ test% : test%.cc $(PREFIX_LIB)/libpythia8.a
 
 # Clean.
 clean:
-	@rm -f main[0-9][0-9]; rm -f out[0-9][0-9]; rm -f weakbosons.lhe;\
-	rm -f mymain[0-9][0-9]; rm -f myout[0-9][0-9]; rm -f hist.root;\
+	@rm -f main[0-9][0-9]; rm -f out[0-9][0-9];\
+	rm -f mymain[0-9][0-9]; rm -f myout[0-9][0-9];\
 	rm -f test[0-9][0-9][0-9]; rm -f out[0-9][0-9][0-9];\
+	rm -f weakbosons.lhe; rm -f Pythia8.promc; rm -f hist.root;\
 	rm -f *~; rm -f \#*; rm -f core*; rm -f *Dct.*
