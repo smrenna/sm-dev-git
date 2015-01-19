@@ -114,7 +114,7 @@ int main() {
   header.set_lengthunit( (int)kL );
 
    // Store a map with PDG information (stored in the header).
-  //readPDG( &header );
+  readPDG( &header );
   epbook->setHeader(header); // write header
  
   // Begin event loop. Generate event. Skip if error. 

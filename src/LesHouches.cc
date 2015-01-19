@@ -1012,7 +1012,6 @@ bool LHAupLHEF::setNewEventLHEF() {
 
   // Set production scales from <scales> tag.
   if ( setScalesFromLHEF && reader.version > 1 ){
-    if(&reader.hepeup.scales)
     for ( map<string,double>::const_iterator
       it  = reader.hepeup.scales.attributes.begin();
       it != reader.hepeup.scales.attributes.end(); ++it ) {

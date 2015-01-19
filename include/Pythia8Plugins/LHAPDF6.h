@@ -93,7 +93,7 @@ void LHAPDF6::init(string setName, int member, Info *info) {
              LHAPDF6Interface::initializedSets.end()) {
     pdf = ::LHAPDF::mkPDF(id);
     if (!pdf) {
-      info->errorMsg("Error in LHAPDF6::init: could not initilaize PDF "
+      info->errorMsg("Error in LHAPDF6::init: could not initialize PDF "
                      + setName);
       return;
     } else LHAPDF6Interface::initializedSets[id] =
