@@ -39,6 +39,8 @@ double WidthFunction::function(double) {
 
 //--------------------------------------------------------------------------
 
+// Adapted from the CERNLIB DGAUSS routine by K.S. Kolbig.
+
 double WidthFunction::integrateGauss(double xlo, double xhi, double tol) {
 
   // 8-point unweighted.

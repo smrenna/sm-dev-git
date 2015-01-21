@@ -22,7 +22,7 @@ namespace Pythia8 {
 //--------------------------------------------------------------------------
 
 // The current Pythia (sub)version number, to agree with XML version.
-const double Pythia::VERSIONNUMBERCODE = 8.203;
+const double Pythia::VERSIONNUMBERCODE = 8.204;
 
 //--------------------------------------------------------------------------
 
@@ -86,15 +86,21 @@ Pythia::Pythia(string xmlDir, bool printBanner) {
   spacePtr        = 0;
 
   // Find path to data files, i.e. xmldoc directory location.
-  // Environment variable takes precedence, else use constructor input.
-  xmlPath     = "";
+  // Environment variable takes precedence, then constructor input,
+  // and finally the pre-processor constant XMLDIR.
+  xmlPath = "";
   const char* PYTHIA8DATA = "PYTHIA8DATA";
   char* envPath = getenv(PYTHIA8DATA);
   if (envPath != 0 && *envPath != '\0') {
     int i = 0;
     while (*(envPath+i) != '\0') xmlPath += *(envPath+(i++));
+  } else {
+    if (xmlDir[ xmlDir.length() - 1 ] != '/') xmlDir += "/";
+    xmlPath = xmlDir;
+    ifstream xmlFile((xmlPath + "Index.xml").c_str());
+    if (!xmlFile.good()) xmlPath = XMLDIR;
+    xmlFile.close();
   }
-  else xmlPath = xmlDir;
   if (xmlPath[ xmlPath.length() - 1 ] != '/') xmlPath += "/";
 
   // Read in files with all flags, modes, parms and words.

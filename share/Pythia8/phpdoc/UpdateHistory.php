@@ -39,8 +39,16 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.203: 19 January 2015 
+<li>8.204: 21 January 2015 
 <ul> 
+ 
+<li>The <code>examples</code> directory has been moved back from
+the <code>share/Pythia8/</code> subdirectory to the main directory,
+as was the case in PYTHIA 8.1, to make it more visible to newcomers.
+The optional <code>make install</code> step will create a copy of 
+<code>examples</code> in <code>share/Pythia8/</code>. The rarely
+used <code>examples/outref</code> subdirectory is moved to 
+<code>share/Pythia8/outref</code>.</li> 
  
 <li>Fifteen new <?php $filepath = $_GET["filepath"];
 echo "<a href='Tunes.php?filepath=".$filepath."' target='page'>";?>tunes</a> have been added, 
@@ -83,6 +91,12 @@ renamed <code>wbj_lhef3.lhe</code>.
 <li>A new example <code>main30</code> how to create a tailormade 
 copy of the ordinary event record, here with a history tracing 
 of the hard process closer to the PYTHIA 6 conventions.</li> 
+ 
+<li>The <?php $filepath = $_GET["filepath"];
+echo "<a href='ProMCFiles.php?filepath=".$filepath."' target='page'>";?>ProMC</a> input-output file format
+is now implemented among the libraries that can be 
+<code>configure</code>d to run with PYTHIA. An examples is provided
+in <code>main46.cc</code>. Thanks to Sergei Chekanov.</li> 
  
 <li>Change in the setup of final-state-shower colour dipoles for the 
 non-default case of no interleaving, whereby it becomes less likely 

@@ -53,12 +53,13 @@ Optional external packages.
   hepmc3   : Export PYTHIA events to the HEPMC format, version 3.
   lhapdf5  : Support the use of external PDF sets via LHAPDF, version 5.
   lhapdf6  : Support the use of external PDF sets via LHAPDF, version 6.
+  promc    : Export PYTHIA events to the PROMC format.
   root     : Use ROOT trees and histograms with PYTHIA.
   boost    : Needed when either GZIP or LHAPDF6 is enabled.
   gzip     : Enable reading of GZIPPED files using BOOST and the libz library.
 
 Installation directories.
---prefix=DIR           : Directory to install PYTHIA [/usr].
+--prefix=DIR           : Directory to install PYTHIA [$PWD].
 --prefix-COMPONENT=DIR : Set the installation directory for each PYTHIA 
                          COMPONENT from the following list.
   bin     : Binaries, including the configuration script [PREFIX/bin].
@@ -81,8 +82,8 @@ BLOCKTEXT
 OPTIONS="-h --h -help --help --enable-debug --enable-64bit"
 OPTIONS+=" --enable-shared --lcg"
 OPTIONS+=" --prefix --prefix-bin --prefix-lib --prefix-include --prefix-share"
-for PKG in "evtgen" "fastjet3" "hepmc2" "hepmc3" "lhapdf5" "lhapdf6" "root"\
-    "boost" "gzip"; do
+for PKG in "evtgen" "fastjet3" "hepmc2" "hepmc3" "lhapdf5" "lhapdf6" "promc"\
+    "root" "boost" "gzip"; do
     OPTIONS+=" --with-$PKG --with-$PKG-bin --with-$PKG-lib --with-$PKG-include"
     OPTIONS+=" --with-$PKG-version"; done
 OPTIONS+=" --arch --cxx --cxx-common --cxx-shared --cxx-soname --lib-suffix"
@@ -217,7 +218,7 @@ if [ -z "$LIB_SUFFIX" ]; then
     if [ "$ARCH" = "DARWIN" ]; then LIB_SUFFIX=".dylib"; fi; fi
 
 # Configure the installation directories (order matters).
-if [ "$PREFIX_SET" != true ]; then PREFIX=/usr; fi
+if [ "$PREFIX_SET" != true ]; then PREFIX=$PWD; fi
 if [ -z "$PREFIX_BIN" ];      then PREFIX_BIN=$PREFIX/bin; fi
 if [ -z "$PREFIX_INCLUDE" ];  then PREFIX_INCLUDE=$PREFIX/include; fi
 if [ -z "$PREFIX_LIB" ];      then PREFIX_LIB=$PREFIX/lib; fi
@@ -237,6 +238,8 @@ configure_package "LHAPDF5" "/afs/cern.ch/sw/lcg/releases/MCGenerators/lhapdf"\
     "bin" "include" "lib" "" "LHAPDF/LHAPDF.h" "LHAPDF" ""
 configure_package "LHAPDF6" "/afs/cern.ch/sw/lcg/releases/MCGenerators/lhapdf6"\
     "bin" "include" "lib" "" "LHAPDF/LHAPDF.h" "LHAPDF" "BOOST"
+configure_package "PROMC" ""\
+     "bin" "" "lib" "" "src/ProMCBook.h" "promc" "GZIP"
 configure_package "ROOT" "/afs/cern.ch/sw/lcg/releases/ROOT"\
     "bin" "include" "lib" "rootcint,root-config" "TH1D.h" "Cint" ""
 configure_package "BOOST" "/afs/cern.ch/sw/lcg/releases/Boost"\

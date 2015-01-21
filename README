@@ -302,7 +302,7 @@ problems, in particular for the dynamic loading of LHAPDF.
 To learn more about the current program:
 
 A) A brief self-contained introduction is found in the
-   share/Pythia8/htmldoc/pythia8100.pdf file.
+   share/Pythia8/pdfdoc/pythia8200.pdf file.
 
 B) Details can be found by opening a web browser on the
    share/Pythia8/htmldoc/Welcome.html file, and then navigating among

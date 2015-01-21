@@ -48,7 +48,7 @@ class Pythia {
 public:
 
   // Constructor. (See Pythia.cc file.)
-  Pythia(string xmlDir = "../xmldoc", bool printBanner = true);
+  Pythia(string xmlDir = "../share/Pythia8/xmldoc", bool printBanner = true);
 
   // Destructor. (See Pythia.cc file.)
   ~Pythia();

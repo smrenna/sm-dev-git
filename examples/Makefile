@@ -67,21 +67,21 @@ else
 	@echo "Error: $@ requires HEPMC2"
 endif
 
-# PROMC
+# PROMC.
 main46: $$@.cc $(PREFIX_LIB)/libpythia8.a
 ifeq ($(PROMC_USE),true)
-  ifdef PROMC
-	$(CXX) $^ -o $@ $(PROMC_INCLUDE) $(CXX_COMMON) -Wno-long-long -L$(PROMC_LIB)
-  else
-	@echo "Error: $@ requires PROMC installed and/or PROMC variable should be set"
-  endif
+	$(CXX) $^ -o $@ -I$(PROMC_INCLUDE)/src -I$(PROMC_INCLUDE)/include\
+	 $(CXX_COMMON) -DPROMC=\"$(PROMC_INCLUDE)\" -Wno-long-long\
+	 -L$(PROMC_LIB) -lpromc -lprotoc -lprotobuf -lprotobuf-lite -lcbook
+else
+	@echo "Error: $@ requires PROMC"
 endif
 
 # EVTGEN (and HEPMC2).
 main48: $$@.cc $(PREFIX_LIB)/libpythia8.so
 ifeq ($(EVTGEN_USE)$(HEPMC2_USE),truetrue)
 	$(CXX) $< -o $@ -I$(EVTGEN_INCLUDE) $(CXX_COMMON)\
-	 -D EVTGEN_PYTHIA -D EVTGEN_EXTERNAL -Wl,-rpath $(HEPMC2_LIB)\
+	 -DEVTGEN_PYTHIA -DEVTGEN_EXTERNAL -Wl,-rpath $(HEPMC2_LIB)\
 	 -L$(PREFIX_LIB) -Wl,-rpath $(PREFIX_LIB) -lpythia8\
 	 -L$(EVTGEN_LIB) -Wl,-rpath $(EVTGEN_LIB) -lEvtGenExternal -lEvtGen
 else

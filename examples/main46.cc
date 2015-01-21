@@ -14,7 +14,6 @@
 // ProMC file. Google does not like these warnings.
 #pragma GCC diagnostic ignored "-pedantic"
 #pragma GCC diagnostic ignored "-Wshadow"
-//#include "promc/ProMCBook.h"
 #include "ProMCBook.h"
 
 // Pythia header and namespace.
@@ -34,13 +33,10 @@ void readPDG( ProMCHeader * header  ) {
 
   string temp_string;
   istringstream curstring;
-  string  PdgTableFilename = getEnvVar("PROMC") + "/data/particle.tbl";
-  if (PdgTableFilename.size() < 2) {
-    cout << "**        ERROR: PROMC variable not set. Did you run source.sh" 
-         << "      **" << endl;
-    exit(1);
-  }
-
+  string PdgTableFilename = getEnvVar("PROMC");
+  if (PdgTableFilename.size() < 2) PdgTableFilename = string(PROMC);
+  PdgTableFilename += "/data/particle.tbl";
+      
   ifstream file_to_read(PdgTableFilename.c_str());
   if (!file_to_read.good()) {
     cout << "**        ERROR: PDG Table (" << PdgTableFilename
@@ -89,8 +85,6 @@ int main() {
   pythia.readString("PhaseSpace:pTHatMin = 20.");
   pythia.readString("Beams:eCM = 14000.");
   pythia.init();
-
-  // pythia.init( 2212, 2212, 14000.);
 
   // ****************  book ProMC file **********************
   ProMCBook* epbook = new ProMCBook("Pythia8.promc","w");
