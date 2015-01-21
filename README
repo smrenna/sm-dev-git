@@ -83,7 +83,7 @@
          
 1.2) All of the options listed above are formatted into
      "Makefile.inc", which is also copied to
-     "share/Pythia8/examples/Makefile.inc" whenever "gmake" is run and
+     "examples/Makefile.inc" whenever "gmake" is run and
      a change has been made. The "Makefile.inc" file can be simply
      modified to change any of these options after "configure" is
      run. Each option corresponds to a variable in this file as
@@ -102,9 +102,9 @@
 3.1) You can set the environment variable PYTHIA8DATA to contain the
      location of the xmldoc directory. In the csh and tcsh shells this
      could e.g. be
-       setenv PYTHIA8DATA /home/myname/pythia81xx/xmldoc
+       setenv PYTHIA8DATA /home/myname/pythia81xx/share/Pythia8/xmldoc
      while in other shells it could be
-       export PYTHIA8DATA=/home/myname/pythia81xx/xmldoc
+       export PYTHIA8DATA=/home/myname/pythia81xx/share/Pythia8/xmldoc
      where xx is the subversion number.
      Recall that environment variables set locally are only defined in
      the current instance of the shell. The above lines should go into
@@ -113,11 +113,12 @@
 
 3.2) You can provide the path as argument to the Pythia constructor in
      your main program, e.g.
-       Pythia pythia("/home/myname/pythia81xx/xmldoc");
+       Pythia pythia("/home/myname/pythia81xx/share/Pythia8/xmldoc");
      where again xx is the subversion number.
 
    When PYTHIA8DATA is set it takes precedence, else the path in the
-   constructor is used, else one defaults to the ../xmldoc directory.
+   constructor is used, else one defaults to the ../share/Pythia8/xmldoc 
+   directory, which works fine when you run the examples/mainNN programs.
 
 ----------------------------------------------------------------------
 
@@ -181,9 +182,8 @@
 2) A variety of external packages can be enabled, with details given here.
    FASTJET3) The industry standard package to build jets,
        http://fastjet.fr/.  An interface to FastJet is provided in the
-       "include/Pythia8Plugins/HepMC2.h" header and a variety of
-       examples in "share/Pythia8/examples" link against the FastJet
-       libraries.
+       "include/Pythia8Plugins/FastJet3.h" header and a variety of
+       examples in "examples" link against the FastJet libraries.
    HEPMC2) An interface to the HepMC event record, version 2:
        http://lcgapp.cern.ch/project/simu/HepMC/. The interface
        between PYTHIA 8 and HepMC is provided via the
@@ -218,7 +218,7 @@
        been tested and is not recommended.
    ROOT) The ROOT HEP package used for data analysis and
        visualization, http://root.cern.ch. This package is only used
-       for the "share/Pythia8/examples/main9[1,2].cc" examples.
+       for the "examples/main9[1,2].cc" examples.
    BOOST) Advanced C++ libraries, http://www.boost.org/, which are needed 
        when using either LHAPDF6 or GZIP.
    GZIP) support for the reading of gzipped LHE files. It relies upon
@@ -229,7 +229,7 @@
        "libboost_iostreams.[so,dylib]" are required.  Note that when
        compiling a final PYTHIA executable, these libraries must also
        be included, e.g.: "-lboost_iostreams -lz". This is done
-       automatically for the examples in "share/Pythia8/examples/"
+       automatically for the examples in "examples/"
        when GZIP support is enabled.
 
 ----------------------------------------------------------------------

@@ -182,7 +182,7 @@ time ./main32 > out32
 echo
 echo Now begin main37
 make main37
-time ./main37 > out3
+time ./main37 > out37
 
 echo
 echo Now begin main38
