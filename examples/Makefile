@@ -25,9 +25,9 @@ ifeq ($(GZIP_USE),true)
 endif
 
 # Check distribution (use local version first, then installed version).
-ifneq ("$(wildcard ../../../lib/libpythia8.a)","")
-  PREFIX_LIB=../../../lib
-  PREFIX_INCLUDE=../../../include
+ifneq ("$(wildcard ../lib/libpythia8.a)","")
+  PREFIX_LIB=../lib
+  PREFIX_INCLUDE=../include
 endif
 CXX_COMMON:=-I$(PREFIX_INCLUDE) $(CXX_COMMON) -Wl,-rpath $(PREFIX_LIB) -ldl
 
