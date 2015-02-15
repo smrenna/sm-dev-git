@@ -640,7 +640,7 @@ public:
 
   // Access/change verbose setting
   int verbose() {return verboseSav;}
-  void verbose(double verboseIn) {verboseSav = verboseIn;}
+  void verbose(int verboseIn) {verboseSav = verboseIn;}
 
   // Output of messages from SLHA interface
   void message(int, string,string ,int line=0);

@@ -749,11 +749,32 @@ bool LHAupLHEF::setInitLHEF( istream & isIn, bool readHead ) {
 
     // Loop over lines until an <init> tag is found.
     bool read = true, newKey = false;
+    int commentDepth = 0;
     string key = "base";
     vector < string > keyVec;
     while (true) {
       if (!getline(iss, line)) return false;
       
+      // Tell XML parser to ignore comment and CDATA blocks
+      // If we are currently inside a comment block, check for block end
+      if (commentDepth >= 1 && line.find("-->") != string::npos) commentDepth--;
+      if (commentDepth >= 1 && line.find("]]>") != string::npos) commentDepth--;
+      // If the comment block did not end on this line, skip to next line
+      if (commentDepth >= 1) continue;
+      // Check for beginning of comment blocks (parse until comment begins)
+      if (line.find("<!--") != string::npos) {
+	if (line.find("-->") == string::npos) commentDepth++;
+	int comBeg = line.find("<!--");
+	line = line.substr(0,comBeg);
+      }      
+      // Check for beginning of CDATA statement  (parse until CDATA begins)
+      if (line.find("<![cdata[") != string::npos 
+	  || line.find("<![CDATA[") != string::npos) {
+	if (line.find("]]>") == string::npos) commentDepth++;
+	int comBeg = line.find("<![");
+	line = line.substr(0,comBeg);
+      }
+
       // Break lines containing multiple tags into two segments.
       // (Could be generalized to multiple segments but this is
       // sufficient to handle at least <tag>info</tag> on same line.

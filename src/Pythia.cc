@@ -22,7 +22,7 @@ namespace Pythia8 {
 //--------------------------------------------------------------------------
 
 // The current Pythia (sub)version number, to agree with XML version.
-const double Pythia::VERSIONNUMBERCODE = 8.205;
+const double Pythia::VERSIONNUMBERCODE = 8.206;
 
 //--------------------------------------------------------------------------
 
@@ -529,6 +529,7 @@ bool Pythia::init() {
                   || settings.flag("SoftQCD:doubleDiffractive")
                   || settings.flag("SoftQCD:centralDiffractive")
                   || settings.flag("SoftQCD:inelastic");
+  doHardDiff       = settings.flag("Diffraction:doHardDiffraction");
   doResDec         = settings.flag("ProcessLevel:resonanceDecays");
   doFSRinRes       = doPartonLevel && settings.flag("PartonLevel:FSR")
                   && settings.flag("PartonLevel:FSRinResonances");
@@ -642,7 +643,7 @@ bool Pythia::init() {
       pdfBPtr, pdfHardBPtr, isUnresolvedB, flavSelPtr);
 
     // Optionally set up new alternative beams for these Pomerons.
-    if ( doDiffraction) {
+    if ( doDiffraction || doHardDiff) {
       beamPomA.init( 990,  0.5 * eCM, 0.5 * eCM, 0., &info, settings,
         &particleData, &rndm, pdfPomAPtr, pdfPomAPtr, false, flavSelPtr);
       beamPomB.init( 990, -0.5 * eCM, 0.5 * eCM, 0., &info, settings,
@@ -944,7 +945,7 @@ bool Pythia::initPDFs() {
   }
 
   // Optionally set up Pomeron PDF's for diffractive physics.
-  if ( doDiffraction) {
+  if ( doDiffraction || doHardDiff) {
     if (pdfPomAPtr == 0) {
       pdfPomAPtr    = getPDFPtr(990);
       useNewPdfPomA = true;
@@ -1002,7 +1003,7 @@ bool Pythia::next() {
     // Generate hadronization and decays.
     bool status = forceHadronLevel();
     if (status) info.addCounter(4);
-    if (status && nPrevious < nShowEvt)  event.list(showSaV, showMaD);
+    if (status && nPrevious < nShowEvt) event.list(showSaV, showMaD);
     return status;
   }
 
@@ -1040,6 +1041,7 @@ bool Pythia::next() {
 
     info.addCounter(10);
     bool hasVetoed = false;
+    bool hasVetoedDiff = false;
 
     // Provide the hard process that starts it off. Only one try.
     info.clear();
@@ -1134,6 +1136,15 @@ bool Pythia::next() {
           if (abortIfVeto) return false;
           break;
         }
+
+        // If hard diffractive event has been discarded retry partonLevel.
+        hasVetoedDiff = partonLevel.hasVetoedDiff(); 
+        if (hasVetoedDiff) {
+          info.errorMsg("Warning in Pythia::next: "
+            "discarding hard diffractive event from partonLevel; try again");
+          break;
+        }
+
         // Else make a new try for other failures.
         info.errorMsg("Error in Pythia::next: "
           "partonLevel failed; try again");
@@ -1204,7 +1215,7 @@ bool Pythia::next() {
     }
 
     // If event vetoed then to make a new try.
-    if (hasVetoed)  {
+    if (hasVetoed || hasVetoedDiff)  {
       if (abortIfVeto) return false;
       continue;
     }

@@ -198,8 +198,8 @@ private:
   // Initialization data, extracted from database.
   string xmlPath;
   bool   doProcessLevel, doPartonLevel, doHadronLevel, doDiffraction,
-         doResDec, doFSRinRes, decayRHadrons, abortIfVeto, checkEvent,
-         checkHistory;
+         doHardDiff, doResDec, doFSRinRes, decayRHadrons, abortIfVeto, 
+         checkEvent, checkHistory;
   int    nErrList;
   double epTolErr, epTolWarn, mTolErr, mTolWarn;
 

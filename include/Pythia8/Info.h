@@ -310,6 +310,14 @@ public:
   void setAbortPartonLevel(bool abortIn) {abortPartonLevel = abortIn;}
   bool getAbortPartonLevel() {return abortPartonLevel;}
 
+  // Get information on hard diffractive events.
+  bool   isHardDiffractiveA() const {return isHardDiffA;}
+  bool   isHardDiffractiveB() const {return isHardDiffB;}
+  double xPomeronA()          const {return xPomA;}
+  double xPomeronB()          const {return xPomB;}
+  double tPomeronA()          const {return tPomA;}
+  double tPomeronB()          const {return tPomB;}
+
 private:
 
   // Number of times the same error message is repeated, unless overridden.
@@ -339,7 +347,7 @@ private:
   // Store current-event quantities.
   bool   isRes, isDiffA, isDiffB, isDiffC, isND, isLH, hasSubSave[4],
          bIsSet, evolIsSet, atEOF, isVal1, isVal2, hasHistorySave,
-         abortPartonLevel;
+         abortPartonLevel, isHardDiffA, isHardDiffB;
   int    codeSave, codeSubSave[4], nFinalSave, nFinalSubSave[4], nTotal,
          id1Save[4], id2Save[4], id1pdfSave[4], id2pdfSave[4], nMPISave,
          nISRSave, nFSRinProcSave, nFSRinResSave;
@@ -348,7 +356,7 @@ private:
          Q2RenSave[4], scalupSave[4], sH[4], tH[4], uH[4], pTH[4], m3H[4],
          m4H[4], thetaH[4], phiH[4], weightSave, bMPISave, enhanceMPISave,
          pTmaxMPISave, pTmaxISRSave, pTmaxFSRSave, pTnowSave,
-         zNowISRSave, pT2NowISRSave;
+         zNowISRSave, pT2NowISRSave, xPomA, xPomB, tPomA, tPomB;
   string nameSave, nameSubSave[4];
   vector<int>    codeMPISave, iAMPISave, iBMPISave;
   vector<double> pTMPISave, eMPISave;
@@ -373,6 +381,7 @@ private:
   friend class MultipartonInteractions;
   friend class LHAup;
   friend class LHAPDF;
+  friend class Diffraction;
 
   // Set info on the two incoming beams: only from Pythia class.
   void setBeamA( int idAin, double pzAin, double eAin, double mAin) {
@@ -402,7 +411,7 @@ private:
       nameSubSave[i] = " ";
     }
     codeMPISave.resize(0); iAMPISave.resize(0); iBMPISave.resize(0);
-    pTMPISave.resize(0); eMPISave.resize(0); }
+    pTMPISave.resize(0); eMPISave.resize(0); setHardDiff();}
 
   // Reset info arrays only for parton and hadron level.
   int sizeMPIarrays() const { return codeMPISave.size(); }
@@ -492,6 +501,15 @@ private:
   // Save merging weight (i.e.  CKKW-L-type weight, summed O(\alpha_s) weight)
   double weightCKKWLSave, weightFIRSTSave;
 
+  // Set info on resolved processes.
+  void setIsResolved(bool isResIn) {isRes = isResIn;}
+
+  // Set info on hard diffraction.
+  void setHardDiff( bool isHardDiffAIn = false, bool isHardDiffBIn = false,   
+    double xPomAIn = 0., double xPomBIn = 0., double tPomAIn = 0., 
+    double tPomBIn = 0.) { isHardDiffA = isHardDiffAIn;
+      isHardDiffB = isHardDiffBIn; xPomA = xPomAIn; xPomB = xPomBIn;
+      tPomA = tPomAIn; tPomB = tPomBIn;}       
 };
 
 //==========================================================================

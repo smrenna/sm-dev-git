@@ -13,6 +13,7 @@
 #include "Pythia8/BeamParticle.h"
 #include "Pythia8/BeamRemnants.h"
 #include "Pythia8/ColourReconnection.h"
+#include "Pythia8/Diffraction.h"
 #include "Pythia8/Event.h"
 #include "Pythia8/Info.h"
 #include "Pythia8/JunctionSplitting.h"
@@ -69,6 +70,7 @@ public:
 
   // Tell whether failure was due to vetoing.
   bool hasVetoed() const {return doVeto;}
+  bool hasVetoedDiff() const {return doDiffVeto;}
 
   // Accumulate, print and reset statistics.
   void accumulate() {if (isResolved && !isDiff) multiPtr->accumulate();}
@@ -97,20 +99,21 @@ private:
          doFSRinResonances, doRemnants, doSecondHard, hasLeptonBeams,
          hasPointLeptons, canVetoPT, canVetoStep, canVetoMPIStep,
          canVetoEarly, canSetScale, allowRH, earlyResDec, vetoWeakJets,
-         canReconResSys, doReconnect;
+         canReconResSys, doReconnect, doHardDiff;
   double mMinDiff, mWidthDiff, pMaxDiff, vetoWeakDeltaR2;
 
   // Event generation strategy. Number of steps. Maximum pT scales.
   bool   doVeto;
   int    nMPI, nISR, nFSRinProc, nFSRinRes, nISRhard, nFSRhard,
          typeLatest, nVetoStep, typeVetoStep, nVetoMPIStep, iSysNow,
-         reconnectMode;
+         reconnectMode, sampleTypeDiff;
   double pTsaveMPI, pTsaveISR, pTsaveFSR, pTvetoPT;
 
   // Current event properties.
   bool   isNonDiff, isDiffA, isDiffB, isDiffC, isDiff, isSingleDiff,
          isDoubleDiff, isCentralDiff, isResolved, isResolvedA,
-         isResolvedB, isResolvedC;
+         isResolvedB, isResolvedC, isHardDiffA, isHardDiffB, isHardDiff,
+         isSetupDiff, doDiffVeto;
   int    sizeProcess, sizeEvent, nHardDone, nHardDoneRHad, iDS;
   double eCMsave;
   vector<bool> inRHadDecay;
@@ -173,6 +176,9 @@ private:
   // The Junction splitting class used to split junctions systems.
   JunctionSplitting junctionSplitting;
 
+  // The Diffraction class is for hard diffraction selection.
+  Diffraction diffraction;
+
   // Resolved diffraction: find how many systems should have it.
   int decideResolvedDiff( Event& process);
 
@@ -188,15 +194,21 @@ private:
   // Resolved diffraction: restore normal behaviour.
   void leaveResolvedDiff( int iHardLoop, Event& process, Event& event);
 
+  // Hard diffraction: set up the process record.
+  void setupHardDiff( Event& process);
+
+  // Hard diffraction: leave the process record.
+  void leaveHardDiff( Event& process, Event& event);
+
   // Pointer to MergingHooks object for user interaction with the merging.
   MergingHooks* mergingHooksPtr;
-  // Parameters to specify trial shower usage
+  // Parameters to specify trial shower usage.
   bool doTrial;
   int nTrialEmissions;
-  // Parameters to store to veto trial showers
+  // Parameters to store to veto trial showers.
   double pTLastBranch;
   int typeLastBranch;
-  // Parameters to specify merging usage
+  // Parameters to specify merging usage.
   bool canRemoveEvent, canRemoveEmission;
 
 };

@@ -2,6 +2,7 @@
 // Copyright (C) 2015 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
+// Hard diffraction added by Christine Rasmussen.
 
 // Function definitions (not found in the header) for the PartonLevel class.
 
@@ -62,6 +63,9 @@ bool PartonLevel::init( Info* infoPtrIn, Settings& settings,
   bool doCD          = settings.flag("SoftQCD:centralDiffractive");
   doNonDiff          =  doSQ || doND;
   doDiffraction      =  doSQ || doSD || doDD || doCD;
+  doHardDiff         = settings.flag("Diffraction:doHard");
+  sampleTypeDiff     = (doHardDiff) ? settings.mode("Diffraction:sampleType") 
+                     : 0;
 
   // Separate low-mass (unresolved) and high-mass (perturbative) diffraction.
   mMinDiff           = settings.parm("Diffraction:mMinPert");
@@ -167,12 +171,12 @@ bool PartonLevel::init( Info* infoPtrIn, Settings& settings,
   doMPIMB  =  multiMB.init( doMPIinit, 0, infoPtr, settings, particleDataPtr,
     rndmPtr, beamAPtr, beamBPtr, couplingsPtr, partonSystemsPtr, sigmaTotPtr,
     userHooksPtr);
-  if (doSD || doDD || doSQ) doMPISDA = multiSDA.init( doMPIinit, 1, infoPtr,
-    settings, particleDataPtr, rndmPtr, beamAPtr, beamPomBPtr, couplingsPtr,
-    partonSystemsPtr, sigmaTotPtr, userHooksPtr);
-  if (doSD || doDD || doSQ) doMPISDB = multiSDB.init( doMPIinit, 2, infoPtr,
-    settings, particleDataPtr, rndmPtr, beamPomAPtr, beamBPtr, couplingsPtr,
-    partonSystemsPtr, sigmaTotPtr, userHooksPtr);
+  if (doSD || doDD || doSQ || doHardDiff) doMPISDA = multiSDA.init( doMPIinit, 
+    1, infoPtr, settings, particleDataPtr, rndmPtr, beamAPtr, beamPomBPtr,
+    couplingsPtr, partonSystemsPtr, sigmaTotPtr, userHooksPtr);
+  if (doSD || doDD || doSQ || doHardDiff) doMPISDB = multiSDB.init( doMPIinit, 
+    2, infoPtr, settings, particleDataPtr, rndmPtr, beamPomAPtr, beamBPtr, 
+    couplingsPtr, partonSystemsPtr, sigmaTotPtr, userHooksPtr);
   if (doCD || doSQ) doMPICD = multiCD.init( doMPIinit, 3, infoPtr, settings,
     particleDataPtr, rndmPtr, beamPomAPtr, beamPomBPtr, couplingsPtr,
     partonSystemsPtr, sigmaTotPtr, userHooksPtr);
@@ -182,6 +186,9 @@ bool PartonLevel::init( Info* infoPtrIn, Settings& settings,
   colourReconnection.init( infoPtr, settings, rndmPtr, beamAPtr, beamBPtr,
     partonSystemsPtr);
   junctionSplitting.init(infoPtr, settings, rndmPtr, particleDataPtr);
+  if (doHardDiff) diffraction.init(infoPtr, settings, rndmPtr, beamAPtr, 
+    beamBPtr, beamPomAPtr, beamPomBPtr, partonSystemsPtr, &multiMB, timesPtr, 
+    spacePtr);
 
   // Succeeded, or not.
   multiPtr       = &multiMB;
@@ -234,8 +241,63 @@ bool PartonLevel::next( Event& process, Event& event) {
   isDoubleDiff   = isDiffA && isDiffB;
   isSingleDiff   = isDiff && !isDoubleDiff  && !isCentralDiff;
   isNonDiff      = infoPtr->isNonDiffractive();
+
+  // Default values for what is to come.
+  isHardDiffA    = false;
+  isHardDiffB    = false;
+  isHardDiff     = false;
+  doDiffVeto     = false;
+  isSetupDiff    = false;
+  // The setup of the diffractive events can come after the first evolution.
+  int nHardDiffLoop = 1;
   doVeto         = false;
   infoPtr->setAbortPartonLevel(false);
+
+  // Prepare for a potential hard diffractive event.
+  if (doHardDiff) {
+
+    // Preliminary decision based on diffractive-to-inclusive PDF ratio.
+    isHardDiffA = diffraction.isDiffractive(1, infoPtr->id1pdf(), 
+      infoPtr->x1pdf(), infoPtr->pdf1());
+    isHardDiffB = diffraction.isDiffractive(2, infoPtr->id2pdf(), 
+      infoPtr->x2pdf(), infoPtr->pdf2());
+
+    // No hard double diffraction yet, so randomly choose one of the sides.
+    if (isHardDiffA && isHardDiffB) {
+      if (rndmPtr-> flat() < 0.5) isHardDiffA = false;
+      else isHardDiffB = false;
+    }
+    isHardDiff = isHardDiffA || isHardDiffB;
+
+    // Save diffractive values.
+    double xPomA = (isHardDiffA) ? diffraction.getXPomeronA() : 0.;
+    double xPomB = (isHardDiffB) ? diffraction.getXPomeronB() : 0.;
+    double tPomA = (isHardDiffA) ? diffraction.getTPomeronA() : 0.;
+    double tPomB = (isHardDiffB) ? diffraction.getTPomeronB() : 0.;
+    infoPtr->setHardDiff( isHardDiffA, isHardDiffB, xPomA, xPomB, tPomA, tPomB);
+
+    // Discard all nondiffractive events if only diffractive sample is wanted.
+    if (!isHardDiff && (sampleTypeDiff == 3 || sampleTypeDiff == 4)) {
+      doDiffVeto = true;
+      return false;
+    }
+
+    // Discard all diffractive events if only nondiffractive sample is wanted.
+    if (isHardDiff) {
+      if (sampleTypeDiff == 5) {
+        infoPtr->setHardDiff( false, false, 0., 0., 0., 0.);
+        doDiffVeto = true;
+        return false;
+      }
+
+      // Set up the diffractive system if run without MPI veto.
+      else if (sampleTypeDiff == 1 || sampleTypeDiff ==  3) 
+        setupHardDiff( process);
+
+      // Allow for second loop if run with MPI veto.
+      else nHardDiffLoop = 2;
+    }
+  }
 
   // nHardLoop counts how many hard-scattering subsystems are to be processed.
   // Almost always 1, but elastic and low-mass diffraction gives 0, while
@@ -262,6 +324,9 @@ bool PartonLevel::next( Event& process, Event& event) {
   bool hasMergingHooks = (mergingHooksPtr != 0);
   if ( hasMergingHooks && canRemoveEvent )
     mergingHooksPtr->storeWeights(infoPtr->getWeightCKKWL());
+
+  // Loop to set up diffractive system if run with MPI veto.
+  for (int iHardDiffLoop = 1; iHardDiffLoop <= nHardDiffLoop; ++iHardDiffLoop) {
 
   // Big outer loop to handle up to two systems (in double diffraction),
   // but normally one. (Not indented in following, but end clearly marked.)
@@ -365,11 +430,11 @@ bool PartonLevel::next( Event& process, Event& event) {
       mergingHooksPtr->setShowerStartingScales( doTrial,
         (canRemoveEvent || canRemoveEmission), pTscaleRad, process, pTmaxFSR,
         limitPTmaxFSR, pTmaxISR, limitPTmaxISR, pTmaxMPI, limitPTmaxMPI );
-
     double pTmax    = max( pTmaxMPI, max( pTmaxISR, pTmaxFSR) );
     pTsaveMPI       = pTmaxMPI;
     pTsaveISR       = pTmaxISR;
     pTsaveFSR       = pTmaxFSR;
+
     // Prepare the classes to begin the generation.
     if (doMPI) multiPtr->prepare( event, pTmaxMPI);
     if (doISR) spacePtr->prepare( 0, event, limitPTmaxISR);
@@ -427,6 +492,13 @@ bool PartonLevel::next( Event& process, Event& event) {
           typeLatest = 1;
           ++nMPI;
           if (canVetoMPIStep && nMPI <= nVetoMPIStep) typeVetoStep = 1;
+
+          // Break for exclusive hard diffraction with MPI veto.
+          if (isHardDiff && sampleTypeDiff == 4 && iHardDiffLoop == 1) {
+            infoPtr->setHardDiff( false, false, 0., 0., 0., 0.);
+            doDiffVeto = true;
+            return false;
+          }
 
           // Update ISR and FSR dipoles.
           if (doISR)              spacePtr->prepare( nMPI - 1, event);
@@ -717,15 +789,23 @@ bool PartonLevel::next( Event& process, Event& event) {
     }
 
     // Find the first particle in the current diffractive system.
-    int iFirst = 0;
+    int  iFirst    = 0;
+    bool isDiffNow = false;
     if (isDiff) {
-      iFirst = (iHardLoop == 1) ? 5 + sizeEvent - sizeProcess : sizeEvent;
-      if (isDiffC)  iFirst = 6 + sizeEvent - sizeProcess;
+      isDiffNow = isDiff;
+      iFirst    = (iHardLoop == 1) ? 5 + sizeEvent - sizeProcess : sizeEvent;
+      if (isDiffC) iFirst = 6 + sizeEvent - sizeProcess;
+    }
+
+    // Change the first particle for hard diffraction.
+    if (sampleTypeDiff == 1 || sampleTypeDiff == 3 || iHardDiffLoop == 2) { 
+      isDiffNow = true;
+      iFirst    = 5;
     }
 
     // Add beam remnants, including primordial kT kick and colour tracing.
     if (!doTrial && physical && doRemnants
-      && !remnants.add( event, iFirst, isDiff)) physical = false;
+      && !remnants.add( event, iFirst, isDiffNow)) physical = false;
 
     // If no problems then done.
     if (physical) break;
@@ -809,6 +889,38 @@ bool PartonLevel::next( Event& process, Event& event) {
         "Colour reconnection failed.");
       return false;
     }
+  }
+
+  // Handle diffractive events. If without MPI veto then leave the diffractive
+  // system properly, else set up the diffractive system and redo evolution.
+  if (isHardDiff) {
+
+    // Leave diffractive system properly.
+    if (sampleTypeDiff == 1 || sampleTypeDiff == 3)      
+      leaveHardDiff( process, event);
+    else if (sampleTypeDiff == 2 || sampleTypeDiff == 4) {
+
+      // If inclusive sample wanted for MPI veto and nMPI > 1
+      // then event is non-diffractive and we can break the loop. 
+      if (sampleTypeDiff == 2 && nMPI > 1) {
+        infoPtr->setHardDiff( false, false, 0., 0., 0., 0.);
+        break;
+      }
+
+      // If no additional MPI has been found then set up the diffractive 
+      // system the first time around.
+      if (iHardDiffLoop == 1 && nMPI == 1) {
+        event.clear();
+        beamAPtr->clear();
+        beamBPtr->clear();
+        partonSystemsPtr->clear();
+        setupHardDiff( process);
+      }
+      else if (iHardDiffLoop == 2) leaveHardDiff( process, event);
+    }
+  }
+
+  // End big outer loop to handle the setup of the diffractive system.
   }
 
   // Done.
@@ -1015,6 +1127,14 @@ void PartonLevel::setupHardSys( Event& process, Event& event) {
   int iDiffMot = iDS + 2;
   int iDiffDau = process.size() - 1;
   int nOffset  = sizeEvent - sizeProcess;
+
+  // Corrected information for hard diffraction.
+  if (isSetupDiff) {
+    iDiffMot = (isHardDiffA) ? 4 : 3;
+    inS      = iDiffMot;
+    inP      = iDiffDau - 3;
+    inM      = iDiffDau - 2;
+  }
 
   // Resolved diffraction means more entries.
   if (isDiff) {
@@ -1356,6 +1476,200 @@ void PartonLevel::leaveResolvedDiff( int iHardLoop, Event& process,
   remnants.reassignBeamPtrs(  beamAPtr, beamBPtr, 0);
   colourReconnection.reassignBeamPtrs(  beamAPtr, beamBPtr);
 
+  // Restore multiparton interactions pointer to default object.
+  multiPtr = &multiMB;
+
+}
+
+//--------------------------------------------------------------------------
+
+// Set up special handling of hard diffraction.
+
+void PartonLevel::setupHardDiff( Event& process) {
+
+  // Create a temporary event record holding the info of the hard process.
+  Event tmpProcess = process;
+  process.clear();
+
+  // Add the first three entries: system + incoming beams.
+  for (int iEntry = 0; iEntry < 3; ++iEntry)
+    process.append( tmpProcess[iEntry]); 
+
+  // Get system info and calculate diffractive system mass.
+  double eCM    = infoPtr->eCM();
+  double sNow   = eCM * eCM;
+  double xPom   = (isHardDiffA) ? infoPtr->xPomeronA() 
+                : infoPtr->xPomeronB();
+  double m2Diff = xPom * sNow;
+  double mDiff  = sqrt(m2Diff);
+
+  // Particle masses. If isHardDiffA then m3 is a proton and m4 the 
+  // diffractive system.
+  double m1 = process[1].m(); 
+  double m2 = process[2].m(); 
+  double m3 = (isHardDiffA) ? m1 : mDiff;
+  double m4 = (isHardDiffB) ? m2 : mDiff;
+
+  // Evaluate momenta of outgoing p and p_diff, initially along beam axis.
+  double s3 = pow2(m3);
+  double s4 = pow2(m4);
+  double lambda34 = sqrtpos( pow2( sNow - s3 - s4) - 4. * s3 * s4 );
+  double pAbs = 0.5 * lambda34 / eCM;
+  Vec4 p3 = Vec4( 0., 0.,  pAbs, 0.5 * (sNow + s3 - s4) / eCM);
+  Vec4 p4 = Vec4( 0., 0., -pAbs, 0.5 * (sNow + s4 - s3) / eCM);
+
+  // Take copies for later longitudinal boost; then rotate outgoing beams.
+  Vec4 pD3 = p3;
+  Vec4 pD4 = p4;
+  double phi   = 2. * M_PI * rndmPtr->flat();
+  double theta = (isHardDiffA) ? diffraction.getThetaPomeronA() : 
+    diffraction.getThetaPomeronB();
+  p3.rot( theta, phi);
+  p4.rot( theta, phi);
+  
+  //  Append intermediate states to the event record.
+  int status3 = (isHardDiffA) ? 14 : 15;
+  int status4 = (isHardDiffB) ? 14 : 15;
+  int id3     = (isHardDiffA) ? 2212 : 9902210;
+  int id4     = (isHardDiffB) ? 2212 : 9902210;
+  process.append( id3, status3, 1, 0, 0, 0, 0, 0, p3, m3);
+  process.append( id4, status4, 2, 0, 0, 0, 0, 0, p4, m4);
+
+  // Correct event record history accordingly.
+  process[1].daughters(3, 0);
+  process[2].daughters(4, 0);
+  int iDiffMot     = (isHardDiffA) ? 4 : 3;
+  int iDiffRad     = process.size() - 1;
+  process[iDiffMot].statusNeg();
+  process[iDiffMot].daughters( iDiffRad + 1, iDiffRad + 2);
+
+  // Set up Pomeron-proton system as if it were the complete collision. 
+  // Set Pomeron "beam particle" massless.
+  int idDiffA    = (isHardDiffA) ? 990 : process[1].id();
+  int idDiffB    = (isHardDiffB) ? 990 : process[2].id();
+  double mDiffA  = (isHardDiffA) ? 0. : process[1].m();
+  double mDiffB  = (isHardDiffB) ? 0. : process[2].m();
+  double m2DiffA = mDiffA * mDiffA;
+  double m2DiffB = mDiffB * mDiffB;
+  double eDiffA  = 0.5 * (m2Diff + m2DiffA - m2DiffB) / mDiff;
+  double eDiffB  = 0.5 * (m2Diff + m2DiffB - m2DiffA) / mDiff;
+  double pzDiff  = 0.5 * sqrtpos( pow2(m2Diff - m2DiffA - m2DiffB)
+                 - 4. * m2DiffA * m2DiffB ) / mDiff;
+  process.append( idDiffA, 13, iDiffMot, 0, 0, 0, 0, 0,
+                   0., 0.,  pzDiff, eDiffA, mDiffA);
+  process.append( idDiffB, 13, iDiffMot, 0, 0, 0, 0, 0,
+                   0., 0., -pzDiff, eDiffB, mDiffB);
+
+  // Append hard process.
+  vector<int> hardParton;
+  for (int iHard = 3; iHard < tmpProcess.size(); ++iHard) 
+    hardParton.push_back( process.append(tmpProcess[iHard]) );
+
+  // Boost the hard partons in z-direction (from pp to Pp system).
+  Vec4 pDiffA = (isHardDiffB) ? process[1].p() : process[1].p() - pD3;
+  Vec4 pDiffB = (isHardDiffA) ? process[2].p() : process[2].p() - pD4;
+  RotBstMatrix MtoCM;
+  MtoCM.toCMframe( pDiffA, pDiffB);
+  for (unsigned int i = 0; i < hardParton.size(); ++i)
+    process[hardParton[i]].rotbst(MtoCM);
+
+  // Change mothers and daughters after appending hard process.
+  int iPomeron = 0;
+  int iProton  = 0;
+  for (int i = 0; i < process.size(); ++i) {
+    if (process[i].id() == 990) iPomeron = i;
+    if (process[i].id() == 2212 && process[i].status() == 13) iProton = i;
+  }
+  if (isHardDiffA){
+    process[hardParton[0]].mothers(iPomeron,0);
+    process[hardParton[1]].mothers(iProton, 0);
+    process[hardParton[0]].daughters(process.size() - 2, process.size() - 1);
+    process[hardParton[1]].daughters(process.size() - 2, process.size() - 1);
+    process[hardParton[2]].mothers(hardParton[0], hardParton[1]);
+    process[hardParton[3]].mothers(hardParton[0], hardParton[1]);
+    process[iPomeron].daughters(hardParton[0],0);
+    process[iProton].daughters(hardParton[1],0);
+  } else {
+    process[hardParton[1]].mothers(iPomeron,0);
+    process[hardParton[0]].mothers(iProton, 0);
+    process[hardParton[1]].daughters(process.size() - 2, process.size() - 1);
+    process[hardParton[0]].daughters(process.size() - 2, process.size() - 1);
+    process[hardParton[2]].mothers(hardParton[0], hardParton[1]);
+    process[hardParton[3]].mothers(hardParton[0], hardParton[1]);
+    process[iPomeron].daughters(hardParton[1],0);
+    process[iProton].daughters(hardParton[0],0);
+  }
+  // Negate status of Pomeron and proton
+  process[iPomeron].statusNeg();
+  process[iProton].statusNeg();
+
+  // Change state of system to unresolved to avoid aborting from Pythia.
+  infoPtr->setIsResolved( false);
+  
+  // Reassign beam pointers to refer to subsystem effective beams.
+  beamAPtr = (isHardDiffA) ? beamPomAPtr : beamHadAPtr;
+  beamBPtr = (isHardDiffA) ? beamHadBPtr : beamPomBPtr;
+  
+  // Pretend that the diffractive system is the whole collision.
+  eCMsave = infoPtr->eCM();
+  infoPtr->setECM( mDiff);
+  beamAPtr->newPzE(  pzDiff, eDiffA);
+  beamBPtr->newPzE( -pzDiff, eDiffB);
+  
+  // Beams not found in normal slots 1 and 2.
+  int beamOffset = 4;
+     
+  // Reassign beam pointers in other classes.
+  timesPtr->reassignBeamPtrs( beamAPtr, beamBPtr, beamOffset);
+  spacePtr->reassignBeamPtrs( beamAPtr, beamBPtr, beamOffset);
+  remnants.reassignBeamPtrs(  beamAPtr, beamBPtr, (isHardDiffA) ? 2 : 1);
+  colourReconnection.reassignBeamPtrs(  beamAPtr, beamBPtr);
+  
+  // Reassign multiparton interactions pointer to right object.
+  if      (isHardDiffB) multiPtr = &multiSDA;
+  else if (isHardDiffA) multiPtr = &multiSDB;
+
+  // Done.  
+  isSetupDiff = true;      
+
+}
+
+//--------------------------------------------------------------------------
+
+// Leave special handling of hard diffraction.
+
+void PartonLevel::leaveHardDiff( Event& process, Event& event) {
+
+  // Reconstruct boost and rotation to event cm frame.
+  Vec4 pDiffA = (isHardDiffB) ? process[1].p() 
+              : process[1].p() - process[3].p();
+  Vec4 pDiffB = (isHardDiffA) ? process[2].p()
+              : process[2].p() - process[4].p();
+  RotBstMatrix MtoCM;
+  MtoCM.fromCMframe( pDiffA, pDiffB);
+
+  // Perform rotation and boost on diffractive system.
+  for (int i = 5; i < process.size(); ++i) process[i].rotbst( MtoCM);
+  for (int i = 5; i < event.size(); ++i) event[i].rotbst( MtoCM);
+    
+  // Clear diffractive info.
+  isHardDiffA = isHardDiffB = isHardDiff = false;
+    
+  // Restore cm energy.
+  infoPtr->setECM( eCMsave);
+  beamAPtr->newPzE( event[1].pz(), event[1].e());
+  beamBPtr->newPzE( event[2].pz(), event[2].e());
+    
+  // Restore beam pointers to incoming hadrons.
+  beamAPtr = beamHadAPtr;
+  beamBPtr = beamHadBPtr;
+    
+  // Reassign beam pointers in other classes.
+  timesPtr->reassignBeamPtrs( beamAPtr, beamBPtr, 0);
+  spacePtr->reassignBeamPtrs( beamAPtr, beamBPtr, 0);
+  remnants.reassignBeamPtrs(  beamAPtr, beamBPtr, 0);
+  colourReconnection.reassignBeamPtrs(  beamAPtr, beamBPtr);
+    
   // Restore multiparton interactions pointer to default object.
   multiPtr = &multiMB;
 

@@ -180,9 +180,9 @@ bool TauDecays::decay(int idxOut1, Event& event) {
   else if (tauMode == 5) known = externalMechanism(event);
   else {
     if ((tauMode == 2 && abs(mediator.id()) == tauMother) || tauMode == 3) {
-      known      = true;
-      correlated = false;
-      int sign   = out1.id() == -15 ? -1 : 1;
+      known       = true;
+      correlated  = false;
+      double sign = out1.id() == -15 ? -1 : 1;
       particles[2].rho[0][0] = (1 - sign * tauPol) / 2;
       particles[2].rho[1][1] = (1 + sign * tauPol) / 2;
     } else {

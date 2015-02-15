@@ -118,6 +118,23 @@ struct XMLTag {
         continue;
       }
 
+      // Also skip CDATA statements.
+      // Used for text data that should not be parsed by the XML parser.
+      // (e.g., JavaScript code contains a lot of "<" or "&" characters
+      // which XML would erroneously interpret as the start of a new
+      // element or the start of a character entity, respectively.)
+      // See eg http://www.w3schools.com/xml/xml_cdata.asp
+      if ( str.find("<![CDATA[", curr) == begin ) {
+        pos_t endcom = str.find("]]>", begin);
+        if ( endcom == end ) {
+          if ( leftover ) *leftover += str.substr(curr);
+             return tags;
+        }
+        if ( leftover ) *leftover += str.substr(curr, endcom - curr);
+        curr = endcom;
+        continue;
+      }
+
       if ( leftover ) *leftover += str.substr(curr, begin - curr);
       if ( begin == end || begin > str.length() - 3 || str[begin + 1] == '/' )
         return tags;

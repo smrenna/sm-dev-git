@@ -857,6 +857,12 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
       // Loop over squark [j] flavour
       for (int j=1;j<=6;j++) {
 
+	//Initialise to zero
+	LsduX[j][l][i] = 0.0;
+	RsduX[j][l][i] = 0.0;
+	LsudX[j][l][i] = 0.0;
+	RsudX[j][l][i] = 0.0;
+	
         // Loop over off-diagonal quark [k] generation
         for (int k=1;k<=3;k++) {
 
