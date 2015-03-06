@@ -13,8 +13,8 @@
 #include "Pythia8/BeamParticle.h"
 #include "Pythia8/BeamRemnants.h"
 #include "Pythia8/ColourReconnection.h"
-#include "Pythia8/Diffraction.h"
 #include "Pythia8/Event.h"
+#include "Pythia8/HardDiffraction.h"
 #include "Pythia8/Info.h"
 #include "Pythia8/JunctionSplitting.h"
 #include "Pythia8/MergingHooks.h"
@@ -177,7 +177,7 @@ private:
   JunctionSplitting junctionSplitting;
 
   // The Diffraction class is for hard diffraction selection.
-  Diffraction diffraction;
+  HardDiffraction hardDiffraction;
 
   // Resolved diffraction: find how many systems should have it.
   int decideResolvedDiff( Event& process);

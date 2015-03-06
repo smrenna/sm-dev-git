@@ -73,7 +73,7 @@ bool JunctionSplitting::checkColours( Event& event) {
       && abs(event[i].pz()) >= 0.  && abs(event[i].e()) >= 0.
        && abs(event[i].m()) >= 0.);
     else {
-       infoPtr->errorMsg("Error in Pythia::CheckColours: "
+       infoPtr->errorMsg("Warning in Pythia::CheckColours: "
         "not-a-number energy/momentum/mass");
        return false;
     }
@@ -318,7 +318,7 @@ bool JunctionSplitting::splitJunGluons(Event& event,
           }
         // If no anti junction found, something went wrong earlier.
         if (iAntiJun == -1) {
-           infoPtr->errorMsg("Error in JunctionSplitting::SplitJunChain:"
+           infoPtr->errorMsg("Warning in JunctionSplitting::SplitJunChain:"
                              "Something went wrong in finding anti junction");
            return false;
         }
@@ -485,7 +485,7 @@ bool JunctionSplitting::splitJunPairs(Event& event,
 
       // Cannot handle 3 leg combination.
       if (matchedLegs.size() == 3) {
-        infoPtr->errorMsg("Error in JunctionSplitting::SplitJunChain:"
+        infoPtr->errorMsg("Warning in JunctionSplitting::SplitJunChain:"
           "Two junctions have all three legs connected.");
         return false;
       }
@@ -517,8 +517,8 @@ bool JunctionSplitting::splitJunPairs(Event& event,
             break;
           }
         if (iAcol == -1) {
-          infoPtr->errorMsg("Error in JunctionSplitting::SplitJunChain:"
-            "Anti colour not found when combing two junctions to a string");
+          infoPtr->errorMsg("Warning in JunctionSplitting::SplitJunChain:"
+            "Anti colour not found when combining two junctions to a string");
           return false;
         }
         
@@ -861,7 +861,7 @@ bool JunctionSplitting::setAcol(Event& event, int col, int acol) {
       }
 
   // If no acol was found something went wrong.
-  infoPtr->errorMsg("Error in JunctionSplitting::setAcol:"
+  infoPtr->errorMsg("Warning in JunctionSplitting::setAcol:"
      "Anti colour not found when combing two junctions to a string");
   return false;
 }

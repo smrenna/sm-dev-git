@@ -48,7 +48,7 @@ public:
     int iDSin) {beamAPtr = beamAPtrIn; beamBPtr = beamBPtrIn; iDS = iDSin;}
 
   // Select the flavours/kinematics/colours of the two beam remnants.
-  bool add( Event& event, int iFirst = 0, bool isDiff = false);
+  bool add( Event& event, int iFirst = 0, bool doDiffCR = false);
 
 private:
 

@@ -1,14 +1,14 @@
-// Diffraction.h is a part of the PYTHIA event generator.
+// HardDiffraction.h is a part of the PYTHIA event generator.
 // Copyright (C) 2015 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
 // Author: Christine Rasmussen.
 
-// Header file for the Diffraction class.
+// Header file for the HardDiffraction class.
 
-#ifndef Pythia8_Diffraction_H
-#define Pythia8_Diffraction_H
+#ifndef Pythia8_HardDiffraction_H
+#define Pythia8_HardDiffraction_H
 
 #include "Pythia8/Basics.h"
 #include "Pythia8/BeamParticle.h"
@@ -24,33 +24,25 @@ namespace Pythia8 {
 
 //==========================================================================
 
-// Diffraction class.
+// HardDiffraction class.
 // This class handles hard diffraction, together with PartonLevel.
 
-class Diffraction {
+class HardDiffraction {
 
 public:
   
   // Constructor and destructor.
-  Diffraction() {};
-  ~Diffraction() {}
+  HardDiffraction() {};
+  ~HardDiffraction() {}
 
   // Initialise constants 
   void init(Info* infoPtrIn, Settings& settingsIn, Rndm* rndmPtrIn,
     BeamParticle* beamAPtrIn, BeamParticle* beamBPtrIn,
-    BeamParticle* beamPomAPtrIn, BeamParticle* beamPomBPtrIn,
-    PartonSystems* partonSystemsPtrIn, MultipartonInteractions* MPIPtrIn,
-    TimeShower* timesPtrIn, SpaceShower* spacePtrIn);
+    BeamParticle* beamPomAPtrIn, BeamParticle* beamPomBPtrIn);
 
   // Main routine to check if event is from diffractive PDF.
   bool isDiffractive(int iBeamIn = 1, int partonIn = 0, 
     double xIn = 0., double xfIncIn = 0.);
-
-  // Get new beam energies and pz.
-  double getEDiffA() {return eDiffA;}
-  double getEDiffB() {return eDiffB;}
-  double getPzDiff() {return pzDiff;}
-  double getMDiff()  {return mDiff;}
 
   // Get diffractive values. 
   double getXPomeronA()     {return xPomA;}
@@ -64,11 +56,13 @@ private:
 
   // Constants: could only be changed in the code itself.
   static const double TINYPDF;
+  static const double POMERONMASS;
+  static const double PROTONMASS;
   
   // Initialization and event data.
   int    pomSet, pomFlux, iBeam, idA, idB;
   double normPom, a1, a2, a3, A1, A2, A3, a0, ap, b0, PDFFactor, Q2,
-         mA, mB, mDiff, eDiffA, eDiffB, pzDiff, s, s1, s2, s3, s4,
+         mA, mB, s, s1, s2, s3, s4,
          xPomA, xPomB, tPomA, tPomB, thetaPomA, thetaPomB;
 
   // Pointer to various information on the generation.
@@ -85,16 +79,6 @@ private:
   BeamParticle*   beamBPtr;
   BeamParticle*   beamPomAPtr;
   BeamParticle*   beamPomBPtr;
-
-  // Pointer to partonSystems.
-  PartonSystems*  partonSystemsPtr;
-
-  // Pointer to MPI.
-  MultipartonInteractions* MPIPtr;
-
-  // Pointer to showers.
-  TimeShower*     timesPtr;
-  SpaceShower*    spacePtr;
 
   // Pointer to temporary Pomeron PDF.
   BeamParticle*   tmpPDFPtr;
@@ -123,4 +107,4 @@ private:
 
 } // end namespace Pythia8
 
-#endif // Pythia8_Diffraction_H
+#endif // Pythia8_HardDiffraction_H

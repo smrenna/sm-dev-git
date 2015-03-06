@@ -30,7 +30,7 @@ public:
   // Calculate string length of a single particle.
   // The first vector is the 4 vector of the particle.
   // The second vector represents (1,0,0,0) in dipole restframe.
-  double getLength(Vec4 p, Vec4 v);
+  double getLength(Vec4 p, Vec4 v, bool isJunc = false);
 
   // Calculate string length for two indices in the event record.
   double getStringLength(Event& event, int i, int j);
@@ -38,13 +38,13 @@ public:
   // Calculate string length for two particles given their four-momenta.
   double getStringLength(Vec4 p1, Vec4 p2);
 
-  // Calculate the length of a single junction given the 3 entries in event.
+  // Calculate the length of a single junction given the 3 entries in the event.
   double getJuncLength(Event& event, int i, int j, int k);
 
   // Calculate the length of a single junction given the 3 four-momenta.
   double getJuncLength(Vec4 p1, Vec4 p2, Vec4 p3);
 
-  // Calculate the length of a double junction given the 4 entries in event.
+  // Calculate the length of a double junction given the 4 entries in the event.
   // The first two are expected to be quarks, the second two to be antiquarks.
   double getJuncLength(Event& event, int i, int j, int k, int l);
 
@@ -56,7 +56,7 @@ private:
 
   static const double MINDELTAR;
 
-  double m0, m0sqr, sqrt2;
+  double m0, m0sqr, sqrt2, juncCorr;
   int lambdaForm;
 
   // Pointer to various information on the generation.

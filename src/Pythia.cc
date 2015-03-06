@@ -22,6 +22,7 @@ namespace Pythia8 {
 //--------------------------------------------------------------------------
 
 // The current Pythia (sub)version number, to agree with XML version.
+const double Pythia::VERSIONNUMBERHEAD = PYTHIA_VERSION;
 const double Pythia::VERSIONNUMBERCODE = 8.206;
 
 //--------------------------------------------------------------------------
@@ -119,6 +120,17 @@ Pythia::Pythia(string xmlDir, bool printBanner) {
     ostringstream errCode;
     errCode << fixed << setprecision(3) << ": in code " << VERSIONNUMBERCODE
             << " but in XML " << versionNumberXML;
+    info.errorMsg("Abort from Pythia::Pythia: unmatched version numbers",
+      errCode.str());
+    return;
+  }
+
+  // Check that header version number matches code version number.
+  isConstructed = (abs(VERSIONNUMBERHEAD - VERSIONNUMBERCODE) < 0.0005);
+  if (!isConstructed) {
+    ostringstream errCode;
+    errCode << fixed << setprecision(3) << ": in code " << VERSIONNUMBERCODE
+            << " but in header " << VERSIONNUMBERHEAD;
     info.errorMsg("Abort from Pythia::Pythia: unmatched version numbers",
       errCode.str());
     return;
@@ -529,7 +541,7 @@ bool Pythia::init() {
                   || settings.flag("SoftQCD:doubleDiffractive")
                   || settings.flag("SoftQCD:centralDiffractive")
                   || settings.flag("SoftQCD:inelastic");
-  doHardDiff       = settings.flag("Diffraction:doHardDiffraction");
+  doHardDiff       = settings.flag("Diffraction:doHard");
   doResDec         = settings.flag("ProcessLevel:resonanceDecays");
   doFSRinRes       = doPartonLevel && settings.flag("PartonLevel:FSR")
                   && settings.flag("PartonLevel:FSRinResonances");

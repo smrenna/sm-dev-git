@@ -2519,6 +2519,16 @@ bool PhaseSpace2to2diffractive::setupSampling() {
     // Max f(dy) for Von Neumann method, from SigmaTot.
     sdpmax= sigmaTotPtr->sdpMax();
     ddpmax= sigmaTotPtr->ddpMax();
+  
+  // H1 Fit A/B.
+  } else if (PomFlux == 6 || PomFlux == 7) {
+    bSlope        = 5.5;
+    epsilonPF     =  (PomFlux == 6) ? 0.1182 : 0.1110;
+    alphaPrimePF  = 0.06;
+    double xPowPF = 1. - 2. * (1. + epsilonPF);
+    xIntPF        = 2. * (1. + xPowPF);
+    xtCorPF       = 2. * alphaPrimePF;
+    tAux          = exp( max(-EXPMAX, bSlope  * (tLow - tUpp)) ) - 1.;
   }
 
   // Done.
@@ -2550,7 +2560,7 @@ bool PhaseSpace2to2diffractive::trialKin( bool, bool ) {
     } else if (PomFlux == 2) {
       tAux1 = exp( max(-EXPMAX, bSlope1 * (tLow - tUpp)) ) - 1.;
       tAux2 = exp( max(-EXPMAX, bSlope2 * (tLow - tUpp)) ) - 1.;
-    } else if (PomFlux == 3) {
+    } else if (PomFlux == 3 || PomFlux == 6 || PomFlux == 7) {
       tAux          = exp( max(-EXPMAX, bSlope  * (tLow - tUpp)) ) - 1.;
     } else if (PomFlux == 4) {
       tAux1                = 1. / pow3(1. - coefDL * tLow);
@@ -2621,8 +2631,8 @@ bool PhaseSpace2to2diffractive::trialKin( bool, bool ) {
          ? tUpp + log(1. + tAux1 * rndmPtr->flat()) / bSlope1
          : tUpp + log(1. + tAux2 * rndmPtr->flat()) / bSlope2;
 
-    // Streng and Berger et al. (RapGap):
-    } else if (PomFlux == 3) {
+    // Streng and Berger et al. (RapGap) & H1 Fit A/B:
+    } else if (PomFlux == 3 || PomFlux == 6 || PomFlux == 7) {
 
       // Select diffractive mass(es) according to dm^2/(m^2)^(1 + 2 epsilon).
       m3 = m3ElDiff;
@@ -2960,7 +2970,19 @@ bool PhaseSpace2to3diffractive::setupSampling() {
     dyminInvMBR   = sqrt(2.) / dyminSigMBR;
     // Max f(dy) for Von Neumann method, dpepmax from SigmaTot.
     dpepmax       = sigmaTotPtr->dpepMax();
-  }
+
+  // H1 Fit A/B.  
+  } else if (PomFlux == 6 || PomFlux == 7) {
+    bSlope        = 5.5;
+    epsilonPF     = (PomFlux == 6) ? 0.1182 : 0.1110;
+    alphaPrimePF  = 0.06;
+    double xPowPF = 1. - 2. * (1. + epsilonPF);
+    xIntPF        = 1. + xPowPF;
+    xIntInvPF     = 1. / xIntPF;
+    xtCorPF       = 2. * alphaPrimePF;
+    tAux[0]       = exp( max(-EXPMAX, bSlope  * (tLow[0] - tUpp[0])) ) - 1.;
+    tAux[1]       = exp( max(-EXPMAX, bSlope  * (tLow[1] - tUpp[1])) ) - 1.;
+  }  
 
   // Done.
   return true;
@@ -3000,7 +3022,7 @@ bool PhaseSpace2to3diffractive::trialKin( bool, bool ) {
         tAux1[i] = exp( max(-EXPMAX, bSlope1 * (tLow[i] - tUpp[i])) ) - 1.;
         tAux2[i] = exp( max(-EXPMAX, bSlope2 * (tLow[i] - tUpp[i])) ) - 1.;
       }
-    } else if (PomFlux == 3) {
+    } else if (PomFlux == 3 || PomFlux == 6 || PomFlux == 7) {
       tAux[0]       = exp( max(-EXPMAX, bSlope  * (tLow[0] - tUpp[0])) ) - 1.;
       tAux[1]       = exp( max(-EXPMAX, bSlope  * (tLow[1] - tUpp[1])) ) - 1.;
     } else if (PomFlux == 4) {
@@ -3068,8 +3090,8 @@ bool PhaseSpace2to3diffractive::trialKin( bool, bool ) {
                 ? tUpp[i] + log(1. + tAux1[i] * rndmPtr->flat()) / bSlope1
                 : tUpp[i] + log(1. + tAux2[i] * rndmPtr->flat()) / bSlope2;
 
-    // Streng and Berger et al. (RapGap):
-    } else if (PomFlux == 3) {
+    // Streng and Berger et al. (RapGap) and H1 Fit A/B:
+    } else if (PomFlux == 3 || PomFlux == 6 || PomFlux == 7) {
 
       // Select mass by dxi_1 * dxi_2 / (xi_1 * xi_2)^(1 + 2 epsilon).
       double sMinPow = pow( s5min / s, xIntPF);
@@ -3118,7 +3140,7 @@ bool PhaseSpace2to3diffractive::trialKin( bool, bool ) {
       if (tryAgain) continue;
 
     // The MBR model (PomFlux == 5).
-    } else {
+    } else if (PomFlux == 5) {
       double dymin0 = 0.;
       double dymax  = log(s/m2minMBR);
       double f1, f2, step2, dy, yc, ycmin, ycmax, dy1, dy2,
@@ -3185,6 +3207,7 @@ bool PhaseSpace2to3diffractive::trialKin( bool, bool ) {
         P          = pow2(pFF) * exp(2. * alphMBR * dy2 * t2);
         yRnd       = exp(t2) * rndmPtr->flat();
       } while (yRnd > P);
+
     }
 
     // Checks and kinematics construction four first options.
@@ -3192,7 +3215,7 @@ bool PhaseSpace2to3diffractive::trialKin( bool, bool ) {
     double pz4 = 0.;
     double pT3 = 0.;
     double pT4 = 0.;
-    if (PomFlux < 5) {
+    if (PomFlux != 5) {
 
       // Check whether m^2 (i.e. xi) and t choices are consistent.
       bool tryAgain   = false;

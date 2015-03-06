@@ -91,7 +91,7 @@ bool BeamRemnants::init( Info* infoPtrIn, Settings& settings, Rndm* rndmPtrIn,
 // Notation: iPar = all partons, iSys = matched systems of two beams,
 //           iRem = additional partons in remnants.
 
-bool BeamRemnants::add( Event& event, int iFirst, bool isDiff) {
+bool BeamRemnants::add( Event& event, int iFirst, bool doDiffCR) {
 
   // Update to current CM energy.
   eCM     = infoPtr->eCM();
@@ -135,16 +135,22 @@ bool BeamRemnants::add( Event& event, int iFirst, bool isDiff) {
   Event eventTmpSave = event;
   bool colCorrect = false;
   for (int i = 0;i < 10;++i) {
-    if (doReconnect && isDiff && reconnectMode > 0)
+    if (doReconnect && doDiffCR && reconnectMode > 0) {
       colourReconnectionPtr->next(event, iFirst);
 
-    // Check that the new colour structure is physical.
-    if (!junctionSplitting.checkColours(event))
-      event = eventTmpSave;
-    else {
-      colCorrect = true;
+      // Check that the new colour structure is physical.
+      if (!junctionSplitting.checkColours(event))
+	event = eventTmpSave;
+      else {
+	colCorrect = true;
+	break;
+      }
+      // If no colour reconnection, just check the colour configuration once.
+    } else {
+      if (junctionSplitting.checkColours(event))
+        colCorrect = true;
       break;
-    }
+    } 
   }
 
   // Restore event and return false if colour reconnection failed.

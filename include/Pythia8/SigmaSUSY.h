@@ -282,6 +282,9 @@ public:
   // Initialize process.
   virtual void initProc();
 
+  // Calculate flavour-independent parts of cross section.
+  virtual void sigmaKin();
+
   // Evaluate d(sigmaHat)/d(tHat).
   virtual double sigmaHat();
 

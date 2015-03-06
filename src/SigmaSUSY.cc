@@ -708,7 +708,8 @@ void Sigma2qg2chi0squark::sigmaKin() {
 
   // Common flavour-independent factor.
   // tmp: alphaS = 0.1 for counter-checks
-  sigma0 = M_PI / sH2 / coupSUSYPtr->sin2W * alpEM * alpS
+  double nChi = 6.0 * coupSUSYPtr->sin2W * (1 - coupSUSYPtr->sin2W);
+  sigma0 = M_PI / sH2 / nChi * alpEM * alpS
     * openFracPair;
 
   // Auxiliary factors for use below
@@ -780,7 +781,6 @@ double Sigma2qg2chi0squark::sigmaHat() {
   weight += fac2 * norm(LsqqX) / 2.0 + fac1 * norm(LsqqX);
 
   double sigma = sigma0 * weight;
-  if (abs(idq) < 9) sigma /= 3.;
 
   // Answer.
   return sigma;
@@ -834,6 +834,24 @@ void Sigma2qg2charsquark::initProc() {
 
 //--------------------------------------------------------------------------
 
+void Sigma2qg2charsquark::sigmaKin() {
+
+  // Common flavour-independent factor.
+  // tmp: alphaS = 0.1 for counter-checks
+  double nChi = 12.0 * coupSUSYPtr->sin2W;
+  sigma0 = M_PI / sH2 / nChi * alpEM * alpS
+    * openFracPair;
+
+  // Auxiliary factors for use below
+  ui       = uH - s3;
+  uj       = uH - s4;
+  ti       = tH - s3;
+  tj       = tH - s4;
+
+}
+
+//--------------------------------------------------------------------------
+  
 // Evaluate d(sigmaHat)/d(tHat), including incoming flavour dependence.
 
 double Sigma2qg2charsquark::sigmaHat() {
@@ -891,7 +909,6 @@ double Sigma2qg2charsquark::sigmaHat() {
   weight += fac2 * norm(LsqqX) / 2.0 + fac1 * norm(LsqqX);
 
   double sigma = sigma0 * weight;
-  if (abs(idq) < 9) sigma /= 3.;
 
   // Answer.
   return sigma * openFracPair;
@@ -966,7 +983,7 @@ void Sigma2qq2squarksquark::initProc() {
   // Secondary open width fraction.
   openFracPair = particleDataPtr->resOpenFrac(id3Sav, id4Sav);
 
-  // Selection of interference terms.
+  // Selection of interference terms
   onlyQCD = settingsPtr->flag("SUSY:qq2squarksquark:onlyQCD");
 }
 

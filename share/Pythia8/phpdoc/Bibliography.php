@@ -193,7 +193,7 @@ Phys. Rev. D76 (2007) 055003</dd>
  
 <dt>Che14</dt> 
 <dd>S.Chekanov, E.May, K. Strand, P. Van Gemmeren,
-Comput. Phys.Commun. 185 (2014) 2629 [arXiv:1311.1229</dd> 
+Comput. Phys.Commun. 185 (2014) 2629 [arXiv:1311.1229]</dd> 
  
 <dt>Cho96</dt> 
 <dd>P. Cho and A. Leibovich, Phys. Rev. D53 (1996) 6203 
@@ -201,13 +201,14 @@ Comput. Phys.Commun. 185 (2014) 2629 [arXiv:1311.1229</dd>
  
 <dt>Chr14</dt> 
 <dd>J.R. Christiansen and T. Sj&ouml;strand, 
-LU TP 14-02, MCnet-14-01, arXiv:1401.5238 [hep-ph]</dd> 
+JHEP 04 (2014) 115 [arXiv:1401.5238 [hep-ph]]</dd> 
  
 <dt>Chr14a</dt> 
 <dd>J.R. Christiansen and P.Z. Skands, in preparation</dd> 
  
 <dt>Cie12</dt> 
-<dd>R. Ciesielski and K. Goulianos, arXiv:1205.1446 [hep-ph]</dd> 
+<dd>R. Ciesielski and K. Goulianos, PoS ICHEP2012 (2013) 301
+[arXiv:1205.1446 [hep-ph]]</dd> 
  
 <dt>Cio08</dt> 
 <dd>C. Ciobanu et al., FERMILAB-FN-0773, CDF/PHYS/PUBLIC/7755 (2008)</dd> 
@@ -304,6 +305,10 @@ P. Torrielli, Phys.Lett. B701 (2011) 427 [arXiv:1104.5613 [hep-ph]]</dd>
 <dt>H1P06</dt> 
 <dd>H1 Collaboration, A. Aktas et al., Eur. Phys. J. C48 (2006) 715 
 [hep-ex/0606004]</dd> 
+ 
+<dt>H1P06a</dt> 
+<dd>H1 Collaboration, A. Aktas et al., Eur. Phys. J. C48 (2006) 749 
+[hep-ex/0606003]</dd> 
  
 <dt>H1P07</dt> 
 <dd>H1 Collaboration, A. Aktas et al., JHEP 0710 (2007) 042 

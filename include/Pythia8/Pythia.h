@@ -9,6 +9,10 @@
 #ifndef Pythia8_Pythia_H
 #define Pythia8_Pythia_H
 
+// Version number defined for use in macros and for consistency checks.
+#define PYTHIA_VERSION 8.206
+
+// Header files for the Pythia class and for what else the user may need.
 #include "Pythia8/Analysis.h"
 #include "Pythia8/Basics.h"
 #include "Pythia8/BeamParticle.h"
@@ -19,6 +23,8 @@
 #include "Pythia8/History.h"
 #include "Pythia8/Info.h"
 #include "Pythia8/LesHouches.h"
+#include "Pythia8/Merging.h"
+#include "Pythia8/MergingHooks.h"
 #include "Pythia8/PartonLevel.h"
 #include "Pythia8/ParticleData.h"
 #include "Pythia8/PartonDistributions.h"
@@ -34,8 +40,6 @@
 #include "Pythia8/SLHAinterface.h"
 #include "Pythia8/TimeShower.h"
 #include "Pythia8/UserHooks.h"
-#include "Pythia8/MergingHooks.h"
-#include "Pythia8/Merging.h"
 
 namespace Pythia8 {
 
@@ -192,7 +196,7 @@ private:
   Pythia& operator=(const Pythia&);
 
   // Constants: could only be changed in the code itself.
-  static const double VERSIONNUMBERCODE;
+  static const double VERSIONNUMBERHEAD, VERSIONNUMBERCODE;
   static const int    NTRY, SUBRUNDEFAULT;
 
   // Initialization data, extracted from database.

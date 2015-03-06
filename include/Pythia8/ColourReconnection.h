@@ -182,12 +182,17 @@ private:
   vector<ColourParticle> particles;
   vector<TrialReconnection> junTrials, dipTrials;
   vector<vector<int> > iColJun;
+  map<int,double> formationTimes;
+
+  // Constants: could only be changed in the code itself.
+  static const double MINIMUMGAIN, MINIMUMGAINJUN;
 
   // Variables needed.
-  int    nSys, nReconCols, swap1, swap2, reconnectMode, flipMode;
+  int    nSys, nReconCols, swap1, swap2, reconnectMode, flipMode,
+    timeDilationMode;
   bool   allowJunctions, sameNeighbourCol;
   double eCM, sCM, pT0, pT20Rec, pT0Ref, ecmRef, ecmPow, reconnectRange,
-    m0, m0sqr, m2Lambda, fracGluon, dLambdaCut, minimumGain, minimumGainJun;
+    m0, m0sqr, m2Lambda, fracGluon, dLambdaCut, timeDilationPar;
 
   // Pointer to various information on the generation.
   Info*          infoPtr;
@@ -322,6 +327,30 @@ private:
 
   // Update the list of dipole trial swaps to account for latest swap.
   void updateJunctionTrials();
+
+  // Check whether up to four dipoles are 'causally' connected.
+  bool checkTimeDilation(ColourDipole* dip1 = 0, ColourDipole* dip2 = 0, 
+    ColourDipole* dip3 = 0, ColourDipole* dip4 = 0);
+
+  // Check whether two four momenta are casually connected.
+  bool checkTimeDilation(Vec4 p1, Vec4 p2, double t1, double t2);
+
+  // Find the momentum of the dipole.
+  Vec4 getDipoleMomentum(ColourDipole* dip);
+
+  // Find all particles connected to a junction system (particle list).
+  void addJunctionIndices(int iSinglePar, vector<int> &iPar, 
+    vector<int> &usedJuncs);
+
+  // Find all the formation times.
+  void setupFormationTimes( Event & event);
+
+  // Get the mass of all partons connected to a junction system (event list).
+  double getJunctionMass(Event & event, int col);
+
+  // Find all particles connected to a junction system (event list).
+  void addJunctionIndices(Event & event, int iSinglePar, 
+    vector<int> &iPar, vector<int> &usedJuncs);
 
   // The old MPI-based scheme.
   bool reconnectMPIs( Event& event, int oldSize);
