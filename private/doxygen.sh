@@ -5,6 +5,7 @@
 # Author: Philip Ilten, January 2015.
 
 # This is a simple script to create Doxygen documentation for Pythia.
+# It should be run from the main directory, but is located in private/.
 
 # Check Doxygen and SED exist.
 if ! type "sed" &> /dev/null; then 
@@ -35,7 +36,7 @@ VER=$(grep Number share/Pythia8/xmldoc/Version.xml | grep -o 8.[0-9][0-9][0-9])
 $SED "s|\(PROJECT_NUMBER *= *\)[^ ]*|\1$VER|g" doxygen.cfg
 
 # Create the documentation and clean up.
-doxygen doxygen.cfg
+doxygen private/doxygen.cfg
 $SED "s|///|//|g" doxygen/*source.html  # Convert source comments back to //.
 for DIR in $DIRS; do rm -rf doxygen/$DIR; done
 rm -rf doxygen.cfg.sed doxygen/include

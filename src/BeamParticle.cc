@@ -21,8 +21,9 @@ namespace Pythia8 {
 
 class ColState {
 public:
-  ColState() : nTotal(0) {}
+  ColState() : nTotal(0.) {}
   vector< pair<int,int> > lastSteps;
+  // nTotal is integer but can become extremely big.
   double nTotal;
 };
 
@@ -979,15 +980,14 @@ void BeamParticle::findColSetup(Event& event) {
     for (int j = 0; j < 2*(i+1); ++j)
       colStates[i][j].resize(2*(i+1));
   }
-  colStates[0][0][0].nTotal = 1;
+  colStates[0][0][0].nTotal = 1.;
 
   bool noColouredParticles = true;
   // Find all possible multiplets and their degeneracies.
   for (int i = 0; i < size(); ++i) {
     for (int j = 0; j < int(colStates[i].size()); ++j) {
       for (int k = 0; k < int(colStates[i][j].size()); ++k) {
-        if (colStates[i][j][k].nTotal == 0)
-          continue;
+        if (colStates[i][j][k].nTotal < 0.5) continue;
         int idParton = resolved[i].id();
 
         // If particle is a quark.

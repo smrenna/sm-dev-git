@@ -568,7 +568,11 @@ bool Reader::init() {
     }
   }
 
-  if ( !file ) heprup.NPRUP = -42;
+#ifdef GZIPSUPPORT
+  if ( file_gz == NULL ) heprup.NPRUP = -42;
+#else
+  if ( file == NULL ) heprup.NPRUP = -42;
+#endif
 
   // Scan the header block for XML tags
   string leftovers;
@@ -706,7 +710,11 @@ bool Reader::readEvent(HEPEUP * peup) {
   while ( getLine() && currentLine.find("</event>") == string::npos )
     eventComments += currentLine + "\n";
 
-  if ( !file ) return false;
+#ifdef GZIPSUPPORT
+  if ( file_gz == NULL ) return false;
+#else
+  if ( file == NULL ) return false;
+#endif
 
   eup.scales = LHAscales(eup.SCALUP);
 
@@ -853,6 +861,8 @@ bool Writer::writeEvent(HEPEUP * peup) {
        << " " << setw(14) << eup.AQCDUP << endl;
   eup.resize();
 
+  int pDigits = 18;
+
   for ( int i = 0; i < eup.NUP; ++i )
     file << " " << setw(8) << eup.IDUP[i]
          << " " << setw(2) << eup.ISTUP[i]
@@ -860,11 +870,11 @@ bool Writer::writeEvent(HEPEUP * peup) {
          << " " << setw(4) << eup.MOTHUP[i].second
          << " " << setw(4) << eup.ICOLUP[i].first
          << " " << setw(4) << eup.ICOLUP[i].second
-         << " " << setw(14) << eup.PUP[i][0]
-         << " " << setw(14) << eup.PUP[i][1]
-         << " " << setw(14) << eup.PUP[i][2]
-         << " " << setw(14) << eup.PUP[i][3]
-         << " " << setw(14) << eup.PUP[i][4]
+         << " " << setw(pDigits) << eup.PUP[i][0]
+         << " " << setw(pDigits) << eup.PUP[i][1]
+         << " " << setw(pDigits) << eup.PUP[i][2]
+         << " " << setw(pDigits) << eup.PUP[i][3]
+         << " " << setw(pDigits) << eup.PUP[i][4]
          << " " << setw(1) << eup.VTIMUP[i]
          << " " << setw(1) << eup.SPINUP[i] << endl;
 

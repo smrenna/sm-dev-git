@@ -162,10 +162,10 @@ bool SLHAinterface::initSLHA(Settings& settings,
     string dName = "~d_"+indx.str();
     string lName = "~e_"+indx.str();
     if (isOrderedQ) {
-      particleDataPtr->names(idSup[i],uName,uName+"bar");
-      particleDataPtr->names(idSdown[i],dName,dName+"bar");
+      particleDataPtr->names(idSup[i-1],uName,uName+"bar");
+      particleDataPtr->names(idSdown[i-1],dName,dName+"bar");
     }
-    if (isOrderedL) particleDataPtr->names(idSlep[i],lName+"-",lName+"+");
+    if (isOrderedL) particleDataPtr->names(idSlep[i-1],lName+"-",lName+"+");
   }
 
   // NMSSM spectrum (modify existing Higgs names and add particles)

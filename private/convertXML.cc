@@ -1,9 +1,14 @@
-// File: convert.cc
+// convert.cc is a part of the PYTHIA event generator.
+// Copyright (C) 2015 Torbjorn Sjostrand.
+// PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
+// Please respect the MCnet Guidelines, see GUIDELINES for details.
+// PHP-specific additions written by Ben Lloyd.
+
 // This program should be used to convert existing .xml files
 // to simple .html and .php analogues for preliminary use.
-// Copyright (C) 2015 Torbjorn Sjostrand/Ben Lloyd
+// It should be run from the main directory, but is located in private/.
 
-//**************************************************************************
+//==========================================================================
 
 // Stdlib header files for character manipulation.
 #include <cctype>
@@ -41,11 +46,11 @@ using std::ostringstream;
 // Input/output formatting.
 using std::endl;
 
-//**************************************************************************
+//==========================================================================
 
 // Generic facilities.
 
-//*********
+//--------------------------------------------------------------------------
 
 // Convert string to lowercase for case-insensitive comparisons.
 // Also remove initial and trailing blanks, if any.
@@ -65,7 +70,7 @@ string toLower(const string& name) {
 
 }
 
-//*********
+//--------------------------------------------------------------------------
 
 // Extract XML value string following XML attribute.
 
@@ -79,12 +84,12 @@ string attributeValue(string line, string attribute) {
 
 }
 
-//**************************************************************************
+//==========================================================================
 
 // Classes and methods used to build an index of all documented methods,
 // and to write a file with the relevant info.
 
-//*********
+//--------------------------------------------------------------------------
 
 // Class with info on a method.
 class MethodInfo {
@@ -95,12 +100,12 @@ public:
   string method, file, anchor;
 };
 
-//*********
+//--------------------------------------------------------------------------
 
 // Map of methods documented in the xml files.
 map<string, MethodInfo> methodsMap;
 
-//*********
+//--------------------------------------------------------------------------
 
 // Generate index.
 
@@ -115,8 +120,8 @@ bool constructMethods(string convType) {
   }
 
   // Open output file.
-  string nameOut = (toHTML) ? "htmldoc/ProgramMethods.html"
-    : "phpdoc/ProgramMethods.php";
+  string nameOut = (toHTML) ? "share/Pythia8/htmldoc/ProgramMethods.html"
+    : "share/Pythia8/phpdoc/ProgramMethods.php";
   const char* nameOutCstring = nameOut.c_str();
   ofstream os(nameOutCstring);
   if (!os) {
@@ -199,7 +204,7 @@ bool constructMethods(string convType) {
 
 }
 
-//**************************************************************************
+//==========================================================================
 
 // Convert from xml to html or php: the key method of this program.
 
@@ -214,7 +219,7 @@ bool convertFile(string nameRoot, string convType) {
   }
 
   // Open input file.
-  string nameIn = "xmldoc/" + nameRoot + ".xml";
+  string nameIn = "share/Pythia8/xmldoc/" + nameRoot + ".xml";
   const char* nameInCstring = nameIn.c_str();
   ifstream is(nameInCstring);
   if (!is) {
@@ -223,8 +228,8 @@ bool convertFile(string nameRoot, string convType) {
   }
 
   // Open output file.
-  string nameOut = (toHTML) ? "htmldoc/" + nameRoot + ".html"
-    : "phpdoc/" + nameRoot + ".php";
+  string nameOut = (toHTML) ? "share/Pythia8/htmldoc/" + nameRoot + ".html"
+    : "share/Pythia8/phpdoc/" + nameRoot + ".php";
   const char* nameOutCstring = nameOut.c_str();
   ofstream os(nameOutCstring);
   if (!os) {
@@ -262,7 +267,7 @@ bool convertFile(string nameRoot, string convType) {
     // Do not amend unless you know php!
     if (toPHP && line.find("<PHPFILECODE/>") != string::npos) {
       // Open php input file.
-      string phpIn = "phpdoc/php.txt";
+      string phpIn = "share/Pythia8/phpdoc/php.txt";
       const char* phpInCstring = phpIn.c_str();
       ifstream isphp(phpInCstring);
       if (!isphp) {
@@ -859,9 +864,10 @@ bool convertFile(string nameRoot, string convType) {
   return true;
 }
 
-//**************************************************************************
+//==========================================================================
 
 // Convert files from xml to html and php one at a time.
+
 int main() {
 
   // Flags for what to do.
@@ -877,7 +883,7 @@ int main() {
     convertFile("Index", "html");
 
     // Extract other file names from the Index.xml file.
-    ifstream is("xmldoc/Index.xml");
+    ifstream is("share/Pythia8/xmldoc/Index.xml");
     string line;
     while ( getline(is, line) ) {
       if (line.find("<aidx") != string::npos) {
@@ -901,7 +907,7 @@ int main() {
     convertFile("Index", "php");
 
     // Extract other file names from the Index.xml file.
-    ifstream is("xmldoc/Index.xml");
+    ifstream is("share/Pythia8/xmldoc/Index.xml");
     string line;
     while ( getline(is, line) ) {
       if (line.find("<aidx") != string::npos) {
@@ -920,5 +926,5 @@ int main() {
   return 0;
 }
 
-//**************************************************************************
+//==========================================================================
 

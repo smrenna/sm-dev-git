@@ -23,7 +23,7 @@ namespace Pythia8 {
 
 // The current Pythia (sub)version number, to agree with XML version.
 const double Pythia::VERSIONNUMBERHEAD = PYTHIA_VERSION;
-const double Pythia::VERSIONNUMBERCODE = 8.206;
+const double Pythia::VERSIONNUMBERCODE = 8.207;
 
 //--------------------------------------------------------------------------
 
@@ -1032,8 +1032,10 @@ bool Pythia::next() {
   // Pick current beam valence flavours (for pi0, K0S, K0L, Pomeron).
   beamA.newValenceContent();
   beamB.newValenceContent();
-  beamPomA.newValenceContent();
-  beamPomB.newValenceContent();
+  if ( doDiffraction || doHardDiff) {
+    beamPomA.newValenceContent();
+    beamPomB.newValenceContent();
+  }
 
   // Can only generate event if initialization worked.
   if (!isInit) {

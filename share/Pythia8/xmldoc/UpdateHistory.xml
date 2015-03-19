@@ -12,7 +12,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.206: 6 March 2015 
+<li>8.207: 19 March 2015 
 <ul> 
  
 <li>New machinery for hard diffraction now in place. Still to be
@@ -27,6 +27,11 @@ of the code.</li>
 <li>A new switch <code>POWHEG:QEDveto</code> has been introduced to
 steer the treatment of non-QCD radiation in the POWHEG implementation 
 of <code>include/Pythia8Plugins/PowhegHooks.h</code>.</li> 
+
+<li>The need to link to the BOOST library to read gzipped files
+has been eliminated by including iostream classes wrapping the zlib 
+compression library, see new files <code>Streams.h</code> and  
+<code>Streams.cc</code>.</li>
  
 <li>New option in the HepMC interface, whereby PYTHIA particles can be 
 appended to an existing HepMC event.</li> 
@@ -60,6 +65,12 @@ chargino + squark pair production. Thanks to Michihisa Takeuchi.</li>
  
 <li>Some minor bug fixes in the SUSY code, and some speed optimization
 suggested by Martin White.</li> 
+ 
+<li>Fixed incorrect indexing in the SLHA interface.</li> 
+
+<li>Removed misleading flavour setup for unused Pomeron.</li> 
+
+<li>Minor improvement to the <code>main89.cc</code> example program.</li> 
  
 <li>Mildly modified warning/error messages when junction splitting
 fails.</li> 

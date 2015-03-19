@@ -20,8 +20,7 @@
 # Handle GZIP support.
 ifeq ($(GZIP_USE),true)
   CXX_COMMON+= -DGZIPSUPPORT
-  CXX_COMMON+= -L$(BOOST_LIB) -Wl,-rpath $(BOOST_LIB) -lboost_iostreams
-  CXX_COMMON+= -L$(GZIP_LIB) -Wl,-rpath $(GZIP_LIB) -lz
+  CXX_COMMON+= -lz
 endif
 
 # Check distribution (use local version first, then installed version).

@@ -12,6 +12,7 @@
 #define Pythia8_LHEF3_H
 
 #include "Pythia8/PythiaStdlib.h"
+#include "Pythia8/Streams.h"
 #include <stdexcept>
 
 namespace Pythia8 {
@@ -774,20 +775,6 @@ class Reader {
 
 public:
 
-  // Initialize the Reader with a stream from which to read an event
-  // file. After the constructor is called the whole header block
-  // including the enclosing lines with tags are available in the
-  // public headerBlock member variable. Also the information from the
-  // init block is available in the heprup member variable and any
-  // additional comment lines are available in initComments.
-  //
-  // is: the stream to read from.
-  //
-  Reader(istream & is)
-    : file(is) {
-    isGood = init();
-  }
-
   // Initialize the Reader with a filename from which to read an event
   // file. After the constructor is called the whole header block
   // including the enclosing lines with tags are available in the
@@ -797,10 +784,14 @@ public:
   //
   // filename: the name of the file to read from.
   //
-  Reader(string filename)
-    : intstream(filename.c_str()), file(intstream) {
-    init();
+  Reader(string filenameIn)
+    : filename(filenameIn), intstream(filename.c_str()), file(&intstream),
+      file_gz(NULL) {
+    file_gz = new igzstream(filename.c_str());
+    isGood = init();
   }
+
+  ~Reader() { if (file_gz) delete file_gz; };
 
 private:
 
@@ -819,7 +810,11 @@ protected:
   // Used internally to read a single line from the stream.
   bool getLine() {
     currentLine = "";
-    if(!getline(file, currentLine)) return false;
+#ifdef GZIPSUPPORT
+    if(!getline(*file_gz, currentLine)) return false;
+#else    
+    if(!getline(*file, currentLine)) return false;
+#endif
     // Replace single by double quotes
     replace(currentLine.begin(),currentLine.end(),'\'','\"');
     return true;
@@ -827,13 +822,17 @@ protected:
 
 protected:
 
+  // Name of file-to-be-read.
+  string filename;
+
   // A local stream which is unused if a stream is supplied from the
   // outside.
   ifstream intstream;
 
-  // The stream we are reading from. This may be a reference to an
-  // external stream or the internal intstream.
-  istream & file;
+  // The stream we are reading from. This may be a pointer to an
+  // external stream or the internal intstream. Also from gzipped file.
+  istream * file;
+  igzstream * file_gz;
 
   // The last line read in from the stream in getline().
   string currentLine;

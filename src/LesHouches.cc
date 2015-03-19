@@ -11,25 +11,6 @@
 // Access time information.
 #include <ctime>
 
-// GZIP support.
-#ifdef GZIPSUPPORT
-
-// For GCC versions >= 4.6, can switch off shadow warnings.
-#if (defined GZIPSUPPORT && ((__GNUC__ * 100) + __GNUC_MINOR__) >= 406)
-#pragma GCC diagnostic ignored "-Wshadow"
-#endif
-
-// Boost includes.
-#include "boost/iostreams/filtering_stream.hpp"
-#include "boost/iostreams/filter/gzip.hpp"
-
-// Switch shadow warnings back on.
-#if (defined GZIPSUPPORT && ((__GNUC__ * 100) + __GNUC_MINOR__) >= 406)
-#pragma GCC diagnostic warning "-Wshadow"
-#endif
-
-#endif // GZIPSUPPORT
-
 namespace Pythia8 {
 
 //==========================================================================
@@ -643,42 +624,12 @@ bool LHAup::setOldEventLHEF() {
 //--------------------------------------------------------------------------
 
 // Open a file using provided ifstream and return a pointer to an istream
-// that can be used to process the file. This is designed to handle
-// GZIPSUPPORT in a transparent manner:
-//  - no GZIPSUPPORT, the istream pointer is exactly the ifstream object.
-//  - with GZIPSUPPORT, the istream pointer is a Boost filtering istream
-//    (memory allocated), which reads from the ifstream and decompresses.
-// The companion 'closeFile' can be used to correctly close a file and
-// deallocate memory if needed. Note that a gzip filter is only applied
-// if the final three characters of the filename are '.gz'.
+// that can be used to process the file.
 
 istream* LHAup::openFile(const char *fn, ifstream &ifs) {
   // Open the file
   ifs.open(fn);
-
-// No gzip support, so just return pointer to the istream
-#ifndef GZIPSUPPORT
   return (istream *) &ifs;
-
-// Gzip support, so construct istream with gzip support
-#else
-  // Boost filtering istream
-  boost::iostreams::filtering_istream *fis =
-    new boost::iostreams::filtering_istream();
-
-  // Pass along the 'good()' flag, so code elsewhere works unmodified.
-  if (!ifs.good()) fis->setstate(std::ios_base::badbit);
-
-  // Check filename ending to decide which filters to apply.
-  else {
-    const char *last = strrchr(fn, '.');
-    if (last && strncmp(last, ".gz", 3) == 0)
-      fis->push(boost::iostreams::gzip_decompressor());
-    fis->push(ifs);
-  }
-  return (istream *) fis;
-
-#endif // GZIPSUPPORT
 }
 
 //--------------------------------------------------------------------------
@@ -720,11 +671,13 @@ bool LHAupLHEF::setInitLHEF( istream & isIn, bool readHead ) {
   comments+=reader.initComments;
   comments+="</init>\n";
   istringstream is1(comments);
-  istream & iss(((headerfile == NULL) ? is1 : isIn));
+  bool useComments = (headerfile == NULL);
+  istream & iss((useComments ? is1 : isIn));
 
   // Check that first line is consistent with proper LHEF file.
   string line;
-  if (!getline(iss, line)) return false;
+  if ( useComments && !getline(iss,line)) return false;
+  if (!useComments && !getLine(line)) return false;
 
   // What to search for if reading headers; if not reading
   // headers then return to default behaviour
@@ -734,7 +687,8 @@ bool LHAupLHEF::setInitLHEF( istream & isIn, bool readHead ) {
   // is found first on a line.
   string tag = " ";
   do {
-    if (!getline(iss, line)) return false;
+    if ( useComments && !getline(iss,line)) return false;
+    if (!useComments && !getLine(line)) return false;
     if (line.find_first_not_of(" \n\t\v\b\r\f\a") != string::npos) {
       istringstream getfirst(line);
       getfirst >> tag;
@@ -753,7 +707,8 @@ bool LHAupLHEF::setInitLHEF( istream & isIn, bool readHead ) {
     string key = "base";
     vector < string > keyVec;
     while (true) {
-      if (!getline(iss, line)) return false;
+      if ( useComments && !getline(iss,line)) return false;
+      if (!useComments && !getLine(line)) return false;
       
       // Tell XML parser to ignore comment and CDATA blocks
       // If we are currently inside a comment block, check for block end
@@ -898,7 +853,7 @@ bool LHAupLHEF::setInitLHEF( istream & isIn, bool readHead ) {
     for (map < string, string >::iterator it = headerMap.begin();
          it != headerMap.end(); it++)
       setInfoHeader(it->first, it->second);
-    
+
   } // if (readHead == true && tag == headerTag)
   
   // Extract beam and strategy info, and store it.
