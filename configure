@@ -47,6 +47,9 @@ Optional external packages.
 --with-PACKAGE-version=VER : When using an LCG platform, set with the option
                              --lcg above, automatically set the PACKAGE path
                              for the given version VER.
+--with-lhapdf6-plugin=CODE : Set the LHAPDF6 plugin code [LHAPDF5.h]. LHAPDF5.h 
+                             uses the FORTRAN wrapper while LHAPDF6.h uses the
+                             native C++ interface (requires BOOST headers).
   evtgen   : Particle decays with the EvtGen decay pacakge, requires HEPMC2.
   fastjet3 : Building of jets using the FastJet package, version 3.
   hepmc2   : Export PYTHIA events to the HEPMC format, version 2.
@@ -56,7 +59,7 @@ Optional external packages.
   promc    : Export PYTHIA events to the PROMC format.
   root     : Use ROOT trees and histograms with PYTHIA.
   gzip     : Enable reading of GZIPPED files using the libz library.
-  boost    : Currently not needed, but available in case of future use.
+  boost    : Needed for LHAPDF6 when using the LHAPDF6.h plugin.
 
 Installation directories.
 --prefix=DIR           : Directory to install PYTHIA [$PWD].
@@ -86,6 +89,7 @@ for PKG in "evtgen" "fastjet3" "hepmc2" "hepmc3" "lhapdf5" "lhapdf6" "promc"\
     "root" "boost" "gzip"; do
     OPTIONS+=" --with-$PKG --with-$PKG-bin --with-$PKG-lib --with-$PKG-include"
     OPTIONS+=" --with-$PKG-version"; done
+OPTIONS+=" --with-lhapdf6-plugin"
 OPTIONS+=" --arch --cxx --cxx-common --cxx-shared --cxx-soname --lib-suffix"
 
 ################################################################################
@@ -235,16 +239,20 @@ configure_package "HEPMC2" "/afs/cern.ch/sw/lcg/releases/HepMC"\
 configure_package "HEPMC3" "" \
     "bin" "include" "lib" "" "HepMC/GenEvent.h" "HepMC" ""
 configure_package "LHAPDF5" "/afs/cern.ch/sw/lcg/releases/MCGenerators/lhapdf"\
-    "bin" "include" "lib" "" "LHAPDF/LHAPDF.h" "LHAPDF" ""
-configure_package "LHAPDF6" "/afs/cern.ch/sw/lcg/releases/MCGenerators/lhapdf6"\
-    "bin" "include" "lib" "" "LHAPDF/LHAPDF.h" "LHAPDF" ""
+    "bin" "include" "lib" "" "" "LHAPDF" ""
+if [ "$LHAPDF6_PLUGIN" = "LHAPDF6.h" ]; then configure_package\
+    "LHAPDF6" "/afs/cern.ch/sw/lcg/releases/MCGenerators/lhapdf6"\
+    "bin" "include" "lib" "" "LHAPDF/LHAPDF.h" "LHAPDF" "BOOST"
+else LHAPDF6_PLUGIN="LHAPDF5.h"; configure_package\
+    "LHAPDF6" "/afs/cern.ch/sw/lcg/releases/MCGenerators/lhapdf6"\
+    "bin" "include" "lib" "" "" "LHAPDF" ""; fi
 configure_package "PROMC" ""\
      "bin" "" "lib" "" "src/ProMCBook.h" "promc" "GZIP"
 configure_package "ROOT" "/afs/cern.ch/sw/lcg/releases/ROOT"\
     "bin" "include" "lib" "rootcint,root-config" "TH1D.h" "Cint" ""
-configure_package "GZIP" "" "" "include" "lib64" "" "zlib.h" "z" ""
+configure_package "GZIP" "" "" "include" "lib" "" "zlib.h" "z" ""
 configure_package "BOOST" "/afs/cern.ch/sw/lcg/releases/Boost"\
-    "bin" "include" "lib" "" "" "boost_iostreams" ""
+    "bin" "include" "lib" "" "boost/shared_ptr.hpp" "" ""
 
 # Check package dependencies (order does not matter).
 for IDX in ${!PKG_LIST[@]}; do PKG=${PKG_LIST[$IDX]}
@@ -299,7 +307,7 @@ for IDX in ${!PKG_LIST[@]}; do
     if [ "$PKG_USE" = true ]; then echo "* $PKG"
 	eval PKG_BIN=\${${PKG}_CFG[1]}; eval PKG_INC=\${${PKG}_CFG[2]};
 	eval PKG_LIB=\${${PKG}_CFG[3]};
-    else  PKG_BIN=""; PKG_INC=""; PKG_LIB=""; fi
+    else PKG_BIN=""; PKG_INC=""; PKG_LIB=""; fi
     cat >> $CFG_FILE << BLOCKTEXT
 
 # $PKG configuration.
@@ -308,5 +316,8 @@ ${PKG}_BIN=$PKG_BIN
 ${PKG}_INCLUDE=$PKG_INC
 ${PKG}_LIB=$PKG_LIB
 BLOCKTEXT
+if [ "$PKG" = "LHAPDF6" ]; then 
+    echo "${PKG}_PLUGIN=$LHAPDF6_PLUGIN" >> $CFG_FILE; fi
+if [ "$PKG" = "LHAPDF5" ]; then echo "${PKG}_PLUGIN=LHAPDF5.h" >> $CFG_FILE; fi
 done
 echo ""

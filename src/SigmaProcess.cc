@@ -582,7 +582,7 @@ double SigmaProcess::weightHiggsDecay( Event& process, int iResBeg,
 
   // For mixed CP states need epsilon product and gauge boson masses.
   double epsilonProd = 0.;
-  if (higgsParity == 3) {
+  if (higgsParity == 3 || higgsParity == 4) {
     double p[4][4];
     for (int i = 0; i < 4; ++i) {
       int         ii = i3;

@@ -18,7 +18,7 @@ namespace Pythia8 {
 
 void SLHAinterface::init( Settings& settings, Rndm* rndmPtr,
   Couplings* couplingsPtrIn, ParticleData* particleDataPtr,
-  bool& useSLHAcouplings) {
+  bool& useSLHAcouplings, stringstream& particleDataBuffer) {
 
   // Initialize SLHA couplingsPtr to PYTHIA one by default
   couplingsPtr     = couplingsPtrIn;
@@ -29,6 +29,16 @@ void SLHAinterface::init( Settings& settings, Rndm* rndmPtr,
     infoPtr->errorMsg("Error in SLHAinterface::init: "
       "Could not read SLHA file");
 
+  // Reset any particle-related user settings.
+  string line;
+  string warnPref = "Warning in SLHAinterface::init: ";
+  while (getline(particleDataBuffer, line) 
+    && settings.flag("SLHA:allowUserOverride")) {
+    bool pass = particleDataPtr->readString(line, true);
+    if (!pass) infoPtr->errorMsg(warnPref + "Unable to process line " + line);
+    else infoPtr->errorMsg(warnPref + "Overwriting SLHA by " + line);
+  }
+  
   // SLHA sets isSUSY flag to tell us if there was an SLHA SUSY spectrum
   if (couplingsPtr->isSUSY) {
     // Initialize the derived SUSY couplings class (SM first, then SUSY)
@@ -362,7 +372,6 @@ bool SLHAinterface::initSLHA(Settings& settings,
   // Import mass spectrum.
   bool   keepSM            = settings.flag("SLHA:keepSM");
   double minMassSM         = settings.parm("SLHA:minMassSM");
-  bool   allowUserOverride = settings.flag("SLHA:allowUserOverride");
   vector<int> idModified;
   if (ifailSpc == 1 || ifailSpc == 0) {
 
@@ -391,16 +400,6 @@ bool SLHAinterface::initSLHA(Settings& settings,
         && isInternal) {
         infoPtr->errorMsg(warnPref + "ignoring MASS entry", "for id = "
           + idCode.str() + " (m0 < SLHA:minMassSM)", true);
-      }
-
-      // Also ignore SLHA mass values if user has already set
-      // a different value and is allowed to override them.
-      else if (allowUserOverride && particleDataPtr->hasChanged(id)) {
-        ostringstream mValue;
-        mValue << particleDataPtr->m0(id);
-        infoPtr->errorMsg(warnPref + "keeping user mass",
-          "for id = " + idCode.str() + ", m0 = " + mValue.str(), true);
-        idModified.push_back(id);
       }
       else {
         particleDataPtr->m0(id,mass);
@@ -438,7 +437,7 @@ bool SLHAinterface::initSLHA(Settings& settings,
       continue;
     }
     else if (idRes < 1000000 && particleDataPtr->m0(idRes) < minMassSM
-             && !particleDataPtr->hasChanged(idRes) && isInternal) {
+             && isInternal) {
       infoPtr->errorMsg(warnPref + "ignoring DECAY table", "for id = "
         + idCode.str() + " (m0 < SLHA:minMassSM)", true);
       continue;
@@ -611,12 +610,17 @@ bool SLHAinterface::initSLHA(Settings& settings,
         mSumMin = min(mSumMin, mSum);
       }
       // Require at least one on-shell channel
-      if (mSumMin > m0) {
+      if (mSumMin > m0 && particlePtr->id() != 25) {
         infoPtr->errorMsg(warnPref + "particle forced stable"," id = "
           + idCode.str() + " (no on-shell decay channels)", true);
         particlePtr->setMWidth(0.0);
         particlePtr->setMayDecay(false);
         continue;
+      }
+      else if (mSumMin > m0 && particlePtr->id() == 25) {
+        infoPtr->errorMsg(warnPref
+	  + "allowing particle with no on-shell decays ",
+	  " id = " + idCode.str() , true);
       }
       else {
       // mMin: lower cutoff on Breit-Wigner: default is mMin = m0 - 5*Gamma

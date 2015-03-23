@@ -19,10 +19,11 @@
 #include <iostream>
 #include <fstream>
 #include <string.h>
-#include <zlib.h>
 
 namespace Pythia8 {
 
+#ifdef GZIPSUPPORT
+#include <zlib.h>
 //==========================================================================
   
 // Internal classes to implement gzstream. See below for user classes.
@@ -83,11 +84,11 @@ public:
 class igzstream : public gzstreambase, public std::istream {
 public:
     igzstream() : std::istream( &buf) {} 
-    igzstream( const char* name, int open_mode = std::ios::in)
-        : gzstreambase( name, open_mode), std::istream( &buf) {}  
+    igzstream( const char* name, int mode = std::ios::in)
+        : gzstreambase( name, mode), std::istream( &buf) {}  
     gzstreambuf* rdbuf() { return gzstreambase::rdbuf(); }
-    void open( const char* name, int open_mode = std::ios::in) {
-        gzstreambase::open( name, open_mode);
+    void open( const char* name, int mode = std::ios::in) {
+        gzstreambase::open( name, mode);
     }
 };
 // -------------------------------------------------------------------------
@@ -98,10 +99,14 @@ public:
     ogzstream( const char* name, int mode = std::ios::out)
         : gzstreambase( name, mode), std::ostream( &buf) {}  
     gzstreambuf* rdbuf() { return gzstreambase::rdbuf(); }
-    void open( const char* name, int open_mode = std::ios::out) {
-        gzstreambase::open( name, open_mode);
+    void open( const char* name, int mode = std::ios::out) {
+        gzstreambase::open( name, mode);
     }
 };
+#else
+typedef std::ifstream igzstream;
+typedef std::ofstream ogzstream;
+#endif
 
 //==========================================================================
 

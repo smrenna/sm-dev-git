@@ -46,6 +46,14 @@ ifeq ($(LHAPDF6_USE),true)
   TARGETS+=$(LOCAL_LIB)/libpythia8lhapdf6.so
 endif
 
+# GZIP.
+OBJ_COMMON=-MD $(CXX_COMMON)
+LIB_COMMON=-ldl
+ifeq ($(GZIP_USE),true)
+  OBJ_COMMON+= -DGZIPSUPPORT -I$(GZIP_INCLUDE)
+  LIB_COMMON+= -L$(GZIP_LIB) -lz
+endif
+
 ################################################################################
 # RULES: Definition of the rules used to build PYTHIA.
 ################################################################################
@@ -70,30 +78,18 @@ Makefile.inc:
 
 # PYTHIA.
 $(LOCAL_TMP)/Pythia.o: $(LOCAL_SRC)/Pythia.cc Makefile.inc
-	$(CXX) $< -o $@ -c -MD -DXMLDIR=\"$(PREFIX_SHARE)/xmldoc\" $(CXX_COMMON)
+	$(CXX) $< -o $@ -c $(OBJ_COMMON) -DXMLDIR=\"$(PREFIX_SHARE)/xmldoc\"
 $(LOCAL_TMP)/%.o: $(LOCAL_SRC)/%.cc
-ifeq ($(GZIP_USE),true)
-	$(CXX) $< -o $@ -c -MD -DGZIPSUPPORT $(CXX_COMMON)
-else
-	$(CXX) $< -o $@ -c -MD $(CXX_COMMON)
-endif
-
+	$(CXX) $< -o $@ -c $(OBJ_COMMON)
 $(LOCAL_LIB)/libpythia8.a: $(OBJECTS)
 	ar cru $@ $^
 $(LOCAL_LIB)/libpythia8$(LIB_SUFFIX): $(OBJECTS)
-ifeq ($(GZIP_USE),true)
 	$(CXX) $^ -o $@ $(CXX_COMMON) $(CXX_SHARED) $(CXX_SONAME),$(notdir $@)\
-	 -ldl -lz
-else
-	$(CXX) $^ -o $@ $(CXX_COMMON) $(CXX_SHARED) $(CXX_SONAME),$(notdir $@)\
-	 -ldl
-endif
+	  $(LIB_COMMON)
 
 # LHAPDF (turn off all warnings for readability).
-$(LOCAL_TMP)/LHAPDF5.o: $(LOCAL_INCLUDE)/Pythia8Plugins/LHAPDF5.h
-	$(CXX) -x c++ $< -o $@ -c -MD -w -I$(LHAPDF5_INCLUDE) $(CXX_COMMON)
-$(LOCAL_TMP)/LHAPDF6.o: $(LOCAL_INCLUDE)/Pythia8Plugins/LHAPDF6.h
-	$(CXX) -x c++ $< -o $@ -c -MD -w -I$(LHAPDF6_INCLUDE) $(CXX_COMMON)
+$(LOCAL_TMP)/LHAPDF%.o: $(LOCAL_INCLUDE)/Pythia8Plugins/$$(LHAPDF%_PLUGIN)
+	$(CXX) -x c++ $< -o $@ -c -MD -w -I$(LHAPDF$*_INCLUDE) $(CXX_COMMON)
 $(LOCAL_LIB)/libpythia8lhapdf5.so: $(LOCAL_TMP)/LHAPDF5.o\
 	$(LOCAL_LIB)/libpythia8.a
 	$(CXX) $^ -o $@ $(CXX_COMMON) $(CXX_SHARED) $(CXX_SONAME),$(notdir $@)\

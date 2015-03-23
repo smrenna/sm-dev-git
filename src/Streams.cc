@@ -14,6 +14,7 @@
 
 namespace Pythia8 {
 
+#ifdef GZIPSUPPORT
 //==========================================================================
 
 // The gzstreambuf class.
@@ -140,8 +141,8 @@ gzstreambase::~gzstreambase() {
 
 //--------------------------------------------------------------------------
 
-void gzstreambase::open( const char* name, int open_mode) {
-    if ( ! buf.open( name, open_mode))
+void gzstreambase::open( const char* name, int mode) {
+    if ( ! buf.open( name, mode))
         clear( rdstate() | std::ios::badbit);
 }
 
@@ -152,6 +153,7 @@ void gzstreambase::close() {
         if ( ! buf.close())
             clear( rdstate() | std::ios::badbit);
 }
+#endif
 
 //==========================================================================
 

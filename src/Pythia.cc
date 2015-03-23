@@ -200,8 +200,11 @@ bool Pythia::readString(string line, bool warn) {
   if (!isalnum(line[firstChar])) return true;
 
   // Send on particle data to the ParticleData database.
-  if (isdigit(line[firstChar]))
-    return particleData.readString(line, warn);
+  if (isdigit(line[firstChar])) {
+    bool passed = particleData.readString(line, warn);
+    if (passed) particleDataBuffer << line << endl;
+    return passed;
+  }
 
   // Everything else sent on to Settings.
   return settings.readString(line, warn);
@@ -574,8 +577,9 @@ bool Pythia::init() {
   // Initialize SLHA interface (including SLHA/BSM couplings).
   bool useSLHAcouplings = false;
   slhaInterface.setPtr( &info );
+
   slhaInterface.init( settings, &rndm, couplingsPtr, &particleData,
-                      useSLHAcouplings );
+    useSLHAcouplings, particleDataBuffer );
   if (useSLHAcouplings) couplingsPtr = slhaInterface.couplingsPtr;
 
   // Reset couplingsPtr to the correct memory address.

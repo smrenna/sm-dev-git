@@ -328,7 +328,7 @@ private:
 
   // Initialization of SLHA data.
   bool initSLHA ();
-
+  stringstream particleDataBuffer; 
 };
 
 //==========================================================================

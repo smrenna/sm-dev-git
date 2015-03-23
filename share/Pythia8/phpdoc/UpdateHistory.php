@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.207: 19 March 2015 
+<li>8.207: 23 March 2015 
 <ul> 
  
 <li>New machinery for hard diffraction now in place. Still to be
@@ -55,13 +55,24 @@ of the code.</li>
 steer the treatment of non-QCD radiation in the POWHEG implementation 
 of <code>include/Pythia8Plugins/PowhegHooks.h</code>.</li> 
 
-<li>The need to link to the BOOST library to read gzipped files
+<li>The need to link to the Boost library to read gzipped files
 has been eliminated by including iostream classes wrapping the zlib 
 compression library, see new files <code>Streams.h</code> and  
 <code>Streams.cc</code>.</li>
+
+<li>Linkage to LHAPDF6 so far has been based on the LHAPDF5 compatibility
+mode, which requires no Boost headers. The new configure option
+<code>--with-lhapdf6-plugin=LHAPDF6.h</code> uses native mode, and
+then requires Boost headers.</li>
  
 <li>New option in the HepMC interface, whereby PYTHIA particles can be 
 appended to an existing HepMC event.</li> 
+ 
+<li>When reading in particle data from the SLHA interface, changes done 
+by the user takes precedence over the SLHA input ones. To be more
+specific, particle data changes by the <code>Pythia::readString</code>
+and <code>readFile</code> methods are buffered and repeated after
+the SLHA initialization.</li> 
  
 <li>New <code>#define PYTHIA_VERSION 8.2xx</code> in <code>Pythia.h</code>
 allows user-code preprecessors to make version-specific choices, and 
@@ -82,6 +93,10 @@ page. Thanks to Tim Martin.</li>
  
 <li>Minor fix for polarization sign when the <i>tau</i> polarization
 is forced.</li> 
+ 
+<li>The new <code>HiggsXX:parity = 4</code> options for CP mixing 
+unintentionally were not implemented for the <i>W^+W^-</i> and
+<i>Z^0Z^0</i> decays, but now are.</li> 
  
 <li>Clarification in the documentation that impact-parameter-enhancement
 factor calculation for two hard processes does not work for the 

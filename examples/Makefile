@@ -19,8 +19,8 @@
 
 # Handle GZIP support.
 ifeq ($(GZIP_USE),true)
-  CXX_COMMON+= -DGZIPSUPPORT
-  CXX_COMMON+= -lz
+  CXX_COMMON+= -DGZIPSUPPORT -I$(GZIP_INCLUDE)
+  CXX_COMMON+= -L$(GZIP_LIB) -Wl,-rpath $(GZIP_LIB) -lz
 endif
 
 # Check distribution (use local version first, then installed version).

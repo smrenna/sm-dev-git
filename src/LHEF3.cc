@@ -568,11 +568,7 @@ bool Reader::init() {
     }
   }
 
-#ifdef GZIPSUPPORT
-  if ( file_gz == NULL ) heprup.NPRUP = -42;
-#else
   if ( file == NULL ) heprup.NPRUP = -42;
-#endif
 
   // Scan the header block for XML tags
   string leftovers;
@@ -710,11 +706,7 @@ bool Reader::readEvent(HEPEUP * peup) {
   while ( getLine() && currentLine.find("</event>") == string::npos )
     eventComments += currentLine + "\n";
 
-#ifdef GZIPSUPPORT
-  if ( file_gz == NULL ) return false;
-#else
   if ( file == NULL ) return false;
-#endif
 
   eup.scales = LHAscales(eup.SCALUP);
 

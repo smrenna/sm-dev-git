@@ -785,13 +785,9 @@ public:
   // filename: the name of the file to read from.
   //
   Reader(string filenameIn)
-    : filename(filenameIn), intstream(filename.c_str()), file(&intstream),
-      file_gz(NULL) {
-    file_gz = new igzstream(filename.c_str());
+    : filename(filenameIn), intstream(filename.c_str()), file(&intstream) {
     isGood = init();
   }
-
-  ~Reader() { if (file_gz) delete file_gz; };
 
 private:
 
@@ -810,11 +806,7 @@ protected:
   // Used internally to read a single line from the stream.
   bool getLine() {
     currentLine = "";
-#ifdef GZIPSUPPORT
-    if(!getline(*file_gz, currentLine)) return false;
-#else    
     if(!getline(*file, currentLine)) return false;
-#endif
     // Replace single by double quotes
     replace(currentLine.begin(),currentLine.end(),'\'','\"');
     return true;
@@ -827,12 +819,11 @@ protected:
 
   // A local stream which is unused if a stream is supplied from the
   // outside.
-  ifstream intstream;
+  igzstream intstream;
 
   // The stream we are reading from. This may be a pointer to an
-  // external stream or the internal intstream. Also from gzipped file.
+  // external stream or the internal intstream.
   istream * file;
-  igzstream * file_gz;
 
   // The last line read in from the stream in getline().
   string currentLine;
