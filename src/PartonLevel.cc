@@ -278,7 +278,8 @@ bool PartonLevel::next( Event& process, Event& event) {
     double xPomB = (isHardDiffA) ? hardDiffraction.getXPomeronB() : 0.;
     double tPomA = (isHardDiffB) ? hardDiffraction.getTPomeronA() : 0.;
     double tPomB = (isHardDiffA) ? hardDiffraction.getTPomeronB() : 0.;
-    infoPtr->setHardDiff( isHardDiffA, isHardDiffB, xPomA, xPomB, tPomA, tPomB);
+    infoPtr->setHardDiff( false, isHardDiffA, isHardDiffB, 
+      xPomA, xPomB, tPomA, tPomB);
 
     // Discard all nondiffractive events if only diffractive sample is wanted.
     if (!isHardDiff && (sampleTypeDiff == 3 || sampleTypeDiff == 4)) {
@@ -292,7 +293,7 @@ bool PartonLevel::next( Event& process, Event& event) {
     // Discard all diffractive events if only nondiffractive sample is wanted.
     if (isHardDiff) {
       if (sampleTypeDiff == 5) {
-        infoPtr->setHardDiff( false, false, 0., 0., 0., 0.);
+        infoPtr->setHardDiff( false, false, false, 0., 0., 0., 0.);
         doDiffVeto = true;
         return false;
       }
@@ -502,7 +503,7 @@ bool PartonLevel::next( Event& process, Event& event) {
 
           // Break for exclusive hard diffraction with MPI veto.
           if (isHardDiff && sampleTypeDiff == 4 && iHardDiffLoop == 1) {
-            infoPtr->setHardDiff( false, false, 0., 0., 0., 0.);
+            infoPtr->setHardDiff( false, false, false, 0., 0., 0., 0.);
             doDiffVeto = true;
             return false;
           }
@@ -915,7 +916,7 @@ bool PartonLevel::next( Event& process, Event& event) {
     // If inclusive sample wanted for MPI veto and nMPI > 1
     // then event is non-diffractive and we can break the loop. 
     if (sampleTypeDiff == 2 && iHardDiffLoop == 1 && nMPI > 1) {
-      infoPtr->setHardDiff( false, false, 0., 0., 0., 0.);
+      infoPtr->setHardDiff( false, false, false, 0., 0., 0., 0.);
       break;
     }
 
@@ -1603,9 +1604,13 @@ void PartonLevel::setupHardDiff( Event& process) {
   }
 
   if (isHardDiffB){
+    process[iPomeron].daughters(hardParton[0], 0);
+    process[iProton].daughters(hardParton[1],0);
     process[hardParton[0]].mothers(iPomeron,0);
     process[hardParton[1]].mothers(iProton, 0);
   } else {
+    process[iPomeron].daughters(hardParton[1], 0);
+    process[iProton].daughters(hardParton[0],0);
     process[hardParton[1]].mothers(iPomeron,0);
     process[hardParton[0]].mothers(iProton, 0);
   }
@@ -1615,7 +1620,7 @@ void PartonLevel::setupHardDiff( Event& process) {
   process[iProton].statusNeg();
 
   // Change state of system to unresolved to avoid aborting from Pythia.
-  infoPtr->setIsResolved( false);
+  infoPtr->setHasUnresolvedBeams( true);
   
   // Reassign beam pointers to refer to subsystem effective beams.
   beamAPtr = (isHardDiffB) ? beamPomAPtr : beamHadAPtr;

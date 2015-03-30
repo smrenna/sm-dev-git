@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.207: 23 March 2015 
+<li>8.207: 30 March 2015 
 <ul> 
  
 <li>New machinery for hard diffraction now in place. Still to be
@@ -87,6 +87,18 @@ to ignore file contents enclosed in comment tags,
 files produced by CalcHep. (It is generally used to store content that 
 contains XML-illegal characters like "&lt;" or "&", such as JavaScript 
 source.) Thanks to A. Belyaev and A. Pukhov for help with this update.</li> 
+
+<li>New flag <code>LesHouches:matchInOut</code>, by default on, 
+to recalculate the energies and longitudinal momenta of the incoming 
+particles from the outgoing ones for Les Houches input. Reduces effect
+of numerical inconsistencies in input.</li>
+ 
+<li>Updated EvtGen interface, to allow a pointer to an FSR engine to be 
+passed. Thanks to Torben Ferber.</li> 
+
+<li>The role of the <code>pythia.forceTimeShower(...)</code> method is 
+better explained in the hadron-level standalone documentation, and 
+<code>main21.cc</code> has been extended with an example.</li>
  
 <li>Inserted missing endtag that corrupted the <code>Tunes.php</code>
 page. Thanks to Tim Martin.</li> 

@@ -1816,7 +1816,7 @@ bool Pythia::check(ostream& os) {
 
   // Check that beams and event records agree on incoming partons.
   // Only meaningful for resolved beams.
-  if (info.isResolved())
+  if (info.isResolved() && !info.hasUnresolvedBeams())
   for (int iSys = 0; iSys < beamA.sizeInit(); ++iSys) {
     int eventANw  = partonSystems.getInA(iSys);
     int eventBNw  = partonSystems.getInB(iSys);

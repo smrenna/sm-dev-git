@@ -618,7 +618,22 @@ its mass recalculated, currently instead the energy is recalculated
 from its three-momntum and mass. This is to avoid spurious mismatches 
 from limited numerical precision in an LHEF. 
    
- 
+
+<br/><br/><strong>LesHouches:matchInOut</strong>  <input type="radio" name="5" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="5" value="off"><strong>Off</strong>
+ &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
+The energies and longitudinal momenta of the two incoming partons are 
+recalculated from the sum of the outgoing final (i.e. status 1) particles.
+The incoming partons are set massless. There are two main applications 
+for this option. Firstly, if there is a mismatch in the Les Houches
+input itself, e.g. owing to limited precision in the stored momenta.
+Secondly, if a mismatch is induced by PYTHIA recalculations, notably when
+an outgoing lepton is assigned a mass although assumed massles in the 
+Les Houches input.  
+<br/><b>Warning:</b> it is assumed that the incoming partons are along 
+the <i>+-z</i> axis; else the kinematics construction will fail.
+   
+
 <h3>An interface to Les Houches Event Files</h3> 
  
 The LHEF standard ([<a href="Bibliography.php" target="page">Alw06</a>], [<a href="Bibliography.php" target="page">But14</a>]) specifies a format 
@@ -1041,6 +1056,11 @@ fwrite($handle,$data);
 if($_POST["4"] != "-1.")
 {
 $data = "LesHouches:mRecalculate = ".$_POST["4"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["5"] != "on")
+{
+$data = "LesHouches:matchInOut = ".$_POST["5"]."\n";
 fwrite($handle,$data);
 }
 fclose($handle);

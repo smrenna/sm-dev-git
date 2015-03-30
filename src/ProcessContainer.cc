@@ -144,6 +144,7 @@ bool ProcessContainer::init(bool isFirst, Info* infoPtrIn,
   setLifetime   = settings.mode("LesHouches:setLifetime");
   setLeptonMass = settings.mode("LesHouches:setLeptonMass");
   mRecalculate  = settings.parm("LesHouches:mRecalculate");
+  matchInOut    = settings.flag("LesHouches:matchInOut");
   idLep[0] = 11; mLep[0] = particleDataPtr->m0(11);
   idLep[1] = 13; mLep[1] = particleDataPtr->m0(13);
   idLep[2] = 15; mLep[2] = particleDataPtr->m0(15);
@@ -458,6 +459,7 @@ bool ProcessContainer::constructProcess( Event& process, bool isHardest) {
     process.scale( scalePr);
 
     // Copy over info from LHA event to process, in proper order.
+    Vec4 pSumOut;
     for (int i = 1; i < lhaUpPtr->sizePart(); ++i) {
       int iOld = newPos[i];
       int id = lhaUpPtr->id(iOld);
@@ -523,6 +525,10 @@ bool ProcessContainer::constructProcess( Event& process, bool isHardest) {
         m = sqrtpos( e*e - px*px - py*py - pz*pz);   
       else e = sqrt( m*m + px*px + py*py + pz*pz); 
 
+      // Momentum sum for outgoing particles.
+      if (matchInOut && i > 2 && lhaStatus == 1) 
+        pSumOut += Vec4( px, py, pz, e);
+
       // Polarization.
       double pol = lhaUpPtr->spin(iOld);
 
@@ -543,6 +549,18 @@ bool ProcessContainer::constructProcess( Event& process, bool isHardest) {
       if ( (setLifetime == 1 && idAbs == 15) || setLifetime == 2)
          tau = process[iNow].tau0() * rndmPtr->exp();
       if (tau > 0.) process[iNow].tau(tau);
+    }
+
+    // Reassign momenta and masses for incoming partons.
+    if (matchInOut) {
+      double e1 = 0.5 * (pSumOut.e() + pSumOut.pz());
+      double e2 = 0.5 * (pSumOut.e() - pSumOut.pz());
+      process[3].pz( e1);
+      process[3].e(  e1);
+      process[3].m(  0.);
+      process[4].pz(-e2);
+      process[4].e(  e2);
+      process[4].m(  0.);
     }
   }
 

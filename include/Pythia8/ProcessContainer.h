@@ -158,6 +158,7 @@ private:
   LHAup*           lhaUpPtr;
 
   // Possibility to modify Les Houches input.
+  bool   matchInOut;
   int    idRenameBeams, setLifetime, setLeptonMass, idLep[3];
   double mRecalculate, mLep[3];
 
