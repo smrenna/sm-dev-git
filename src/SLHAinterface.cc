@@ -32,13 +32,13 @@ void SLHAinterface::init( Settings& settings, Rndm* rndmPtr,
   // Reset any particle-related user settings.
   string line;
   string warnPref = "Warning in SLHAinterface::init: ";
-  while (getline(particleDataBuffer, line) 
+  while (getline(particleDataBuffer, line)
     && settings.flag("SLHA:allowUserOverride")) {
     bool pass = particleDataPtr->readString(line, true);
     if (!pass) infoPtr->errorMsg(warnPref + "Unable to process line " + line);
     else infoPtr->errorMsg(warnPref + "Overwriting SLHA by " + line);
   }
-  
+
   // SLHA sets isSUSY flag to tell us if there was an SLHA SUSY spectrum
   if (couplingsPtr->isSUSY) {
     // Initialize the derived SUSY couplings class (SM first, then SUSY)
@@ -687,6 +687,3 @@ void SLHAinterface::pythia2slha(ParticleData* particleDataPtr) {
 //==========================================================================
 
 } // end namespace Pythia8
-
-
-

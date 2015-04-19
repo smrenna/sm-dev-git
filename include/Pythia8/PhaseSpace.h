@@ -160,7 +160,8 @@ protected:
   // Information on incoming beams.
   int    idA, idB;
   double mA, mB, eCM, s;
-  bool   hasLeptonBeams, hasPointLeptons;
+  bool   hasLeptonBeamA, hasLeptonBeamB, hasOneLeptonBeam,
+         hasTwoLeptonBeams, hasOnePointLepton, hasTwoPointLeptons;
 
  // Cross section information.
   bool   newSigmaMx, canModifySigma, canBiasSelection, canBias2Sel;
@@ -565,4 +566,3 @@ private:
 } // end namespace Pythia8
 
 #endif // Pythia8_PhaseSpace_H
-

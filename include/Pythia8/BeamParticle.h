@@ -212,7 +212,7 @@ public:
   bool isUnresolvedLepton();
 
   // Add extra remnant flavours to make valence and sea come out right.
-  bool remnantFlavours(Event& event);
+  bool remnantFlavours(Event& event, bool isDIS = false);
 
   // Correlate all initiators and remnants to make a colour singlet.
   bool remnantColours(Event& event, vector<int>& colFrom,

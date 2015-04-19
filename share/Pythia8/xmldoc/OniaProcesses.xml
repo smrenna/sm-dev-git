@@ -129,7 +129,11 @@ e.g. <ei>Upsilon</ei> and <ei>chi_b</ei>.
 </flag> 
  
 <h3>Charmonium 3S1 States</h3> 
- 
+
+<b>Warning</b>: changed <code>fvec</code>, <code>mvec</code> or 
+<code>pvec</code> values must be provided as a comma-separated list
+with the right number of elements, without any blanks inside the list. 
+
 <mvec name="Charmonium:states(3S1)" default="443,100443" 
 min="0"> 
 The <ei>3S1</ei> charmonium states that can be produced from the following 
@@ -223,6 +227,10 @@ Code 410.
 </fvec> 
  
 <h3>Charmonium 3PJ States</h3> 
+
+<b>Warning</b>: changed <code>fvec</code>, <code>mvec</code> or 
+<code>pvec</code> values must be provided as a comma-separated list
+with the right number of elements, without any blanks inside the list. 
  
 <mvec name="Charmonium:states(3PJ)" default="10441,20443,445"> 
 The <ei>3PJ</ei> charmonium states that can be produced from the following 
@@ -282,6 +290,10 @@ Code 416.
 </fvec> 
  
 <h3>Charmonium 3DJ States</h3> 
+
+<b>Warning</b>: changed <code>fvec</code>, <code>mvec</code> or 
+<code>pvec</code> values must be provided as a comma-separated list
+with the right number of elements, without any blanks inside the list. 
  
 <mvec name="Charmonium:states(3DJ)" default="30443"> 
 The <ei>3DJ</ei> charmonium states that can be produced from the following 
@@ -332,6 +344,10 @@ Code 420.
 </fvec> 
  
 <h3>Bottomonium 3S1 States</h3> 
+
+<b>Warning</b>: changed <code>fvec</code>, <code>mvec</code> or 
+<code>pvec</code> values must be provided as a comma-separated list
+with the right number of elements, without any blanks inside the list. 
  
 <mvec name="Bottomonium:states(3S1)" default="553,100553,200553" 
 min="0"> 
@@ -426,6 +442,10 @@ Code 510.
 </fvec> 
  
 <h3>Bottomonium 3PJ States</h3> 
+
+<b>Warning</b>: changed <code>fvec</code>, <code>mvec</code> or 
+<code>pvec</code> values must be provided as a comma-separated list
+with the right number of elements, without any blanks inside the list. 
  
 <mvec name="Bottomonium:states(3PJ)" default="10551,20553,555"> 
 The <ei>3PJ</ei> bottomonium states that can be produced from the following 
@@ -485,6 +505,10 @@ Code 516.
 </fvec> 
  
 <h3>Bottomonium 3DJ States</h3> 
+
+<b>Warning</b>: changed <code>fvec</code>, <code>mvec</code> or 
+<code>pvec</code> values must be provided as a comma-separated list
+with the right number of elements, without any blanks inside the list. 
  
 <mvec name="Bottomonium:states(3DJ)" default=""> 
 The <ei>3DJ</ei> bottomonium states that can be produced from the following 

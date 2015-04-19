@@ -80,6 +80,7 @@ Pythia::Pythia(string xmlDir, bool printBanner) {
   beamShapePtr    = 0;
 
   // Initial values for pointers to timelike and spacelike showers.
+  useNewTimesDec  = false;
   useNewTimes     = false;
   useNewSpace     = false;
   timesDecPtr     = 0;
@@ -178,7 +179,8 @@ Pythia::~Pythia() {
   if (useNewBeamShape) delete beamShapePtr;
 
   // Delete the timelike and spacelike showers created with new.
-  if (useNewTimes) delete timesPtr;
+  if (useNewTimesDec) delete timesDecPtr;
+  if (useNewTimes && !useNewTimesDec) delete timesPtr;
   if (useNewSpace) delete spacePtr;
 
 }
@@ -602,9 +604,14 @@ bool Pythia::init() {
   // Set up objects for timelike and spacelike showers.
   if (timesDecPtr == 0 || timesPtr == 0) {
     TimeShower* timesNow = new TimeShower();
-    if (timesDecPtr == 0) timesDecPtr = timesNow;
-    if (timesPtr == 0) timesPtr = timesNow;
-    useNewTimes = true;
+    if (timesDecPtr == 0) {
+      timesDecPtr    = timesNow;
+      useNewTimesDec = true;
+    }
+    if (timesPtr == 0) {
+      timesPtr    = timesNow;
+      useNewTimes = true;
+    }
   }
   if (spacePtr == 0) {
     spacePtr    = new SpaceShower();
@@ -808,6 +815,14 @@ bool Pythia::checkBeams() {
   bool isHadronB = (idBabs == 2212) || (idBabs == 2112) || (idB == 111)
                 || (idBabs == 211)  || (idB == 990);
   if (isHadronA && isHadronB) return true;
+
+  // Lepton-hadron collisions OK for DIS processes, although still primitive.
+  if ( (isLeptonA && isHadronB) || (isHadronA && isLeptonB) ) {
+    bool doDIS = settings.flag("WeakBosonExchange:all") 
+              || settings.flag("WeakBosonExchange:ff2ff(t:gmZ)") 
+              || settings.flag("WeakBosonExchange:ff2ff(t:W)");
+    if (doDIS) return true;
+  }
 
   // If no case above then failed.
   info.errorMsg("Error in Pythia::init: cannot handle this beam combination");
@@ -1142,7 +1157,7 @@ bool Pythia::next() {
 
         // Abort event generation if parton level is set to abort.
         if (info.getAbortPartonLevel()) return false;
-        
+
         // Skip to next hard process for failure owing to deliberate veto,
         // or alternatively retry for the same hard process.
         hasVetoed = partonLevel.hasVetoed();
@@ -1156,7 +1171,7 @@ bool Pythia::next() {
         }
 
         // If hard diffractive event has been discarded retry partonLevel.
-        hasVetoedDiff = partonLevel.hasVetoedDiff(); 
+        hasVetoedDiff = partonLevel.hasVetoedDiff();
         if (hasVetoedDiff) {
           info.errorMsg("Warning in Pythia::next: "
             "discarding hard diffractive event from partonLevel; try again");
@@ -1993,7 +2008,7 @@ PDF* Pythia::getPDFPtr(int idIn, int sequence, string beam) {
 
   // Proton beam, normal or hard choice. Also used for neutron.
   if (abs(idIn) == 2212 || abs(idIn) == 2112) {
-    string pSet = settings.word("PDF:p" 
+    string pSet = settings.word("PDF:p"
       + string(sequence == 1 ? "" : "Hard") + "Set" + beam);
     if (pSet == "void" && sequence != 1 && beam == "B")
       pSet = settings.word("PDF:pHardSet");

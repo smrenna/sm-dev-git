@@ -247,6 +247,10 @@ in this case for a study of W + jet production.</li>
 jet finding, showing that they find the same jets if run under 
 identical conditions, in this case for QCD jets.</li> 
  
+<li><code>main73.cc</code> : a comparison of jet properties on the
+parton and the hadron level, illustrating possibilities for larger
+control of which particles are used in the jet analyses.</li> 
+ 
 <li><code>main80.cc</code> : do CKKW-L merging with a merging scale 
 defined in <ei>kT</ei>. Input is provided by the <code>main80.cmnd</code> 
 file and input LHE files. Very basic and pedagogical setup, suitable 

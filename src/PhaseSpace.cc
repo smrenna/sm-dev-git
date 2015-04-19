@@ -115,9 +115,14 @@ void PhaseSpace::init(bool isFirst, SigmaProcess* sigmaProcessPtrIn,
   s               = eCM * eCM;
 
   // Flag if lepton beams, and if non-resolved ones.
-  hasLeptonBeams  = ( beamAPtr->isLepton() || beamBPtr->isLepton() );
-  hasPointLeptons = ( hasLeptonBeams
-    && (beamAPtr->isUnresolved() || beamBPtr->isUnresolved() ) );
+  hasLeptonBeamA      = beamAPtr->isLepton();
+  hasLeptonBeamB      = beamBPtr->isLepton();
+  hasTwoLeptonBeams   = hasLeptonBeamA && hasLeptonBeamB;
+  hasOneLeptonBeam    = (hasLeptonBeamA || hasLeptonBeamB) && !hasTwoLeptonBeams;
+  bool hasPointLepton = (hasLeptonBeamA && beamAPtr->isUnresolved())
+                     || (hasLeptonBeamB && beamBPtr->isUnresolved());
+  hasOnePointLepton   = hasOneLeptonBeam  && hasPointLepton;
+  hasTwoPointLeptons  = hasTwoLeptonBeams && hasPointLepton;
 
   // Standard phase space cuts.
   if (isFirst || settingsPtr->flag("PhaseSpace:sameForSecond")) {
@@ -530,8 +535,8 @@ bool PhaseSpace::setupSampling123(bool is2, bool is3, ostream& os) {
   sigmaNeg = 0.;
 
   // Number of used coefficients/points for each dimension: tau, y, c.
-  nTau = (hasPointLeptons) ? 1 : 2;
-  nY   = (hasPointLeptons) ? 1 : 5;
+  nTau = (hasTwoPointLeptons) ? 1 : 2;
+  nY   = (hasOnePointLepton || hasTwoPointLeptons) ? 1 : 5;
   nZ   = (is2) ? 5 : 1;
 
   // Identify if any resonances contribute in s-channel.
@@ -557,19 +562,19 @@ bool PhaseSpace::setupSampling123(bool is2, bool is3, ostream& os) {
   }
 
   // More sampling in tau if resonances in s-channel.
-  if (idResA !=0 && !hasPointLeptons) {
+  if (idResA !=0 && !hasTwoPointLeptons) {
     nTau += 2;
     tauResA = mResA * mResA / s;
     widResA = mResA * GammaResA / s;
   }
-  if (idResB != 0 && !hasPointLeptons) {
+  if (idResB != 0 && !hasTwoPointLeptons) {
     nTau += 2;
     tauResB = mResB * mResB / s;
     widResB = mResB * GammaResB / s;
   }
 
   // More sampling in tau (and different in y) if incoming lepton beams.
-  if (hasLeptonBeams && !hasPointLeptons) ++nTau;
+  if (hasTwoLeptonBeams && !hasTwoPointLeptons) ++nTau;
 
   // Special case when both resonances have same mass.
   sameResMass = false;
@@ -647,7 +652,7 @@ bool PhaseSpace::setupSampling123(bool is2, bool is3, ostream& os) {
         if (sigmaTmp < 0.) sigmaTmp = 0.;
 
         // Sum up tau cross-section pieces in points used.
-        if (!hasPointLeptons) {
+        if (!hasTwoPointLeptons) {
           binTau[iTau]      += 1;
           vecTau[iTau]      += sigmaTmp;
           matTau[iTau][0]   += 1. / intTau0;
@@ -662,18 +667,18 @@ bool PhaseSpace::setupSampling123(bool is2, bool is3, ostream& os) {
             matTau[iTau][5] += (1. / intTau5)
               * tau / ( pow2(tau - tauResB) + pow2(widResB) );
           }
-          if (hasLeptonBeams) matTau[iTau][nTau - 1] += (1. / intTau6)
+          if (hasTwoLeptonBeams) matTau[iTau][nTau - 1] += (1. / intTau6)
               * tau / max( LEPTONTAUMIN, 1. - tau);
         }
 
         // Sum up y cross-section pieces in points used.
-        if (!hasPointLeptons) {
+        if (!hasOnePointLepton && !hasTwoPointLeptons) {
           binY[iY]      += 1;
           vecY[iY]      += sigmaTmp;
           matY[iY][0]   += (yMax / intY0) / cosh(y);
           matY[iY][1]   += (yMax / intY12) * (y + yMax);
           matY[iY][2]   += (yMax / intY12) * (yMax - y);
-          if (!hasLeptonBeams) {
+          if (!hasTwoLeptonBeams) {
             matY[iY][3] += (yMax / intY34) * exp(y);
             matY[iY][4] += (yMax / intY34) * exp(-y);
           } else {
@@ -717,9 +722,10 @@ bool PhaseSpace::setupSampling123(bool is2, bool is3, ostream& os) {
   }
 
   // Solve respective equation system for better phase space coefficients.
-  if (!hasPointLeptons) solveSys( nTau, binTau, vecTau, matTau, tauCoef);
-  if (!hasPointLeptons) solveSys( nY, binY, vecY, matY, yCoef);
-  if (is2)              solveSys( nZ, binZ, vecZ, matZ, zCoef);
+  if (!hasTwoPointLeptons) solveSys( nTau, binTau, vecTau, matTau, tauCoef);
+  if (!hasOnePointLepton && !hasTwoPointLeptons) 
+    solveSys( nY, binY, vecY, matY, yCoef);
+  if (is2) solveSys( nZ, binZ, vecZ, matZ, zCoef);
   if (showSearch) os << "\n";
 
   // Provide cumulative sum of coefficients.
@@ -828,7 +834,8 @@ bool PhaseSpace::setupSampling123(bool is2, bool is3, ostream& os) {
 
   // Read out starting position for search.
   sigmaMx = sigMax[0];
-  int beginVar = (hasPointLeptons) ? 2 : 0;
+  int beginVar = (hasTwoPointLeptons) ? 2 : 0;
+  if (hasOnePointLepton) beginVar = 1;
   for (int iMax = 0; iMax < nMax; ++iMax) {
     int iTau = iMaxTau[iMax];
     int iY = iMaxY[iMax];
@@ -843,13 +850,14 @@ bool PhaseSpace::setupSampling123(bool is2, bool is3, ostream& os) {
     for (int iRepeat = 0; iRepeat < 2; ++iRepeat) {
       // Run through (possibly a subset of) tau, y and z.
       for (int iVar = beginVar; iVar < nVar; ++iVar) {
-        if (iVar == 0) varVal = tauVal;
+        bool isTauVar = iVar == 0 || (beginVar == 1 && iVar == 1);
+        if (isTauVar) varVal = tauVal;
         else if (iVar == 1) varVal = yVal;
         else varVal = zVal;
         deltaVar = (iRepeat == 0) ? 0.1
           : max( 0.01, min( 0.05, min( varVal - 0.02, 0.98 - varVal) ) );
         marginVar = (iRepeat == 0) ? 0.02 : 0.002;
-        int moveStart = (iRepeat == 0 && iVar == 0) ? 0 : 1;
+        int moveStart = (iRepeat == 0 && isTauVar) ? 0 : 1;
         for (int move = moveStart; move < 9; ++move) {
 
           // Define new parameter-space point by step in one dimension.
@@ -892,7 +900,7 @@ bool PhaseSpace::setupSampling123(bool is2, bool is3, ostream& os) {
 
           // Convert to relevant variables and find derived new limits.
           bool insideLimits = true;
-          if (iVar == 0) {
+          if (isTauVar) {
             tauVal = varNew;
             selectTau( iTau, tauVal, is2);
             if (!limitY()) insideLimits = false;
@@ -986,11 +994,11 @@ bool PhaseSpace::trialKin123(bool is2, bool is3, bool inEvent, ostream& os) {
     s         = eCM * eCM;
 
     // Find shifted tauRes values.
-    if (idResA !=0 && !hasPointLeptons) {
+    if (idResA !=0 && !hasTwoPointLeptons) {
       tauResA = mResA * mResA / s;
       widResA = mResA * GammaResA / s;
     }
-    if (idResB != 0 && !hasPointLeptons) {
+    if (idResB != 0 && !hasTwoPointLeptons) {
       tauResB = mResB * mResB / s;
       widResB = mResB * GammaResB / s;
     }
@@ -1005,7 +1013,7 @@ bool PhaseSpace::trialKin123(bool is2, bool is3, bool inEvent, ostream& os) {
   // + (c6/I6) * tau / (1 - tau).
   if (!limitTau(is2, is3)) return false;
   int iTau = 0;
-  if (!hasPointLeptons) {
+  if (!hasTwoPointLeptons) {
     double rTau = rndmPtr->flat();
     while (rTau > tauCoefSum[iTau]) ++iTau;
   }
@@ -1018,7 +1026,7 @@ bool PhaseSpace::trialKin123(bool is2, bool is3, bool inEvent, ostream& os) {
   // + (c5/I5) * 1 / (1 - exp(y-ymax)) + (c6/I6) * 1 / (1 - exp(ymin-y)).
   if (!limitY()) return false;
   int iY = 0;
-  if (!hasPointLeptons) {
+  if (!hasOnePointLepton && !hasTwoPointLeptons) {
     double rY = rndmPtr->flat();
     while (rY > yCoefSum[iY]) ++iY;
   }
@@ -1126,7 +1134,7 @@ bool PhaseSpace::trialKin123(bool is2, bool is3, bool inEvent, ostream& os) {
 bool PhaseSpace::limitTau(bool is2, bool is3) {
 
   // Trivial reply for unresolved lepton beams.
-  if (hasPointLeptons) {
+  if (hasTwoPointLeptons) {
     tauMin = 1.;
     tauMax = 1.;
     return true;
@@ -1155,16 +1163,17 @@ bool PhaseSpace::limitTau(bool is2, bool is3) {
 bool PhaseSpace::limitY() {
 
   // Trivial reply for unresolved lepton beams.
-  if (hasPointLeptons) {
+  if (hasTwoPointLeptons) {
     yMax = 1.;
     return true;
   }
 
-  // Requirements from selected tau value.
+  // Requirements from selected tau value. Trivial for one unresolved beam.
   yMax = -0.5 * log(tau);
+  if (hasOnePointLepton) return true;
 
   // For lepton beams requirements from cutoff for f_e^e.
-  double yMaxMargin = (hasLeptonBeams) ? yMax + LEPTONXLOGMAX : yMax;
+  double yMaxMargin = (hasTwoLeptonBeams) ? yMax + LEPTONXLOGMAX : yMax;
 
   // Check that there is an open range.
   return (yMaxMargin > 0.);
@@ -1195,7 +1204,7 @@ bool PhaseSpace::limitZ() {
 void PhaseSpace::selectTau(int iTau, double tauVal, bool is2) {
 
   // Trivial reply for unresolved lepton beams.
-  if (hasPointLeptons) {
+  if (hasTwoPointLeptons) {
     tau = 1.;
     wtTau = 1.;
     sH = s;
@@ -1228,7 +1237,7 @@ void PhaseSpace::selectTau(int iTau, double tauVal, bool is2) {
   // Contributions from 1 / (1 - tau)  for lepton beams.
   double aLowT = 0.;
   double aUppT = 0.;
-  if (hasLeptonBeams) {
+  if (hasTwoLeptonBeams) {
     aLowT = log( max( LEPTONTAUMIN, 1. - tauMin) );
     aUppT = log( max( LEPTONTAUMIN, 1. - tauMax) );
     intTau6 = aLowT - aUppT;
@@ -1240,7 +1249,7 @@ void PhaseSpace::selectTau(int iTau, double tauVal, bool is2) {
     / (tauMin + (tauMax - tauMin) * tauVal);
 
   // Select according to 1 / (1 - tau) for lepton beams.
-  else if (hasLeptonBeams && iTau == nTau - 1)
+  else if (hasTwoLeptonBeams && iTau == nTau - 1)
     tau = 1. - exp( aUppT + intTau6 * tauVal );
 
   // Select according to 1 / (tau * (tau + tauRes)) or
@@ -1270,7 +1279,7 @@ void PhaseSpace::selectTau(int iTau, double tauVal, bool is2) {
     invWtTau += (tauCoef[4] / intTau4) / (tau + tauResB)
       + (tauCoef[5] / intTau5) * tau / ( pow2(tau - tauResB) + pow2(widResB) );
   }
-  if (hasLeptonBeams)
+  if (hasTwoLeptonBeams)
     invWtTau += (tauCoef[nTau - 1] / intTau6)
       * tau / max( LEPTONTAUMIN, 1. - tau);
   wtTau = 1. / invWtTau;
@@ -1291,8 +1300,8 @@ void PhaseSpace::selectTau(int iTau, double tauVal, bool is2) {
 
 void PhaseSpace::selectY(int iY, double yVal) {
 
-  // Trivial reply for unresolved lepton beams.
-  if (hasPointLeptons) {
+  // Trivial reply for two unresolved lepton beams.
+  if (hasTwoPointLeptons) {
     y = 0.;
     wtY = 1.;
     x1H = 1.;
@@ -1300,15 +1309,30 @@ void PhaseSpace::selectY(int iY, double yVal) {
     return;
   }
 
+  // Trivial replies for one unresolved lepton beam.
+  if (hasOnePointLepton) {
+    if (hasLeptonBeamA) {
+      y   = yMax;
+      x1H = 1.;
+      x2H = tau;
+    } else {
+      y   = -yMax;
+      x1H = tau;
+      x2H = 1.;
+    }
+    wtY = 1.;
+    return;
+  }
+
   // For lepton beams skip options 3&4 and go straight to 5&6.
-  if (hasLeptonBeams && iY > 2) iY += 2;
+  if (hasTwoLeptonBeams && iY > 2) iY += 2;
 
   // Standard expressions used below.
   double expYMax = exp( yMax );
   double expYMin = exp(-yMax );
   double atanMax = atan( expYMax );
   double atanMin = atan( expYMin );
-  double aUppY = (hasLeptonBeams)
+  double aUppY = (hasTwoLeptonBeams)
     ? log( max( LEPTONXMIN, LEPTONXMAX / tau - 1. ) ) : 0.;
   double aLowY = LEPTONXLOGMIN;
 
@@ -1334,7 +1358,7 @@ void PhaseSpace::selectY(int iY, double yVal) {
   intY56 = aUppY - aLowY;
   double invWtY = (yCoef[0] / intY0) / cosh(y)
      + (yCoef[1] / intY12) * (y + yMax) + (yCoef[2] / intY12) * (yMax - y);
-  if (!hasLeptonBeams) invWtY
+  if (!hasTwoLeptonBeams) invWtY
     += (yCoef[3] / intY34) * exp(y)     + (yCoef[4] / intY34) * exp(-y);
   else invWtY
     += (yCoef[3] / intY56) / max( LEPTONXMIN, 1. - exp( y - yMax) )

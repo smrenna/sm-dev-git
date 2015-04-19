@@ -406,13 +406,19 @@ large effects.
    
  
 <p/><code>mode&nbsp; </code><strong> ColourReconnection:flipMode &nbsp;</strong> 
- (<code>default = <strong>0</strong></code>; <code>minimum = 0</code>; <code>maximum = 2</code>)<br/>
-Performing the flip step or not. 
+ (<code>default = <strong>0</strong></code>; <code>minimum = 0</code>; <code>maximum = 4</code>)<br/>
+Performing the flip step or not. Also possibility to omit the move step.
 <br/><code>option </code><strong> 0</strong> :  No flip handling. 
    
 <br/><code>option </code><strong> 1</strong> :  Allow flips, but not for strings in junction topologies. 
    
 <br/><code>option </code><strong> 2</strong> :  Allow flips, including for strings in junction topologies. 
+   
+<br/><code>option </code><strong> 3</strong> :  No move handling. Allow flips, but not for strings 
+in junction topologies. 
+   
+<br/><code>option </code><strong> 4</strong> :  No move handling. Allow flips, including for strings 
+in junction topologies. 
    
    
  

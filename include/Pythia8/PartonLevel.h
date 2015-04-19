@@ -96,10 +96,10 @@ private:
   // Initialization data, mainly read from Settings.
   bool   doNonDiff, doDiffraction, doMPI, doMPIMB, doMPISDA, doMPISDB,
          doMPICD, doMPIinit, doISR, doFSRduringProcess, doFSRafterProcess,
-         doFSRinResonances, doRemnants, doSecondHard, hasLeptonBeams,
-         hasPointLeptons, canVetoPT, canVetoStep, canVetoMPIStep,
-         canVetoEarly, canSetScale, allowRH, earlyResDec, vetoWeakJets,
-         canReconResSys, doReconnect, doHardDiff;
+         doFSRinResonances, doRemnants, doSecondHard, hasOneLeptonBeam,
+         hasTwoLeptonBeams, hasPointLeptons, canVetoPT, canVetoStep, 
+         canVetoMPIStep, canVetoEarly, canSetScale, allowRH, earlyResDec, 
+         vetoWeakJets, canReconResSys, doReconnect, doHardDiff;
   double mMinDiff, mWidthDiff, pMaxDiff, vetoWeakDeltaR2;
 
   // Event generation strategy. Number of steps. Maximum pT scales.

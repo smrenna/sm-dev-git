@@ -3472,7 +3472,7 @@ bool ColourReconnection::reconnectMove( Event&  event, int oldSize) {
 
   // Loop over all final particles. Store (fraction of) gluons to move.
   for (int i = oldSize; i < event.size(); ++i) if (event[i].isFinal()) {
-    if (event[i].id() == 21 && rndmPtr->flat() < fracGluon)
+    if (flipMode < 3 && event[i].id() == 21 && rndmPtr->flat() < fracGluon)
       iGlu.push_back(i);
 
     // Store location of all colour and anticolour particles and indices.
@@ -3686,7 +3686,7 @@ bool ColourReconnection::reconnectMove( Event&  event, int oldSize) {
     }
 
     // Store acceptable system, optionally including junction legs.
-    if (foundEnd || flipMode == 2) {
+    if (foundEnd || flipMode == 2 || flipMode == 4) {
       iBegFlip.push_back( iVecFlip.size());
       for (int j = 0; j < int(iTmpFlip.size()); ++j)
         iVecFlip.push_back( iTmpFlip[j]);
@@ -3695,7 +3695,8 @@ bool ColourReconnection::reconnectMove( Event&  event, int oldSize) {
   }
 
   // Optionally search for antijunction legs: grab all anticolour ends.
-  if (flipMode == 2) for (int i = oldSize; i < event.size(); ++i)
+  if (flipMode == 2 || flipMode == 4) 
+  for (int i = oldSize; i < event.size(); ++i)
   if (event[i].isFinal() && event[i].acol() > 0 && event[i].col() == 0) {
     iTmpFlip.clear();
     iTmpFlip.push_back( i);

@@ -388,13 +388,19 @@ will be performed, but those that remain are the ones most likely to produce
 large effects. 
 </parm> 
  
-<modepick name="ColourReconnection:flipMode" default="0" min="0" max="2"> 
-Performing the flip step or not. 
+<modepick name="ColourReconnection:flipMode" default="0" min="0" max="4"> 
+Performing the flip step or not. Also possibility to omit the move step.
 <option value="0"> No flip handling. 
 </option> 
 <option value="1"> Allow flips, but not for strings in junction topologies. 
 </option> 
 <option value="2"> Allow flips, including for strings in junction topologies. 
+</option> 
+<option value="3"> No move handling. Allow flips, but not for strings 
+in junction topologies. 
+</option> 
+<option value="4"> No move handling. Allow flips, including for strings 
+in junction topologies. 
 </option> 
 </modepick> 
  

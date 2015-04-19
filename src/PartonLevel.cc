@@ -150,17 +150,19 @@ bool PartonLevel::init( Info* infoPtrIn, Settings& settings,
   if (beamAPtr == 0 || beamBPtr == 0) return true;
 
   // Flag if lepton beams, and if non-resolved ones. May change main flags.
-  hasLeptonBeams     = ( beamAPtr->isLepton() || beamBPtr->isLepton() );
-  hasPointLeptons    = ( hasLeptonBeams
-    && (beamAPtr->isUnresolved() || beamBPtr->isUnresolved() ) );
-  if (hasLeptonBeams) {
+  hasTwoLeptonBeams  =  beamAPtr->isLepton() && beamBPtr->isLepton();
+  hasOneLeptonBeam   = (beamAPtr->isLepton() || beamBPtr->isLepton()) 
+                    && !hasTwoLeptonBeams;
+  hasPointLeptons    = (hasOneLeptonBeam || hasTwoLeptonBeams)  
+    && (beamAPtr->isUnresolved() || beamBPtr->isUnresolved());
+  if (hasOneLeptonBeam || hasTwoLeptonBeams) {
     doMPIMB          = false;
     doMPISDA         = false;
     doMPISDB         = false;
     doMPICD          = false;
     doMPIinit        = false;
   }
-  if (hasPointLeptons) {
+  if (hasTwoLeptonBeams && hasPointLeptons) {
     doISR            = false;
     doRemnants       = false;
   }
@@ -830,7 +832,11 @@ bool PartonLevel::next( Event& process, Event& event) {
   // End loop over ten tries. Restore from diffraction. Hopefully it worked.
   }
   if (isDiff) leaveResolvedDiff( iHardLoop, process, event);
-  if (!physical) return false;
+  if (!physical) {
+    // Leave hard diffractive system properly if beam remnant failed.
+    if (isHardDiff) leaveHardDiff( process, event);
+    return false;
+  }
 
   // End big outer loop to handle two systems in double diffraction.
   }

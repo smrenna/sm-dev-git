@@ -100,6 +100,9 @@ bool HadronLevel::init(Info* infoPtrIn, Settings& settings,
 
 bool HadronLevel::next( Event& event) {
 
+  // Store current event size to mark Parton Level content.
+  event.savePartonLevelSize();
+
   // Do Hidden-Valley fragmentation, if necessary.
   if (useHiddenValley) hiddenvalleyFrag.fragment(event);
 

@@ -202,7 +202,7 @@ private:
   // Initialization data, extracted from database.
   string xmlPath;
   bool   doProcessLevel, doPartonLevel, doHadronLevel, doDiffraction,
-         doHardDiff, doResDec, doFSRinRes, decayRHadrons, abortIfVeto, 
+         doHardDiff, doResDec, doFSRinRes, decayRHadrons, abortIfVeto,
          checkEvent, checkHistory;
   int    nErrList;
   double epTolErr, epTolWarn, mTolErr, mTolWarn;
@@ -270,7 +270,7 @@ private:
   TimeShower*  timesDecPtr;
   TimeShower*  timesPtr;
   SpaceShower* spacePtr;
-  bool         useNewTimes, useNewSpace;
+  bool         useNewTimesDec, useNewTimes, useNewSpace;
 
   // The main generator class to define the core process of the event.
   ProcessLevel processLevel;
@@ -328,7 +328,7 @@ private:
 
   // Initialization of SLHA data.
   bool initSLHA ();
-  stringstream particleDataBuffer; 
+  stringstream particleDataBuffer;
 };
 
 //==========================================================================

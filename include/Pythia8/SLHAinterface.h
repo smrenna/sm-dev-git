@@ -68,7 +68,3 @@ public:
 } // end namespace Pythia8
 
 #endif // Pythia8_SLHAinterface_H
-
-
-
-

@@ -395,12 +395,14 @@ will be performed, but those that remain are the ones most likely to produce
 large effects. 
    
  
-<br/><br/><table><tr><td><strong>ColourReconnection:flipMode  </td><td>  &nbsp;&nbsp;(<code>default = <strong>0</strong></code>; <code>minimum = 0</code>; <code>maximum = 2</code>)</td></tr></table>
-Performing the flip step or not. 
+<br/><br/><table><tr><td><strong>ColourReconnection:flipMode  </td><td>  &nbsp;&nbsp;(<code>default = <strong>0</strong></code>; <code>minimum = 0</code>; <code>maximum = 4</code>)</td></tr></table>
+Performing the flip step or not. Also possibility to omit the move step.
 <br/>
 <input type="radio" name="16" value="0" checked="checked"><strong>0 </strong>:  No flip handling.  <br/>
 <input type="radio" name="16" value="1"><strong>1 </strong>:  Allow flips, but not for strings in junction topologies.  <br/>
 <input type="radio" name="16" value="2"><strong>2 </strong>:  Allow flips, including for strings in junction topologies.  <br/>
+<input type="radio" name="16" value="3"><strong>3 </strong>:  No move handling. Allow flips, but not for strings  in junction topologies.  <br/>
+<input type="radio" name="16" value="4"><strong>4 </strong>:  No move handling. Allow flips, including for strings  in junction topologies.  <br/>
  
 <input type="hidden" name="saved" value="1"/>
 
