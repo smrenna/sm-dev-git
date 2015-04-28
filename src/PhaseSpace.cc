@@ -723,7 +723,7 @@ bool PhaseSpace::setupSampling123(bool is2, bool is3, ostream& os) {
 
   // Solve respective equation system for better phase space coefficients.
   if (!hasTwoPointLeptons) solveSys( nTau, binTau, vecTau, matTau, tauCoef);
-  if (!hasOnePointLepton && !hasTwoPointLeptons) 
+  if (!hasOnePointLepton && !hasTwoPointLeptons)
     solveSys( nY, binY, vecY, matY, yCoef);
   if (is2) solveSys( nZ, binZ, vecZ, matZ, zCoef);
   if (showSearch) os << "\n";
@@ -2543,7 +2543,7 @@ bool PhaseSpace2to2diffractive::setupSampling() {
     // Max f(dy) for Von Neumann method, from SigmaTot.
     sdpmax= sigmaTotPtr->sdpMax();
     ddpmax= sigmaTotPtr->ddpMax();
-  
+
   // H1 Fit A/B.
   } else if (PomFlux == 6 || PomFlux == 7) {
     bSlope        = 5.5;
@@ -2995,7 +2995,7 @@ bool PhaseSpace2to3diffractive::setupSampling() {
     // Max f(dy) for Von Neumann method, dpepmax from SigmaTot.
     dpepmax       = sigmaTotPtr->dpepMax();
 
-  // H1 Fit A/B.  
+  // H1 Fit A/B.
   } else if (PomFlux == 6 || PomFlux == 7) {
     bSlope        = 5.5;
     epsilonPF     = (PomFlux == 6) ? 0.1182 : 0.1110;
@@ -3006,7 +3006,7 @@ bool PhaseSpace2to3diffractive::setupSampling() {
     xtCorPF       = 2. * alphaPrimePF;
     tAux[0]       = exp( max(-EXPMAX, bSlope  * (tLow[0] - tUpp[0])) ) - 1.;
     tAux[1]       = exp( max(-EXPMAX, bSlope  * (tLow[1] - tUpp[1])) ) - 1.;
-  }  
+  }
 
   // Done.
   return true;

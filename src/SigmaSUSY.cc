@@ -851,7 +851,7 @@ void Sigma2qg2charsquark::sigmaKin() {
 }
 
 //--------------------------------------------------------------------------
-  
+
 // Evaluate d(sigmaHat)/d(tHat), including incoming flavour dependence.
 
 double Sigma2qg2charsquark::sigmaHat() {
@@ -1117,7 +1117,7 @@ double Sigma2qq2squarksquark::sigmaHat() {
 
 	  // kl-dependent factor for LL, RR contributions
 	  double facMS = sH*sqrt(m2Neut[k]*m2Neut[l]);
-	  
+
 	  // Note: Nkl defined as in [Boz07] with sigmaNeut factored out
 	  // [1][1] = LL, [1][2] = LR, [2][1] = RL, [2][2] = RR
 	  complex Nkl[3][3];
@@ -1205,7 +1205,7 @@ double Sigma2qq2squarksquark::sigmaHat() {
 					      + CNkl[2][1] + CNkl[2][2]) / tChar[k] / uNeut[l];
 	}
       }
-      
+
       // chargino-gluino interference
       for (int k=1;k<=2;k++) {
 	// Note: CGk defined as in [Boz07] with sigmaCharGlu factored out
@@ -1324,7 +1324,7 @@ double Sigma2qq2squarksquark::sigmaHat() {
 	      * real(NTUkl[1][1] + NTUkl[1][2] + NTUkl[2][1] + NTUkl[2][2])
 	      / tNeut[k] / uNeut[l];
 	  }
-	  
+
 	  // Neutralino / Gluino interference
 
 	  // k-dependent factor for LL and RR contributions
@@ -2927,4 +2927,3 @@ void Sigma2qqbar2sleptonantislepton::setIdColAcol() {
 //==========================================================================
 
 } // end namespace Pythia8
-

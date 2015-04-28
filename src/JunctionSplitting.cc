@@ -170,7 +170,7 @@ bool JunctionSplitting::splitJunGluons(Event& event,
           pQ, mQ );
         int iQbar = event.append( -idQ, 75, iJunLegs[i][1], 0, 0, 0, 0, acolQ,
           pQ, mQ );
-        
+
         // Mark split gluon.
         event[ iJunLegs[i][1] ].statusNeg();
         event[ iJunLegs[i][1] ].daughters( iQ, iQbar);
@@ -297,7 +297,7 @@ bool JunctionSplitting::splitJunGluons(Event& event,
           if (iPartonJun[iJun][j] == mother1 ||
               iPartonJun[iJun][j] == mother2)
             erasing = true;
-        
+
           if ( iPartonJun[iJun][j] == identAntiJun) {
             iPartonJun[iJun][j] = iQ;
             iPartonJun[iJun].insert(iPartonJun[iJun].begin() + j, iGjun);
@@ -331,7 +331,7 @@ bool JunctionSplitting::splitJunGluons(Event& event,
             iPartonAntiJun[iAntiJun][j] = iQbar;
             break;
           }
-        }       
+        }
       }
 
       // Update end colours for both g -> q qbar and g g -> g g q qbar.
@@ -502,13 +502,13 @@ bool JunctionSplitting::splitJunPairs(Event& event,
         int j1 = 0;
         if (matchedLegs[0].second != 1 && matchedLegs[1].second != 1) j1 = 1;
         if (matchedLegs[0].second != 2 && matchedLegs[1].second != 2) j1 = 2;
-        
+
         // Find corresponding colours.
         int col = event.colJunction(junChains[i][0],i1);
         int acol = event.colJunction(junChains[i][1],j1);
         if (event.kindJunction(junChains[i][1]) % 2 == 1)
           swap(col,acol);
-        
+
         // Find index of anti particle.
         int iAcol = -1;
         for (int j = 0;j < event.size();++j)
@@ -521,7 +521,7 @@ bool JunctionSplitting::splitJunPairs(Event& event,
             "Anti colour not found when combining two junctions to a string");
           return false;
         }
-        
+
         // Update anti colour of anti particle.
         int iNew = event.copy(iAcol,66);
         event[iNew].acol(col);
@@ -551,7 +551,7 @@ bool JunctionSplitting::splitJunPairs(Event& event,
             iJunList = l;
             break;
           }
-        
+
         for (int l = 0;l < int(iPartonAntiJun.size()); ++l)
           if (- iPartonAntiJun[l][0]/10 - 1 == iAnti) {
             iAntiList = l;
@@ -869,5 +869,3 @@ bool JunctionSplitting::setAcol(Event& event, int col, int acol) {
 //==========================================================================
 
 } // end namespace Pythia8
-
-

@@ -131,7 +131,7 @@ double StringLength::getJuncLength(Vec4 p1, Vec4 p2, Vec4 p3) {
     return 1e9;
 
   // Calcualte the junction length.
-  return getLength(p1, v1, true) + getLength(p2, v1, true) 
+  return getLength(p1, v1, true) + getLength(p2, v1, true)
     + getLength(p3, v1, true);
 }
 
@@ -201,5 +201,3 @@ double StringLength::getJuncLength(Vec4 p1, Vec4 p2, Vec4 p3, Vec4 p4) {
 //==========================================================================
 
 } // end namespace Pythia8
-
-

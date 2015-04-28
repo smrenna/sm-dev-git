@@ -253,7 +253,7 @@ bool SpaceShower::limitPTmax( Event& event, double Q2Fac, double Q2Ren) {
     dopTlimit = dopTlimit1 = dopTlimit2 = true;
 
   // Look if any quark (u, d, s, c, b), gluon or photon in final state.
-  // Also count number of heavy coloured particles, like top. 
+  // Also count number of heavy coloured particles, like top.
   else {
     int n21 = 0;
     for (int i = 5; i < event.size(); ++i) {
@@ -262,7 +262,7 @@ bool SpaceShower::limitPTmax( Event& event, double Q2Fac, double Q2Ren) {
         int idAbs = event[i].idAbs();
         if (idAbs <= 5 || idAbs == 21 || idAbs == 22) dopTlimit1 = true;
         if ( (event[i].col() != 0 || event[i].acol() != 0)
-          && idAbs > 5 && idAbs != 21 ) ++nHeavyCol; 
+          && idAbs > 5 && idAbs != 21 ) ++nHeavyCol;
       } else if (n21 == 2) {
         int idAbs = event[i].idAbs();
         if (idAbs <= 5 || idAbs == 21 || idAbs == 22) dopTlimit2 = true;
@@ -2531,4 +2531,3 @@ void SpaceShower::list(ostream& os) const {
 //==========================================================================
 
 } // end namespace Pythia8
-

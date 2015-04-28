@@ -23,7 +23,7 @@ namespace Pythia8 {
 
 // The current Pythia (sub)version number, to agree with XML version.
 const double Pythia::VERSIONNUMBERHEAD = PYTHIA_VERSION;
-const double Pythia::VERSIONNUMBERCODE = 8.207;
+const double Pythia::VERSIONNUMBERCODE = 8.208;
 
 //--------------------------------------------------------------------------
 
@@ -818,8 +818,8 @@ bool Pythia::checkBeams() {
 
   // Lepton-hadron collisions OK for DIS processes, although still primitive.
   if ( (isLeptonA && isHadronB) || (isHadronA && isLeptonB) ) {
-    bool doDIS = settings.flag("WeakBosonExchange:all") 
-              || settings.flag("WeakBosonExchange:ff2ff(t:gmZ)") 
+    bool doDIS = settings.flag("WeakBosonExchange:all")
+              || settings.flag("WeakBosonExchange:ff2ff(t:gmZ)")
               || settings.flag("WeakBosonExchange:ff2ff(t:W)");
     if (doDIS) return true;
   }

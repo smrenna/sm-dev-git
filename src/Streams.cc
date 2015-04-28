@@ -4,7 +4,7 @@
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
 // Internal classes to implement gzstream. See header file for user classes.
-// Adapted for Sherpa by Frank Siegert from: 
+// Adapted for Sherpa by Frank Siegert from:
 // gzstream, C++ iostream classes wrapping the zlib compression library.
 // Copyright (C) 2001  Deepak Bandyopadhyay, Lutz Kettner
 // (http://www.cs.unc.edu/Research/compgeom/gzstream).
@@ -80,7 +80,7 @@ int gzstreambuf::underflow() { // used for input buffer only
           buffer + 4 + num);          // end of buffer
 
     // return next character
-    return * reinterpret_cast<unsigned char *>( gptr());    
+    return * reinterpret_cast<unsigned char *>( gptr());
 }
 
 //--------------------------------------------------------------------------

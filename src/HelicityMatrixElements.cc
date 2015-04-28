@@ -715,11 +715,11 @@ void HMEHiggs2TwoFermions::initWaves(vector<HelicityParticle>& p) {
 
   u.clear();
   pMap.resize(4);
-  if      (abs(p[1].id()) == 25) {p2CA = p2CAH1; 
+  if      (abs(p[1].id()) == 25) {p2CA = p2CAH1;
                                   p2CV = complex(0, 1) * p2CVH1;}
-  else if (abs(p[1].id()) == 35) {p2CA = p2CAH2; 
+  else if (abs(p[1].id()) == 35) {p2CA = p2CAH2;
                                   p2CV = complex(0, 1) * p2CVH2;}
-  else if (abs(p[1].id()) == 36) {p2CA = p2CAA3; 
+  else if (abs(p[1].id()) == 36) {p2CA = p2CAA3;
                                   p2CV = complex(0, 1) * p2CVA3;}
   else if (abs(p[1].id()) == 37) {
     p2CA = p[1].id() == 37 ? p2CAH4 : -p2CAH4; p2CV = p2CVH4;

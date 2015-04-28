@@ -202,7 +202,7 @@ bool TauDecays::decay(int idxOut1, Event& event) {
       hardME = hmeW2TwoFermions.initChannel(particles);
     else if (correlated) {
       Vec4 p = out1.p() + out2.p();
-      particles[1] = HelicityParticle(22, -22, idxIn1, idxIn2, idxOut1, 
+      particles[1] = HelicityParticle(22, -22, idxIn1, idxIn2, idxOut1,
         idxOut2, 0, 0, p, p.mCalc(), 0, particleDataPtr);
       hardME = hmeGamma2TwoFermions.initChannel(particles);
       infoPtr->errorMsg("Warning in TauDecays::decay: unknown correlated "

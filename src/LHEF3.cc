@@ -629,9 +629,9 @@ bool Reader::init() {
     }
   }
 
-  for ( int i = 0, N = tags1.size(); i < N; ++i ) 
+  for ( int i = 0, N = tags1.size(); i < N; ++i )
     if (tags1[i]) delete tags1[i];
-  for ( int i = 0, N = tags2.size(); i < N; ++i ) 
+  for ( int i = 0, N = tags2.size(); i < N; ++i )
     if (tags2[i]) delete tags2[i];
 
   // Done
@@ -675,7 +675,7 @@ bool Reader::readEvent(HEPEUP * peup) {
       string v = it->second.c_str();
       eup.attributes[it->first] = v;
     }
-    for ( int i = 0, N = evtags.size(); i < N; ++i ) 
+    for ( int i = 0, N = evtags.size(); i < N; ++i )
       if (evtags[i]) delete evtags[i];
   }
 

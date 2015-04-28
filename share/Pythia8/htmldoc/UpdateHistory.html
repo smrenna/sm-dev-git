@@ -18,7 +18,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.207: 19 April 2015 
+<li>8.208: 28 April 2015 
 <ul> 
  
 <li>New machinery for hard diffraction now in place. Still to be
@@ -49,7 +49,7 @@ mode, which requires no Boost headers. The new configure option
 then requires Boost headers.</li>
  
 <li>New option in the HepMC interface, whereby PYTHIA particles can be 
-appended to an existing HepMC event.</li> 
+appended to an existing HepMC event. Thanks to Mikhail Kirsanov.</li> 
  
 <li>When reading in particle data from the SLHA interface, changes done 
 by the user takes precedence over the SLHA input ones. To be more
@@ -78,6 +78,10 @@ of numerical inconsistencies in input.</li>
  
 <li>Updated EvtGen interface, to allow a pointer to an FSR engine to be 
 passed. Thanks to Torben Ferber.</li> 
+
+<li>New method<code>AlphaStrong::setThresholds(...)</code> allows to
+set the charm, bottom and top flavour-threshold masses used for the 
+running of <i>alpha_strong</i>.</li> 
  
 <li>New option for the <code>Event::list()</code> methods allows to show
 momenta with more decimal digits.</li> 
@@ -122,6 +126,9 @@ suggested by Martin White.</li>
 
 <li>Fixed possible unwarranted destruction of pointer to external timelike
 shower by the <code>Pythia</code> destructor.</li> 
+
+<li>Initialized pointers to NULL in the <code>Info  , 
+to avoid some problems. Thanks to Keno Fischer.</li> 
 
 <li>Minor improvement to the <code>main89.cc</code> example program.</li> 
  

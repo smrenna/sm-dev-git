@@ -36,13 +36,14 @@ public:
 
   // The recommended method to convert Pythia events into HepMC ones.
   bool fill_next_event( Pythia8::Pythia& pythia, GenEvent* evt,
-    int ievnum = -1 ) {return fill_next_event( pythia.event, evt,
-    ievnum, &pythia.info, &pythia.settings);}
+    int ievnum = -1, bool append = false, GenParticle* rootParticle = 0,
+    int iBarcode = -1 ) {return fill_next_event( pythia.event, evt, ievnum,
+    &pythia.info, &pythia.settings, append, rootParticle, iBarcode);}
 
   // Alternative method to convert Pythia events into HepMC ones.
   bool fill_next_event( Pythia8::Event& pyev, GenEvent* evt,
     int ievnum = -1, Pythia8::Info* pyinfo = 0,
-    Pythia8::Settings* pyset = 0, bool append = false, 
+    Pythia8::Settings* pyset = 0, bool append = false,
     GenParticle* rootParticle = 0, int iBarcode = -1);
 
   // Read out values for some switches.
@@ -83,10 +84,10 @@ private:
 //==========================================================================
 
 // Main method for conversion from PYTHIA event to HepMC event.
-// Read one event from Pythia8 and fill a new GenEvent, alternatively  
+// Read one event from Pythia8 and fill a new GenEvent, alternatively
 // append to an existing GenEvent, and return T/F = success/failure.
 
-inline bool Pythia8ToHepMC::fill_next_event( Pythia8::Event& pyev, 
+inline bool Pythia8ToHepMC::fill_next_event( Pythia8::Event& pyev,
   GenEvent* evt, int ievnum, Pythia8::Info* pyinfo, Pythia8::Settings* pyset,
   bool append, GenParticle* rootParticle, int iBarcode) {
 
@@ -98,7 +99,7 @@ inline bool Pythia8ToHepMC::fill_next_event( Pythia8::Event& pyev,
   }
 
   // Update event number counter.
-  if (!append) { 
+  if (!append) {
     if (ievnum >= 0) {
       evt->set_event_number(ievnum);
       m_internal_event_number = ievnum;
@@ -155,7 +156,7 @@ inline bool Pythia8ToHepMC::fill_next_event( Pythia8::Event& pyev,
 
   // Here we assume that the first two particles in the list
   // are the incoming beam particles.
-  if (!append) 
+  if (!append)
     evt->set_beam_particles( hepevt_particles[1], hepevt_particles[2] );
 
   // 3. Loop over particles AGAIN, this time creating vertices.

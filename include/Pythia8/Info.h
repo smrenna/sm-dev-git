@@ -28,7 +28,10 @@ class Info {
 public:
 
   // Constructor.
-  Info() : LHEFversionSave(0), eCMSave(0.), lowPTmin(false), a0MPISave(0.),
+  Info() : LHEFversionSave(0), initrwgt(NULL), generators(NULL), 
+    weightgroups(NULL), init_weights(NULL), eventAttributes(NULL), 
+    weights_detailed(NULL), weights_compressed(NULL), scales(NULL), 
+    weights(NULL), rwgt(NULL), eCMSave(0.), lowPTmin(false), a0MPISave(0.), 
     abortPartonLevel(false), weightCKKWLSave(1.), weightFIRSTSave(0.) {
     for (int i = 0; i < 40; ++i) counters[i] = 0;}
 

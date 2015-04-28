@@ -518,15 +518,15 @@ bool ProcessContainer::constructProcess( Event& process, bool isHardest) {
       double pz  = lhaUpPtr->pz(iOld);
       double e   = lhaUpPtr->e(iOld);
       double m   = lhaUpPtr->m(iOld);
-      for (int idL = 0; idL < 3; ++idL) 
+      for (int idL = 0; idL < 3; ++idL)
         if (idAbs == idLep[idL] && setLeptonMass > 0 && (setLeptonMass == 2
-          || m < 0.9 * mLep[idL] || m > 1.1 * mLep[idL])) m = mLep[idL]; 
+          || m < 0.9 * mLep[idL] || m > 1.1 * mLep[idL])) m = mLep[idL];
       if (mRecalculate > 0. && m > mRecalculate)
-        m = sqrtpos( e*e - px*px - py*py - pz*pz);   
-      else e = sqrt( m*m + px*px + py*py + pz*pz); 
+        m = sqrtpos( e*e - px*px - py*py - pz*pz);
+      else e = sqrt( m*m + px*px + py*py + pz*pz);
 
       // Momentum sum for outgoing particles.
-      if (matchInOut && i > 2 && lhaStatus == 1) 
+      if (matchInOut && i > 2 && lhaStatus == 1)
         pSumOut += Vec4( px, py, pz, e);
 
       // Polarization.
@@ -1900,8 +1900,8 @@ bool SetupContainers::init(vector<ProcessContainer*>& containerPtrs,
               iproc++;
               if (iso == jso && id1 != id2) iproc++;
               // Exclude RH neutrinos from allowed final states
-              if (abs(id1) >= 2000012 && id1 % 2 == 0) continue; 
-              if (abs(id2) >= 2000012 && id2 % 2 == 0) continue; 
+              if (abs(id1) >= 2000012 && id1 % 2 == 0) continue;
+              if (abs(id2) >= 2000012 && id2 % 2 == 0) continue;
               // Skip if outgoing codes not asked for
               if (!allowIdVals( id1, id2)) continue;
               if (iso == jso && id1 != id2) {

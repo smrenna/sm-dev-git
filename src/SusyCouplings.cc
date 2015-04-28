@@ -299,7 +299,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
       if (i < 4 && j < 4) Rsv[i][j] = slhaPtr->snumix(i,j);
       else Rsv[i][j] = 0.0;
     }
-  
+
   // In RPV, the slepton mixing matrices include Higgs bosons
   // Here we just extract the entries corresponding to the slepton PDG codes
   // I.e., slepton-Higgs mixing is not supported.
@@ -862,7 +862,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
 	RsduX[j][l][i] = 0.0;
 	LsudX[j][l][i] = 0.0;
 	RsudX[j][l][i] = 0.0;
-	
+
         // Loop over off-diagonal quark [k] generation
         for (int k=1;k<=3;k++) {
 
@@ -1197,6 +1197,3 @@ int CoupSUSY::typeChar(int idPDG) {
 //==========================================================================
 
 } // end namespace Pythia8
-
-
-

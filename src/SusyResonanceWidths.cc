@@ -59,9 +59,9 @@ bool SUSYResonanceWidths::allowCalc(){
   // Else we should do the calculation; set available channels
   bool done = getChannels(idRes);
   stringstream idStream;
-  idStream << "ID = " << idRes ; 
+  idStream << "ID = " << idRes ;
   if (!done)  infoPtr->errorMsg("Error in SusyResonanceWidths::allowcalc: "
-                                "unable to reset decay table.", idStream.str(), true); 
+                                "unable to reset decay table.", idStream.str(), true);
   return done;
 }
 
@@ -80,7 +80,7 @@ bool ResonanceSquark::getChannels(int idPDG){
 
   int ksusy = 1000000;
   if (idPDG < ksusy) return false;
-  if(idPDG % ksusy >= 7 || idPDG % ksusy < 1) return false; 
+  if(idPDG % ksusy >= 7 || idPDG % ksusy < 1) return false;
 
   ParticleDataEntry* squarkEntryPtr = particleDataPtr->particleDataEntryPtr(idPDG);
 
@@ -90,10 +90,10 @@ bool ResonanceSquark::getChannels(int idPDG){
   if(idPDG % 2 == 0) { // up-type squarks
 
     /*
-    // Gravitino 
-    squarkEntryPtr->addChannel(1, 0.0, 103, 1000039, 2); 
+    // Gravitino
+    squarkEntryPtr->addChannel(1, 0.0, 103, 1000039, 2);
     squarkEntryPtr->addChannel(1, 0.0, 0, 1000039, 4);
-    squarkEntryPtr->addChannel(1, 0.0, 0, 1000039, 6); 
+    squarkEntryPtr->addChannel(1, 0.0, 0, 1000039, 6);
     */
 
     // Gaugino - quark
@@ -128,12 +128,12 @@ bool ResonanceSquark::getChannels(int idPDG){
     squarkEntryPtr->addChannel(1, 0.0, 0, 2000001, -37);
     squarkEntryPtr->addChannel(1, 0.0, 0, 2000003, -37);
     squarkEntryPtr->addChannel(1, 0.0, 0, 2000005, -37);
-    
+
     // Gluino - quark
     squarkEntryPtr->addChannel(1, 0.0, 0, 1000021, 2);
     squarkEntryPtr->addChannel(1, 0.0, 0, 1000021, 4);
     squarkEntryPtr->addChannel(1, 0.0, 0, 1000021, 6);
-    
+
     // lepton - quark via LQD
     squarkEntryPtr->addChannel(1, 0.0, 0, -11, 1);
     squarkEntryPtr->addChannel(1, 0.0, 0, -11, 3);
@@ -144,17 +144,17 @@ bool ResonanceSquark::getChannels(int idPDG){
     squarkEntryPtr->addChannel(1, 0.0, 0, -15, 1);
     squarkEntryPtr->addChannel(1, 0.0, 0, -15, 3);
     squarkEntryPtr->addChannel(1, 0.0, 0, -15, 5);
-    
+
     // quark - quark via UDD
     squarkEntryPtr->addChannel(1, 0.0, 0, -1 ,-3);
     squarkEntryPtr->addChannel(1, 0.0, 0, -1 ,-5);
     squarkEntryPtr->addChannel(1, 0.0, 0, -3 ,-5);
-    
-    
+
+
   } else { //down-type squarks
 
     // Gaugino - quark
-    squarkEntryPtr->addChannel(1, 0.0, 0, -1000024, 2); 
+    squarkEntryPtr->addChannel(1, 0.0, 0, -1000024, 2);
     squarkEntryPtr->addChannel(1, 0.0, 0, -1000037, 2);
     squarkEntryPtr->addChannel(1, 0.0, 0, -1000024, 4);
     squarkEntryPtr->addChannel(1, 0.0, 0, -1000037, 4);
@@ -162,7 +162,7 @@ bool ResonanceSquark::getChannels(int idPDG){
     squarkEntryPtr->addChannel(1, 0.0, 0, -1000037, 6);
     squarkEntryPtr->addChannel(1, 0.0, 0, 1000022, 1);
     squarkEntryPtr->addChannel(1, 0.0, 0, 1000022, 3);
-    squarkEntryPtr->addChannel(1, 0.0, 0, 1000022,  5); 
+    squarkEntryPtr->addChannel(1, 0.0, 0, 1000022,  5);
     squarkEntryPtr->addChannel(1, 0.0, 0, 1000023, 1);
     squarkEntryPtr->addChannel(1, 0.0, 0, 1000023, 3);
     squarkEntryPtr->addChannel(1, 0.0, 0, 1000023, 5);
@@ -192,7 +192,7 @@ bool ResonanceSquark::getChannels(int idPDG){
     squarkEntryPtr->addChannel(1, 0.0, 0, 1000021, 2);
     squarkEntryPtr->addChannel(1, 0.0, 0, 1000021, 5);
 
-    // lepton - quark via LQD 
+    // lepton - quark via LQD
     squarkEntryPtr->addChannel(1, 0.0, 0, -12, 1);
     squarkEntryPtr->addChannel(1, 0.0, 0, -12, 3);
     squarkEntryPtr->addChannel(1, 0.0, 0, -12, 5);
@@ -220,8 +220,8 @@ bool ResonanceSquark::getChannels(int idPDG){
     squarkEntryPtr->addChannel(1, 0.0, 0, 15, 4);
     squarkEntryPtr->addChannel(1, 0.0, 0, 16, 5);
     squarkEntryPtr->addChannel(1, 0.0, 0, 15, 6);
-    
-    
+
+
     // quark - quark via UDD
     squarkEntryPtr->addChannel(1, 0.0, 0, -2, -1);
     squarkEntryPtr->addChannel(1, 0.0, 0, -2, -3);
@@ -922,7 +922,7 @@ bool ResonanceNeut::getChannels(int idPDG){
   return true;
 }
 
-//--------------------------------------------------------------------------  
+//--------------------------------------------------------------------------
 
 void ResonanceNeut::initConstants() {
 
@@ -1152,7 +1152,7 @@ bool ResonanceChar::getChannels(int idPDG){
 
 }
 
-//--------------------------------------------------------------------------  
+//--------------------------------------------------------------------------
 
 void ResonanceChar::initConstants() {
 
@@ -1285,7 +1285,7 @@ bool ResonanceSlepton::getChannels(int idPDG){
 
   int ksusy = 1000000;
   if (idPDG < ksusy) return false;
-  if(idPDG % ksusy < 7 || idPDG % ksusy > 17) return false; 
+  if(idPDG % ksusy < 7 || idPDG % ksusy > 17) return false;
 
   ParticleDataEntry* slepEntryPtr = particleDataPtr->particleDataEntryPtr(idPDG);
 
@@ -1362,7 +1362,7 @@ bool ResonanceSlepton::getChannels(int idPDG){
   return true;
 }
 
-//--------------------------------------------------------------------------  
+//--------------------------------------------------------------------------
 
 // Initialize constants.
 
@@ -1412,7 +1412,7 @@ void ResonanceSlepton::calcWidth(bool) {
 
     kinFac = (mHat * mHat - mf1 * mf1 - mf2 * mf2);
     fac = kinFac / (16.0 * M_PI * pow(mHat,3));
-    
+
     // Case 1: RPV decays
     if (id1Abs < 17 && id2Abs < 17)  {
 
@@ -1541,5 +1541,3 @@ void ResonanceSlepton::calcWidth(bool) {
 //==========================================================================
 
 } //end namespace Pythia8
-
-
