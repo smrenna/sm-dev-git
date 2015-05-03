@@ -58,7 +58,7 @@ bool BeamRemnants::init( Info* infoPtrIn, Settings& settings, Rndm* rndmPtrIn,
   reducedKTatHighY    = settings.parm("BeamRemnants:reducedKTatHighY");
 
   // Handling of rescattering kinematics uncertainties from primodial kT.
-  allowRescatter      = settings.flag("MultipartonInteractions:allowRescatter");
+  allowRescatter     = settings.flag("MultipartonInteractions:allowRescatter");
   doRescatterRestoreY = settings.flag("BeamRemnants:rescatterRestoreY");
 
   // Choice of beam remnant and colour reconnection scenarios.
@@ -146,10 +146,10 @@ bool BeamRemnants::add( Event& event, int iFirst, bool doDiffCR) {
 
       // Check that the new colour structure is physical.
       if (!junctionSplitting.checkColours(event))
-	event = eventTmpSave;
+        event = eventTmpSave;
       else {
-	colCorrect = true;
-	break;
+        colCorrect = true;
+        break;
       }
       // If no colour reconnection, just check the colour configuration once.
     } else {

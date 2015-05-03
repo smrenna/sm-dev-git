@@ -619,8 +619,8 @@ bool SLHAinterface::initSLHA(Settings& settings,
       }
       else if (mSumMin > m0 && particlePtr->id() == 25) {
         infoPtr->errorMsg(warnPref
-	  + "allowing particle with no on-shell decays ",
-	  " id = " + idCode.str() , true);
+          + "allowing particle with no on-shell decays ",
+          " id = " + idCode.str() , true);
       }
       else {
       // mMin: lower cutoff on Breit-Wigner: default is mMin = m0 - 5*Gamma

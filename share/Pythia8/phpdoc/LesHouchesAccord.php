@@ -886,10 +886,11 @@ close main event file (LHEF) and, if present, separate header file.
 The runtime Fortran interface requires linking to an external Fortran 
 code. In order to avoid problems with unresolved external references 
 when this interface is not used, the code has been put in a separate 
-<code>LHAFortran.h</code> file, that is not included in any of the 
-other library files. Instead it should be included in the 
-user-supplied main program, together with the implementation of two 
-methods below that call the Fortran program to do its part of the job. 
+<code>include/Pythia8Plugins/LHAFortran.h</code> file, that is not 
+included in any of the other library files. Instead it should be included 
+in the user-supplied main program, and used to create a derived class that 
+contains the implementation of two methods below that call the Fortran 
+program to do its part of the job. 
  
 <p/> 
 The <code>LHAupFortran</code> class derives from <code>LHAup</code>. 

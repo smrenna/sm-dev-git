@@ -319,7 +319,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
         }
     if (hasCrossTerms)
       infoPtr->errorMsg("Warning from CoupSUSY::initSUSY: "
-                        "slepton-Higgs mixing not supported internally in PYTHIA");
+        "slepton-Higgs mixing not supported internally in PYTHIA");
   }
 
   // Neutral sleptons
@@ -337,7 +337,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
         }
     if (hasCrossTerms)
       infoPtr->errorMsg("Warning from CoupSUSY::initSUSY: "
-                        "sneutrino-Higgs mixing not supported internally in PYTHIA");
+        "sneutrino-Higgs mixing not supported internally in PYTHIA");
   }
 
   if(DBSUSY){
@@ -534,7 +534,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
         }
     if (hasCrossTerms)
       infoPtr->errorMsg("Warning from CoupSUSY::initSUSY: "
-                        "Neutrino-Neutralino mixing not supported internally in PYTHIA");
+        "Neutrino-Neutralino mixing not supported internally in PYTHIA");
   }
 
   // Construct ~chi0 couplings (allow for 5 neutralinos in NMSSM)
@@ -792,7 +792,7 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
         }
     if (hasCrossTerms)
       infoPtr->errorMsg("Warning from CoupSUSY::initSUSY: "
-                        "Lepton-Chargino mixing not supported internally in PYTHIA");
+        "Lepton-Chargino mixing not supported internally in PYTHIA");
   }
 
   // Construct ~chi+ couplings
@@ -857,11 +857,11 @@ void CoupSUSY::initSUSY (SusyLesHouches* slhaPtrIn, Info* infoPtrIn,
       // Loop over squark [j] flavour
       for (int j=1;j<=6;j++) {
 
-	//Initialise to zero
-	LsduX[j][l][i] = 0.0;
-	RsduX[j][l][i] = 0.0;
-	LsudX[j][l][i] = 0.0;
-	RsudX[j][l][i] = 0.0;
+        //Initialise to zero
+        LsduX[j][l][i] = 0.0;
+        RsduX[j][l][i] = 0.0;
+        LsudX[j][l][i] = 0.0;
+        RsudX[j][l][i] = 0.0;
 
         // Loop over off-diagonal quark [k] generation
         for (int k=1;k<=3;k++) {

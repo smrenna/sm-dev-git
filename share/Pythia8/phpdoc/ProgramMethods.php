@@ -4720,145 +4720,145 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method10" target="page">Settings::addFlag(...)</a></td>
+<td><a href="SettingsScheme.php#method11" target="page">Settings::addFlag(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method10" target="page">Settings::addFVec(...)</a></td>
+<td><a href="SettingsScheme.php#method11" target="page">Settings::addFVec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method10" target="page">Settings::addMode(...)</a></td>
+<td><a href="SettingsScheme.php#method11" target="page">Settings::addMode(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method10" target="page">Settings::addMVec(...)</a></td>
+<td><a href="SettingsScheme.php#method11" target="page">Settings::addMVec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method10" target="page">Settings::addParm(...)</a></td>
+<td><a href="SettingsScheme.php#method11" target="page">Settings::addParm(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method10" target="page">Settings::addPVec(...)</a></td>
+<td><a href="SettingsScheme.php#method11" target="page">Settings::addPVec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method10" target="page">Settings::addWord(...)</a></td>
+<td><a href="SettingsScheme.php#method11" target="page">Settings::addWord(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="SettingsScheme.php#method11" target="page">Settings::flag(...)</a></td>
+<td><a href="SettingsScheme.php#method12" target="page">Settings::flag(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method14" target="page">Settings::flag(...)</a></td>
+<td><a href="SettingsScheme.php#method15" target="page">Settings::flag(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="SettingsScheme.php#method12" target="page">Settings::flagDefault(...)</a></td>
+<td><a href="SettingsScheme.php#method13" target="page">Settings::flagDefault(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method15" target="page">Settings::forceMode(...)</a></td>
+<td><a href="SettingsScheme.php#method16" target="page">Settings::forceMode(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method15" target="page">Settings::forceMVec(...)</a></td>
+<td><a href="SettingsScheme.php#method16" target="page">Settings::forceMVec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method15" target="page">Settings::forceParm(...)</a></td>
+<td><a href="SettingsScheme.php#method16" target="page">Settings::forceParm(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method15" target="page">Settings::forcePVec(...)</a></td>
+<td><a href="SettingsScheme.php#method16" target="page">Settings::forcePVec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>vector&lt;bool&gt;</td>
-<td><a href="SettingsScheme.php#method11" target="page">Settings::fvec(...)</a></td>
+<td><a href="SettingsScheme.php#method12" target="page">Settings::fvec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method14" target="page">Settings::fvec(...)</a></td>
+<td><a href="SettingsScheme.php#method15" target="page">Settings::fvec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>vector&lt;bool&gt;</td>
-<td><a href="SettingsScheme.php#method12" target="page">Settings::fvecDefault(...)</a></td>
+<td><a href="SettingsScheme.php#method13" target="page">Settings::fvecDefault(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>map<string, Flag></td>
-<td><a href="SettingsScheme.php#method13" target="page">Settings::getFlagMap(...)</a></td>
+<td><a href="SettingsScheme.php#method14" target="page">Settings::getFlagMap(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>map<string, FVec></td>
-<td><a href="SettingsScheme.php#method13" target="page">Settings::getFVecMap(...)</a></td>
+<td><a href="SettingsScheme.php#method14" target="page">Settings::getFVecMap(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>map<string, Mode></td>
-<td><a href="SettingsScheme.php#method13" target="page">Settings::getModeMap(...)</a></td>
+<td><a href="SettingsScheme.php#method14" target="page">Settings::getModeMap(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>map<string, MVec></td>
-<td><a href="SettingsScheme.php#method13" target="page">Settings::getMVecMap(...)</a></td>
+<td><a href="SettingsScheme.php#method14" target="page">Settings::getMVecMap(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>map<string, Parm></td>
-<td><a href="SettingsScheme.php#method13" target="page">Settings::getParmMap(...)</a></td>
+<td><a href="SettingsScheme.php#method14" target="page">Settings::getParmMap(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>map<string, PVec></td>
-<td><a href="SettingsScheme.php#method13" target="page">Settings::getPVecMap(...)</a></td>
+<td><a href="SettingsScheme.php#method14" target="page">Settings::getPVecMap(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>map<string, Word></td>
-<td><a href="SettingsScheme.php#method13" target="page">Settings::getWordMap(...)</a></td>
+<td><a href="SettingsScheme.php#method14" target="page">Settings::getWordMap(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
@@ -4876,43 +4876,43 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
-<td><a href="SettingsScheme.php#method9" target="page">Settings::isFlag(...)</a></td>
+<td><a href="SettingsScheme.php#method10" target="page">Settings::isFlag(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="SettingsScheme.php#method9" target="page">Settings::isFVec(...)</a></td>
+<td><a href="SettingsScheme.php#method10" target="page">Settings::isFVec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="SettingsScheme.php#method9" target="page">Settings::isMode(...)</a></td>
+<td><a href="SettingsScheme.php#method10" target="page">Settings::isMode(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="SettingsScheme.php#method9" target="page">Settings::isMVec(...)</a></td>
+<td><a href="SettingsScheme.php#method10" target="page">Settings::isMVec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="SettingsScheme.php#method9" target="page">Settings::isParm(...)</a></td>
+<td><a href="SettingsScheme.php#method10" target="page">Settings::isParm(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="SettingsScheme.php#method9" target="page">Settings::isPVec(...)</a></td>
+<td><a href="SettingsScheme.php#method10" target="page">Settings::isPVec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="SettingsScheme.php#method9" target="page">Settings::isWord(...)</a></td>
+<td><a href="SettingsScheme.php#method10" target="page">Settings::isWord(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
@@ -4936,73 +4936,79 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>int</td>
-<td><a href="SettingsScheme.php#method11" target="page">Settings::mode(...)</a></td>
+<td><a href="SettingsScheme.php#method12" target="page">Settings::mode(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method14" target="page">Settings::mode(...)</a></td>
+<td><a href="SettingsScheme.php#method15" target="page">Settings::mode(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="SettingsScheme.php#method12" target="page">Settings::modeDefault(...)</a></td>
+<td><a href="SettingsScheme.php#method13" target="page">Settings::modeDefault(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>vector&lt;int&gt;</td>
-<td><a href="SettingsScheme.php#method11" target="page">Settings::mvec(...)</a></td>
+<td><a href="SettingsScheme.php#method12" target="page">Settings::mvec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method14" target="page">Settings::mvec(...)</a></td>
+<td><a href="SettingsScheme.php#method15" target="page">Settings::mvec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>vector&lt;int&gt;</td>
-<td><a href="SettingsScheme.php#method12" target="page">Settings::mvecDefault(...)</a></td>
+<td><a href="SettingsScheme.php#method13" target="page">Settings::mvecDefault(...)</a></td>
+<td>Settings Scheme</td>
+</tr>
+
+<tr>
+<td>string</td>
+<td><a href="SettingsScheme.php#method8" target="page">Settings::output(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="SettingsScheme.php#method11" target="page">Settings::parm(...)</a></td>
+<td><a href="SettingsScheme.php#method12" target="page">Settings::parm(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method14" target="page">Settings::parm(...)</a></td>
+<td><a href="SettingsScheme.php#method15" target="page">Settings::parm(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="SettingsScheme.php#method12" target="page">Settings::parmDefault(...)</a></td>
+<td><a href="SettingsScheme.php#method13" target="page">Settings::parmDefault(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>vector&lt;double&gt;</td>
-<td><a href="SettingsScheme.php#method11" target="page">Settings::pvec(...)</a></td>
+<td><a href="SettingsScheme.php#method12" target="page">Settings::pvec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method14" target="page">Settings::pvec(...)</a></td>
+<td><a href="SettingsScheme.php#method15" target="page">Settings::pvec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>vector&lt;double&gt;</td>
-<td><a href="SettingsScheme.php#method12" target="page">Settings::pvecDefault(...)</a></td>
+<td><a href="SettingsScheme.php#method13" target="page">Settings::pvecDefault(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
@@ -5020,49 +5026,49 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method8" target="page">Settings::resetAll()</a></td>
+<td><a href="SettingsScheme.php#method9" target="page">Settings::resetAll()</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method16" target="page">Settings::resetFlag(...)</a></td>
+<td><a href="SettingsScheme.php#method17" target="page">Settings::resetFlag(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method16" target="page">Settings::resetFVec(...)</a></td>
+<td><a href="SettingsScheme.php#method17" target="page">Settings::resetFVec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method16" target="page">Settings::resetMode(...)</a></td>
+<td><a href="SettingsScheme.php#method17" target="page">Settings::resetMode(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method16" target="page">Settings::resetMVec(...)</a></td>
+<td><a href="SettingsScheme.php#method17" target="page">Settings::resetMVec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method16" target="page">Settings::resetParm(...)</a></td>
+<td><a href="SettingsScheme.php#method17" target="page">Settings::resetParm(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method16" target="page">Settings::resetPVec(...)</a></td>
+<td><a href="SettingsScheme.php#method17" target="page">Settings::resetPVec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method16" target="page">Settings::resetWord(...)</a></td>
+<td><a href="SettingsScheme.php#method17" target="page">Settings::resetWord(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
@@ -5074,19 +5080,19 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>string</td>
-<td><a href="SettingsScheme.php#method11" target="page">Settings::word(...)</a></td>
+<td><a href="SettingsScheme.php#method12" target="page">Settings::word(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method14" target="page">Settings::word(...)</a></td>
+<td><a href="SettingsScheme.php#method15" target="page">Settings::word(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>string</td>
-<td><a href="SettingsScheme.php#method12" target="page">Settings::wordDefault(...)</a></td>
+<td><a href="SettingsScheme.php#method13" target="page">Settings::wordDefault(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 

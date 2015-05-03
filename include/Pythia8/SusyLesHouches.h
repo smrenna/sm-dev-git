@@ -5,8 +5,8 @@
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
 // Header file for SUSY Les Houches Accord functionality
-// This part of the SLHA interface basically contains the Pythia-independent 
-// SLHA read/write and processing utilities, which would be common to any 
+// This part of the SLHA interface basically contains the Pythia-independent
+// SLHA read/write and processing utilities, which would be common to any
 // SLHA interface.
 // (The Pythia-specific components reside in the SLHAinterface class.)
 
@@ -890,6 +890,3 @@ template <class T> bool SusyLesHouches::getEntry(string blockName, int indx,
 } // end of namespace Pythia8
 
 #endif
-
-
-

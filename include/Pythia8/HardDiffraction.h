@@ -30,21 +30,21 @@ namespace Pythia8 {
 class HardDiffraction {
 
 public:
-  
+
   // Constructor and destructor.
   HardDiffraction() {};
   ~HardDiffraction() {}
 
-  // Initialise constants 
+  // Initialise constants
   void init(Info* infoPtrIn, Settings& settingsIn, Rndm* rndmPtrIn,
     BeamParticle* beamAPtrIn, BeamParticle* beamBPtrIn,
     BeamParticle* beamPomAPtrIn, BeamParticle* beamPomBPtrIn);
 
   // Main routine to check if event is from diffractive PDF.
-  bool isDiffractive(int iBeamIn = 1, int partonIn = 0, 
+  bool isDiffractive(int iBeamIn = 1, int partonIn = 0,
     double xIn = 0., double xfIncIn = 0.);
 
-  // Get diffractive values. 
+  // Get diffractive values.
   double getXPomeronA()     {return xPomA;}
   double getXPomeronB()     {return xPomB;}
   double getTPomeronA()     {return tPomA;}
@@ -58,7 +58,7 @@ private:
   static const double TINYPDF;
   static const double POMERONMASS;
   static const double PROTONMASS;
-  
+
   // Initialization and event data.
   int    pomSet, pomFlux, iBeam, idA, idB;
   double normPom, a1, a2, a3, A1, A2, A3, a0, ap, b0, PDFFactor, Q2,
@@ -67,10 +67,10 @@ private:
 
   // Pointer to various information on the generation.
   Info*           infoPtr;
- 
+
   // Pointer to the settings database.
   Settings        settings;
-  
+
   // Pointer to the random number generator.
   Rndm*           rndmPtr;
 

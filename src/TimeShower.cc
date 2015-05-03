@@ -1142,7 +1142,8 @@ void TimeShower::setupQCDdip( int iSys, int i, int colTag, int colSign,
   }
 
   // If no success then look for matching (anti)colour anywhere in final state.
-  if ( iRec == 0 || (!doInterleave && allowMPIdipole && !event[iRec].isFinal()) ) {
+  if ( iRec == 0 || (!doInterleave && allowMPIdipole 
+    && !event[iRec].isFinal()) ) {
     for (int j = 0; j < event.size(); ++j) if (event[j].isFinal()) {
       if ( (colSign > 0 && event[j].acol() == colTag)
         || (colSign < 0 && event[j].col()  == colTag) ) {

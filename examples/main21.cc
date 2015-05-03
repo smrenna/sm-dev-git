@@ -262,12 +262,12 @@ int main() {
     else fillPartons( type, ee, event, pdt, pythia.rndm);
 
     // To have partons shower they must be set maximum allowed scale.
-    // (Can be set individually to restrict radiation differently.) 
+    // (Can be set individually to restrict radiation differently.)
     if (type == 12 || type == 13) {
       double scale = ee;
       event[1].scale( scale);
       event[2].scale( scale);
-   
+
       // Now actually do the shower, for range of partons, and max scale.
       // (Most restrictive of global and individual applied to each parton.)
       pythia.forceTimeShower( 1, 2, scale);

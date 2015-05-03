@@ -1,12 +1,12 @@
 // main61.cc is a part of the PYTHIA event generator.
-// Copyright (C) 2014 Torbjorn Sjostrand.
+// Copyright (C) 2015 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 // Author: Christine O. Rasmussen.
 
 // The y, pT, x_Pomeron and t distributions for forward Z bosons at the LHC,
 // within the hard diffraction framework for an inclusive event sample.
-// Tests the impact of successive requirements. 
+// Tests the impact of successive requirements.
 
 #include "Pythia8/Pythia.h"
 
@@ -14,7 +14,7 @@ using namespace Pythia8;
 
 int main() {
 
-  // Create Pythia instance. Shorthand for event and info. 
+  // Create Pythia instance. Shorthand for event and info.
   Pythia pythia;
   Event& event = pythia.event;
   Info&  info  = pythia.info;
@@ -32,15 +32,15 @@ int main() {
   pythia.readString("PDF:PomSet = 6");
 
   // Simplify printout.
-  pythia.readString("Init:showChangedSettings = off");   
-  pythia.readString("Init:showChangedParticleData = off");   
-  pythia.readString("Init:showMultipartonInteractions = off"); 
-  pythia.readString("Next:numberShowInfo = 0");   
-  pythia.readString("Next:numberShowProcess = 0");   
-  pythia.readString("Next:numberShowEvent = 0");   
+  pythia.readString("Init:showChangedSettings = off");
+  pythia.readString("Init:showChangedParticleData = off");
+  pythia.readString("Init:showMultipartonInteractions = off");
+  pythia.readString("Next:numberShowInfo = 0");
+  pythia.readString("Next:numberShowProcess = 0");
+  pythia.readString("Next:numberShowEvent = 0");
   pythia.readString("Next:showScaleAndVertex = off");
 
-  // Switch off hadronization, since not used here.  
+  // Switch off hadronization, since not used here.
   pythia.readString("HadronLevel:all = off");
 
   // Initialize.
@@ -52,7 +52,7 @@ int main() {
   int nDiffB        = 0;
   int nReducedDiffA = 0;
   int nReducedDiffB = 0;
-  
+
   // Histograms.
   Hist y0("dN/dy inclusive",               100, -5.,   5.);
   Hist y1("dN/dy after PDF selection",     100, -5.,   5.);
@@ -74,19 +74,19 @@ int main() {
     for (int i = 0; i < event.size(); ++i) if (event[i].id() == 23) iZ = i;
     double yZ  = event[iZ].y();
     double pTZ = event[iZ].pT();
-    y0.fill( yZ ); 
+    y0.fill( yZ );
     pT0.fill( pTZ );
 
     // Find diffractive events. Histogram y and pT.
     if ( info.isHardDiffractiveA() == 1 || info.isHardDiffractiveB() == 1) {
       y1.fill( yZ );
       pT1.fill( pTZ );
-      if (info.nMPI() == 1) { 
+      if (info.nMPI() == 1) {
         y2.fill( yZ );
         pT2.fill( pTZ );
       }
 
-      // Statistics and histogram on x_Pomeron and t. 
+      // Statistics and histogram on x_Pomeron and t.
       if ( info.isHardDiffractiveA() == 1) {
         ++nDiffA;
         xP1.fill( info.xPomeronB() );
@@ -118,12 +118,12 @@ int main() {
   cout << "Side A is MPI-checked diffractive   : " << nReducedDiffA << endl;
   cout << "Side B is MPI-unchecked diffractive : " << nDiffB << endl;
   cout << "Side B is MPI-checked diffractive   : " << nReducedDiffB << endl;
-  cout << "Total MPI-unchecked diffractive events : " << fixed 
-       << setprecision(2) << (nDiffA + nDiffB) / double(maxEvent) * 100. 
-       << "%" << endl; 
-  cout << "Total MPI-checked diffractive events : " 
-       << (nReducedDiffA + nReducedDiffB) / double(maxEvent) * 100. 
-       << "%" << endl; 
+  cout << "Total MPI-unchecked diffractive events : " << fixed
+       << setprecision(2) << (nDiffA + nDiffB) / double(maxEvent) * 100.
+       << "%" << endl;
+  cout << "Total MPI-checked diffractive events : "
+       << (nReducedDiffA + nReducedDiffB) / double(maxEvent) * 100.
+       << "%" << endl;
 
   // Histograms.
   cout << y0 << y1 << y2 << pT0 << pT1 << pT2 << xP1 << xP2 << tP1 << tP2;

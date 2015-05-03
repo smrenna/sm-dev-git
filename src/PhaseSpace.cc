@@ -118,7 +118,7 @@ void PhaseSpace::init(bool isFirst, SigmaProcess* sigmaProcessPtrIn,
   hasLeptonBeamA      = beamAPtr->isLepton();
   hasLeptonBeamB      = beamBPtr->isLepton();
   hasTwoLeptonBeams   = hasLeptonBeamA && hasLeptonBeamB;
-  hasOneLeptonBeam    = (hasLeptonBeamA || hasLeptonBeamB) && !hasTwoLeptonBeams;
+  hasOneLeptonBeam = (hasLeptonBeamA || hasLeptonBeamB) && !hasTwoLeptonBeams;
   bool hasPointLepton = (hasLeptonBeamA && beamAPtr->isUnresolved())
                      || (hasLeptonBeamB && beamBPtr->isUnresolved());
   hasOnePointLepton   = hasOneLeptonBeam  && hasPointLepton;

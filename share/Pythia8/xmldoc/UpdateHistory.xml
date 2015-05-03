@@ -12,9 +12,12 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.208: 28 April 2015 
-<ul> 
+<li>8.208: 3 May 2015 
+<ul>  
  
+<li>The "An Introduction to PYTHIA 8.2", arXiv:1410.3012 [hep-ph],
+has now been published in Comput. Phys.Commun. 191 (2015) 159.</li> 
+
 <li>New machinery for hard diffraction now in place. Still to be
 further checked, so not yet ready for public usage.</li> 
  
@@ -83,6 +86,11 @@ momenta with more decimal digits.</li>
 <li>New <code>Particle::isFinalPartonLevel()</code> method to tell whether 
 a particle belonged to the final state on the parton level of generation
 or not. New <code>main73.cc</code> example illustrates usefulness.</li> 
+ 
+<li>New method <code>string Settings::output(string key)</code> returns
+the value of a variable as a string. In <code>Pythia::readString()</code>
+or <code>readFile()</code> calls this can now be used to print a
+current setting value by the command <code>key = ?</code>.</li> 
 
 <li>The role of the <code>pythia.forceTimeShower(...)</code> method is 
 better explained in the hadron-level standalone documentation, and 
@@ -121,13 +129,17 @@ suggested by Martin White.</li>
 <li>Fixed possible unwarranted destruction of pointer to external timelike
 shower by the <code>Pythia</code> destructor.</li> 
 
-<li>Initialized pointers to NULL in the <code>Info</class>, 
+<li>Initialized pointers to NULL in the <code>Info</code> class, 
 to avoid some problems. Thanks to Keno Fischer.</li> 
 
 <li>Minor improvement to the <code>main89.cc</code> example program.</li> 
  
 <li>Mildly modified warning/error messages when junction splitting
 fails.</li> 
+
+<li>Minor fixes in <code>LHAFortran.h</code>, which is also moved to 
+<code>include/Pythia8Plugins</code> to better reflect its peripheral 
+role.</li> 
 
 </ul> 
 </li> 

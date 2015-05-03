@@ -97,8 +97,8 @@ private:
   bool   doNonDiff, doDiffraction, doMPI, doMPIMB, doMPISDA, doMPISDB,
          doMPICD, doMPIinit, doISR, doFSRduringProcess, doFSRafterProcess,
          doFSRinResonances, doRemnants, doSecondHard, hasOneLeptonBeam,
-         hasTwoLeptonBeams, hasPointLeptons, canVetoPT, canVetoStep, 
-         canVetoMPIStep, canVetoEarly, canSetScale, allowRH, earlyResDec, 
+         hasTwoLeptonBeams, hasPointLeptons, canVetoPT, canVetoStep,
+         canVetoMPIStep, canVetoEarly, canSetScale, allowRH, earlyResDec,
          vetoWeakJets, canReconResSys, doReconnect, doHardDiff;
   double mMinDiff, mWidthDiff, pMaxDiff, vetoWeakDeltaR2;
 

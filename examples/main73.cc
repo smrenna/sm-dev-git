@@ -14,10 +14,10 @@ using namespace Pythia8;
 // the hadronization machinery was invoked.
 
 void getPartonLevelEvent( Event& event, Event& partonLevelEvent) {
-  
+
   // Copy over all particles that existed right before hadronization.
   partonLevelEvent.reset();
-  for (int i = 0; i < event.size(); ++i)  
+  for (int i = 0; i < event.size(); ++i)
   if (event[i].isFinalPartonLevel()) {
     int iNew = partonLevelEvent.append( event[i] );
 
@@ -26,19 +26,19 @@ void getPartonLevelEvent( Event& event, Event& partonLevelEvent) {
     partonLevelEvent[iNew].statusPos();
     partonLevelEvent[iNew].mothers( i, i);
     partonLevelEvent[iNew].daughters( 0, 0);
-  }  
+  }
 
 }
 
 //--------------------------------------------------------------------------
 
-// Generic routine to extract the particles that exist after the 
+// Generic routine to extract the particles that exist after the
 // hadronization machinery. Normally not needed, since SlowJet
-// contains the standard possibilities preprogrammed, but this 
-// method illustrates further discrimination. 
+// contains the standard possibilities preprogrammed, but this
+// method illustrates further discrimination.
 
 void getHadronLevelEvent( Event& event, Event& hadronLevelEvent) {
-  
+
   // Iterate over all final particles.
   hadronLevelEvent.reset();
   for (int i = 0; i < event.size(); ++i) {
@@ -57,7 +57,7 @@ void getHadronLevelEvent( Event& event, Event& hadronLevelEvent) {
       int iNew = hadronLevelEvent.append( event[i] );
       hadronLevelEvent[iNew].mothers( i, i);
     }
-  }  
+  }
 
 }
 
@@ -96,7 +96,7 @@ int main() {
   SlowJet antiKTpartons( -1, radius, pTjetMin, etaMax, select);
   SlowJet antiKThadrons( -1, radius, pTjetMin, etaMax, select);
 
-  // Histograms. 
+  // Histograms.
   Hist nJetsP("number of jets, parton level", 50, -0.5, 49.5);
   Hist nJetsH("number of jets, hadron level", 50, -0.5, 49.5);
   Hist pTallP("pT for jets, parton level", 100, 0., 500.);
@@ -104,7 +104,7 @@ int main() {
   Hist pThardP("pT for hardest jet, parton level", 100, 0., 500.);
   Hist pThardH("pT for hardest jet, hadron level", 100, 0., 500.);
   Hist pTdiff("pT for hardest jet, hadron - parton", 100, -100., 100.);
-  
+
   // Begin event loop. Generate event. Skip if error.
   for (int iEvent = 0; iEvent < nEvent; ++iEvent) {
     if (!pythia.next()) continue;
@@ -122,7 +122,7 @@ int main() {
 
     // Analyze jet properties and list first few analyses.
     antiKTpartons.analyze( partonLevelEvent );
-    antiKThadrons.analyze( hadronLevelEvent );    
+    antiKThadrons.analyze( hadronLevelEvent );
     if (iEvent < nListJets) {
       antiKTpartons.list();
       antiKThadrons.list();
@@ -138,7 +138,7 @@ int main() {
     if ( antiKTpartons.sizeJet() > 0 && antiKThadrons.sizeJet() > 0) {
       pThardP.fill( antiKTpartons.pT(0) );
       pThardH.fill( antiKThadrons.pT(0) );
-      pTdiff.fill( antiKThadrons.pT(0) - antiKTpartons.pT(0) ); 
+      pTdiff.fill( antiKThadrons.pT(0) - antiKTpartons.pT(0) );
     }
 
   // End of event loop. Statistics. Histograms.

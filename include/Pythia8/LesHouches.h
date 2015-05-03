@@ -327,8 +327,8 @@ public:
     const char* headerIn = NULL, bool readHeadersIn = false,
     bool setScalesFromLHEFIn = false ) :
     infoPtr(infoPtrIn), filename(filenameIn), headerfile(headerIn),
-    is(NULL), is_gz(NULL), isHead(NULL), isHead_gz(NULL), 
-    readHeaders(readHeadersIn), reader(filenameIn), 
+    is(NULL), is_gz(NULL), isHead(NULL), isHead_gz(NULL),
+    readHeaders(readHeadersIn), reader(filenameIn),
     setScalesFromLHEF(setScalesFromLHEFIn) {
 
     is = (openFile(filenameIn, ifs));
@@ -406,7 +406,7 @@ protected:
 #ifdef GZIPSUPPORT
     if      ( header && !getline(*isHead_gz, line)) return false;
     else if (!header && !getline(*is_gz, line))     return false;
-#else    
+#else
     if      (header && !getline(*isHead, line)) return false;
     else if (!header && !getline(*is, line))    return false;
 #endif

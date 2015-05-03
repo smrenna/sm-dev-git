@@ -34,7 +34,6 @@ bool SUSYResonanceWidths::initBSM(){
   return false;
 }
 
-
 //--------------------------------------------------------------------------
 
 bool SUSYResonanceWidths::allowCalc(){
@@ -48,10 +47,10 @@ bool SUSYResonanceWidths::allowCalc(){
 
     // Next check if decay table was read in via SLHA and takes precedence
     for ( int iDec = 1; iDec < int((coupSUSYPtr->slhaPtr)->decays.size());
-	  ++iDec)
+          ++iDec)
       if ( (coupSUSYPtr->slhaPtr)->decays[iDec].getId() == abs(idRes) ) {
-	if (DBSUSY) cout<<"Using external decay table for:"<<idRes<<endl;
-	return false;
+        if (DBSUSY) cout<<"Using external decay table for:"<<idRes<<endl;
+        return false;
       }
 
   }
@@ -61,7 +60,7 @@ bool SUSYResonanceWidths::allowCalc(){
   stringstream idStream;
   idStream << "ID = " << idRes ;
   if (!done)  infoPtr->errorMsg("Error in SusyResonanceWidths::allowcalc: "
-                                "unable to reset decay table.", idStream.str(), true);
+    "unable to reset decay table.", idStream.str(), true);
   return done;
 }
 
@@ -82,7 +81,8 @@ bool ResonanceSquark::getChannels(int idPDG){
   if (idPDG < ksusy) return false;
   if(idPDG % ksusy >= 7 || idPDG % ksusy < 1) return false;
 
-  ParticleDataEntry* squarkEntryPtr = particleDataPtr->particleDataEntryPtr(idPDG);
+  ParticleDataEntry* squarkEntryPtr
+    = particleDataPtr->particleDataEntryPtr(idPDG);
 
   // Delete any decay channels read
   squarkEntryPtr->clearChannels();
@@ -456,7 +456,8 @@ bool ResonanceGluino::getChannels(int idPDG){
   idPDG = abs(idPDG);
   if (idPDG != 1000021) return false;
 
-  ParticleDataEntry* gluinoEntryPtr = particleDataPtr->particleDataEntryPtr(idPDG);
+  ParticleDataEntry* gluinoEntryPtr
+    = particleDataPtr->particleDataEntryPtr(idPDG);
 
   // Delete any decay channels read
   gluinoEntryPtr->clearChannels();
@@ -610,7 +611,8 @@ bool ResonanceNeut::getChannels(int idPDG){
   int iNeut = coupSUSYPtr->typeNeut(idPDG);
   if (iNeut < 1) return false;
 
-  ParticleDataEntry* neutEntryPtr = particleDataPtr->particleDataEntryPtr(idPDG);
+  ParticleDataEntry* neutEntryPtr
+    = particleDataPtr->particleDataEntryPtr(idPDG);
 
   // Delete any decay channels read
   neutEntryPtr->clearChannels();
@@ -1076,7 +1078,8 @@ bool ResonanceChar::getChannels(int idPDG){
   int iChar = coupSUSYPtr->typeChar(idPDG);
   if (iChar < 1) return false;
 
-  ParticleDataEntry* charEntryPtr = particleDataPtr->particleDataEntryPtr(idPDG);
+  ParticleDataEntry* charEntryPtr
+    = particleDataPtr->particleDataEntryPtr(idPDG);
 
   // Delete any decay channels read
   charEntryPtr->clearChannels();
@@ -1287,7 +1290,8 @@ bool ResonanceSlepton::getChannels(int idPDG){
   if (idPDG < ksusy) return false;
   if(idPDG % ksusy < 7 || idPDG % ksusy > 17) return false;
 
-  ParticleDataEntry* slepEntryPtr = particleDataPtr->particleDataEntryPtr(idPDG);
+  ParticleDataEntry* slepEntryPtr
+    = particleDataPtr->particleDataEntryPtr(idPDG);
 
   // Delete any decay channels read
   slepEntryPtr->clearChannels();
@@ -1421,29 +1425,33 @@ void ResonanceSlepton::calcWidth(bool) {
 
       //Case 1a: RPV LLE
       if(id1Abs > 10 && id2Abs > 10) {
-	if (!coupSUSYPtr->isLLE) { widNow = 0.0; return;}
+        if (!coupSUSYPtr->isLLE) { widNow = 0.0; return;}
 
-	if (!islep){ // sneutrino
-	  for (int isl2=1; isl2<3; isl2++)
-	    wid += norm(coupSUSYPtr->Rsv[isl][isl2] * coupSUSYPtr->rvLLE[il][isl2][il2]);
-	} else {
-	  for (int isl2=1; isl2<3; isl2++)
-            wid += norm(coupSUSYPtr->Rsl[isl][isl2+3]* coupSUSYPtr->rvLLE[isl2][il][il2]);
-	}
+        if (!islep){ // sneutrino
+          for (int isl2=1; isl2<3; isl2++)
+            wid += norm(coupSUSYPtr->Rsv[isl][isl2]
+                 * coupSUSYPtr->rvLLE[il][isl2][il2]);
+        } else {
+          for (int isl2=1; isl2<3; isl2++)
+            wid += norm(coupSUSYPtr->Rsl[isl][isl2+3]
+                 * coupSUSYPtr->rvLLE[isl2][il][il2]);
+        }
       }
       //Case 1b: RPV LQD
       if(id1Abs < 10 && id2Abs < 10) {
-	if (!coupSUSYPtr->isLQD) { widNow = 0.0; return;}
-	if (!islep){ // sneutrino
-	  for (int isl2=1; isl2<3; isl2++)
-	    wid += norm(coupSUSYPtr->Rsv[isl][isl2] * coupSUSYPtr->rvLQD[isl2][id1Abs][id2Abs]);
-	  wid *= 3.0; // colour factor
+        if (!coupSUSYPtr->isLQD) { widNow = 0.0; return;}
+        if (!islep){ // sneutrino
+          for (int isl2=1; isl2<3; isl2++)
+            wid += norm(coupSUSYPtr->Rsv[isl][isl2]
+                 * coupSUSYPtr->rvLQD[isl2][id1Abs][id2Abs]);
+          wid *= 3.0; // colour factor
 
-	} else {
-	  for (int isl2=1; isl2<3; isl2++)
-            wid += norm(coupSUSYPtr->Rsl[isl][isl2+3] * coupSUSYPtr->rvLLE[isl2][id1Abs][id2Abs]);
-	  wid *= 3.0; // colour factor
-	}
+        } else {
+          for (int isl2=1; isl2<3; isl2++)
+            wid += norm(coupSUSYPtr->Rsl[isl][isl2+3]
+                 * coupSUSYPtr->rvLLE[isl2][id1Abs][id2Abs]);
+          wid *= 3.0; // colour factor
+        }
       }
     }
 
@@ -1515,7 +1523,7 @@ void ResonanceSlepton::calcWidth(bool) {
     widNow = fac * wid * ps * pow2(mHat);
 
     if (DBSUSY) cout<<idRes<<":: id1:"<<id1Abs<<" id2:"<<id2Abs
-		    <<" Width: "<<widNow<<endl;
+                    <<" Width: "<<widNow<<endl;
   }
   else { // Case 4: special many-body stau decays
     // Case 4a: ~tau -> pi0 nu_tau ~chi0
@@ -1523,7 +1531,8 @@ void ResonanceSlepton::calcWidth(bool) {
     // Case 4c: ~tau -> l nu_l nu_tau ~chi0
 
     // Check that there is a stau component
-    double staufac = norm(coupSUSYPtr->Rsl[isl][3]) +  norm(coupSUSYPtr->Rsl[isl][6]);
+    double staufac = norm(coupSUSYPtr->Rsl[isl][3])
+                   + norm(coupSUSYPtr->Rsl[isl][6]);
     if (staufac < 1.0e-6 || abs(mRes - particleDataPtr->m0(15)) > 0.0 ) return;
     if(id2Abs > 17)
       widNow = stauWidths.getWidth(idRes, id2Abs);

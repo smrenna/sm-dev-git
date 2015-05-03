@@ -138,7 +138,7 @@ protected:
 //   decayFile:        the name of the decay file to pass to EvtGen.
 //   particleDataFile: the name of the particle data file to pass to EvtGen.
 //   extPtr:           the optional EvtExternalGenList pointer, this must be
-//                     be provided if fsrPtr is provided to avoid double 
+//                     be provided if fsrPtr is provided to avoid double
 //                     initializations.
 //   fsrPtr:           the EvtAbsRadCorr pointer to pass to EvtGen.
 //   mixing:           the mixing type to pass to EvtGen.
@@ -146,7 +146,7 @@ protected:
 //   limit:            flag to limit particle decays based on Pythia criteria.
 
 EvtGenDecays::EvtGenDecays(Pythia *pythiaPtrIn, string decayFile,
-  string particleDataFile, EvtExternalGenList *extPtr, 
+  string particleDataFile, EvtExternalGenList *extPtr,
   EvtAbsRadCorr *fsrPtr, int mixing, bool xml, bool limit) :
   pythiaPtr(pythiaPtrIn), rndm(&pythiaPtr->rndm) {
 
@@ -159,7 +159,7 @@ EvtGenDecays::EvtGenDecays(Pythia *pythiaPtrIn, string decayFile,
   else {genlist = new EvtExternalGenList(); owner = true;}
   models = genlist->getListOfModels();
   evtgen = new EvtGen(decayFile.c_str(), particleDataFile.c_str(),
-		      &rndm, fsrPtr, &models, mixing, xml);
+    &rndm, fsrPtr, &models, mixing, xml);
 
   // Set Pythia particles as stable.
   if (!pythiaPtr) return;

@@ -55,7 +55,7 @@ public:
   // For the Pythia pT definition, a recoiler (after) must be specified.
 
   // Compute the Pythia pT separation. Based on pTLund function in History.cc
-  inline double pTpythia(const Event &e, int RadAfterBranch, 
+  inline double pTpythia(const Event &e, int RadAfterBranch,
     int EmtAfterBranch, int RecAfterBranch, bool FSR) {
 
     // Convenient shorthands for later
@@ -216,9 +216,9 @@ public:
                   ? false : FSR);
                 if (pTnow > 0.) pTemt = (pTemt < 0)
                   ? pTnow : min(pTemt, pTnow);
-              } 
+              }
              // for (iMem)
-            } 
+            }
             // if (!FSR)
           // Pythia
           } else if (pTdefMode == 2) {
@@ -254,18 +254,18 @@ public:
                   pTnow = pTpythia(e, kNow, jNow, rNow, FSR);
                   if (pTnow > 0.) pTemt = (pTemt < 0)
                     ? pTnow : min(pTemt, pTnow);
-                } 
+                }
               // for (rNow)
-              } 
+              }
             // for (kNow)
-            } 
+            }
           // if (!FSR)
-          } 
+          }
         // if (pTdefMode)
-        } 
+        }
       // for (j)
       }
-    } 
+    }
     // for (xSR)
 
     return pTemt;
@@ -372,7 +372,7 @@ public:
 
     // If a Born configuration, and a photon, and QEDvetoMode=2,
     //  then don't veto photons, W, or Z harder than pThard
-    bool vetoParton = (!isEmt && e[iEmt].colType()==0 && QEDvetoMode==2) 
+    bool vetoParton = (!isEmt && e[iEmt].colType()==0 && QEDvetoMode==2)
       ? false: true;
 
     // Veto if pTemt > pThard
@@ -454,7 +454,7 @@ public:
 
     // If a Born configuration, and a photon, and QEDvetoMode=2,
     //  then don't veto photons, W's or Z's harder than pThard
-    bool vetoParton = (!isEmt && e[iEmt].colType()==0 && QEDvetoMode==2) 
+    bool vetoParton = (!isEmt && e[iEmt].colType()==0 && QEDvetoMode==2)
       ? false: true;
 
     // Veto if pTemt > pThard
@@ -497,7 +497,7 @@ public:
 //--------------------------------------------------------------------------
 
 private:
-  int nFinal, vetoMode, vetoCount, pThardMode, pTemtMode, 
+  int nFinal, vetoMode, vetoCount, pThardMode, pTemtMode,
     emittedMode, pTdefMode, MPIvetoMode, QEDvetoMode;
   double pThard, pTMPI;
   bool   accepted, isEmt;
@@ -514,4 +514,3 @@ private:
 } // end namespace Pythia8
 
 #endif // end Pythia8_PowhegHooks_H
-

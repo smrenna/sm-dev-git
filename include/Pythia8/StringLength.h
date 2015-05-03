@@ -38,13 +38,13 @@ public:
   // Calculate string length for two particles given their four-momenta.
   double getStringLength(Vec4 p1, Vec4 p2);
 
-  // Calculate the length of a single junction given the 3 entries in the event.
+  // Calculate the length of a single junction given the 3 entries in event.
   double getJuncLength(Event& event, int i, int j, int k);
 
   // Calculate the length of a single junction given the 3 four-momenta.
   double getJuncLength(Vec4 p1, Vec4 p2, Vec4 p3);
 
-  // Calculate the length of a double junction given the 4 entries in the event.
+  // Calculate the length of a double junction given the 4 entries in event.
   // The first two are expected to be quarks, the second two to be antiquarks.
   double getJuncLength(Event& event, int i, int j, int k, int l);
 

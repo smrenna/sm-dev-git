@@ -5,7 +5,8 @@
 
 // Author: Christine O. Rasmussen.
 
-// Function definitions (not found in the header) for the HardDiffraction class.
+// Function definitions (not found in the header) for the
+// HardDiffraction class.
 
 #include "Pythia8/HardDiffraction.h"
 namespace Pythia8 {

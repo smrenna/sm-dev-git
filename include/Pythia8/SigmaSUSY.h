@@ -867,4 +867,3 @@ private:
 } // end namespace Pythia8
 
 #endif // Pythia8_SigmaSUSY_H
-

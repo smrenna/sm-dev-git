@@ -314,7 +314,7 @@ protected:
 
   // CP violation parameters for Higgs sector, normally only set once.
   int    higgsH1parity, higgsH2parity, higgsA3parity;
-  double higgsH1eta, higgsH2eta, higgsA3eta, higgsH1phi, higgsH2phi, 
+  double higgsH1eta, higgsH2eta, higgsA3eta, higgsH1phi, higgsH2phi,
          higgsA3phi;
 
   // Information on incoming beams.
@@ -628,4 +628,3 @@ private:
 } // end namespace Pythia8
 
 #endif // Pythia8_SigmaProcess_H
-

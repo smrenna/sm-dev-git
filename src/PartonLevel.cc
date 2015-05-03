@@ -336,7 +336,8 @@ bool PartonLevel::next( Event& process, Event& event) {
     mergingHooksPtr->storeWeights(infoPtr->getWeightCKKWL());
 
   // Loop to set up diffractive system if run with MPI veto.
-  for (int iHardDiffLoop = 1; iHardDiffLoop <= nHardDiffLoop; ++iHardDiffLoop) {
+  for (int iHardDiffLoop = 1; iHardDiffLoop <= nHardDiffLoop;
+    ++iHardDiffLoop) {
 
   // Big outer loop to handle up to two systems (in double diffraction),
   // but normally one. (Not indented in following, but end clearly marked.)

@@ -25,7 +25,7 @@ namespace Pythia8 {
 #ifdef GZIPSUPPORT
 #include <zlib.h>
 //==========================================================================
-  
+
 // Internal classes to implement gzstream. See below for user classes.
 
 // -------------------------------------------------------------------------
@@ -46,14 +46,14 @@ public:
         setp( buffer, buffer + (bufferSize-1));
         setg( buffer + 4,     // beginning of putback area
               buffer + 4,     // read position
-              buffer + 4);    // end position      
+              buffer + 4);    // end position
         // ASSERT: both input & output capabilities will not be used together
     }
     int is_open() { return opened; }
     gzstreambuf* open( const char* name, int open_mode);
     gzstreambuf* close();
     ~gzstreambuf() { close(); }
-    
+
     virtual int     overflow( int c = EOF);
     virtual int     underflow();
     virtual int     sync();
@@ -76,16 +76,16 @@ public:
 //==========================================================================
 
 // User classes. Use igzstream and ogzstream analogously to ifstream and
-// ofstream respectively. They read and write files based on the gz* 
+// ofstream respectively. They read and write files based on the gz*
 // function interface of the zlib. Files are compatible with gzip compression.
 
 // -------------------------------------------------------------------------
 
 class igzstream : public gzstreambase, public std::istream {
 public:
-    igzstream() : std::istream( &buf) {} 
+    igzstream() : std::istream( &buf) {}
     igzstream( const char* name, int mode = std::ios::in)
-        : gzstreambase( name, mode), std::istream( &buf) {}  
+        : gzstreambase( name, mode), std::istream( &buf) {}
     gzstreambuf* rdbuf() { return gzstreambase::rdbuf(); }
     void open( const char* name, int mode = std::ios::in) {
         gzstreambase::open( name, mode);
@@ -97,7 +97,7 @@ class ogzstream : public gzstreambase, public std::ostream {
 public:
     ogzstream() : std::ostream( &buf) {}
     ogzstream( const char* name, int mode = std::ios::out)
-        : gzstreambase( name, mode), std::ostream( &buf) {}  
+        : gzstreambase( name, mode), std::ostream( &buf) {}
     gzstreambuf* rdbuf() { return gzstreambase::rdbuf(); }
     void open( const char* name, int mode = std::ios::out) {
         gzstreambase::open( name, mode);

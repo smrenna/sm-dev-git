@@ -28,10 +28,10 @@ class Info {
 public:
 
   // Constructor.
-  Info() : LHEFversionSave(0), initrwgt(NULL), generators(NULL), 
-    weightgroups(NULL), init_weights(NULL), eventAttributes(NULL), 
-    weights_detailed(NULL), weights_compressed(NULL), scales(NULL), 
-    weights(NULL), rwgt(NULL), eCMSave(0.), lowPTmin(false), a0MPISave(0.), 
+  Info() : LHEFversionSave(0), initrwgt(NULL), generators(NULL),
+    weightgroups(NULL), init_weights(NULL), eventAttributes(NULL),
+    weights_detailed(NULL), weights_compressed(NULL), scales(NULL),
+    weights(NULL), rwgt(NULL), eCMSave(0.), lowPTmin(false), a0MPISave(0.),
     abortPartonLevel(false), weightCKKWLSave(1.), weightFIRSTSave(0.) {
     for (int i = 0; i < 40; ++i) counters[i] = 0;}
 
@@ -398,7 +398,7 @@ private:
   // Reset info for current event: only from Pythia class.
   void clear() {
     isRes = isDiffA = isDiffB = isDiffC = isND = isLH = bIsSet
-      = evolIsSet = atEOF = isVal1 = isVal2 = hasHistorySave 
+      = evolIsSet = atEOF = isVal1 = isVal2 = hasHistorySave
       = hasUnresBeams = false;
     codeSave = nFinalSave = nTotal = nMPISave = nISRSave = nFSRinProcSave
       = nFSRinResSave = 0;
@@ -511,14 +511,14 @@ private:
   void setIsResolved(bool isResIn) {isRes = isResIn;}
 
   // Set info on hard diffraction.
-  void setHardDiff( bool hasUnresBeamsIn = false, 
-    bool isHardDiffAIn = false, bool isHardDiffBIn = false,   
-    double xPomAIn = 0., double xPomBIn = 0., double tPomAIn = 0., 
-    double tPomBIn = 0.) { hasUnresBeams = hasUnresBeamsIn; 
-      isHardDiffA = isHardDiffAIn; isHardDiffB = isHardDiffBIn; 
+  void setHardDiff( bool hasUnresBeamsIn = false,
+    bool isHardDiffAIn = false, bool isHardDiffBIn = false,
+    double xPomAIn = 0., double xPomBIn = 0., double tPomAIn = 0.,
+    double tPomBIn = 0.) { hasUnresBeams = hasUnresBeamsIn;
+      isHardDiffA = isHardDiffAIn; isHardDiffB = isHardDiffBIn;
       xPomA = xPomAIn; xPomB = xPomBIn;
-      tPomA = tPomAIn; tPomB = tPomBIn;}       
-  
+      tPomA = tPomAIn; tPomB = tPomBIn;}
+
   // Set information in hard diffractive events.
   void setHasUnresolvedBeams(bool hasUnresBeamsIn)
     {hasUnresBeams = hasUnresBeamsIn;}

@@ -353,7 +353,8 @@ bool LHAup::setInitLHEF(istream& is, bool readHeaders) {
       vector<string> lineVec;
       if (firstTagEnd != string::npos && secondTagBegin != string::npos) {
         lineVec.push_back(line.substr(0,secondTagBegin));
-        lineVec.push_back(line.substr(secondTagBegin,line.size()-secondTagBegin));
+        lineVec.push_back(line.substr(secondTagBegin,
+          line.size()-secondTagBegin));
       }
       else {
         lineVec.push_back(line);
@@ -367,7 +368,8 @@ bool LHAup::setInitLHEF(istream& is, bool readHeaders) {
         size_t posBeg = line.find_first_not_of(" \n\t\v\b\r\f\a");
         size_t posEnd = line.find_last_not_of(" \n\t\v\b\r\f\a");
         string lineClean = " ";
-        if (posBeg != string::npos && posEnd != string::npos && posBeg < posEnd) {
+        if (posBeg != string::npos && posEnd != string::npos && posBeg
+          < posEnd) {
           lineClean = line.substr(posBeg, posEnd - posBeg + 1);
           posBeg = 0;
           posEnd = lineClean.size();
@@ -712,22 +714,24 @@ bool LHAupLHEF::setInitLHEF( istream & isIn, bool readHead ) {
 
       // Tell XML parser to ignore comment and CDATA blocks
       // If we are currently inside a comment block, check for block end
-      if (commentDepth >= 1 && line.find("-->") != string::npos) commentDepth--;
-      if (commentDepth >= 1 && line.find("]]>") != string::npos) commentDepth--;
+      if (commentDepth >= 1 && line.find("-->") != string::npos)
+        commentDepth--;
+      if (commentDepth >= 1 && line.find("]]>") != string::npos)
+        commentDepth--;
       // If the comment block did not end on this line, skip to next line
       if (commentDepth >= 1) continue;
       // Check for beginning of comment blocks (parse until comment begins)
       if (line.find("<!--") != string::npos) {
-	if (line.find("-->") == string::npos) commentDepth++;
-	int comBeg = line.find("<!--");
-	line = line.substr(0,comBeg);
+        if (line.find("-->") == string::npos) commentDepth++;
+        int comBeg = line.find("<!--");
+        line = line.substr(0,comBeg);
       }
       // Check for beginning of CDATA statement  (parse until CDATA begins)
       if (line.find("<![cdata[") != string::npos
-	  || line.find("<![CDATA[") != string::npos) {
-	if (line.find("]]>") == string::npos) commentDepth++;
-	int comBeg = line.find("<![");
-	line = line.substr(0,comBeg);
+          || line.find("<![CDATA[") != string::npos) {
+        if (line.find("]]>") == string::npos) commentDepth++;
+        int comBeg = line.find("<![");
+        line = line.substr(0,comBeg);
       }
 
       // Break lines containing multiple tags into two segments.
@@ -738,7 +742,8 @@ bool LHAupLHEF::setInitLHEF( istream & isIn, bool readHead ) {
       vector<string> lineVec;
       if (firstTagEnd != string::npos && secondTagBegin != string::npos) {
         lineVec.push_back(line.substr(0,secondTagBegin));
-        lineVec.push_back(line.substr(secondTagBegin,line.size()-secondTagBegin));
+        lineVec.push_back(line.substr(secondTagBegin,
+          line.size()-secondTagBegin));
       }
       else {
         lineVec.push_back(line);
@@ -752,7 +757,8 @@ bool LHAupLHEF::setInitLHEF( istream & isIn, bool readHead ) {
         size_t posBeg = line.find_first_not_of(" \n\t\v\b\r\f\a");
         size_t posEnd = line.find_last_not_of(" \n\t\v\b\r\f\a");
         string lineClean = " ";
-        if (posBeg != string::npos && posEnd != string::npos && posBeg < posEnd) {
+        if (posBeg != string::npos && posEnd != string::npos && posBeg
+          < posEnd) {
           lineClean = line.substr(posBeg, posEnd - posBeg + 1);
           posBeg = 0;
           posEnd = lineClean.size();

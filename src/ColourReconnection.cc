@@ -1896,7 +1896,7 @@ bool ColourReconnection::checkTimeDilation(ColourDipole * dip1,
     double t3 = formationTimes[dip3->col];
     // Modes that require all dipoles to be causally connected.
     if (timeDilationMode == 1 || timeDilationMode == 2 ||
-	timeDilationMode == 4) {
+        timeDilationMode == 4) {
       if (dip1 != dip2 && !checkTimeDilation(p1, p2, t1, t2)) return false;
       if (dip1 != dip3 && !checkTimeDilation(p1, p3, t1, t3)) return false;
       if (dip2 != dip3 && !checkTimeDilation(p2, p3, t2, t3)) return false;
@@ -1921,7 +1921,7 @@ bool ColourReconnection::checkTimeDilation(ColourDipole * dip1,
     double t4 = formationTimes[dip4->col];
     // Modes that require all dipoles to be causally connected.
     if (timeDilationMode == 1 || timeDilationMode == 2 ||
-	timeDilationMode == 4) {
+        timeDilationMode == 4) {
       if (dip1 != dip2 && !checkTimeDilation(p1, p2, t1, t2)) return false;
       if (dip1 != dip3 && !checkTimeDilation(p1, p3, t1, t3)) return false;
       if (dip1 != dip4 && !checkTimeDilation(p1, p4, t1, t4)) return false;
@@ -2036,19 +2036,20 @@ void ColourReconnection::setupFormationTimes(Event & event) {
       bool foundCol = false;
       int iAcol = 0;
       for (int j = i;j < event.size(); ++j) {
-	if (event[j].acol() == col) {
-	  foundCol = true;
-	  iAcol = j;
-	  break;
-	}
+        if (event[j].acol() == col) {
+          foundCol = true;
+          iAcol = j;
+          break;
+        }
       }
 
       // If it was found add it to the list.
       if (foundCol) {
-	formationTimes[col] = max(m0,(event[i].p() + event[iAcol].p()).mCalc());
+        formationTimes[col] = max( m0,
+          (event[i].p() + event[iAcol].p()).mCalc() );
       // Otherwise it must be stored in a junction.
       } else {
-	formationTimes[col] = max(m0, getJunctionMass(event, col));
+        formationTimes[col] = max(m0, getJunctionMass(event, col));
       }
     }
 
@@ -2059,20 +2060,20 @@ void ColourReconnection::setupFormationTimes(Event & event) {
       bool foundCol = false;
       int iCol = 0;
       for (int j = i;j < event.size(); ++j) {
-	if (event[j].col() == acol) {
-	  foundCol = true;
-	  iCol = j;
-	  break;
-	}
+        if (event[j].col() == acol) {
+          foundCol = true;
+          iCol = j;
+          break;
+        }
       }
 
       // If it was found add it to the list.
       if (foundCol) {
-	formationTimes[acol] = max(m0, (event[i].p() + event[iCol].p())
+        formationTimes[acol] = max(m0, (event[i].p() + event[iCol].p())
           .mCalc());
       // Otherwise it must be stored in a junction.
       } else {
-	formationTimes[acol] = max(m0, getJunctionMass(event, acol));
+        formationTimes[acol] = max(m0, getJunctionMass(event, acol));
       }
     }
   }
@@ -2131,8 +2132,8 @@ void ColourReconnection::addJunctionIndices(Event & event, int col,
   for (int j = 0;j < event.sizeJunction(); ++j) {
     for (int k = 0; k < 3; ++k) {
       if (event.colJunction(j,k) == col) {
-	juncs.push_back(j);
-	break;
+        juncs.push_back(j);
+        break;
       }
     }
   }
@@ -2141,9 +2142,9 @@ void ColourReconnection::addJunctionIndices(Event & event, int col,
   for (int i = 0;i < int(juncs.size()); ++i) {
     for (int j = 0;j < int(usedJuncs.size()); ++j)  {
       if (juncs[i] == usedJuncs[j]) {
-	juncs.erase(juncs.begin() + i);
-	i--;
-	break;
+        juncs.erase(juncs.begin() + i);
+        i--;
+        break;
       }
     }
   }
@@ -2165,9 +2166,9 @@ void ColourReconnection::addJunctionIndices(Event & event, int col,
     for (int i = 0;i < event.size(); ++i) {
       for (int j = 0;j < 3; ++j) {
         if (iTempPars[j] == -1 && event.kindJunction(juncs[iJunc]) % 2 == 1 &&
-	    event[i].col() == cols[j]) iTempPars[j] = i;
+            event[i].col() == cols[j]) iTempPars[j] = i;
         if (iTempPars[j] == -1 && event.kindJunction(juncs[iJunc]) % 2 == 0 &&
-	    event[i].acol() == cols[j]) iTempPars[j] = i;
+            event[i].acol() == cols[j]) iTempPars[j] = i;
       }
     }
 
@@ -2967,9 +2968,9 @@ void ColourReconnection::doJunctionTrial(Event& event,
 
   // Add new formation times.
   double mCalc = (particles[iCol1].p() + particles[iAcol1].p() +
-		  particles[iCol2].p() + particles[iAcol2].p() +
-		  particles[iCol3].p() + particles[iAcol3].p() +
-		  particles[iCol4].p() + particles[iAcol4].p()).mCalc();
+                  particles[iCol2].p() + particles[iAcol2].p() +
+                  particles[iCol3].p() + particles[iAcol3].p() +
+                  particles[iCol4].p() + particles[iAcol4].p()).mCalc();
   formationTimes[newCol1] = mCalc;
   formationTimes[newCol2] = mCalc;
   formationTimes[newCol3] = mCalc;

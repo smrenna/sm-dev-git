@@ -329,7 +329,7 @@ private:
   void updateJunctionTrials();
 
   // Check whether up to four dipoles are 'causally' connected.
-  bool checkTimeDilation(ColourDipole* dip1 = 0, ColourDipole* dip2 = 0, 
+  bool checkTimeDilation(ColourDipole* dip1 = 0, ColourDipole* dip2 = 0,
     ColourDipole* dip3 = 0, ColourDipole* dip4 = 0);
 
   // Check whether two four momenta are casually connected.
@@ -339,7 +339,7 @@ private:
   Vec4 getDipoleMomentum(ColourDipole* dip);
 
   // Find all particles connected to a junction system (particle list).
-  void addJunctionIndices(int iSinglePar, vector<int> &iPar, 
+  void addJunctionIndices(int iSinglePar, vector<int> &iPar,
     vector<int> &usedJuncs);
 
   // Find all the formation times.
@@ -349,7 +349,7 @@ private:
   double getJunctionMass(Event & event, int col);
 
   // Find all particles connected to a junction system (event list).
-  void addJunctionIndices(Event & event, int iSinglePar, 
+  void addJunctionIndices(Event & event, int iSinglePar,
     vector<int> &iPar, vector<int> &usedJuncs);
 
   // The old MPI-based scheme.

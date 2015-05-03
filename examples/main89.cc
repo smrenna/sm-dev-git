@@ -134,7 +134,7 @@ int main( int argc, char* argv[] ){
     pythia.readFile(argv[1], iMerge);
     // Initialise.
     pythia.init();
-    
+
     // Get the inclusive x-section by summing over all process x-sections.
     double xs = 0.;
     for (int i=0; i < pythia.info.nProcessesLHEF(); ++i)
@@ -202,7 +202,7 @@ int main( int argc, char* argv[] ){
   }
 
   cout << endl << endl << endl;
-  if (doAbort) 
+  if (doAbort)
     cout << " Run was not completed owing to too many aborted events" << endl;
   else
     cout << "Inclusive cross section: " << scientific << setprecision(8)
