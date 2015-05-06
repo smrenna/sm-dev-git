@@ -300,14 +300,14 @@ defaults. Or you can use
 </pre> 
 where only those variables with names that contain the string 
 (case-insensitive match) are listed. Thus, with a string 
-<code>shower</code>, the shower-related variables would be shown.
-
+<code>shower</code>, the shower-related variables would be shown. 
+ 
 <p/> 
 The method <code>pythia.settings.output(key)</code> can return the 
 value of a variable as a string, convenient for output. In a 
 <code>readString</code> or <code>readFile</code> command, the 
-construction <code>key = ?</code> will echo back the variable
-and its value, using this method.
+construction <code>key = ?</code> will echo back the variable 
+and its value, using this method. 
 </li> 
  
 <p/> <li> 
@@ -427,16 +427,16 @@ the <code>match</code> (sub)string (case-insensitive).
 output stream for the listing. 
    
    
-
+ 
 <a name="method8"></a>
 <p/><strong>string Settings::output(string key, bool fullLine = true) &nbsp;</strong> <br/>
-provide the value of a variable as a character string, whatever the type.
-If the variable does not exist then <code>void</code> is returned.
+provide the value of a variable as a character string, whatever the type. 
+If the variable does not exist then <code>unknown</code> is returned. 
 <br/><code>argument</code><strong> key </strong>  :  
-the name of the settings variable.
+the name of the settings variable. 
    
 <br/><code>argument</code><strong> fullLine </strong> (<code>default = <strong>true</strong></code>) :  
-If true then a whole "line" is returned, " <code>key = value\n</code>",
+If true then a whole "line" is returned, " <code>key = value\n</code>", 
 while if false only the  <code>value</code> string. 
    
    

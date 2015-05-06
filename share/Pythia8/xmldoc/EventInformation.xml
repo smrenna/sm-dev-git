@@ -349,24 +349,24 @@ specific to diffractive subsystems, e.g. the MPI information is not
 bookkept in such cases. 
  
 <h3>Hard Diffraction</h3> 
-
+ 
 Information on the momentum fraction taken from the beam 
 and the momentum transfer in the hard diffractive process. 
 Note that when side A is diffractively exited, then the Pomeron 
-has been taken from side B and vice versa.
-
+has been taken from side B and vice versa. 
+ 
 <method name="double Info::xPomeronA()"> 
 </method> 
 <methodmore name="double Info::xPomeronB()"> 
 <ei>x</ei> fractions of momenta carried by the Pomeron in the hard 
-diffractive process.  
+diffractive process. 
 </methodmore> 
 <method name="double Info::tPomeronA()"> 
 </method> 
 <methodmore name="double Info::tPomeronB()"> 
-The momentum transfer <ei>t</ei> in the hard diffractive process.  
+The momentum transfer <ei>t</ei> in the hard diffractive process. 
 </methodmore> 
-
+ 
 <h3>Event weight and activity</h3> 
  
 <method name="double Info::weight()"> 

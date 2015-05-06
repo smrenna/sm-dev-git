@@ -145,20 +145,20 @@ the three partons that together carry the baryon number.
 <p/> 
 When <code>ProcessLevel:all = off</code> the <code>pythia.next()</code> 
 call applied to a parton-level confguration will hadronize it, without 
-generating any parton showers. Indeed, the point of the framework described
+generating any parton showers. Indeed, the point of the framework described 
 here is to be able to feed in complete showered parton topologies for 
-hadronization. (The exception is if you feed in a resonance, see next
+hadronization. (The exception is if you feed in a resonance, see next 
 section.) As an option, however, it is possible to generate a shower 
 before the <code>pythia.next()</code> step by using the 
 <code>pythia.forceTimeShower( int iBeg, int iEnd, double pTmax, 
-int nBranchMax = 0)</code> method.
+int nBranchMax = 0)</code> method. 
 Here <code>iBeg</code> and <code>iEnd</code> give the range of partons 
 that should be allowed to shower, <code>pTmax</code> the maximum 
 <i>pT</i> scale of emissions, and a nonzero <code>nBranchMax</code> 
 a maximum number of allowed branchings. Additionally, a <code>scale</code> 
 has to be set for each parton that should shower, which requires an 
-additional final argument to the <code>append</code> methods above,
-or alternatively separately with the <code>pythia.event[i].scale(...)</code>
+additional final argument to the <code>append</code> methods above, 
+or alternatively separately with the <code>pythia.event[i].scale(...)</code> 
 method. This scale limits the maximum <i>pT</i> allowed for each parton, 
 in addition to the global <code>pTmax</code>. When not set the scale 
 defaults to 0, meaning no radiation for that parton. 

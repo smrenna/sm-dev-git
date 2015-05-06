@@ -82,23 +82,23 @@ proton is denoted <code>p_diffr</code>, code 9902210, whereas
 a central diffractive system is denoted <code>rho_diffr</code>, 
 code 9900110. Apart from representing the correct charge and baryon 
 numbers, no deeper meaning should be attributed to the names. 
-
-<p/>
+ 
+<p/> 
 PYTHIA also includes a possibility to select hard diffraction. This 
 machinery relies on the same sets of parameters as described above, 
 for the Pomeron flux and PDFs. The main difference between the hard 
 and the soft diffractive frameworks is that the user can select any 
 PYTHIA hard process in the former case, e.g. diffractive <i>Z</i>'s 
-or <i>W</i>'s, whereas only QCD processes are generated in the latter.
-These QCD processes are generated inclusively, which means that mostly
+or <i>W</i>'s, whereas only QCD processes are generated in the latter. 
+These QCD processes are generated inclusively, which means that mostly 
 they occur in the low-<i>pT</i> region, even if a tail stretches to 
 higher <i>pT</i> scales, thus overlapping with hard diffraction. 
 Both hard and soft diffractive processes also include the normal PYTHIA 
 machinery, such as MPIs and showers, but for the former the MPI 
-framework can additionally be used to determine whether a hard process
+framework can additionally be used to determine whether a hard process 
 survives as a diffractive event or not. The different diffractive types 
 - low mass soft, high mass soft and hard diffraction - are described 
-in more detail below.
+in more detail below. 
  
 <h3>Pomeron flux</h3> 
  
@@ -119,8 +119,8 @@ Parametrization of the Pomeron flux <ei>f_Pom/p( x_Pom, t)</ei>.
 <input type="radio" name="1" value="3"><strong>3 </strong>: a conventional Pomeron description, in the RapGap  manual <ref>Jun95</ref> attributed to Berger et al. and Streng  <ref>Ber87a</ref>, but there (and here) with values updated to a  supercritical Pomeron with <ei>epsilon &gt; 0</ei> (see below),  which gives a stronger peaking towards low-mass diffractive states,  and with a mass-dependent (the <ei>alpha'</ei> below) exponential  <ei>t</ei> slope. The original model only covers single diffraction,  but is here expanded by analogy to double and central diffraction.  <br/>
 <input type="radio" name="1" value="4"><strong>4 </strong>: a conventional Pomeron description, attributed to  Donnachie and Landshoff <ref>Don84</ref>, again with supercritical Pomeron,  with the same two parameters as option 3 above, but this time with a  power-law <ei>t</ei> distribution. The original model only covers single  diffraction, but is here expanded by analogy to double and central  diffraction.<br/>
 <input type="radio" name="1" value="5"><strong>5 </strong>:  the MBR (Minimum Bias Rockefeller) simulation of  (anti)proton-proton interactions <ref>Cie12</ref>. The event  generation follows a renormalized-Regge-theory model, successfully tested  using CDF data. The simulation includes single and double diffraction,  as well as the central diffractive (double-Pomeron exchange) process (106).  Only <ei>p p</ei>, <ei>pbar p</ei> and <ei>p pbar</ei> beam combinations  are allowed for this option. Several parameters of this model are listed  below. <br/>
-<input type="radio" name="1" value="6"><strong>6 </strong>:  The H1 Fit A parametrisation of the Pomeron flux <ref>H1P06,H1P06a</ref>. The flux factors are motivated by Regge theory,  assuming a Regge trajectory as in options 3 and 4. The flux has been  normalised to 1 at <ei>x_Pomeron = 0.003</ei> and slope parameter and  Pomeron intercept has been fitted to H1 data.<br/>
-<input type="radio" name="1" value="7"><strong>7 </strong>:  The H1 Fit B parametrisation of the Pomeron flux <ref>H1P06,H1P06a</ref>.<br/>
+<input type="radio" name="1" value="6"><strong>6 </strong>:  The H1 Fit A parametrisation of the Pomeron flux  <ref>H1P06,H1P06a</ref>. The flux factors are motivated by Regge theory,  assuming a Regge trajectory as in options 3 and 4. The flux has been  normalised to 1 at <ei>x_Pomeron = 0.003</ei> and slope parameter and  Pomeron intercept has been fitted to H1 data.<br/>
+<input type="radio" name="1" value="7"><strong>7 </strong>:  The H1 Fit B parametrisation of the Pomeron flux  <ref>H1P06,H1P06a</ref>.<br/>
  
 <p/> 
 In options 3, 4, 6, and 7 above, the Pomeron Regge trajectory is 
@@ -139,9 +139,9 @@ reasons <i>epsilon &gt; 0</i> is necessary in the current implementation.
 <br/><br/><table><tr><td><strong>Diffraction:PomFluxAlphaPrime </td><td></td><td> <input type="text" name="3" value="0.25" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.25</strong></code>; <code>minimum = 0.1</code>; <code>maximum = 0.4</code>)</td></tr></table>
 The Pomeron trajectory slope <i>alpha'</i> above. 
    
-
-Values are fixed in options 6 and 7.
-
+ 
+Values are fixed in options 6 and 7. 
+ 
 <p/> 
 When option 5 is selected, the following parameters of the MBR model 
 [<a href="Bibliography.php" target="page">Cie12</a>] are used: 
@@ -383,11 +383,11 @@ becomes slow and unstable, so the min limit must be respected.
    
  
 <h3>Hard diffraction</h3> 
-
+ 
 When PYTHIA is requested to generate a hard process, by default it is 
-assumed that the full perturbative cross section is associated with
+assumed that the full perturbative cross section is associated with 
 nondiffractive topologies. With the options in this section, PYTHIA 
-includes a possibility for creating a perturbative process diffractively,
+includes a possibility for creating a perturbative process diffractively, 
 however. This framework is denoted hard diffraction to distiguish it 
 from soft diffraction, but recall that the latter contains a tail of 
 high-<i>pT</i> processes that could alternatively be obtained as 
@@ -399,51 +399,51 @@ the Pomeron PDFs, also described above. From these components we can
 evaluate the probability for the chosen hard process to have been coming 
 from a diffractively exited system, based on the ratio of the Pomeron flux 
 convoluted with Pomeron PDF to the inclusive proton PDF. 
-
-<p/>
+ 
+<p/> 
 If the hard process is likely to have been created inside a diffractively 
 excited system, then we also evaluate the momentum fraction carried by the 
 Pomeron, <i>x_Pomeron</i>, and the momentum transfer, <i>t</i>, in 
 the process. This information can also be extracted in the main programs, 
 see eg. example <code>main61.cc</code>. 
-
-<p/>
+ 
+<p/> 
 Further, we distiguish between two alternative scenarios for the 
 classification of hard diffraction. The first is based solely on the 
 Pomeron flux and PDF, as described above. In the second an additional 
 requirement is imposed, wherein the MPI machinery is not allowed to 
-generate any extra MPIs at all, since presumably these would destroy
+generate any extra MPIs at all, since presumably these would destroy 
 the rapidity gap and thereby the diffractive nature. We refer to the 
-former as MPI-unchecked and the latter as MPI-checked hard diffraction.
-The MPI-checked option is likely to be the more realistic one, but the
-MPI-unchecked one offers a convenient baseline for the study of MPI
-effects, which still are poorly understood.  
-
-<p/>
-For the selected hard processes, the user can choose whether to generate
+former as MPI-unchecked and the latter as MPI-checked hard diffraction. 
+The MPI-checked option is likely to be the more realistic one, but the 
+MPI-unchecked one offers a convenient baseline for the study of MPI 
+effects, which still are poorly understood. 
+ 
+<p/> 
+For the selected hard processes, the user can choose whether to generate 
 the inclusive sample of both diffractive and nondiffractive topologies 
 or diffractive only, and in each case with the diffractive ones 
-distinguished either MPI-unchecked or MPI-checked.  
-
+distinguished either MPI-unchecked or MPI-checked. 
+ 
 <br/><br/><strong>Diffraction:doHard</strong>  <input type="radio" name="32" value="on"><strong>On</strong>
 <input type="radio" name="32" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
-Allows for the possibility to include hard diffraction tests in a run.
+Allows for the possibility to include hard diffraction tests in a run. 
    
-
-<p/>
+ 
+<p/> 
 There is also the possibility to select only a specific subset of events 
-in hard diffraction.
+in hard diffraction. 
  
 <br/><br/><table><tr><td><strong>Diffraction:sampleType  </td><td>  &nbsp;&nbsp;(<code>default = <strong>1</strong></code>; <code>minimum = 1</code>; <code>maximum = 5</code>)</td></tr></table>
 Type of process the user wants to generate. Depends strongly on how an event 
 is classified as diffractive. 
 <br/>
-<input type="radio" name="33" value="1" checked="checked"><strong>1 </strong>: Generate an inclusive sample of both diffractive and nondiffractive hard processes, MPI-unchecked. <br/>
-<input type="radio" name="33" value="2"><strong>2 </strong>: Generate an inclusive sample of both diffractive and nondiffractive hard processes, MPI-checked. <br/>
-<input type="radio" name="33" value="3"><strong>3 </strong>: Generate an exclusive diffractive sample, MPI-unchecked. <br/>
-<input type="radio" name="33" value="4"><strong>4 </strong>: Generate an exclusive diffractive sample, MPI-checked. <br/>
-<input type="radio" name="33" value="5"><strong>5 </strong>: Generate an exclusive sample, rejecting all diffractive  events, MPI-unchecked, so the complement of option 3. <br/>
+<input type="radio" name="33" value="1" checked="checked"><strong>1 </strong>: Generate an inclusive sample of both diffractive and  nondiffractive hard processes, MPI-unchecked.  <br/>
+<input type="radio" name="33" value="2"><strong>2 </strong>: Generate an inclusive sample of both diffractive and  nondiffractive hard processes, MPI-checked.  <br/>
+<input type="radio" name="33" value="3"><strong>3 </strong>: Generate an exclusive diffractive sample, MPI-unchecked.  <br/>
+<input type="radio" name="33" value="4"><strong>4 </strong>: Generate an exclusive diffractive sample, MPI-checked.  <br/>
+<input type="radio" name="33" value="5"><strong>5 </strong>: Generate an exclusive sample, rejecting all diffractive  events, MPI-unchecked, so the complement of option 3.  <br/>
  
 <input type="hidden" name="saved" value="1"/>
 

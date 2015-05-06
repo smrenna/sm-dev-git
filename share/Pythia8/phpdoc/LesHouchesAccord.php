@@ -559,7 +559,7 @@ or <i>t &rarr; b W</i>), then decay is still isotropic.
  
 <p/> 
 There are four settings available for event input. They take effect when 
-the LHA event record is translated to the PYTHIA <code>process</code>
+the LHA event record is translated to the PYTHIA <code>process</code> 
 event record. 
  
 <br/><br/><table><tr><td><strong>LesHouches:idRenameBeams  </td><td></td><td> <input type="text" name="1" value="1000022" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1000022</strong></code>; <code>minimum = 0</code>)</td></tr></table>
@@ -589,18 +589,18 @@ the <ei>tau</ei> lepton.
 <br/><br/><table><tr><td><strong>LesHouches:setLeptonMass  </td><td>  &nbsp;&nbsp;(<code>default = <strong>1</strong></code>; <code>minimum = 0</code>; <code>maximum = 2</code>)</td></tr></table>
 setting of mass for final-state charged leptons. The reason here is that 
 some matrix-element generators assume leptons to be massless, so as to 
-simplify calculations. This is particularly common for the <ei>e</ei> and
-<ei>mu</ei> leptons, but sometimes also the <ei>tau</ei> lepton is
+simplify calculations. This is particularly common for the <ei>e</ei> and 
+<ei>mu</ei> leptons, but sometimes also the <ei>tau</ei> lepton is 
 afflicted. Incoming leptons are not affected by this procedure. 
 <br/>
 <input type="radio" name="3" value="0"><strong>0 </strong>:  all lepton masses are taken from the Les Houches input.  <br/>
-<input type="radio" name="3" value="1" checked="checked"><strong>1 </strong>:  if the input lepton mass deviates by more than 10%  from the PYTHIA (data table) mass then its mass is reset according to the  PYTHIA value, and the energy is recalculated from this mass and the  three-momentum. This should catch weird masses, while allowing sensible   variations. <br/>
+<input type="radio" name="3" value="1" checked="checked"><strong>1 </strong>:  if the input lepton mass deviates by more than 10%  from the PYTHIA (data table) mass then its mass is reset according to the  PYTHIA value, and the energy is recalculated from this mass and the  three-momentum. This should catch weird masses, while allowing sensible  variations.  <br/>
 <input type="radio" name="3" value="2"><strong>2 </strong>:  each lepton mass is reset according to the PYTHIA value,  and the energy is recalculated from this mass and the three-momentum.  <br/>
 <br/><b>Warning:</b> the change of masses and the resultant change of 
 energies can result in energy-momentum non-conservation warnings and, 
 in extreme cases, also to aborts. One possibility then is to change the 
-<aloc href="ErrorChecks">tolerance</aloc> to such errors.
-
+<aloc href="ErrorChecks">tolerance</aloc> to such errors. 
+ 
 <br/><br/><table><tr><td><strong>LesHouches:mRecalculate </td><td></td><td> <input type="text" name="4" value="-1." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>-1.</strong></code>)</td></tr></table>
 Does not have any effect by default, or more generally when it is negative. 
 If it is positive then all particles with an input mass above this 
@@ -618,22 +618,22 @@ its mass recalculated, currently instead the energy is recalculated
 from its three-momntum and mass. This is to avoid spurious mismatches 
 from limited numerical precision in an LHEF. 
    
-
+ 
 <br/><br/><strong>LesHouches:matchInOut</strong>  <input type="radio" name="5" value="on" checked="checked"><strong>On</strong>
 <input type="radio" name="5" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 The energies and longitudinal momenta of the two incoming partons are 
-recalculated from the sum of the outgoing final (i.e. status 1) particles.
+recalculated from the sum of the outgoing final (i.e. status 1) particles. 
 The incoming partons are set massless. There are two main applications 
-for this option. Firstly, if there is a mismatch in the Les Houches
-input itself, e.g. owing to limited precision in the stored momenta.
-Secondly, if a mismatch is induced by PYTHIA recalculations, notably when
+for this option. Firstly, if there is a mismatch in the Les Houches 
+input itself, e.g. owing to limited precision in the stored momenta. 
+Secondly, if a mismatch is induced by PYTHIA recalculations, notably when 
 an outgoing lepton is assigned a mass although assumed massles in the 
-Les Houches input.  
+Les Houches input. 
 <br/><b>Warning:</b> it is assumed that the incoming partons are along 
-the <i>+-z</i> axis; else the kinematics construction will fail.
+the <i>+-z</i> axis; else the kinematics construction will fail. 
    
-
+ 
 <h3>An interface to Les Houches Event Files</h3> 
  
 The LHEF standard ([<a href="Bibliography.php" target="page">Alw06</a>], [<a href="Bibliography.php" target="page">But14</a>]) specifies a format 

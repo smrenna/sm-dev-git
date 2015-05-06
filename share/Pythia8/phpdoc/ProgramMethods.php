@@ -28,31 +28,31 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>friend double</td>
-<td><a href="FourVectors.php#method24" target="page">cosphi(...)</a></td>
-<td>Four-Vectors</td>
-</tr>
-
-<tr>
-<td>friend double</td>
 <td><a href="FourVectors.php#method25" target="page">cosphi(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>friend double</td>
-<td><a href="FourVectors.php#method23" target="page">costheta(...)</a></td>
+<td><a href="FourVectors.php#method26" target="page">cosphi(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>friend double</td>
-<td><a href="FourVectors.php#method22" target="page">cross3(...)</a></td>
+<td><a href="FourVectors.php#method24" target="page">costheta(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>friend double</td>
-<td><a href="FourVectors.php#method21" target="page">dot3(...)</a></td>
+<td><a href="FourVectors.php#method23" target="page">cross3(...)</a></td>
+<td>Four-Vectors</td>
+</tr>
+
+<tr>
+<td>friend double</td>
+<td><a href="FourVectors.php#method22" target="page">dot3(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
@@ -70,7 +70,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>friend double</td>
-<td><a href="FourVectors.php#method20" target="page">m(...)</a></td>
+<td><a href="FourVectors.php#method21" target="page">m(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
@@ -82,7 +82,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>friend double</td>
-<td><a href="FourVectors.php#method20" target="page">m2(...)</a></td>
+<td><a href="FourVectors.php#method21" target="page">m2(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
@@ -94,31 +94,31 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>friend ostream&</td>
-<td><a href="FourVectors.php#method19" target="page">operator&lt;&lt;(...)</a></td>
+<td><a href="FourVectors.php#method20" target="page">operator&lt;&lt;(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>friend ostream&</td>
-<td><a href="FourVectors.php#method65" target="page">operator&lt;&lt;(...)</a></td>
+<td><a href="FourVectors.php#method66" target="page">operator&lt;&lt;(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>friend Vec4</td>
-<td><a href="FourVectors.php#method34" target="page">operator*(...)</a></td>
+<td><a href="FourVectors.php#method35" target="page">operator*(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>friend Vec4</td>
-<td><a href="FourVectors.php#method34" target="page">operator*(...)</a></td>
+<td><a href="FourVectors.php#method35" target="page">operator*(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>friend double</td>
-<td><a href="FourVectors.php#method36" target="page">operator*(...)</a></td>
+<td><a href="FourVectors.php#method37" target="page">operator*(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
@@ -142,7 +142,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>friend Vec4</td>
-<td><a href="FourVectors.php#method32" target="page">operator+(...)</a></td>
+<td><a href="FourVectors.php#method33" target="page">operator+(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
@@ -166,7 +166,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>friend Vec4</td>
-<td><a href="FourVectors.php#method33" target="page">operator-(...)</a></td>
+<td><a href="FourVectors.php#method34" target="page">operator-(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
@@ -190,7 +190,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>friend Vec4</td>
-<td><a href="FourVectors.php#method35" target="page">operator/(...)</a></td>
+<td><a href="FourVectors.php#method36" target="page">operator/(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
@@ -219,15 +219,15 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
-<td>ParticleDataEntry&</td>
-<td><a href="ParticleProperties.php#method61" target="page">particleDataEntry()</a></td>
-<td>Particle Properties</td>
+<td>double&</td>
+<td><a href="FourVectors.php#method10" target="page">operator[](...)</a></td>
+<td>Four-Vectors</td>
 </tr>
 
 <tr>
-<td>friend double</td>
-<td><a href="FourVectors.php#method24" target="page">phi(...)</a></td>
-<td>Four-Vectors</td>
+<td>ParticleDataEntry&</td>
+<td><a href="ParticleProperties.php#method61" target="page">particleDataEntry()</a></td>
+<td>Particle Properties</td>
 </tr>
 
 <tr>
@@ -238,13 +238,19 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>friend double</td>
-<td><a href="FourVectors.php#method26" target="page">REtaPhi(...)</a></td>
+<td><a href="FourVectors.php#method26" target="page">phi(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>friend double</td>
-<td><a href="FourVectors.php#method26" target="page">RRapPhi(...)</a></td>
+<td><a href="FourVectors.php#method27" target="page">REtaPhi(...)</a></td>
+<td>Four-Vectors</td>
+</tr>
+
+<tr>
+<td>friend double</td>
+<td><a href="FourVectors.php#method27" target="page">RRapPhi(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
@@ -268,7 +274,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>friend double</td>
-<td><a href="FourVectors.php#method23" target="page">theta(...)</a></td>
+<td><a href="FourVectors.php#method24" target="page">theta(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
@@ -4630,12 +4636,6 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="FourVectors.php#method56" target="page">RotBstMatrix::bst(...)</a></td>
-<td>Four-Vectors</td>
-</tr>
-
-<tr>
-<td>void</td>
 <td><a href="FourVectors.php#method57" target="page">RotBstMatrix::bst(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
@@ -4648,43 +4648,43 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="FourVectors.php#method57" target="page">RotBstMatrix::bstback(...)</a></td>
+<td><a href="FourVectors.php#method59" target="page">RotBstMatrix::bst(...)</a></td>
+<td>Four-Vectors</td>
+</tr>
+
+<tr>
+<td>void</td>
+<td><a href="FourVectors.php#method58" target="page">RotBstMatrix::bstback(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="FourVectors.php#method64" target="page">RotBstMatrix::deviation()</a></td>
+<td><a href="FourVectors.php#method65" target="page">RotBstMatrix::deviation()</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="FourVectors.php#method60" target="page">RotBstMatrix::fromCMframe(...)</a></td>
+<td><a href="FourVectors.php#method61" target="page">RotBstMatrix::fromCMframe(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="FourVectors.php#method62" target="page">RotBstMatrix::invert()</a></td>
+<td><a href="FourVectors.php#method63" target="page">RotBstMatrix::invert()</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>RotBstMatrix&</td>
-<td><a href="FourVectors.php#method53" target="page">RotBstMatrix::operator=(...)</a></td>
+<td><a href="FourVectors.php#method54" target="page">RotBstMatrix::operator=(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="FourVectors.php#method63" target="page">RotBstMatrix::reset()</a></td>
-<td>Four-Vectors</td>
-</tr>
-
-<tr>
-<td>void</td>
-<td><a href="FourVectors.php#method54" target="page">RotBstMatrix::rot(...)</a></td>
+<td><a href="FourVectors.php#method64" target="page">RotBstMatrix::reset()</a></td>
 <td>Four-Vectors</td>
 </tr>
 
@@ -4696,25 +4696,31 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="FourVectors.php#method61" target="page">RotBstMatrix::rotbst(...);</a></td>
-<td>Four-Vectors</td>
-</tr>
-
-<tr>
-<td> </td>
-<td><a href="FourVectors.php#method51" target="page">RotBstMatrix::RotBstMatrix()</a></td>
-<td>Four-Vectors</td>
-</tr>
-
-<tr>
-<td> </td>
-<td><a href="FourVectors.php#method52" target="page">RotBstMatrix::RotBstMatrix(...)</a></td>
+<td><a href="FourVectors.php#method56" target="page">RotBstMatrix::rot(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="FourVectors.php#method59" target="page">RotBstMatrix::toCMframe(...)</a></td>
+<td><a href="FourVectors.php#method62" target="page">RotBstMatrix::rotbst(...);</a></td>
+<td>Four-Vectors</td>
+</tr>
+
+<tr>
+<td> </td>
+<td><a href="FourVectors.php#method52" target="page">RotBstMatrix::RotBstMatrix()</a></td>
+<td>Four-Vectors</td>
+</tr>
+
+<tr>
+<td> </td>
+<td><a href="FourVectors.php#method53" target="page">RotBstMatrix::RotBstMatrix(...)</a></td>
+<td>Four-Vectors</td>
+</tr>
+
+<tr>
+<td>void</td>
+<td><a href="FourVectors.php#method60" target="page">RotBstMatrix::toCMframe(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
@@ -5968,12 +5974,6 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="FourVectors.php#method44" target="page">Vec4::bst(...)</a></td>
-<td>Four-Vectors</td>
-</tr>
-
-<tr>
-<td>void</td>
 <td><a href="FourVectors.php#method45" target="page">Vec4::bst(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
@@ -5992,13 +5992,19 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="FourVectors.php#method48" target="page">Vec4::bstback(...)</a></td>
+<td><a href="FourVectors.php#method48" target="page">Vec4::bst(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>void</td>
 <td><a href="FourVectors.php#method49" target="page">Vec4::bstback(...)</a></td>
+<td>Four-Vectors</td>
+</tr>
+
+<tr>
+<td>void</td>
+<td><a href="FourVectors.php#method50" target="page">Vec4::bstback(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
@@ -6016,73 +6022,73 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="FourVectors.php#method13" target="page">Vec4::eT()</a></td>
+<td><a href="FourVectors.php#method14" target="page">Vec4::eT()</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="FourVectors.php#method13" target="page">Vec4::eT2()</a></td>
+<td><a href="FourVectors.php#method14" target="page">Vec4::eT2()</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="FourVectors.php#method18" target="page">Vec4::eta()</a></td>
+<td><a href="FourVectors.php#method19" target="page">Vec4::eta()</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="FourVectors.php#method39" target="page">Vec4::flip3()</a></td>
+<td><a href="FourVectors.php#method40" target="page">Vec4::flip3()</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="FourVectors.php#method40" target="page">Vec4::flip4()</a></td>
+<td><a href="FourVectors.php#method41" target="page">Vec4::flip4()</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="FourVectors.php#method10" target="page">Vec4::m2Calc()</a></td>
+<td><a href="FourVectors.php#method11" target="page">Vec4::m2Calc()</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="FourVectors.php#method10" target="page">Vec4::mCalc()</a></td>
+<td><a href="FourVectors.php#method11" target="page">Vec4::mCalc()</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>Vec4&</td>
-<td><a href="FourVectors.php#method30" target="page">Vec4::operator*=(...)</a></td>
+<td><a href="FourVectors.php#method31" target="page">Vec4::operator*=(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>Vec4&</td>
-<td><a href="FourVectors.php#method28" target="page">Vec4::operator+=(...)</a></td>
+<td><a href="FourVectors.php#method29" target="page">Vec4::operator+=(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>Vec4</td>
-<td><a href="FourVectors.php#method27" target="page">Vec4::operator-()</a></td>
+<td><a href="FourVectors.php#method28" target="page">Vec4::operator-()</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>Vec4&</td>
-<td><a href="FourVectors.php#method29" target="page">Vec4::operator-=(...)</a></td>
+<td><a href="FourVectors.php#method30" target="page">Vec4::operator-=(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>Vec4&</td>
-<td><a href="FourVectors.php#method31" target="page">Vec4::operator/=(...)</a></td>
+<td><a href="FourVectors.php#method32" target="page">Vec4::operator/=(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
@@ -6112,43 +6118,43 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="FourVectors.php#method12" target="page">Vec4::pAbs()</a></td>
+<td><a href="FourVectors.php#method13" target="page">Vec4::pAbs()</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="FourVectors.php#method12" target="page">Vec4::pAbs2()</a></td>
+<td><a href="FourVectors.php#method13" target="page">Vec4::pAbs2()</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="FourVectors.php#method15" target="page">Vec4::phi()</a></td>
+<td><a href="FourVectors.php#method16" target="page">Vec4::phi()</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="FourVectors.php#method17" target="page">Vec4::pNeg()</a></td>
+<td><a href="FourVectors.php#method18" target="page">Vec4::pNeg()</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="FourVectors.php#method17" target="page">Vec4::pPos()</a></td>
+<td><a href="FourVectors.php#method18" target="page">Vec4::pPos()</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="FourVectors.php#method11" target="page">Vec4::pT()</a></td>
+<td><a href="FourVectors.php#method12" target="page">Vec4::pT()</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="FourVectors.php#method11" target="page">Vec4::pT2()</a></td>
+<td><a href="FourVectors.php#method12" target="page">Vec4::pT2()</a></td>
 <td>Four-Vectors</td>
 </tr>
 
@@ -6190,19 +6196,19 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="FourVectors.php#method18" target="page">Vec4::rap()</a></td>
+<td><a href="FourVectors.php#method19" target="page">Vec4::rap()</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="FourVectors.php#method37" target="page">Vec4::rescale3(...)</a></td>
+<td><a href="FourVectors.php#method38" target="page">Vec4::rescale3(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="FourVectors.php#method38" target="page">Vec4::rescale4(...)</a></td>
+<td><a href="FourVectors.php#method39" target="page">Vec4::rescale4(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
@@ -6214,13 +6220,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="FourVectors.php#method41" target="page">Vec4::rot(...)</a></td>
-<td>Four-Vectors</td>
-</tr>
-
-<tr>
-<td>void</td>
-<td><a href="FourVectors.php#method42" target="page">Vec4::rotaxis(...)</a></td>
+<td><a href="FourVectors.php#method42" target="page">Vec4::rot(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
@@ -6232,19 +6232,25 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="FourVectors.php#method50" target="page">Vec4::rotbst(...)</a></td>
+<td><a href="FourVectors.php#method44" target="page">Vec4::rotaxis(...)</a></td>
+<td>Four-Vectors</td>
+</tr>
+
+<tr>
+<td>void</td>
+<td><a href="FourVectors.php#method51" target="page">Vec4::rotbst(...)</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="FourVectors.php#method14" target="page">Vec4::theta()</a></td>
+<td><a href="FourVectors.php#method15" target="page">Vec4::theta()</a></td>
 <td>Four-Vectors</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="FourVectors.php#method16" target="page">Vec4::thetaXZ()</a></td>
+<td><a href="FourVectors.php#method17" target="page">Vec4::thetaXZ()</a></td>
 <td>Four-Vectors</td>
 </tr>
 

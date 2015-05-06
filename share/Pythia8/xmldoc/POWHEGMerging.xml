@@ -131,16 +131,16 @@ recommend setting
 which will then check up to three allowed emissions. Higher values of 
 <code>POWHEG:vetoCount</code> have not lead to visible differences 
 for the processes which have been tested. 
-
-<p/>
-Finally, for many POWHEG processes, the Sudakov effects from electroweak
-emissions (here we are concerned mainly with photon emissions, but this could
-apply also to W/Z emissions) are not included.   This effect can be investigated
-using <code>POWHEG:QEDveto = 0,1,</code> or <code>2</code>.   For the default
-value of <code>POWHEG:pTemt = 0</code>, only <code>POWHEG:QEDveto = 2</code> has
-any effect.   For this choice, a hard photon and subsequent QCD radiation is 
-retained.  In many cases, particularly when the Born contributions are small,
-the choice has little effect.
+ 
+<p/> 
+Finally, for many POWHEG processes, the Sudakov effects from electroweak 
+emissions (here we are concerned mainly with photon emissions, but this could 
+apply also to W/Z emissions) are not included. This effect can be 
+investigated using <code>POWHEG:QEDveto = 0,1,</code> or <code>2</code>. 
+For the default  value of <code>POWHEG:pTemt = 0</code>, only 
+<code>POWHEG:QEDveto = 2</code> has any effect. For this choice, a hard 
+photon and subsequent QCD radiation is retained. In many cases, particularly 
+when the Born contributions are small, the choice has little effect. 
  
 <h3>The modes</h3> 
  
@@ -221,16 +221,16 @@ This option is intended specifically for POWHEG simulations of
 <ei>2 &rarr; 2 + 2 &rarr; 3</ei> QCD processes. 
 </option> 
 </modepick> 
-
+ 
 <modepick name="POWHEG:QEDveto" default="0" min="0" max="2"> 
-Treatment of non-QCD radiation.    
-<option value="0">Colorless partons are not included in <ei> pT </ei>
+Treatment of non-QCD radiation. 
+<option value="0">Colorless partons are not included in <ei> pT </ei> 
   calculated from the shower for <ei> pTemt>0 </ei>.</option> 
-<option value="1">Colorless partons ARE included for <ei> pTemt>0 </ei>.
-<option value="2">Colorless partons ARE included for <ei> pTemt>0 </ei>.   
+<option value="1">Colorless partons ARE included for <ei> pTemt>0 </ei>. 
+<option value="2">Colorless partons ARE included for <ei> pTemt>0 </ei>. 
   Additionally, if a colorless parton is emitted with <ei> pT > pThard </ei> 
-  in Born-level events, then the entire event is accepted.
-  This is relevant for all values of <ei> pTemt </ei>.
+  in Born-level events, then the entire event is accepted. 
+  This is relevant for all values of <ei> pTemt </ei>. 
 </option> 
 </modepick> 
  

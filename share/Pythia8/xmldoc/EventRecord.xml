@@ -97,11 +97,11 @@ described below. It is mainly intended for debug purposes.
 <argument name="os" default="cout"> a reference to the <code>ostream</code> 
 object to which the event listing will be directed. 
 </argument> 
-<argument name="precision" default="3"> the number of digits to the right
+<argument name="precision" default="3"> the number of digits to the right 
 of the decimal point shown for momenta, energies andf masses. Can be set 
-above 3, but reducing it below 3 will have no effect. This option is
-intended for expert users, e.g. for debugging purposes, and so no effort
-has been made to stretch header and footer to match.
+above 3, but reducing it below 3 will have no effect. This option is 
+intended for expert users, e.g. for debugging purposes, and so no effort 
+has been made to stretch header and footer to match. 
 </argument> 
  
 </method> 

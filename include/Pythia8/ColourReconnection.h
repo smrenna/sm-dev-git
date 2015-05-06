@@ -164,8 +164,8 @@ public:
 
   // Initialization.
   bool init( Info* infoPtrIn, Settings& settings, Rndm* rndmPtrIn,
-    BeamParticle* beamAPtrIn, BeamParticle* beamBPtrIn,
-    PartonSystems* partonSystemsPtrIn);
+    ParticleData* particleDataPtrIn, BeamParticle* beamAPtrIn,
+    BeamParticle* beamBPtrIn, PartonSystems* partonSystemsPtrIn);
 
   // New beams possible for handling of hard diffraction.
   void reassignBeamPtrs( BeamParticle* beamAPtrIn, BeamParticle* beamBPtrIn)
@@ -176,7 +176,18 @@ public:
 
 private:
 
-  // list of current dipoles.
+  // Constants: could only be changed in the code itself.
+  static const double MINIMUMGAIN, MINIMUMGAINJUN, HBAR;
+
+  // Variables needed.
+  bool   allowJunctions, sameNeighbourCol, singleReconOnly, lowerLambdaOnly;
+  int    nSys, nReconCols, swap1, swap2, reconnectMode, flipMode,
+         timeDilationMode;
+  double eCM, sCM, pT0, pT20Rec, pT0Ref, ecmRef, ecmPow, reconnectRange,
+         m0, m0sqr, m2Lambda, fracGluon, dLambdaCut, timeDilationPar,
+         tfrag, blowR, blowT, rHadron, kI;
+
+  // List of current dipoles.
   vector<ColourDipole*> dipoles, usedDipoles;
   vector<ColourJunction> junctions;
   vector<ColourParticle> particles;
@@ -184,18 +195,11 @@ private:
   vector<vector<int> > iColJun;
   map<int,double> formationTimes;
 
-  // Constants: could only be changed in the code itself.
-  static const double MINIMUMGAIN, MINIMUMGAINJUN;
-
-  // Variables needed.
-  int    nSys, nReconCols, swap1, swap2, reconnectMode, flipMode,
-    timeDilationMode;
-  bool   allowJunctions, sameNeighbourCol;
-  double eCM, sCM, pT0, pT20Rec, pT0Ref, ecmRef, ecmPow, reconnectRange,
-    m0, m0sqr, m2Lambda, fracGluon, dLambdaCut, timeDilationPar;
-
   // Pointer to various information on the generation.
   Info*          infoPtr;
+
+  // Pointer to particle data table.
+  ParticleData*  particleDataPtr;
 
   // Pointer to the random number generator.
   Rndm*          rndmPtr;
@@ -381,6 +385,21 @@ private:
   // The new gluon-move scheme.
   bool reconnectMove( Event& event, int oldSize);
 
+  // The common part for both Type I and II reconnections in e+e..
+  bool reconnectTypeCommon( Event& event, int oldSize);
+
+  // The e+e- type I CR model.
+  map<double,pair<int,int> > reconnectTypeI( Event& event,
+    vector<vector<ColourDipole> > &dips, Vec4 decays[2]);
+  //  bool reconnectTypeI( Event& event, int oldSize);
+
+  // The e+e- type II CR model.
+  map<double,pair<int,int> > reconnectTypeII( Event& event,
+    vector<vector<ColourDipole> > &dips, Vec4 decays[2]);
+  //    bool reconnectTypeII( Event& event, int oldSize);
+
+  // calculate the determinant of 3 * 3 matrix.
+  double determinant3(vector<vector< double> >& vec);
 };
 
 //==========================================================================

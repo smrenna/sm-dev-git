@@ -785,7 +785,7 @@ answer. These methods therefore are of limited use for common particles,
 in particular for the gluon, but should work well for "rare" particles. 
 By default all mothers and daughters are studied in each step, but with 
 <code>simplify = true</code> only the first and last mother/daughter 
-are checked, which saves time and almost always gives the same result.
+are checked, which saves time and almost always gives the same result. 
    
  
 <a name="method65"></a>
@@ -845,15 +845,15 @@ junction topologies give <code>false</code>.
 <a name="method69"></a>
 <p/><strong>bool Particle::isFinalPartonLevel() &nbsp;</strong> <br/>
 is true if the particle belonged to the final state (i.e. with positive 
-status code) right before hadronization is invoked. This is intended to
+status code) right before hadronization is invoked. This is intended to 
 further simple comparisons between parton-level and hadron-level 
-properties, say the number of jets. This method makes use of the event
+properties, say the number of jets. This method makes use of the event 
 record size set when <code>HadronLevel::next()</code> is invoked, so 
-would not work otherwise (unless <code>Event::savePartonLevelSize()</code>
-is called by hand). Note that what should be counted as parton level is not
+would not work otherwise (unless <code>Event::savePartonLevelSize()</code> 
+is called by hand). Note that what should be counted as parton level is not 
 always unique. For instance, R-hadron formation is part of the hadron level 
-machinery, even though a subsequent R-hadron decay could well give rise
-to new activity on the parton level, which thereby is missed.
+machinery, even though a subsequent R-hadron decay could well give rise 
+to new activity on the parton level, which thereby is missed. 
    
  
 <a name="method70"></a>
@@ -1025,4 +1025,3 @@ particle species.
 </html>
  
 <!-- Copyright (C) 2015 Torbjorn Sjostrand --> 
- 

@@ -301,7 +301,8 @@ the inner core is assumed to have a fraction <ei>coreFraction</ei>
 of the matter content of the hadron. 
 </parm> 
  
-<parm name="MultipartonInteractions:expPow" default="1.85" min="0.4" max="10."> 
+<parm name="MultipartonInteractions:expPow" default="1.85" min="0.4" 
+max="10."> 
 When <ei>bProfile = 3</ei> it gives the power of the assumed overlap 
 shape <ei>exp(- b^expPow)</ei>. Default corresponds to a simple 
 exponential drop, which is not too dissimilar from the overlap 

@@ -753,6 +753,16 @@ bool Pythia::init() {
   showSaV      = settings.flag("Next:showScaleAndVertex");
   showMaD      = settings.flag("Next:showMothersAndDaughters");
 
+  // Init colour reconnection and junction splitting.
+  colourReconnection.init( &info, settings, &rndm, &particleData,
+    &beamA, &beamB, &partonSystems);
+  junctionSplitting.init(&info, settings, &rndm, &particleData);
+
+  // Flags for colour reconnection.
+  doReconnect        = settings.flag("ColourReconnection:reconnect");
+  reconnectMode      = settings.mode("ColourReconnection:mode");
+  forceHadronLevelCR = settings.flag("ColourReconnection:forceHadronLevelCR");
+
   // Succeeded.
   isInit = true;
   info.addCounter(2);
@@ -1305,6 +1315,37 @@ bool Pythia::forceHadronLevel(bool findJunctions) {
     && (event[i].col() != 0 || event[i].acol() != 0)) {
       processLevel.findJunctions( event);
       break;
+    }
+  }
+
+  // Allow for CR before the hadronization.
+  if (forceHadronLevelCR) {
+
+    // Setup parton system for colour reconnection.
+    partonSystems.clear();
+    partonSystems.addSys();
+    partonSystems.addSys();
+    for(int i = 5;i < event.size();++i)
+      partonSystems.addOut(event[i].mother1() - 3,i);
+
+    // save spare copy of event in case of failure.
+    Event spareEvent = event;
+    bool colCorrect = false;
+
+    // Allow up to ten tries for CR.
+    for (int iTry = 0; iTry < NTRY; ++ iTry) {
+      colourReconnection.next(event, 0);
+      if (junctionSplitting.checkColours(event)) {
+        colCorrect = true;
+        break;
+      }
+      else event = spareEvent;
+    }
+
+    if (!colCorrect) {
+      info.errorMsg("Error in Pythia::forceHadronLevel: "
+        "Colour reconnection failed.");
+      return false;
     }
   }
 

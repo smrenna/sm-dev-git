@@ -112,17 +112,17 @@ each new event.
    
 <br/><code>argument</code><strong> append </strong>  :  
 if <code>true</code> then the input event is appended to the current 
-<code>HepMC</code> event record, rather than starting a new one.
+<code>HepMC</code> event record, rather than starting a new one. 
    
 <br/><code>argument</code><strong> rootParticle </strong>  :  
 the root particle that defines the new production vertex for the 
-particles to be added in the <code>append = true</code> option.
+particles to be added in the <code>append = true</code> option. 
    
 <br/><code>argument</code><strong> iBarcode </strong>  :  
 used to set the bar code when <code>append = true</code>. 
 If positive then start from <code>iBarcode</code> itself, if negative 
-then start from the current size of the <code>HepMC</code> event record,
-and if 0 then set all bar codes to vanish.
+then start from the current size of the <code>HepMC</code> event record, 
+and if 0 then set all bar codes to vanish. 
    
    
  
@@ -158,17 +158,17 @@ the behaviour.
    
 <br/><code>argument</code><strong> append </strong>  :  
 if <code>true</code> then the input event is appended to the current 
-<code>HepMC</code> event record, rather than starting a new one.
+<code>HepMC</code> event record, rather than starting a new one. 
    
 <br/><code>argument</code><strong> rootParticle </strong>  :  
 the root particle that defines the new production vertex for the 
-particles to be added in the <code>append = true</code> option.
+particles to be added in the <code>append = true</code> option. 
    
 <br/><code>argument</code><strong> iBarcode </strong>  :  
 used to set the bar code when <code>append = true</code>. 
 If positive then start from <code>iBarcode</code> itself, if negative 
-then start from the current size of the <code>HepMC</code> event record,
-and if 0 then set all bar codes to vanish.
+then start from the current size of the <code>HepMC</code> event record, 
+and if 0 then set all bar codes to vanish. 
    
    
  

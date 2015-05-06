@@ -7,7 +7,6 @@
 // ColourReconnection class.
 
 #include "Pythia8/ColourReconnection.h"
-
 namespace Pythia8 {
 
 //==========================================================================
@@ -161,6 +160,9 @@ const double ColourReconnection::MINIMUMGAIN = 1E-10;
 // Minimum needed gain in lambda for a junction.
 const double ColourReconnection::MINIMUMGAINJUN = 1E-10;
 
+// Conversion of GeV^{-1} to fm for time ccalculations.
+const double ColourReconnection::HBAR = 0.197327;
+
 //--------------------------------------------------------------------------
 
 // Simple comparison function for sort.
@@ -174,12 +176,13 @@ bool cmpTrials(TrialReconnection j1, TrialReconnection j2) {
 // Initialization.
 
 bool ColourReconnection::init( Info* infoPtrIn, Settings& settings,
-  Rndm* rndmPtrIn,  BeamParticle* beamAPtrIn, BeamParticle* beamBPtrIn,
-  PartonSystems* partonSystemsPtrIn) {
+  Rndm* rndmPtrIn, ParticleData* particleDataPtrIn,  BeamParticle* beamAPtrIn,
+  BeamParticle* beamBPtrIn, PartonSystems* partonSystemsPtrIn) {
 
   // Save pointers.
   infoPtr             = infoPtrIn;
   rndmPtr             = rndmPtrIn;
+  particleDataPtr     = particleDataPtrIn;
   beamAPtr            = beamAPtrIn;
   beamBPtr            = beamBPtrIn;
   partonSystemsPtr    = partonSystemsPtrIn;
@@ -217,6 +220,15 @@ bool ColourReconnection::init( Info* infoPtrIn, Settings& settings,
   dLambdaCut          = settings.parm("ColourReconnection:dLambdaCut");
   flipMode            = settings.mode("ColourReconnection:flipMode");
 
+  // Parameters of the e+e- CR models.
+  singleReconOnly     = settings.flag("ColourReconnection:singleReconnection");
+  lowerLambdaOnly     = settings.flag("ColourReconnection:lowerLambdaOnly");
+  tfrag               = settings.parm("ColourReconnection:fragmentationTime");
+  blowR               = settings.parm("ColourReconnection:blowR");
+  blowT               = settings.parm("ColourReconnection:blowT");
+  rHadron             = settings.parm("ColourReconnection:rHadron");
+  kI                  = settings.parm("ColourReconnection:kI");
+
   // Initialize StringLength class.
   stringLength.init(infoPtr, settings);
 
@@ -239,6 +251,10 @@ bool ColourReconnection::next( Event& event, int iFirst) {
 
   // Gluon-move model.
   else if (reconnectMode == 2) return reconnectMove(event, iFirst);
+
+  // e+e- Type I CR model.
+  else if (reconnectMode == 3 || reconnectMode == 4)
+    return reconnectTypeCommon(event, iFirst);
 
   // Undefined.
   else {
@@ -1875,6 +1891,7 @@ bool ColourReconnection::getJunctionIndices(ColourDipole * dip, int &iJun,
 // Check whether up to four dipoles are 'causally' connected.
 bool ColourReconnection::checkTimeDilation(ColourDipole * dip1,
   ColourDipole * dip2, ColourDipole * dip3, ColourDipole * dip4) {
+
   if (timeDilationMode == 0) return true;
 
   // 2 dipole case.
@@ -3789,6 +3806,354 @@ bool ColourReconnection::reconnectMove( Event&  event, int oldSize) {
   // Done.
   return true;
 
+}
+
+//--------------------------------------------------------------------------
+
+// Common code for the SK I and SK II models for WW/ZZ/WZ systems.
+
+bool ColourReconnection::reconnectTypeCommon( Event& event, int ) {
+
+  // Make storage containers. Check that at least two parton systems.
+  vector<vector< ColourDipole> > dips;
+  int iBosons[2];
+  Vec4 decays[2];
+  if (partonSystemsPtr->sizeSys() < 2) {
+    infoPtr->errorMsg("Error in ColourReconnection::reconnectTypeCommon: "
+                      "expect at least two parton systems");
+    return false;
+  }
+
+  // Find the dipoles connected to their respective resonance decays.
+  for (int i = 0; i < 2; ++i) {
+    dips.push_back(vector<ColourDipole>());
+    int iSys = partonSystemsPtr->sizeSys() - i - 1;
+    for (int j = 0; j < partonSystemsPtr->sizeOut(iSys); ++j) {
+      int iPar = partonSystemsPtr->getOut(iSys, j);
+
+      // Find decayed boson. Only need to do it once.
+      if (j == 0) {
+        int iMot = event[iPar].mother1();
+        while (iMot != 0 && event[iMot].idAbs() != 23 
+          && event[iMot].idAbs() != 24) iMot = event[iMot].mother1();
+        if (iMot == 0) {
+          infoPtr->errorMsg("Error in ColourReconnection::reconnectTypeCommon:"
+                            " Not a resonance decay of a W/Z");
+          return false;
+        }
+        iBosons[i] = iMot;
+      }
+
+      // Pick up all dipoles by starting from colour end.
+      int col = event[iPar].col();
+      if (col == 0) continue;
+      for (int k = 0; k <  partonSystemsPtr->sizeOut(iSys); ++k) {
+        int iAntiPar = partonSystemsPtr->getOut(iSys, k);
+        if (event[iAntiPar].acol() == col) {
+          dips.back().push_back(ColourDipole(col, iPar, iAntiPar));
+          break;
+        }
+      }
+    }
+  }
+
+  // Boost system to W+W- rest frame.
+  Vec4 boost = event[iBosons[0]].p() + event[iBosons[1]].p();
+  for (int i = 1; i < event.size(); ++i) event[i].bstback(boost);
+
+  // Find the time and position of the decay vertices.
+  for (int i = 0; i < 2; ++i) {
+    int iBoson = iBosons[i];
+    double mBoson = particleDataPtr->m0(event[iBoson].idAbs());
+    double gammaBoson = particleDataPtr->mWidth(event[iBoson].idAbs());
+    double mReal = event[iBoson].mCalc();
+    decays[i][0] = -HBAR * log(rndmPtr->flat()) * event[iBoson].e() /
+      sqrt(pow2(pow2(mBoson) - pow2(mReal)) + pow2(gammaBoson * pow2(mReal)
+      / mBoson));
+    for (int j = 1; j < 4; ++j)
+      decays[i][j] = event[iBoson].p()[j]/ event[iBoson].e() * decays[i][0];
+  }
+
+  // Find the possible reconnections, depeding on choice of model.
+  map<double,pair<int,int> > reconnections;
+  if (reconnectMode == 3)
+    reconnections = reconnectTypeI(event, dips, decays);
+  else if (reconnectMode == 4)
+    reconnections = reconnectTypeII(event, dips, decays);
+
+  // Carry out the reconnections.
+  vector<bool> used1(dips[0].size(), false), used2(dips[1].size(), false);
+  for (map<double,pair<int,int> >::iterator it=reconnections.begin();
+    it != reconnections.end(); ++it) {
+
+    // Check if any of the dipoles already reconnected.
+    if (used1[it->second.first] || used2[it->second.second]) continue;
+
+    // Do the reconnection.
+    int iAcol1 = dips[0][it->second.first].iAcol;
+    int iAcol2 = dips[1][it->second.second].iAcol;
+    event.copy(iAcol1, 79);
+    event.back().acol(event[iAcol2].acol());
+    event.copy(iAcol2, 79);
+    event.back().acol(event[iAcol1].acol());
+
+    // Mark dipoles as used.
+    used1[it->second.first] = true;
+    used2[it->second.second] = true;
+
+    // If only a single reconnection is wanted, break the loop.
+    if (singleReconOnly) break;
+  }
+
+  // Boost system back to origianl rest frame.
+  for (int i = 1; i < event.size(); ++i) event[i].bst(boost);
+
+  // Done.
+  return true;
+}
+
+//--------------------------------------------------------------------------
+
+// The SK I model for WW/ZZ/WZ systems.
+
+map<double,pair<int,int> > ColourReconnection::reconnectTypeI( Event& event,
+  vector<vector<ColourDipole> > &dips, Vec4 decays[2]) {
+
+  // Make storage containers.
+  multimap<double,pair<int,int> > reconnections;
+
+  // Velocity stored as: vx  vy, vz , gamma (uses Vec4 for easy storage).
+  vector<vector<Vec4> > vel;
+  // string direction.
+  vector<vector<Vec4> > dir;
+
+  // Calculate velocities.
+  for (int i = 0; i < 2; ++i) {
+    vel.push_back(vector<Vec4>(dips[i].size(),Vec4()));
+    dir.push_back(vector<Vec4>(dips[i].size(),Vec4()));
+    for (int j = 0; j < int(dips[i].size()); ++j) {
+
+      // Calculate sum of momenta.
+      double pSumCol  = event[dips[i][j].iCol].pAbs();
+      double pSumAcol = event[dips[i][j].iAcol].pAbs();
+
+      // Velocities and directions.
+      for (int k = 1; k < 4; ++k) {
+        vel[i][j][k] = 0.5 *(event[dips[i][j].iCol].p()[k] / pSumCol
+          + event[dips[i][j].iAcol].p()[k] / pSumAcol);
+        dir[i][j][k] = event[dips[i][j].iCol].p()[k] / pSumCol
+          - event[dips[i][j].iAcol].p()[k] / pSumAcol;
+      }
+      vel[i][j][0] = 1/sqrt(1 - vel[i][j].pAbs2());
+      dir[i][j] /= dir[i][j].pAbs();
+
+    }
+  }
+
+  // Select random point.
+  int nPoints = 100;
+  double sumW = 0;
+  for (int i = 0; i < nPoints; ++i) {
+    Vec4 x;
+    double r    = sqrt(- log(rndmPtr->flat()));
+    double phi  = 2 * M_PI * rndmPtr->flat();
+    x[1]        = blowR * rHadron * r * cos(phi);
+    x[2]        = blowR * rHadron * r * sin(phi);
+    r           = sqrt(- log(rndmPtr->flat()));
+    phi         = 2 * M_PI * rndmPtr->flat();
+    x[3]        = blowR * rHadron * r * cos(phi);
+    x[0]        = max(decays[0][0], decays[1][0])
+                + blowT * sqrt(0.5) * tfrag * r * abs(sin(phi));
+    if (x.m2Calc() < 0) continue;
+
+    // Find weight of trial point.
+    double weightTrial = exp(-x.pAbs2() / pow2(blowR*rHadron))
+      * exp( -2. * pow2(x[0] - max(decays[0][0],decays[1][0]))
+      / pow2(blowT * tfrag) );
+
+    // Find max weight and their indices.
+    double maxWeights[2] = {0,0}; // {1E-10,1E-10};
+    int maxIndices[2] = {-1,-1};
+
+    // Loop over W decays.
+    for (int j = 0;j < 2;++j) {
+
+      // Calculate the difference between decay point and random point.
+      Vec4 xd = x - decays[j];
+
+      // Loop over strings.
+      for (int k = 0; k < int(dips[j].size()); ++k) {
+
+        // Boost to rest frame of string.
+        double     gam = vel[j][k][0];
+        double dotProd = dot3(xd,vel[j][k]);
+        double xBoost  = gam * (gam * dotProd/ (1. + gam) - xd[0]);
+        Vec4 xb = xd + xBoost * vel[j][k];
+        xb[0] = gam * (xd[0] - dotProd);
+
+        // Check that position is reachable.
+        if (xb.m2Calc() < 0) continue;
+
+        // Find and store largest weight.
+        double weight = exp( -(xb.pAbs2() - pow2(dot3(xb,dir[j][k])))
+          / (2 * pow2(rHadron)) )
+          * exp( -(pow2(xb[0]) - pow2(dot3(xb, dir[j][k]))) / pow2(tfrag) );
+        if (weight > maxWeights[j]) {
+          maxWeights[j] = weight;
+          maxIndices[j] = k;
+        }
+      }
+    }
+
+    // Store weight.
+    if (maxIndices[0] != -1 && maxIndices[1] != -1) {
+
+      // Check if the new configuration lowers the lambda measure.
+      if (lowerLambdaOnly) {
+        double oldLambda = stringLength.getStringLength(event,
+          dips[0][maxIndices[0]].iCol, dips[0][maxIndices[0]].iAcol) +
+          stringLength.getStringLength(event, dips[1][maxIndices[1]].iCol,
+          dips[1][maxIndices[1]].iAcol);
+        double newLambda = stringLength.getStringLength(event,
+          dips[0][maxIndices[0]].iCol, dips[1][maxIndices[1]].iAcol) +
+          stringLength.getStringLength(event, dips[1][maxIndices[1]].iCol,
+          dips[0][maxIndices[0]].iAcol);
+        if (oldLambda < newLambda) continue;
+      }
+
+      // Save weights.
+      double weight = maxWeights[0] * maxWeights[1] / weightTrial;
+      reconnections.insert(make_pair(weight,
+        make_pair(maxIndices[0], maxIndices[1])));
+      sumW += weight;
+    }
+  }
+
+
+  // check whether to do any reconnections.
+  map<double,pair<int,int> > singleRecon;
+  double result = pow3(blowR) * blowT * sumW/nPoints;
+  // No reconections.
+  if (1 - exp(-kI * result) < rndmPtr->flat()) {
+    singleRecon.clear();
+    return singleRecon;
+  // Find reconnection.
+  } else {
+    double rSum = sumW * rndmPtr->flat();
+    for (map<double,pair<int,int> >::iterator it = reconnections.begin();
+         it != reconnections.end(); ++it) {
+      rSum -= it->first;
+      if (rSum < 0.) {
+        singleRecon.insert(make_pair(1., it->second));
+        return singleRecon;
+      }
+    }
+
+    // If no solution was found (shoult not happen) do no reconnections.
+    singleRecon.clear();
+    return singleRecon;
+  }
+}
+
+//--------------------------------------------------------------------------
+
+// The SK II model for WW/ZZ/WZ systems.
+
+map<double,pair<int,int> > ColourReconnection::reconnectTypeII( Event& event,
+  vector<vector<ColourDipole> > &dips, Vec4 decays[2]) {
+
+  // Make storage containers.
+  map<double,pair<int,int> > reconnections;
+
+  // Find dipole velocities.
+  for (int i = 0;i < int(dips[0].size()); ++i) {
+    for (int j = 0;j < int(dips[1].size()); ++j) {
+      Vec4 v1,v2,u1,u2;
+      v1 = event[dips[0][i].iCol].p()  / event[dips[0][i].iCol].e();
+      v2 = event[dips[0][i].iAcol].p() / event[dips[0][i].iAcol].e();
+      u1 = event[dips[1][j].iCol].p()  / event[dips[1][j].iCol].e();
+      u2 = event[dips[1][j].iAcol].p() / event[dips[1][j].iAcol].e();
+
+      // Begin setup to solve system of equations.
+      vector<vector<double> > matUpper, matLower;
+      for (int k = 0; k < 3; ++k) {
+        matUpper.push_back(vector<double>(3,0));
+        matLower.push_back(vector<double>(3,0));
+      }
+
+      // Insert in matrix, beware of different convention in index.
+      for (int k = 0;k < 3; ++k) {
+        matUpper[0][k] = matLower[0][k] = v2[k+1]-v1[k+1];
+        matUpper[1][k] = matLower[1][k] = -(u2[k+1]-u1[k+1]);
+        matUpper[2][k] = decays[0][k+1] - decays[1][k+1]
+          - decays[0][0] * v1[k+1] + decays[1][0] * u1[k+1];
+        matLower[2][k] = v1[k+1] - u1[k+1];
+      }
+      double t = -determinant3(matUpper) / determinant3(matLower);
+
+      // Find alpha and beta of string crossing.
+      double s11 = matUpper[0][0]*(t - decays[0][0]);
+      double s12 = matUpper[1][0]*(t - decays[1][0]);
+      double s13 = matUpper[2][0] + matLower[2][0]*t;
+      double s21 = matUpper[0][1]*(t - decays[0][0]);
+      double s22 = matUpper[1][1]*(t - decays[1][0]);
+      double s23 = matUpper[2][1] + matLower[2][1]*t;
+      double den = s11*s22 - s12*s21;
+      double alpha = (s12*s23 - s22*s13)/den;
+      double beta  = (s21*s13 - s11*s23)/den;
+
+      // Check if solution is physical.
+      if (alpha < 0 || alpha > 1) continue;
+      if (beta < 0 || beta > 1) continue;
+      if (t < max(decays[0][0], decays[1][0])) continue;
+
+      // Find the crossing points.
+      Vec4 x1,x2;
+      x1 = decays[0] + (alpha * v2 + (1 - alpha) * v1) * (t - decays[0][0]);
+      x2 = decays[1] + (beta * u2 + (1 - beta) * u1) * (t - decays[1][0]);
+      x1[0] = x2[0] = t;
+
+      // Check that both points are the same.
+      if (dot3(x1-x2,x1-x2) > 1E-4 * (x1.pAbs2() + x2.pAbs2())) continue;
+
+      // Find string eigentimes.
+      double tauPlus  = (x1 - decays[0]).mCalc();
+      double tauMinus = (x2 - decays[1]).mCalc();
+
+      // Check if strings already decayed.
+      if (rndmPtr->flat() > exp( -(pow2(tauPlus) + pow2(tauMinus))
+          / pow2(tfrag))) continue;
+
+      // Optionally only accept if reconnection reduces string length.
+      if (lowerLambdaOnly) {
+        double oldLambda = stringLength.getStringLength(event,
+          dips[0][i].iCol, dips[0][i].iAcol) +
+          stringLength.getStringLength(event, dips[1][j].iCol,
+          dips[1][j].iAcol);
+        double newLambda = stringLength.getStringLength(event,
+          dips[0][i].iCol, dips[1][j].iAcol) +
+          stringLength.getStringLength(event, dips[1][j].iCol,
+          dips[0][i].iAcol);
+        if (oldLambda < newLambda) continue;
+      }
+
+      // Store dipole pair.
+      reconnections.insert(make_pair(t,make_pair(i,j)));
+    }
+  }
+
+  return reconnections;
+}
+
+
+//--------------------------------------------------------------------------
+
+// Calculate the determinant of a 3 * 3 matrix.
+
+double ColourReconnection::determinant3(vector<vector< double> >& vec) {
+  return vec[0][0]*vec[1][1]*vec[2][2] + vec[0][1]*vec[1][2]*vec[2][0]
+    + vec[0][2]*vec[1][0]*vec[2][1] - vec[0][0]*vec[2][1]*vec[1][2]
+    - vec[0][1]*vec[1][0]*vec[2][2] - vec[0][2]*vec[1][1]*vec[2][0];
 }
 
 //==========================================================================

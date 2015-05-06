@@ -128,11 +128,11 @@ described below. It is mainly intended for debug purposes.
 <br/><code>argument</code><strong> os </strong> (<code>default = <strong>cout</strong></code>) :  a reference to the <code>ostream</code> 
 object to which the event listing will be directed. 
    
-<br/><code>argument</code><strong> precision </strong> (<code>default = <strong>3</strong></code>) :  the number of digits to the right
+<br/><code>argument</code><strong> precision </strong> (<code>default = <strong>3</strong></code>) :  the number of digits to the right 
 of the decimal point shown for momenta, energies andf masses. Can be set 
-above 3, but reducing it below 3 will have no effect. This option is
-intended for expert users, e.g. for debugging purposes, and so no effort
-has been made to stretch header and footer to match.
+above 3, but reducing it below 3 will have no effect. This option is 
+intended for expert users, e.g. for debugging purposes, and so no effort 
+has been made to stretch header and footer to match. 
    
  
    

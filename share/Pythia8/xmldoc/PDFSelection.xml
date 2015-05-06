@@ -252,7 +252,7 @@ where <code>set</code> is the name of the set to use
 and <code>member</code> is the member of the set to use. The value 
 for <code>set</code> can either be a relative path to the LHAPDF path, 
 or an absolute path. The value for <code>member</code> must be an 
-integer.
+integer. 
 </option> 
 <option value="LHAPDF6:set/member">Same as 
 for <code>LHAPDF5:set/member</code> but now the LHAPDF6 library is 

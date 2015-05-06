@@ -10,7 +10,7 @@ form part of the standard databases and be queried accordingly.
 Version and subversion number, with three significant decimals. 
 </parmfix> 
  
-<modefix name="Pythia:versionDate" default="20150503"> 
+<modefix name="Pythia:versionDate" default="20150506"> 
 Last date of change of current (sub)version, in format yyyymmdd. 
 </modefix> 
  

@@ -254,9 +254,9 @@ natively in PYTHIA it is possible to use the respective tunes, without
 having to use LHAPDF, if you set <code>Tune:preferLHAPDF = 
 0</code> <i>before</i> the <code>Tune:pp</code> choice. 
 <br/>
-<input type="radio" name="2" value="0"><strong>0 </strong>:  Use the internal PYTHIA PDFs. <br/>
-<input type="radio" name="2" value="1" checked="checked"><strong>1 </strong>:  Use LHAPDF5 PDFs. <br/>
-<input type="radio" name="2" value="2"><strong>2 </strong>:  Use LHAPDF6 PDFs. <br/>
+<input type="radio" name="2" value="0"><strong>0 </strong>:  Use the internal PYTHIA PDFs.  <br/>
+<input type="radio" name="2" value="1" checked="checked"><strong>1 </strong>:  Use LHAPDF5 PDFs.  <br/>
+<input type="radio" name="2" value="2"><strong>2 </strong>:  Use LHAPDF6 PDFs.  <br/>
  
 <br/><br/><table><tr><td><strong>Tune:pp  </td><td>  &nbsp;&nbsp;(<code>default = <strong>14</strong></code>; <code>minimum = -1</code>; <code>maximum = 32</code>)</td></tr></table>
 Choice of tune to <ei>pp/ppbar</ei> data, mainly for the 

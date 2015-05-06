@@ -857,7 +857,7 @@ string Settings::output(string keyIn, bool fullLine) {
     }
 
   // Default value, possible endline and done.
-  } else outVal += "void";
+  } else outVal += "unknown";
   if (fullLine) outVal += "\n";
   return outVal;
 

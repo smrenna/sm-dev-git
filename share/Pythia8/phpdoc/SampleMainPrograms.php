@@ -240,7 +240,7 @@ as in <code>main13.cc</code>, with information stored e.g in
  
 <li><code>main46.cc</code> : illustrated how the ProMC library 
 can be used to store Pythia events in a compact format.</li> 
-  
+ 
 <li><code>main48.cc</code> : demonstrates how to use 
 the <code>EvtGenDecays</code> class provided 
 by <code>include/Pythia8Plugins/EvtGen.h</code> to perform decays 
@@ -265,8 +265,16 @@ that you link to a LHAPDF set that includes the photon PDF.</li>
 implementations of the NNPDF 2.3 QCD+QED sets, for results and for 
 timing. Requires that LHAPDF is properly linked.</li> 
  
-<li><code>main61.cc</code> : exemplifies the generation of hard
+<li><code>main61.cc</code> : exemplifies the generation of hard 
 diffractive processes.</li> 
+ 
+<li><code>main62.cc</code> : illustrates how a user hook can be made 
+to steer the angular distribution selection in resonance decays. 
+The prime example would be if LHEF input, e.g. from Madgraph, 
+contains undecayed resonances with helicity information. These 
+would then be decayed isotropically by PYTHIA, but this example 
+shows how one could do better. Some input in <code>main62.cmnd</code>. 
+</li> 
  
 <li><code>main71.cc</code> : an example how the FastJet jet finding 
 package can be linked to allow an analysis of the final state, 
@@ -276,8 +284,8 @@ in this case for a study of W + jet production.</li>
 jet finding, showing that they find the same jets if run under 
 identical conditions, in this case for QCD jets.</li> 
  
-<li><code>main73.cc</code> : a comparison of jet properties on the
-parton and the hadron level, illustrating possibilities for larger
+<li><code>main73.cc</code> : a comparison of jet properties on the 
+parton and the hadron level, illustrating possibilities for larger 
 control of which particles are used in the jet analyses.</li> 
  
 <li><code>main80.cc</code> : do CKKW-L merging with a merging scale 

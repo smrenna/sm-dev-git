@@ -17,11 +17,13 @@
 #include "Pythia8/Basics.h"
 #include "Pythia8/BeamParticle.h"
 #include "Pythia8/BeamShape.h"
+#include "Pythia8/ColourReconnection.h"
 #include "Pythia8/Event.h"
 #include "Pythia8/FragmentationFlavZpT.h"
 #include "Pythia8/HadronLevel.h"
 #include "Pythia8/History.h"
 #include "Pythia8/Info.h"
+#include "Pythia8/JunctionSplitting.h"
 #include "Pythia8/LesHouches.h"
 #include "Pythia8/Merging.h"
 #include "Pythia8/MergingHooks.h"
@@ -209,9 +211,9 @@ private:
 
   // Initialization data, extracted from init(...) call.
   bool   isConstructed, isInit, isUnresolvedA, isUnresolvedB, showSaV,
-         showMaD;
+         showMaD, doReconnect, forceHadronLevelCR;
   int    idA, idB, frameType, boostType, nCount, nShowLHA, nShowInfo,
-         nShowProc, nShowEvt;
+         nShowProc, nShowEvt, reconnectMode;
   double mA, mB, pxA, pxB, pyA, pyB, pzA, pzB, eA, eB,
          pzAcm, pzBcm, eCM, betaZ, gammaZ;
   Vec4   pAinit, pBinit, pAnow, pBnow;
@@ -283,6 +285,12 @@ private:
 
   // Flags for defining the merging scheme.
   bool        hasMergingHooks, hasOwnMergingHooks, doMerging;
+
+  // The Colour reconnection class.
+  ColourReconnection colourReconnection;
+
+  // The junction spltiting class.
+  JunctionSplitting junctionSplitting;
 
   // The main generator class to produce the hadron level of the event.
   HadronLevel hadronLevel;

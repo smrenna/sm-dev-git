@@ -185,8 +185,8 @@ bool PartonLevel::init( Info* infoPtrIn, Settings& settings,
   if (!remnants.init( infoPtr, settings, rndmPtr, beamAPtr, beamBPtr,
     partonSystemsPtr, particleDataPtr, &colourReconnection)) return false;
   resonanceDecays.init( infoPtr, particleDataPtr, rndmPtr);
-  colourReconnection.init( infoPtr, settings, rndmPtr, beamAPtr, beamBPtr,
-    partonSystemsPtr);
+  colourReconnection.init( infoPtr, settings, rndmPtr, particleDataPtr,
+    beamAPtr, beamBPtr, partonSystemsPtr);
   junctionSplitting.init(infoPtr, settings, rndmPtr, particleDataPtr);
   if (doHardDiff) hardDiffraction.init(infoPtr, settings, rndmPtr, beamAPtr,
     beamBPtr, beamPomAPtr, beamPomBPtr);
@@ -855,7 +855,8 @@ bool PartonLevel::next( Event& process, Event& event) {
   }
 
   // Do colour reconnection for non-diffractive events before resonance decays.
-  if (doReconnect && !doDiffCR && reconnectMode != 0) {
+
+  if (doReconnect && !doDiffCR && (reconnectMode == 1 || reconnectMode == 2)) {
     Event eventSave = event;
     bool colCorrect = false;
     for (int i = 0; i < 10; ++i) {

@@ -140,8 +140,9 @@ bool BeamRemnants::add( Event& event, int iFirst, bool doDiffCR) {
   // Store event before doing colour reconnections.
   Event eventTmpSave = event;
   bool colCorrect = false;
-  for (int i = 0;i < 10;++i) {
-    if (doReconnect && doDiffCR && reconnectMode > 0) {
+  for (int i = 0; i < 10; ++i) {
+    if (doReconnect && doDiffCR 
+    && (reconnectMode == 1 || reconnectMode == 2)) {
       colourReconnectionPtr->next(event, iFirst);
 
       // Check that the new colour structure is physical.
