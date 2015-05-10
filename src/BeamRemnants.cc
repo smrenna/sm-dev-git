@@ -141,7 +141,7 @@ bool BeamRemnants::add( Event& event, int iFirst, bool doDiffCR) {
   Event eventTmpSave = event;
   bool colCorrect = false;
   for (int i = 0; i < 10; ++i) {
-    if (doReconnect && doDiffCR 
+    if (doReconnect && doDiffCR
     && (reconnectMode == 1 || reconnectMode == 2)) {
       colourReconnectionPtr->next(event, iFirst);
 

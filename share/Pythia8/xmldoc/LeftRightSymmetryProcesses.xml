@@ -63,7 +63,7 @@ Code 3101.
 </flag> 
  
 <flag name="LeftRightSymmmetry:ffbar2WR" default="off"> 
-Scatterings <ei><f fbar' &rarr; W_R^+</ei>. 
+Scatterings <ei>f fbar' &rarr; W_R^+</ei>. 
 Code 3102. 
 </flag> 
  

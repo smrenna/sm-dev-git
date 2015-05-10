@@ -158,25 +158,31 @@ input from Tauola [<a href="Bibliography.php" target="page">Jad90</a>]. A short 
 [<a href="Bibliography.php" target="page">Ilt12</a>], while the complete writeup is in [<a href="Bibliography.php" target="page">Ilt14</a>]. 
  
 <p/> 
-The decays of <i>tau</i> leptons are categorized 
-as <code>correlated</code>, where a <i>tau</i> pair is produced from 
-a single process, or <code>uncorrelated</code>, where only 
-one <i>tau</i> is produced. Currently internally 
-supported <i>tau</i> production mechanisms include correlated decays 
-from <i>gamma</i>, <i>Z^0</i>, <i>gamma^*/Z^0</i>, and Higgs 
-bosons (CP-even, odd, or mixed) and uncorrelated decays 
-from <i>W^+-</i>, <i>B/D</i> hadrons, and charged Higgs 
-bosons. For all mechanisms except <i>B/D</i> hadrons, both the full 
-process, e.g. <i>q qbar &rarr; Z^0 &rarr; tau^+ tau^-</i>, as well 
-as just the decay of the boson with a given initial polarization, e.g. 
-<i>Z^0 &rarr; tau^+ tau^-</i>, can be handled. Note that the CP of 
-the various Higgs bosons can be set with the 
-options <code>HiggsX:parity</code>, <code>HiggsX:etaParity</code>, 
-and <code>HiggsX:phiParity</code> as described 
+
+The decays of <i>tau</i> leptons are categorized
+as <code>correlated</code>, where a <i>tau</i> pair is produced from
+a single process, or <code>uncorrelated</code>, where only
+one <i>tau</i> is produced. Currently internally
+supported <i>tau</i> production mechanisms include correlated decays
+from <i>gamma</i>, <i>Z^0</i>, <i>Z'^0</i>, <i>gamma^*/Z^0/Z'^0</i>,
+and Higgs bosons (CP-even, odd, or mixed) and uncorrelated decays
+from <i>W^+-</i>, <i>W'^+-</i>, <i>B/D</i> hadrons, and charged
+Higgs bosons. For all mechanisms except <i>B/D</i> hadrons, both the
+full process, e.g. <i>q qbar &rarr; Z^0 &rarr; tau^+ tau^-</i>, as
+well as just the decay of the boson with a given initial polarization,
+e.g.
+<i>Z^0 &rarr; tau^+ tau^-</i>, can be handled. The axial and vector
+couplings of the <i>Z'^0</i> and <i>W'^0</i> are set from the
+relevant parameters in <?php $filepath = $_GET["filepath"];
+echo "<a href='NewGaugeBosonProcesses.php?filepath=".$filepath."' target='page'>";?>New Gauge
+Boson Processes</a>. Note that the CP of the various Higgs bosons
+can be set with the
+options <code>HiggsX:parity</code>, <code>HiggsX:etaParity</code>,
+and <code>HiggsX:phiParity</code> as described
 in <?php $filepath = $_GET["filepath"];
-echo "<a href='HiggsProcesses.php?filepath=".$filepath."' target='page'>";?>Higgs Processes</a> 
-where <code>X</code> is either <code>H1</code>, <code>H2</code>, 
-or <code>A3</code>. 
+echo "<a href='HiggsProcesses.php?filepath=".$filepath."' target='page'>";?>Higgs Processes</a>
+where <code>X</code> is either <code>H1</code>, <code>H2</code>,
+or <code>A3</code>.
  
 <p/> 
 The <i>tau</i> polarization and <i>tau</i> decay correlation 

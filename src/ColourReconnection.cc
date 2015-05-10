@@ -3834,7 +3834,7 @@ bool ColourReconnection::reconnectTypeCommon( Event& event, int ) {
       // Find decayed boson. Only need to do it once.
       if (j == 0) {
         int iMot = event[iPar].mother1();
-        while (iMot != 0 && event[iMot].idAbs() != 23 
+        while (iMot != 0 && event[iMot].idAbs() != 23
           && event[iMot].idAbs() != 24) iMot = event[iMot].mother1();
         if (iMot == 0) {
           infoPtr->errorMsg("Error in ColourReconnection::reconnectTypeCommon:"

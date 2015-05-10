@@ -12,7 +12,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.208: 6 May 2015 
+<li>8.208: 10 May 2015 
 <ul> 
  
 <li>The "An Introduction to PYTHIA 8.2", arXiv:1410.3012 [hep-ph], 
@@ -80,6 +80,9 @@ of numerical inconsistencies in input.</li>
  
 <li>Updated EvtGen interface, to allow a pointer to an FSR engine to be 
 passed. Thanks to Torben Ferber.</li> 
+ 
+<li>Spin information for <ei>tau</ei> leptons now also set up for 
+<ei>Z'</ei> and <ei>W'</ei> decays.</li> 
  
 <li>New method<code>AlphaStrong::setThresholds(...)</code> allows to 
 set the charm, bottom and top flavour-threshold masses used for the 
