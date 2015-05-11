@@ -102,7 +102,7 @@ different reconnection schemes.
 <input type="radio" name="2" value="3"><strong>3 </strong>:  The SK I <ei>e^+ e^-</ei> CR model.  <br/>
 <input type="radio" name="2" value="4"><strong>4 </strong>:  The SK II <ei>e^+ e^-</ei> CR model.  <br/>
  
-<br/><br/><strong>ColourReconection:forceHadronLevelCR</strong>  <input type="radio" name="3" value="on"><strong>On</strong>
+<br/><br/><strong>ColourReconnection:forceHadronLevelCR</strong>  <input type="radio" name="3" value="on"><strong>On</strong>
 <input type="radio" name="3" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
 This flag switches on colour reconnection in the <code>forceHadronLevel</code> 
@@ -111,6 +111,18 @@ used (see <?php $filepath = $_GET["filepath"];
 echo "<a href='HadronLevelStandalone.php?filepath=".$filepath."' target='page'>";?>Hadron-level 
 Standalone</a>). The MPI-based model is not available for this setup and 
 any resonance decays not already decayed are not included in the CR. 
+   
+ 
+<br/><br/><strong>ColourReconnection:forceResonance</strong>  <input type="radio" name="4" value="on"><strong>On</strong>
+<input type="radio" name="4" value="off" checked="checked"><strong>Off</strong>
+ &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
+This parameter allows an additional CR after late resonance decays. All the 
+particles from all resonance decays are allowed to reconnect with each 
+other. It is mainly intended for <i>H -> WW -> qqqq </i>, where the 
+Higgs decay ensures a separation between the W bosons and the MPI 
+systems. Reconnections between the decay products from the two <i>W</i> 
+bosons is still a possibility, however. This option is not available for 
+colored resonances, and not for the MPI-based model.
    
  
 <h3>The MPI-based scheme</h3> 
@@ -132,7 +144,7 @@ energy-dependent dampening parameter as used for MPIs.
 Thus it is easy to merge a low-<i>pT</i> system with any other, 
 but difficult to merge two high-<i>pT</i> ones with each other. 
  
-<br/><br/><table><tr><td><strong>ColourReconnection:range </td><td></td><td> <input type="text" name="4" value="1.8" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.8</strong></code>; <code>minimum = 0.</code>; <code>maximum = 10.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>ColourReconnection:range </td><td></td><td> <input type="text" name="5" value="1.8" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.8</strong></code>; <code>minimum = 0.</code>; <code>maximum = 10.</code>)</td></tr></table>
 The <code>range</code> parameter defined above. The higher this number is 
 the more reconnections can occur. For values above unity the reconnection 
 rate tends to saturate, since then most systems are already connected with 
@@ -242,26 +254,26 @@ provides problems at low invariant masses.
 The new CR scheme introduce several tuneable parameters, which 
 all are listed below. In addition to these, other parameters in PYTHIA also 
 need to retuned to account for the new CR. The default values below, together 
-with changing <code>MultipartonInteractions:expPow = 1.5</code> and 
+with changing <code> MultipartonInteractions:pT0Ref = 2.15</code> and 
 <code>ColourReconnection:allowDoubleJunRem = off</code>, provides a good 
 starting point. Additional fragmentation variables were also adjusted in the 
 first tune, but these provide a smaller change (see [<a href="Bibliography.php" target="page">Chr14a</a>] for a 
 complete list). 
  
  
-<br/><br/><table><tr><td><strong>ColourReconnection:m0 </td><td></td><td> <input type="text" name="5" value="0.3" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.3</strong></code>; <code>minimum = 0.1</code>; <code>maximum = 5.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>ColourReconnection:m0 </td><td></td><td> <input type="text" name="6" value="0.3" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.3</strong></code>; <code>minimum = 0.1</code>; <code>maximum = 5.</code>)</td></tr></table>
 This is the variable used in the lambda measure for the string length. 
 See the different choices of lambda measure for exact formulas. This variable 
 is in the new model also used as a cut for forming pseudo particles that are 
 not colour reconnected. 
    
  
-<br/><br/><table><tr><td><strong>ColourReconnection:junctionCorrection </td><td></td><td> <input type="text" name="6" value="1.08" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.08</strong></code>; <code>minimum = 0.01</code>; <code>maximum = 10.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>ColourReconnection:junctionCorrection </td><td></td><td> <input type="text" name="7" value="1.20" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.20</strong></code>; <code>minimum = 0.01</code>; <code>maximum = 10.</code>)</td></tr></table>
 This variable allows to use a different m0 for junction strings in the lambda 
 measure. It is multiplicative correction to the m0 chosen above. 
    
  
-<br/><br/><table><tr><td><strong>ColourReconnection:nColours  </td><td></td><td> <input type="text" name="7" value="9" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>9</strong></code>; <code>minimum = 1</code>; <code>maximum = 30</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>ColourReconnection:nColours  </td><td></td><td> <input type="text" name="8" value="9" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>9</strong></code>; <code>minimum = 1</code>; <code>maximum = 30</code>)</td></tr></table>
 The number of reconnection colours, this should not be confused with the 
 standard number of QCD colours. Each string is given an integer number between 
 0 and <code>nColours - 1</code>. Only strings with the same number are allowed 
@@ -275,8 +287,8 @@ The behaviour of junction formation therefore only changes slightly with this
 variable. 
    
  
-<br/><br/><strong>ColourReconnection:sameNeighbourColours</strong>  <input type="radio" name="8" value="on"><strong>On</strong>
-<input type="radio" name="8" value="off" checked="checked"><strong>Off</strong>
+<br/><br/><strong>ColourReconnection:sameNeighbourColours</strong>  <input type="radio" name="9" value="on"><strong>On</strong>
+<input type="radio" name="9" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
 In the normal colour reconnection two neighbouring strings are not allowed 
 to have the same colour. Similar two strings originating from a gluon split is 
@@ -287,8 +299,8 @@ this variable needs to be turned on, since it is not possible to have
 different neighbouring colours. 
    
  
-<br/><br/><strong>ColourReconnection:allowJunctions</strong>  <input type="radio" name="9" value="on" checked="checked"><strong>On</strong>
-<input type="radio" name="9" value="off"><strong>Off</strong>
+<br/><br/><strong>ColourReconnection:allowJunctions</strong>  <input type="radio" name="10" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="10" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 This switch disables the formation of junctions in the colour reconnection. 
    
@@ -300,12 +312,12 @@ The formula shown are how much each end of a dipole or junction contribute to
 the total <ei>lambda</ei>-measure. The energies are defined in respectively 
 the dipole or junction rest frame. 
 <br/>
-<input type="radio" name="10" value="0" checked="checked"><strong>0 </strong>:  <ei>lambda = ln (1 + sqrt(2) E/m0)</ei>  <br/>
-<input type="radio" name="10" value="1"><strong>1 </strong>:  <ei>lambda = ln (1 + 2 E/m0)</ei>  <br/>
-<input type="radio" name="10" value="2"><strong>2 </strong>:  <ei>lambda = ln (2 E/m0)</ei>  <br/>
+<input type="radio" name="11" value="0" checked="checked"><strong>0 </strong>:  <ei>lambda = ln (1 + sqrt(2) E/m0)</ei>  <br/>
+<input type="radio" name="11" value="1"><strong>1 </strong>:  <ei>lambda = ln (1 + 2 E/m0)</ei>  <br/>
+<input type="radio" name="11" value="2"><strong>2 </strong>:  <ei>lambda = ln (2 E/m0)</ei>  <br/>
  
-<br/><br/><strong>ColourReconnection:allowDoubleJunRem</strong>  <input type="radio" name="11" value="on" checked="checked"><strong>On</strong>
-<input type="radio" name="11" value="off"><strong>Off</strong>
+<br/><br/><strong>ColourReconnection:allowDoubleJunRem</strong>  <input type="radio" name="12" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="12" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 This parameter tells whether or not to allow a directly connected 
 junction-antijunction pair to split into two strings. The lambda measure of 
@@ -315,23 +327,27 @@ system is inserted between the junctions by removing some energy/momentum from
 the other legs. 
    
  
-<br/><br/><table><tr><td><strong>ColourReconnection:timeDilationMode  </td><td>  &nbsp;&nbsp;(<code>default = <strong>1</strong></code>; <code>minimum = 0</code>; <code>maximum = 5</code>)</td></tr></table>
-Disallow colour reconnection between strings that are causally not connected 
-due to time dilation. The different modes introduce different options for the 
-definition of causally connected. The major point for all the modes is the 
-boost (<ei>gamma</ei>) between the dipoles, which is responsible for the time 
-dilation. 
+<br/><br/><table><tr><td><strong>ColourReconnection:timeDilationMode  </td><td>  &nbsp;&nbsp;(<code>default = <strong>2</strong></code>; <code>minimum = 0</code>; <code>maximum = 5</code>)</td></tr></table>
+Disallow colour reconnection between strings that are not in causal 
+contact; if either string has already decayed before the other string forms, 
+there is no space-time region in which the reconnection could physically 
+occur. The exact defintion of causal contact is not known, hence several 
+possible defintions are included. They all include the boost factor, 
+<ei>gamma</ei>, and the majority also rely on the typical hadronization scale, 
+<ei>r</ei>, which is kept fixed at 1 fm. A tuneable dimensionless parameter is 
+included, which can be used to control the overall amount of colour 
+reconnection. 
 <br/>
-<input type="radio" name="12" value="0"><strong>0 </strong>:  All strings are allowed to reconnect.  <br/>
-<input type="radio" name="12" value="1" checked="checked"><strong>1 </strong>:  Strings are allowed to reconnect if <ei>gamma &lt  timeDilationPar </ei> and all strings should be causally connected to allow a  reconnection.  <br/>
-<input type="radio" name="12" value="2"><strong>2 </strong>:  Strings are allowed to reconnect if <ei>gamma &lt  timeDilationPar * mDip </ei> and all strings should be causally connected to  allow a reconnection.  <br/>
-<input type="radio" name="12" value="3"><strong>3 </strong>:  Strings are allowed to reconnect if <ei>gamma &lt  timeDilationPar * mDip </ei> and if a single pair of dipoles are causally  connected the reconnection is allowed.  <br/>
-<input type="radio" name="12" value="4"><strong>4 </strong>:  Strings are allowed to reconnect if <ei>gamma &lt  timeDilationPar * mDip' </ei> and all strings should be causally connected to  allow a reconnection. mDip' is the invariant mass at the formation of the  dipole (ie. the first time the colour tag appear in the perturbative  expansion).  <br/>
-<input type="radio" name="12" value="5"><strong>5 </strong>:  Strings are allowed to reconnect if <ei>gamma &lt  timeDilationPar * mDip' </ei> and if a single pair of dipoles are causally  connected the reconnection is allowed. mDip' is the invariant mass at the  formation of the dipole (ie. the first time the colour tag appear in the  perturbative expansion).  <br/>
+<input type="radio" name="13" value="0"><strong>0 </strong>:  All strings are allowed to reconnect.  <br/>
+<input type="radio" name="13" value="1"><strong>1 </strong>:  Strings are allowed to reconnect if <ei>gamma &lt  timeDilationPar </ei> and all strings should be causally connected to allow a  reconnection.  <br/>
+<input type="radio" name="13" value="2" checked="checked"><strong>2 </strong>:  Strings are allowed to reconnect if <ei>gamma &lt  timeDilationPar * mDip * r </ei> and all strings should be in causal  contact to allow a reconnection.  <br/>
+<input type="radio" name="13" value="3"><strong>3 </strong>:  Strings are allowed to reconnect if <ei>gamma &lt  timeDilationPar * mDip * r </ei> and if a single pair of dipoles are in  causal contact the reconnection is allowed.  <br/>
+<input type="radio" name="13" value="4"><strong>4 </strong>:  Strings are allowed to reconnect if <ei>gamma &lt  timeDilationPar * mDip' * r </ei> and all strings should be in causal  contact to allow a reconnection. mDip' is the invariant mass at the  formation of the dipole (ie. the first time the colour tag appear in the  perturbative expansion).  <br/>
+<input type="radio" name="13" value="5"><strong>5 </strong>:  Strings are allowed to reconnect if <ei>gamma &lt  timeDilationPar * mDip' * r </ei> and if a single pair of dipoles are in  causal contact the reconnection is allowed. mDip' is the invariant mass at  the formation of the dipole (ie. the first time the colour tag appear in  the perturbative expansion).  <br/>
  
-<br/><br/><table><tr><td><strong>ColourReconnection:timeDilationPar </td><td></td><td> <input type="text" name="13" value="1.45" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.45</strong></code>; <code>minimum = 0</code>; <code>maximum = 100</code>)</td></tr></table>
-This is a tuneable parameter for the time dilation implementation. 
-The definition can be seen above under <code>timeDilationMode</code>. 
+<br/><br/><table><tr><td><strong>ColourReconnection:timeDilationPar </td><td></td><td> <input type="text" name="14" value="0.18" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.18</strong></code>; <code>minimum = 0</code>; <code>maximum = 100</code>)</td></tr></table>
+This is a tuneable parameter for the time dilation. The definition 
+can be seen above under <code>timeDilationMode</code>. 
    
  
 <h3>The gluon-move scheme</h3> 
@@ -392,7 +408,7 @@ As an option, singlet subsystems containing a junction may or may not
 be allowed to take part in the flip step. Since the number of junction 
 systems is limited in this model the differences are not so important. 
  
-<br/><br/><table><tr><td><strong>ColourReconnection:m2Lambda </td><td></td><td> <input type="text" name="14" value="1." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.</strong></code>; <code>minimum = 0.25</code>; <code>maximum = 16.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>ColourReconnection:m2Lambda </td><td></td><td> <input type="text" name="15" value="1." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.</strong></code>; <code>minimum = 0.25</code>; <code>maximum = 16.</code>)</td></tr></table>
 The <i>m2Lambda</i> parameter used in the definition of the approximate 
 <i>lambda</i> measure above. It represents an approximate hadronic 
 mass-square scale, cf. <i>m0</i> in the previous model. Its value is 
@@ -401,12 +417,12 @@ a potential move or flip is rather insensitive to the precise value,
 owing to large cancellations. 
    
  
-<br/><br/><table><tr><td><strong>ColourReconnection:fracGluon </td><td></td><td> <input type="text" name="15" value="1." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.</strong></code>; <code>minimum = 0.</code>; <code>maximum = 1.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>ColourReconnection:fracGluon </td><td></td><td> <input type="text" name="16" value="1." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.</strong></code>; <code>minimum = 0.</code>; <code>maximum = 1.</code>)</td></tr></table>
 The probability that a given gluon will be considered for being moved. 
 It thus gives the average fraction of gluons being considered. 
    
  
-<br/><br/><table><tr><td><strong>ColourReconnection:dLambdaCut </td><td></td><td> <input type="text" name="16" value="0." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.</strong></code>; <code>minimum = 0.</code>; <code>maximum = 10.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>ColourReconnection:dLambdaCut </td><td></td><td> <input type="text" name="17" value="0." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.</strong></code>; <code>minimum = 0.</code>; <code>maximum = 10.</code>)</td></tr></table>
 Restrict gluon moves and colour flips to those that reduce <i>lambda</i> 
 by more than this amount. The larger this number, the fewer moves and flips 
 will be performed, but those that remain are the ones most likely to produce 
@@ -416,11 +432,11 @@ large effects.
 <br/><br/><table><tr><td><strong>ColourReconnection:flipMode  </td><td>  &nbsp;&nbsp;(<code>default = <strong>0</strong></code>; <code>minimum = 0</code>; <code>maximum = 4</code>)</td></tr></table>
 Performing the flip step or not. Also possibility to omit the move step. 
 <br/>
-<input type="radio" name="17" value="0" checked="checked"><strong>0 </strong>:  No flip handling.  <br/>
-<input type="radio" name="17" value="1"><strong>1 </strong>:  Allow flips, but not for strings in junction topologies.  <br/>
-<input type="radio" name="17" value="2"><strong>2 </strong>:  Allow flips, including for strings in junction topologies.  <br/>
-<input type="radio" name="17" value="3"><strong>3 </strong>:  No move handling. Allow flips, but not for strings  in junction topologies.  <br/>
-<input type="radio" name="17" value="4"><strong>4 </strong>:  No move handling. Allow flips, including for strings  in junction topologies.  <br/>
+<input type="radio" name="18" value="0" checked="checked"><strong>0 </strong>:  No flip handling.  <br/>
+<input type="radio" name="18" value="1"><strong>1 </strong>:  Allow flips, but not for strings in junction topologies.  <br/>
+<input type="radio" name="18" value="2"><strong>2 </strong>:  Allow flips, including for strings in junction topologies.  <br/>
+<input type="radio" name="18" value="3"><strong>3 </strong>:  No move handling. Allow flips, but not for strings  in junction topologies.  <br/>
+<input type="radio" name="18" value="4"><strong>4 </strong>:  No move handling. Allow flips, including for strings  in junction topologies.  <br/>
  
 <h3>The <i>e^+ e^-</i> colour reconnection schemes</h3> 
  
@@ -431,7 +447,8 @@ They are not intended to handle hadronic collisions, except in special
 contexts. The prime of these is Higgs decays of the same character as above, 
 <i>H^0 &rarr;  W^+ W^- / Z^0 Z^0</i>, since the Higgs is sufficiently 
 long-lived that its decay products can be considered separately from 
-the rest of the event. 
+the rest of the event. The administrative machinery for this possibility
+is not yet in place, however.  
  
 <p/> 
 The labels I and II refer to the colour-confinement strings being modelled 
@@ -462,25 +479,25 @@ more convenient for tunes to data. The LEP collaborations have used SK I
 as a common reference to establish the existence of CR in <i>W^+ W^-</i> 
 events. 
  
-<br/><br/><strong>ColourReconnection:lowerLambdaOnly</strong>  <input type="radio" name="18" value="on" checked="checked"><strong>On</strong>
-<input type="radio" name="18" value="off"><strong>Off</strong>
+<br/><br/><strong>ColourReconnection:lowerLambdaOnly</strong>  <input type="radio" name="19" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="19" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 Only allow overlaps that lowers the total string length. 
    
  
-<br/><br/><strong>ColourReconnection:singleReconnection</strong>  <input type="radio" name="19" value="on" checked="checked"><strong>On</strong>
-<input type="radio" name="19" value="off"><strong>Off</strong>
+<br/><br/><strong>ColourReconnection:singleReconnection</strong>  <input type="radio" name="20" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="20" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 Limit the number of reconnections to a single reconnection. 
    
  
-<br/><br/><table><tr><td><strong>ColourReconnection:kI </td><td></td><td> <input type="text" name="20" value="0.6" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.6</strong></code>; <code>minimum = 0.</code>; <code>maximum = 100.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>ColourReconnection:kI </td><td></td><td> <input type="text" name="21" value="0.6" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.6</strong></code>; <code>minimum = 0.</code>; <code>maximum = 100.</code>)</td></tr></table>
 kI is the main free parameter in the reconnection probability for SK I. 
 This probability is given by kI times the space-time overlap volume, 
 up to saturation effects. 
    
  
-<br/><br/><table><tr><td><strong>ColourReconnection:fragmentationTime </td><td></td><td> <input type="text" name="21" value="1.5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.5</strong></code>; <code>minimum = 1.</code>; <code>maximum = 2.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>ColourReconnection:fragmentationTime </td><td></td><td> <input type="text" name="22" value="1.5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.5</strong></code>; <code>minimum = 1.</code>; <code>maximum = 2.</code>)</td></tr></table>
 This parameter specifies the average fragmentation time of the string, 
 in fm. This is used as an upper limit on the invariant time where strings 
 still exist and thus can collide. The expected fragmentation time is 
@@ -489,17 +506,17 @@ fragmentation function as well as to the string tension. It is therefore
 not a quite free parameter. 
    
  
-<br/><br/><table><tr><td><strong>ColourReconnection:rHadron </td><td></td><td> <input type="text" name="22" value="0.5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.5</strong></code>; <code>minimum = 0.3</code>; <code>maximum = 1.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>ColourReconnection:rHadron </td><td></td><td> <input type="text" name="23" value="0.5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.5</strong></code>; <code>minimum = 0.3</code>; <code>maximum = 1.</code>)</td></tr></table>
 Width of the type I string in reconnection calculations, in fm, giving the 
 radius of the Gaussian distribution in <i>x</i> and <i>y</i> separately. 
    
  
-<br/><br/><table><tr><td><strong>ColourReconnection:blowR </td><td></td><td> <input type="text" name="23" value="2.5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>2.5</strong></code>; <code>minimum = 1.</code>; <code>maximum = 4.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>ColourReconnection:blowR </td><td></td><td> <input type="text" name="24" value="2.5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>2.5</strong></code>; <code>minimum = 1.</code>; <code>maximum = 4.</code>)</td></tr></table>
 Technical parameter used in the Monte Carlo sampling of the spatial 
 phase space volume in SK I. There is no real reason to change this number. 
    
  
-<br/><br/><table><tr><td><strong>ColourReconnection:blowT </td><td></td><td> <input type="text" name="24" value="2.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>2.0</strong></code>; <code>minimum = 1.</code>; <code>maximum = 4.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>ColourReconnection:blowT </td><td></td><td> <input type="text" name="25" value="2.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>2.0</strong></code>; <code>minimum = 1.</code>; <code>maximum = 4.</code>)</td></tr></table>
 Technical parameter used in the Monte Carlo sampling of the temporal 
 phase space volume in SK I. There is no real reason to change this number. 
    
@@ -531,112 +548,117 @@ fwrite($handle,$data);
 }
 if($_POST["3"] != "off")
 {
-$data = "ColourReconection:forceHadronLevelCR = ".$_POST["3"]."\n";
+$data = "ColourReconnection:forceHadronLevelCR = ".$_POST["3"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["4"] != "1.8")
+if($_POST["4"] != "off")
 {
-$data = "ColourReconnection:range = ".$_POST["4"]."\n";
+$data = "ColourReconnection:forceResonance = ".$_POST["4"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["5"] != "0.3")
+if($_POST["5"] != "1.8")
 {
-$data = "ColourReconnection:m0 = ".$_POST["5"]."\n";
+$data = "ColourReconnection:range = ".$_POST["5"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["6"] != "1.08")
+if($_POST["6"] != "0.3")
 {
-$data = "ColourReconnection:junctionCorrection = ".$_POST["6"]."\n";
+$data = "ColourReconnection:m0 = ".$_POST["6"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["7"] != "9")
+if($_POST["7"] != "1.20")
 {
-$data = "ColourReconnection:nColours = ".$_POST["7"]."\n";
+$data = "ColourReconnection:junctionCorrection = ".$_POST["7"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["8"] != "off")
+if($_POST["8"] != "9")
 {
-$data = "ColourReconnection:sameNeighbourColours = ".$_POST["8"]."\n";
+$data = "ColourReconnection:nColours = ".$_POST["8"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["9"] != "on")
+if($_POST["9"] != "off")
 {
-$data = "ColourReconnection:allowJunctions = ".$_POST["9"]."\n";
+$data = "ColourReconnection:sameNeighbourColours = ".$_POST["9"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["10"] != "0")
+if($_POST["10"] != "on")
 {
-$data = "ColourReconnection:lambdaForm = ".$_POST["10"]."\n";
+$data = "ColourReconnection:allowJunctions = ".$_POST["10"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["11"] != "on")
+if($_POST["11"] != "0")
 {
-$data = "ColourReconnection:allowDoubleJunRem = ".$_POST["11"]."\n";
+$data = "ColourReconnection:lambdaForm = ".$_POST["11"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["12"] != "1")
+if($_POST["12"] != "on")
 {
-$data = "ColourReconnection:timeDilationMode = ".$_POST["12"]."\n";
+$data = "ColourReconnection:allowDoubleJunRem = ".$_POST["12"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["13"] != "1.45")
+if($_POST["13"] != "2")
 {
-$data = "ColourReconnection:timeDilationPar = ".$_POST["13"]."\n";
+$data = "ColourReconnection:timeDilationMode = ".$_POST["13"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["14"] != "1.")
+if($_POST["14"] != "0.18")
 {
-$data = "ColourReconnection:m2Lambda = ".$_POST["14"]."\n";
+$data = "ColourReconnection:timeDilationPar = ".$_POST["14"]."\n";
 fwrite($handle,$data);
 }
 if($_POST["15"] != "1.")
 {
-$data = "ColourReconnection:fracGluon = ".$_POST["15"]."\n";
+$data = "ColourReconnection:m2Lambda = ".$_POST["15"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["16"] != "0.")
+if($_POST["16"] != "1.")
 {
-$data = "ColourReconnection:dLambdaCut = ".$_POST["16"]."\n";
+$data = "ColourReconnection:fracGluon = ".$_POST["16"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["17"] != "0")
+if($_POST["17"] != "0.")
 {
-$data = "ColourReconnection:flipMode = ".$_POST["17"]."\n";
+$data = "ColourReconnection:dLambdaCut = ".$_POST["17"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["18"] != "on")
+if($_POST["18"] != "0")
 {
-$data = "ColourReconnection:lowerLambdaOnly = ".$_POST["18"]."\n";
+$data = "ColourReconnection:flipMode = ".$_POST["18"]."\n";
 fwrite($handle,$data);
 }
 if($_POST["19"] != "on")
 {
-$data = "ColourReconnection:singleReconnection = ".$_POST["19"]."\n";
+$data = "ColourReconnection:lowerLambdaOnly = ".$_POST["19"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["20"] != "0.6")
+if($_POST["20"] != "on")
 {
-$data = "ColourReconnection:kI = ".$_POST["20"]."\n";
+$data = "ColourReconnection:singleReconnection = ".$_POST["20"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["21"] != "1.5")
+if($_POST["21"] != "0.6")
 {
-$data = "ColourReconnection:fragmentationTime = ".$_POST["21"]."\n";
+$data = "ColourReconnection:kI = ".$_POST["21"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["22"] != "0.5")
+if($_POST["22"] != "1.5")
 {
-$data = "ColourReconnection:rHadron = ".$_POST["22"]."\n";
+$data = "ColourReconnection:fragmentationTime = ".$_POST["22"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["23"] != "2.5")
+if($_POST["23"] != "0.5")
 {
-$data = "ColourReconnection:blowR = ".$_POST["23"]."\n";
+$data = "ColourReconnection:rHadron = ".$_POST["23"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["24"] != "2.0")
+if($_POST["24"] != "2.5")
 {
-$data = "ColourReconnection:blowT = ".$_POST["24"]."\n";
+$data = "ColourReconnection:blowR = ".$_POST["24"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["25"] != "2.0")
+{
+$data = "ColourReconnection:blowT = ".$_POST["25"]."\n";
 fwrite($handle,$data);
 }
 fclose($handle);

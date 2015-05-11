@@ -109,6 +109,7 @@ bool PartonLevel::init( Info* infoPtrIn, Settings& settings,
   // Flags for colour reconnection.
   doReconnect        = settings.flag("ColourReconnection:reconnect");
   reconnectMode      = settings.mode("ColourReconnection:mode");
+  forceResonanceCR   = settings.flag("ColourReconnection:forceResonance");
 
   // Some other flags.
   doRemnants         = settings.flag("PartonLevel:Remnants");
@@ -899,8 +900,10 @@ bool PartonLevel::next( Event& process, Event& event) {
     infoPtr->setImpact( multiPtr->bMPI(), multiPtr->enhanceMPI(), false);
   }
 
+
   // Do colour reconnection for resonance decays.
-  if (doReconnect && !doDiffCR && reconnectMode != 0) {
+  if (!earlyResDec && forceResonanceCR && doReconnect &&
+      !doDiffCR && reconnectMode != 0) {
     Event eventSave = event;
     bool colCorrect = false;
     for (int i = 0; i < 10; ++i) {
@@ -1780,9 +1783,9 @@ bool PartonLevel::resonanceShowers( Event& process, Event& event,
     // New colour reconnection can not handle late resonance decay
     // of coloured particles so abort event.
     if ( (colBef != 0 || acolBef != 0) && doReconnect && reconnectMode == 1
-      && !earlyResDec) {
+      && forceResonanceCR && !earlyResDec) {
       infoPtr->errorMsg("Abort in PartonLevel::resonanceShower: "
-        "new CR can't handle late resonance decay of coloured particles");
+        "new CR can't handle separate CR for coloured resonance decays");
       infoPtr->setAbortPartonLevel(true);
       return false;
     }

@@ -178,6 +178,7 @@ private:
 
   // Constants: could only be changed in the code itself.
   static const double MINIMUMGAIN, MINIMUMGAINJUN, HBAR;
+  static const int MAXRECONNECTIONS;
 
   // Variables needed.
   bool   allowJunctions, sameNeighbourCol, singleReconOnly, lowerLambdaOnly;
@@ -185,7 +186,7 @@ private:
          timeDilationMode;
   double eCM, sCM, pT0, pT20Rec, pT0Ref, ecmRef, ecmPow, reconnectRange,
          m0, m0sqr, m2Lambda, fracGluon, dLambdaCut, timeDilationPar,
-         tfrag, blowR, blowT, rHadron, kI;
+         timeDilationParGeV, tfrag, blowR, blowT, rHadron, kI;
 
   // List of current dipoles.
   vector<ColourDipole*> dipoles, usedDipoles;

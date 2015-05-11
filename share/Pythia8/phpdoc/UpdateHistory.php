@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.208: 10 May 2015 
+<li>8.208: 11 May 2015 
 <ul> 
  
 <li>The "An Introduction to PYTHIA 8.2", arXiv:1410.3012 [hep-ph], 
@@ -55,6 +55,13 @@ of the code, including updates of parameter default values.</li>
 to sidestep the gluon-move handling but still retain the final 
 flip step.</li> 
  
+<li>New <code>ColourReconnection:forceResonance</code> switch 
+allows an additional colour reconnection step after late resonance 
+decays. This is especially relevant for 
+<i>H^0 &rarr; W^+ W^- / Z^0 Z^0  &rarr; q_1 qbar_2 q_3 qbar_4</i>,
+since the Higgs is so long-lived that its decay is well separated
+from the rest of the event.</li>
+
 <li>The old SK I and SK II colour reconnection models are now available. 
 These are specially aimed at the processes 
 <i>e^+ e^- &rarr; W^+ W^- / Z^0 Z^0</i>, but are also relevant for 

@@ -86,13 +86,24 @@ different reconnection schemes.
    
    
  
-<p/><code>flag&nbsp; </code><strong> ColourReconection:forceHadronLevelCR &nbsp;</strong> 
+<p/><code>flag&nbsp; </code><strong> ColourReconnection:forceHadronLevelCR &nbsp;</strong> 
  (<code>default = <strong>off</strong></code>)<br/>
 This flag switches on colour reconnection in the <code>forceHadronLevel</code> 
 function. The function is called when only the hadron level of PYTHIA is 
 used (see <a href="HadronLevelStandalone.html" target="page">Hadron-level 
 Standalone</a>). The MPI-based model is not available for this setup and 
 any resonance decays not already decayed are not included in the CR. 
+   
+ 
+<p/><code>flag&nbsp; </code><strong> ColourReconnection:forceResonance &nbsp;</strong> 
+ (<code>default = <strong>off</strong></code>)<br/>
+This parameter allows an additional CR after late resonance decays. All the 
+particles from all resonance decays are allowed to reconnect with each 
+other. It is mainly intended for <i>H -> WW -> qqqq </i>, where the 
+Higgs decay ensures a separation between the W bosons and the MPI 
+systems. Reconnections between the decay products from the two <i>W</i> 
+bosons is still a possibility, however. This option is not available for 
+colored resonances, and not for the MPI-based model.
    
  
 <h3>The MPI-based scheme</h3> 
@@ -224,7 +235,7 @@ provides problems at low invariant masses.
 The new CR scheme introduce several tuneable parameters, which 
 all are listed below. In addition to these, other parameters in PYTHIA also 
 need to retuned to account for the new CR. The default values below, together 
-with changing <code>MultipartonInteractions:expPow = 1.5</code> and 
+with changing <code> MultipartonInteractions:pT0Ref = 2.15</code> and 
 <code>ColourReconnection:allowDoubleJunRem = off</code>, provides a good 
 starting point. Additional fragmentation variables were also adjusted in the 
 first tune, but these provide a smaller change (see [<a href="Bibliography.html" target="page">Chr14a</a>] for a 
@@ -240,7 +251,7 @@ not colour reconnected.
    
  
 <p/><code>parm&nbsp; </code><strong> ColourReconnection:junctionCorrection &nbsp;</strong> 
- (<code>default = <strong>1.08</strong></code>; <code>minimum = 0.01</code>; <code>maximum = 10.</code>)<br/>
+ (<code>default = <strong>1.20</strong></code>; <code>minimum = 0.01</code>; <code>maximum = 10.</code>)<br/>
 This variable allows to use a different m0 for junction strings in the lambda 
 measure. It is multiplicative correction to the m0 chosen above. 
    
@@ -302,12 +313,16 @@ the other legs.
    
  
 <p/><code>mode&nbsp; </code><strong> ColourReconnection:timeDilationMode &nbsp;</strong> 
- (<code>default = <strong>1</strong></code>; <code>minimum = 0</code>; <code>maximum = 5</code>)<br/>
-Disallow colour reconnection between strings that are causally not connected 
-due to time dilation. The different modes introduce different options for the 
-definition of causally connected. The major point for all the modes is the 
-boost (<i>gamma</i>) between the dipoles, which is responsible for the time 
-dilation. 
+ (<code>default = <strong>2</strong></code>; <code>minimum = 0</code>; <code>maximum = 5</code>)<br/>
+Disallow colour reconnection between strings that are not in causal 
+contact; if either string has already decayed before the other string forms, 
+there is no space-time region in which the reconnection could physically 
+occur. The exact defintion of causal contact is not known, hence several 
+possible defintions are included. They all include the boost factor, 
+<i>gamma</i>, and the majority also rely on the typical hadronization scale, 
+<i>r</i>, which is kept fixed at 1 fm. A tuneable dimensionless parameter is 
+included, which can be used to control the overall amount of colour 
+reconnection. 
 <br/><code>option </code><strong> 0</strong> :  All strings are allowed to reconnect. 
    
 <br/><code>option </code><strong> 1</strong> :  Strings are allowed to reconnect if <i>gamma &lt 
@@ -315,31 +330,31 @@ timeDilationPar </i> and all strings should be causally connected to allow a
 reconnection. 
    
 <br/><code>option </code><strong> 2</strong> :  Strings are allowed to reconnect if <i>gamma &lt 
-timeDilationPar * mDip </i> and all strings should be causally connected to 
-allow a reconnection. 
+timeDilationPar * mDip * r </i> and all strings should be in causal 
+contact to allow a reconnection. 
    
 <br/><code>option </code><strong> 3</strong> :  Strings are allowed to reconnect if <i>gamma &lt 
-timeDilationPar * mDip </i> and if a single pair of dipoles are causally 
-connected the reconnection is allowed. 
+timeDilationPar * mDip * r </i> and if a single pair of dipoles are in 
+causal contact the reconnection is allowed. 
    
 <br/><code>option </code><strong> 4</strong> :  Strings are allowed to reconnect if <i>gamma &lt 
-timeDilationPar * mDip' </i> and all strings should be causally connected to 
-allow a reconnection. mDip' is the invariant mass at the formation of the 
-dipole (ie. the first time the colour tag appear in the perturbative 
-expansion). 
-   
-<br/><code>option </code><strong> 5</strong> :  Strings are allowed to reconnect if <i>gamma &lt 
-timeDilationPar * mDip' </i> and if a single pair of dipoles are causally 
-connected the reconnection is allowed. mDip' is the invariant mass at the 
+timeDilationPar * mDip' * r </i> and all strings should be in causal 
+contact to allow a reconnection. mDip' is the invariant mass at the 
 formation of the dipole (ie. the first time the colour tag appear in the 
 perturbative expansion). 
+   
+<br/><code>option </code><strong> 5</strong> :  Strings are allowed to reconnect if <i>gamma &lt 
+timeDilationPar * mDip' * r </i> and if a single pair of dipoles are in 
+causal contact the reconnection is allowed. mDip' is the invariant mass at 
+the formation of the dipole (ie. the first time the colour tag appear in 
+the perturbative expansion). 
    
    
  
 <p/><code>parm&nbsp; </code><strong> ColourReconnection:timeDilationPar &nbsp;</strong> 
- (<code>default = <strong>1.45</strong></code>; <code>minimum = 0</code>; <code>maximum = 100</code>)<br/>
-This is a tuneable parameter for the time dilation implementation. 
-The definition can be seen above under <code>timeDilationMode</code>. 
+ (<code>default = <strong>0.18</strong></code>; <code>minimum = 0</code>; <code>maximum = 100</code>)<br/>
+This is a tuneable parameter for the time dilation. The definition 
+can be seen above under <code>timeDilationMode</code>. 
    
  
 <h3>The gluon-move scheme</h3> 
@@ -450,7 +465,8 @@ They are not intended to handle hadronic collisions, except in special
 contexts. The prime of these is Higgs decays of the same character as above, 
 <i>H^0 &rarr;  W^+ W^- / Z^0 Z^0</i>, since the Higgs is sufficiently 
 long-lived that its decay products can be considered separately from 
-the rest of the event. 
+the rest of the event. The administrative machinery for this possibility
+is not yet in place, however.  
  
 <p/> 
 The labels I and II refer to the colour-confinement strings being modelled 

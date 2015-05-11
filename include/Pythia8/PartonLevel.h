@@ -99,7 +99,8 @@ private:
          doFSRinResonances, doRemnants, doSecondHard, hasOneLeptonBeam,
          hasTwoLeptonBeams, hasPointLeptons, canVetoPT, canVetoStep,
          canVetoMPIStep, canVetoEarly, canSetScale, allowRH, earlyResDec,
-         vetoWeakJets, canReconResSys, doReconnect, doHardDiff;
+         vetoWeakJets, canReconResSys, doReconnect, doHardDiff,
+         forceResonanceCR;
   double mMinDiff, mWidthDiff, pMaxDiff, vetoWeakDeltaR2;
 
   // Event generation strategy. Number of steps. Maximum pT scales.

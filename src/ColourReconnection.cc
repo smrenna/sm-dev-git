@@ -160,8 +160,13 @@ const double ColourReconnection::MINIMUMGAIN = 1E-10;
 // Minimum needed gain in lambda for a junction.
 const double ColourReconnection::MINIMUMGAINJUN = 1E-10;
 
-// Conversion of GeV^{-1} to fm for time ccalculations.
+// Conversion of GeV^{-1} to fm for time calculations.
 const double ColourReconnection::HBAR = 0.197327;
+
+// Maximum number of reconnection per trial.
+// For very large number of outgoing partons, ie. if multiple pp collisions
+// are stacked on top of each other, this number needs to be raised.
+const int ColourReconnection::MAXRECONNECTIONS = 1000;
 
 //--------------------------------------------------------------------------
 
@@ -213,6 +218,7 @@ bool ColourReconnection::init( Info* infoPtrIn, Settings& settings,
 
   timeDilationMode    = settings.mode("ColourReconnection:timeDilationMode");
   timeDilationPar     = settings.parm("ColourReconnection:timeDilationPar");
+  timeDilationParGeV  = timeDilationPar / HBAR;
 
   // Parameters of gluon-move model.
   m2Lambda            = settings.parm("ColourReconnection:m2Lambda");
@@ -303,12 +309,24 @@ bool ColourReconnection::nextNew( Event& event, int iFirst) {
       for (int k = j + 1; k < int(iDips[i].size()); ++k)
         singleReconnection(dipoles[iDips[i][j]], dipoles[iDips[i][k]]);
 
+  // Only do warning once per event.
+  bool alreadyWarned = false;
+
   // Start outer loop over reconnections.
   for (int iOuterLoop = 0; iOuterLoop < 20; ++iOuterLoop) {
     bool finished = true;
 
     // Do inner loop for string reconnections
-    while (dipTrials.size()) {
+    for (int iInnerLoop = 0;dipTrials.size() > 0; ++iInnerLoop) {
+
+      // Break if too many reonnections are carried out.
+      if (iInnerLoop > MAXRECONNECTIONS) {
+        if (!alreadyWarned)
+          infoPtr->errorMsg("Warning in ColourReconnection::nextNew:"
+            "Too many reconnections, stopping before minimum reached.");
+        alreadyWarned = true;
+        break;
+      }
 
       // Store all dipoles connected to the chosen dipole.
       usedDipoles.clear();
@@ -327,7 +345,6 @@ bool ColourReconnection::nextNew( Event& event, int iFirst) {
 
       // Updating the dipole trials.
       updateDipoleTrials();
-
     }
 
     // Loop over list of dipoles to try and form junction structures.
@@ -358,7 +375,17 @@ bool ColourReconnection::nextNew( Event& event, int iFirst) {
               singleJunction(dipoles[iDips[i][j]], dipoles[iDips[i][k]],
                                 dipoles[iDips[i][l]]);
 
-      while (junTrials.size()) {
+      // Do inner loop for junction reconnections
+      for (int iInnerLoop = 0;junTrials.size() > 0; ++iInnerLoop) {
+
+        // Break if too many reonnections are carried out.
+        if (iInnerLoop > MAXRECONNECTIONS) {
+          if (!alreadyWarned)
+            infoPtr->errorMsg("Warning in ColourReconnection::nextNew:"
+              "Too many reconnections, stopping before minimum reached.");
+          alreadyWarned = true;
+          break;
+        }
 
         // Find all dipoles connected to the reconnection.
         usedDipoles.clear();
@@ -730,6 +757,11 @@ void ColourReconnection::setupDipoles( Event& event, int iFirst) {
 double ColourReconnection::calculateStringLength(ColourDipole * dip,
   vector<ColourDipole *> &dips) {
 
+  // Check if dipole was already included.
+  for (int i = 0; i < int(dips.size()); ++i)
+    if (dips[i] == dip) return 0.;
+
+  // Ordinay dipole.
   if (!dip->isJun && !dip->isAntiJun)  {
     return calculateStringLength(dip->iCol, dip->iAcol);
   }
@@ -739,7 +771,6 @@ double ColourReconnection::calculateStringLength(ColourDipole * dip,
     vector<int> iParticles;
     vector<bool> usedJuns(junctions.size(),false);
     int nJuns = 0;
-
     if (dip->isJun) {
       if (!findJunctionParticles( -int(dip->iAcol/10) - 1, iParticles,
                                   usedJuns, nJuns, dips)) return 1e9;
@@ -930,6 +961,7 @@ void ColourReconnection::singleReconnection(ColourDipole* dip1,
     dipTrials.insert(lower_bound(dipTrials.begin(), dipTrials.end(),
          dipTrial, cmpTrials), dipTrial);
   }
+
 }
 
 //--------------------------------------------------------------------------
@@ -987,6 +1019,8 @@ void ColourReconnection::swapDipoles(ColourDipole* dip1,
 
 //--------------------------------------------------------------------------
 
+// Do a single trial reconnection to form a junction.
+
 void ColourReconnection::singleJunction(ColourDipole* dip1,
   ColourDipole* dip2) {
 
@@ -999,7 +1033,7 @@ void ColourReconnection::singleJunction(ColourDipole* dip1,
   int iAcol1 = dip1->iAcol;
   int iAcol2 = dip2->iAcol;
 
-  // Not possible to connet a gluon with itself.
+  // Not possible to connect a gluon with itself.
   if (iCol1 == iCol2) return;
   if (iAcol1 == iAcol2) return;
 
@@ -1129,9 +1163,9 @@ void ColourReconnection::singleJunction(ColourDipole* dip1,
 
 }
 
-
-
 //--------------------------------------------------------------------------
+
+// Do a single trial reconnection to form a junction.
 
 void ColourReconnection::singleJunction(ColourDipole* dip1,
   ColourDipole* dip2, ColourDipole* dip3) {
@@ -1179,6 +1213,8 @@ void ColourReconnection::singleJunction(ColourDipole* dip1,
 }
 
 // ------------------------------------------------------------------
+
+// Form pseuparticle of a given dipole (or junction system).
 
 void ColourReconnection::makePseudoParticle(ColourDipole* dip , int status,
   bool setupDone) {
@@ -1889,6 +1925,7 @@ bool ColourReconnection::getJunctionIndices(ColourDipole * dip, int &iJun,
 // ------------------------------------------------------------------
 
 // Check whether up to four dipoles are 'causally' connected.
+
 bool ColourReconnection::checkTimeDilation(ColourDipole * dip1,
   ColourDipole * dip2, ColourDipole * dip3, ColourDipole * dip4) {
 
@@ -1964,6 +2001,7 @@ bool ColourReconnection::checkTimeDilation(ColourDipole * dip1,
 // ------------------------------------------------------------------
 
 // Find the momentum of the dipole.
+
 Vec4 ColourReconnection::getDipoleMomentum(ColourDipole * dip) {
   vector<int> iPar, usedJuncs;
   if (!dip->isJun) iPar.push_back(dip->iAcol);
@@ -1978,14 +2016,24 @@ Vec4 ColourReconnection::getDipoleMomentum(ColourDipole * dip) {
       iPar.erase(iPar.begin()+i);
       i--;
     }
+
+  if (iPar.size() == 0) {
+    infoPtr->errorMsg("Error in ColourReconnection::getDipoleMomentum: "
+                      "No particles connected to junction.");
+    return Vec4(0,0,0,0);
+  }
+
   Vec4 p = particles[iPar[0]].p();
-  for (int i = 1;i < int(iPar.size()); ++i) p += particles[iPar[i]].p();
+  for (int i = 1;i < int(iPar.size()); ++i)
+    p += particles[iPar[i]].p();
+
   return p;
 }
 
 // ------------------------------------------------------------------
 
 // Check whether two four momenta are 'causally' connected.
+
 bool ColourReconnection::checkTimeDilation(Vec4 p1,
   Vec4 p2, double t1, double t2) {
   // No time dilation check.
@@ -2001,11 +2049,11 @@ bool ColourReconnection::checkTimeDilation(Vec4 p1,
   } else if (timeDilationMode == 2) {
     bool part1, part2;
     p2.bstback(p1);
-    if (p2.e() / p2.mCalc() > timeDilationPar * p2.mCalc()) part1 = false;
+    if (p2.e() / p2.mCalc() > timeDilationParGeV * p2.mCalc()) part1 = false;
     else part1 = true;
     p2.bst(p1);
     p1.bstback(p2);
-    if (p1.e() / p1.mCalc() > timeDilationPar * p1.mCalc()) part2 = false;
+    if (p1.e() / p1.mCalc() > timeDilationParGeV * p1.mCalc()) part2 = false;
     else part2 = true;
     if (part1 && part2) return true;
     else return false;
@@ -2014,11 +2062,11 @@ bool ColourReconnection::checkTimeDilation(Vec4 p1,
   } else if (timeDilationMode == 3) {
     bool part1, part2;
     p2.bstback(p1);
-    if (p2.e() / p2.mCalc() > timeDilationPar * p2.mCalc()) part1 = false;
+    if (p2.e() / p2.mCalc() > timeDilationParGeV * p2.mCalc()) part1 = false;
     else part1 = true;
     p2.bst(p1);
     p1.bstback(p2);
-    if (p1.e() / p1.mCalc() > timeDilationPar * p1.mCalc()) part2 = false;
+    if (p1.e() / p1.mCalc() > timeDilationParGeV * p1.mCalc()) part2 = false;
     else part2 = true;
     if (part1 || part2) return true;
     else return false;
@@ -2026,13 +2074,13 @@ bool ColourReconnection::checkTimeDilation(Vec4 p1,
   // Check if gamma * mDip' is below parameter for both dipoles.
   } else if (timeDilationMode == 4) {
     p2.bstback(p1);
-    if (p2.e() / p2.mCalc() < timeDilationPar * min(t1,t2)) return true;
+    if (p2.e() / p2.mCalc() < timeDilationParGeV * min(t1,t2)) return true;
     else return false;
 
   // Check if gamma * mDip' is below parameter for a single dipole.
   } else if (timeDilationMode == 5) {
     p2.bstback(p1);
-    if (p2.e() / p2.mCalc() < timeDilationPar * max(t1,t2)) return true;
+    if (p2.e() / p2.mCalc() < timeDilationParGeV * max(t1,t2)) return true;
     else return false;
 
   // If mode is set wrong, should never happen.
@@ -2948,6 +2996,7 @@ void ColourReconnection::updateJunctionTrials() {
 //--------------------------------------------------------------------------
 
 // Change colour structure to describe the reconnection in juncTrial.
+
 void ColourReconnection::doJunctionTrial(Event& event,
   TrialReconnection& juncTrial) {
 
@@ -3312,6 +3361,8 @@ void ColourReconnection::doJunctionTrial(Event& event,
 }
 
 //--------------------------------------------------------------------------
+
+// Change colour structure if it is three dipoles forming a junction system.
 
 void ColourReconnection::doTripleJunctionTrial(Event& event,
   TrialReconnection& juncTrial) {

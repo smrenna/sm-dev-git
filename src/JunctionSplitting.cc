@@ -73,7 +73,7 @@ bool JunctionSplitting::checkColours( Event& event) {
       && abs(event[i].pz()) >= 0.  && abs(event[i].e()) >= 0.
        && abs(event[i].m()) >= 0.);
     else {
-       infoPtr->errorMsg("Warning in Pythia::CheckColours: "
+       infoPtr->errorMsg("Warning in JunctionSplitting::CheckColours: "
         "not-a-number energy/momentum/mass");
        return false;
     }
@@ -143,6 +143,7 @@ bool JunctionSplitting::splitJunGluons(Event& event,
 
     // Loop over legs.
     for (int i = 0;i < int(iJunLegs.size()); ++i) {
+
       // If it is not connected to another junction, no need to do anything.
       if (iJunLegs[i].back() > 0)
         continue;
@@ -219,10 +220,10 @@ bool JunctionSplitting::splitJunGluons(Event& event,
       }
       // If more than a single gluon, decide depending on mass.
       else if (iJunLegs[i].size() > 3) {
-        // Evaluate mass-squared for all adjacent gluon pairs.
-        vector<double > m2Pair;
-        double m2Sum = 0.;
 
+        // Evaluate mass-squared for all adjacent gluon pairs.
+        vector<double> m2Pair;
+        double m2Sum = 0.;
         for (int j = 1; j < int(iJunLegs[i].size()) - 2; ++j) {
           double m2Now = 0.5 * event[ iJunLegs[i][j] ].p()
             * event[ iJunLegs[i][j + 1] ].p();
@@ -234,7 +235,7 @@ bool JunctionSplitting::splitJunGluons(Event& event,
         double m2Reg = m2Sum * rndmPtr->flat();
         int iReg = -1;
         do m2Reg -= m2Pair[++iReg];
-        while (m2Reg > 0. && iReg < int(iJunLegs[i].size()) - 1);
+        while (m2Reg > 0. && iReg < int(m2Pair.size()) - 1);
         m2Reg = m2Pair[iReg];
 
         // increase iReg with one, since it should not point towards itself.
@@ -460,7 +461,7 @@ bool JunctionSplitting::splitJunChains(Event& event) {
 //--------------------------------------------------------------------------
 
 // Split junction pairs.
-// If it has 3 connections everything fails.
+// If it has 3 connections just ignore junctions.
 // If it has 2 connections colapse into single string.
 // If it has 1 connection, depend on the string length.
 
@@ -483,15 +484,16 @@ bool JunctionSplitting::splitJunPairs(Event& event,
               event.colJunction(junChains[i][1],k))
             matchedLegs.push_back(make_pair(j,k));
 
-      // Cannot handle 3 leg combination.
+      // For three connected legs, just remove the junctions,
+      // since the pair contains no energy/momentum.
       if (matchedLegs.size() == 3) {
-        infoPtr->errorMsg("Warning in JunctionSplitting::SplitJunChain:"
-          "Two junctions have all three legs connected.");
-        return false;
+        junRem.push_back(junChains[i][0]);
+        junRem.push_back(junChains[i][1]);
+
       }
 
       // Split into string if two legs are combined.
-      if (matchedLegs.size() == 2) {
+      else if (matchedLegs.size() == 2) {
 
         // Find first leg.
         int i1 = 0;
@@ -532,7 +534,7 @@ bool JunctionSplitting::splitJunPairs(Event& event,
       }
 
       // Split into string if two legs are combined.
-      if (matchedLegs.size() == 1) {
+      else if (matchedLegs.size() == 1) {
 
         // store junction numbers.
         int iJun = junChains[i][0];
@@ -693,60 +695,97 @@ bool JunctionSplitting::splitJunPairs(Event& event,
       // Shuffle (p+/p-)  momentum of order <mThad> between systems,
       // times 2/3 for 120 degree in JRF, times 1/2 for two legs,
       // but not more than half of what nearest parton carries.
+
+      // Only allow to take momentum from non-heavy resonances
+      // (i.e. id 1-5 and 21 and diquarks). If none is available return false.
+      int idJ0Abs = event[ iJunLeg0[1] ].idAbs();
+      bool acceptJ0 = idJ0Abs < 6 || idJ0Abs == 21 ||
+        (idJ0Abs > 1000 && idJ0Abs < 6000 && (idJ0Abs / 10) % 10 == 0);
+      int idJ1Abs = event[ iJunLeg1[1] ].idAbs();
+      bool acceptJ1 = idJ1Abs < 6 || idJ1Abs == 21 ||
+        (idJ1Abs > 1000 && idJ1Abs < 6000 && (idJ1Abs / 10) % 10 == 0);
+      int idA0Abs = event[ iAntiLeg0[1] ].idAbs();
+      bool acceptA0 = idA0Abs < 6 || idA0Abs == 21 ||
+        (idA0Abs > 1000 && idA0Abs < 6000 && (idA0Abs / 10) % 10 == 0);
+      int idA1Abs = event[ iAntiLeg1[1] ].idAbs();
+      bool acceptA1 = idA1Abs < 6 || idA1Abs == 21 ||
+        (idA1Abs > 1000 && idA1Abs < 6000 && (idA1Abs / 10) % 10 == 0);
+
+      if ( !(acceptJ0 || acceptJ1)) {
+         infoPtr->errorMsg("Warning in JunctionSplitting::SplitJunPairs: "
+          "No light quarks available in junction split.");
+         return false;
+      }
+
+      if ( !(acceptA0 || acceptA1)) {
+         infoPtr->errorMsg("Warning in JunctionSplitting::SplitJunPairs: "
+          "No light quarks available in junction split.");
+         return false;
+      }
+
       double eShift = MTHAD / (3. * sqrt(vJvAe2y));
-      double fracJ0 = min(0.5, eShift / pInJRF[0].e());
-      double fracJ1 = min(0.5, eShift / pInJRF[1].e());
+      double fracJ0 = 0, fracJ1 = 0, fracA0 = 0, fracA1 = 0;
+      if (acceptJ0)
+        fracJ0 = min(0.5, eShift / pInJRF[0].e());
+      if (acceptJ1)
+        fracJ1 = min(0.5, eShift / pInJRF[1].e());
       Vec4 pFromJun = fracJ0 * pJunLeg0 + fracJ1 * pJunLeg1;
-      double fracA0 = min(0.5, eShift / pInARF[0].e());
-      double fracA1 = min(0.5, eShift / pInARF[1].e());
+      if (acceptA0)
+        fracA0 = min(0.5, eShift / pInARF[0].e());
+      if (acceptA1)
+        fracA1 = min(0.5, eShift / pInARF[1].e());
       Vec4 pFromAnti = fracA0 * pAntiLeg0 + fracA1 * pAntiLeg1;
 
       // Pick a new quark at random; for simplicity no diquarks.
       int idQ = flavSel.pickLightQ();
 
+      int junMother1  = min(iJunLeg0[1], iJunLeg1[1]);
+      int junMother2  = max(iJunLeg0[1], iJunLeg1[1]);
+      int antiMother1 = min(iAntiLeg0[1], iAntiLeg1[1]);
+      int antiMother2 = max(iAntiLeg0[1], iAntiLeg1[1]);
+
       // Copy junction partons with scaled-down momenta and update legs.
-      int mother1 = min(iJunLeg0[1], iJunLeg1[1]);
-      int mother2 = max(iJunLeg0[1], iJunLeg1[1]);
-      int iNew1 = event.copy(iJunLeg0[1], 76);
-      event[iNew1].rescale5(1. - fracJ0);
-      iJunLeg0[1] = iNew1;
-      int iNew2 = event.copy(iJunLeg1[1], 76);
-      event[iNew2].rescale5(1. - fracJ1);
-      iJunLeg1[1] = iNew2;
+      int iJunNew1 = event.copy(iJunLeg0[1], 76);
+      event[iJunNew1].rescale5(1. - fracJ0);
+      iJunLeg0[1] = iJunNew1;
+      event[iJunNew1].mothers(junMother2, junMother1);
 
-      // Update junction colour and store quark with antijunction momentum.
-      // Store history as 2 -> 3  step for consistency.
-      int colQ = event.nextColTag();
-      event.endColJunction(iJun, iLeg, colQ);
-      event.colJunction(iJun, iLeg, colQ);
-      int iNewJ = event.append( idQ, 76, mother1, mother2, 0, 0,
-        colQ, 0, pFromAnti, pFromAnti.mCalc() );
-      event[mother1].daughters( iNew1, iNewJ);
-      event[mother2].daughters( iNew1, iNewJ);
-      event[iNew1].mothers( mother1, mother2);
-      event[iNew2].mothers( mother1, mother2);
-
-      // Copy anti junction partons with scaled-down momenta and update legs.
-      mother1 = min(iAntiLeg0[1], iAntiLeg1[1]);
-      mother2 = max(iAntiLeg0[1], iAntiLeg1[1]);
-      iNew1 = event.copy(iAntiLeg0[1], 76);
-      event[iNew1].rescale5(1. - fracA0);
-      iAntiLeg0[1] = iNew1;
-      iNew2 = event.copy(iAntiLeg1[1], 76);
-      event[iNew2].rescale5(1. - fracA1);
-      iAntiLeg1[1] = iNew2;
+      int iJunNew2 = event.copy(iJunLeg1[1], 76);
+      event[iJunNew2].rescale5(1. - fracJ1);
+      iJunLeg1[1] = iJunNew2;
+      event[iJunNew2].mothers(junMother2, junMother1);
 
       // Update antijunction anticolour and store antiquark with junction
-      // momentum. Store history as 2 -> 3  step for consistency.
+      // momentum.
       int acolQ = event.nextColTag();
       event.endColJunction(iAnti, iAntiLeg, acolQ);
       event.colJunction(iAnti, iAntiLeg, acolQ);
-      int iNewA = event.append( -idQ, 76, mother1, mother2, 0, 0,
+      int iNewA = event.append( -idQ, 76, junMother2, junMother1, 0, 0,
         0, acolQ, pFromJun, pFromJun.mCalc() );
-      event[mother1].daughters( iNew1, iNewA);
-      event[mother2].daughters( iNew1, iNewA);
-      event[iNew1].mothers( mother1, mother2);
-      event[iNew2].mothers( mother1, mother2);
+
+      // Copy anti junction partons with scaled-down momenta and update legs.
+      int iAntiNew1 = event.copy(iAntiLeg0[1], 76);
+      event[iAntiNew1].rescale5(1. - fracA0);
+      iAntiLeg0[1] = iAntiNew1;
+      event[iAntiNew1].mothers(antiMother2, antiMother1);
+
+      int iAntiNew2 = event.copy(iAntiLeg1[1], 76);
+      event[iAntiNew2].rescale5(1. - fracA1);
+      iAntiLeg1[1] = iAntiNew2;
+      event[iAntiNew2].mothers(antiMother2, antiMother1);
+
+      // Update junction colour and store quark with antijunction momentum.
+      int colQ = event.nextColTag();
+      event.endColJunction(iJun, iLeg, colQ);
+      event.colJunction(iJun, iLeg, colQ);
+      int iNewJ = event.append( idQ, 76, antiMother2, antiMother1, 0, 0,
+        colQ, 0, pFromAnti, pFromAnti.mCalc() );
+
+      // Set daughters.
+      event[event[iJunNew1].mother1()].daughters( iJunNew1, iNewA);
+      event[event[iJunNew1].mother2()].daughters( iJunNew1, iNewA);
+      event[event[iAntiNew1].mother1()].daughters( iAntiNew1, iNewJ);
+      event[event[iAntiNew1].mother2()].daughters( iAntiNew1, iNewJ);
 
       // Done with splitting junction from antijunction.
       }
