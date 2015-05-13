@@ -677,7 +677,7 @@ bool Pythia::init() {
   // Send info/pointers to process level for initialization.
   if ( doProcessLevel && !processLevel.init( &info, settings, &particleData,
     &rndm, &beamA, &beamB, couplingsPtr, &sigmaTot, doLHA, &slhaInterface,
-    userHooksPtr, sigmaPtrs) ) {
+    userHooksPtr, sigmaPtrs, phaseSpacePtrs) ) {
     info.errorMsg("Abort from Pythia::init: "
       "processLevel initialization failed");
     return false;

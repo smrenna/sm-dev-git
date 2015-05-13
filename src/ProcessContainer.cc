@@ -68,7 +68,8 @@ bool ProcessContainer::init(bool isFirst, Info* infoPtrIn,
   increaseMaximum = settings.flag("PhaseSpace:increaseMaximum");
 
   // Pick and create phase space generator. Send pointers where required.
-  if      (isLHA)       phaseSpacePtr = new PhaseSpaceLHA();
+  if (phaseSpacePtr != 0) ;
+  else if (isLHA)       phaseSpacePtr = new PhaseSpaceLHA();
   else if (isNonDiff)   phaseSpacePtr = new PhaseSpace2to2nondiffractive();
   else if (!isResolved && !isDiffA  && !isDiffB  && !isDiffC )
                         phaseSpacePtr = new PhaseSpace2to2elastic();

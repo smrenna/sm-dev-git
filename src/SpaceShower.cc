@@ -256,7 +256,9 @@ bool SpaceShower::limitPTmax( Event& event, double Q2Fac, double Q2Ren) {
   // Also count number of heavy coloured particles, like top.
   else {
     int n21 = 0;
-    for (int i = 5; i < event.size(); ++i) {
+    int iBegin = 5;
+    if (infoPtr->isHardDiffractive()) iBegin = 9;
+    for (int i = iBegin; i < event.size(); ++i) {
       if (event[i].status() == -21) ++n21;
       else if (n21 == 0) {
         int idAbs = event[i].idAbs();

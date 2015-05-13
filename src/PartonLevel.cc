@@ -856,8 +856,7 @@ bool PartonLevel::next( Event& process, Event& event) {
   }
 
   // Do colour reconnection for non-diffractive events before resonance decays.
-
-  if (doReconnect && !doDiffCR && (reconnectMode == 1 || reconnectMode == 2)) {
+  if (doReconnect && !doDiffCR && reconnectMode > 0) {
     Event eventSave = event;
     bool colCorrect = false;
     for (int i = 0; i < 10; ++i) {

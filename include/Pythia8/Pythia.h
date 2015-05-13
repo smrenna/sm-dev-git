@@ -102,9 +102,11 @@ public:
   bool setBeamShapePtr( BeamShape* beamShapePtrIn)
     { beamShapePtr = beamShapePtrIn; return true;}
 
-  // Possibility to pass in pointer(s) for external cross section.
-  bool setSigmaPtr( SigmaProcess* sigmaPtrIn)
-    { sigmaPtrs.push_back( sigmaPtrIn); return true;}
+  // Possibility to pass in pointer(s) for external cross section,
+  // with option to include external phase-space generator(s).
+  bool setSigmaPtr( SigmaProcess* sigmaPtrIn, PhaseSpace* phaseSpacePtrIn = 0)
+    { sigmaPtrs.push_back( sigmaPtrIn);
+      phaseSpacePtrs.push_back(phaseSpacePtrIn); return true;}
 
   // Possibility to pass in pointer(s) for external resonance.
   bool setResonancePtr( ResonanceWidths* resonancePtrIn)
@@ -264,6 +266,10 @@ private:
 
   // Pointers to external processes derived from the Pythia base classes.
   vector<SigmaProcess*> sigmaPtrs;
+
+  // Pointers to external phase-space generators derived from Pythia
+  // base classes.
+  vector<PhaseSpace*> phaseSpacePtrs;
 
   // Pointers to external calculation of resonance widths.
   vector<ResonanceWidths*> resonancePtrs;

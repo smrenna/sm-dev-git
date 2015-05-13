@@ -46,7 +46,8 @@ bool ProcessLevel::init( Info* infoPtrIn, Settings& settings,
   BeamParticle* beamAPtrIn, BeamParticle* beamBPtrIn,
   Couplings* couplingsPtrIn, SigmaTotal* sigmaTotPtrIn, bool doLHA,
   SLHAinterface* slhaInterfacePtrIn, UserHooks* userHooksPtrIn,
-  vector<SigmaProcess*>& sigmaPtrs, ostream& os) {
+  vector<SigmaProcess*>& sigmaPtrs, vector<PhaseSpace*>& phaseSpacePtrs,
+  ostream& os) {
 
   // Store input pointers for future use.
   infoPtr          = infoPtrIn;
@@ -120,7 +121,7 @@ bool ProcessLevel::init( Info* infoPtrIn, Settings& settings,
   if (sigmaPtrs.size() > 0) {
     for (int iSig = 0; iSig < int(sigmaPtrs.size()); ++iSig)
       containerPtrs.push_back( new ProcessContainer(sigmaPtrs[iSig],
-      true) );
+        true, phaseSpacePtrs[iSig]) );
   }
 
   // Append single container for Les Houches processes, if any.

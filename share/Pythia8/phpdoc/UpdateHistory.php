@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.208: 11 May 2015 
+<li>8.208: 13 May 2015 
 <ul> 
  
 <li>The "An Introduction to PYTHIA 8.2", arXiv:1410.3012 [hep-ph], 
@@ -98,6 +98,16 @@ allows user-code preprecessors to make version-specific choices, and
 allows the <code>Pythia</code> class constructor to check that the 
 header-file version number matches those of the source code and the 
 XML files. Thanks to Pere Mato.</li> 
+
+<li>User-defined semi-internal processes can now be accompanied by 
+user-defined phase-space generators, via a second optional argument to 
+<code>Pythia::setSigmaPtr(SigmaProcess*, PhaseSpace* = 0)</code>.  
+Default is the old behaviour, with PYTHIA selecting the phase-space 
+generator itself, based on the process type. Alternatively, the user 
+may provide a pointer to an instance of an object inheriting from 
+the <code>PhaseSpace</code> class. Sufficiently well-tested and general 
+such generators could be communicated to the PYTHIA authors for possible 
+inclusion in a future release.</li>
  
 <li>Updated initialization of LHEF files in <code>LesHouches.cc</code> 
 to ignore file contents enclosed in comment tags, 
