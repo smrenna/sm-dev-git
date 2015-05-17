@@ -12,6 +12,13 @@ using namespace Pythia8;
 
 //==========================================================================
 
+// Book a histogram to test the angular distribution in the UserHook.
+// It is booked here so that it is global.
+
+Hist cosRaw("cos(the*) raw",100,-1.,1.);
+
+//==========================================================================
+
 // Write own derived UserHooks class.
 // Assumptions in this particular case:
 // The W+- bosons were undecayed in the Les Houches Events input file,
@@ -26,8 +33,9 @@ class MyUserHooks : public UserHooks {
 
 public:
 
-  // Constructor and destructor do nothing.
-  MyUserHooks() {}
+  // Constructor can set helicity definition. Destructor does nothing.
+  MyUserHooks(Info* infoPtrIn, bool inputOption = true)
+    : infoPtr(infoPtrIn), helicityDefinedByMother(inputOption) {}
   ~MyUserHooks() {}
 
   // Allow a veto for the process level, to gain access to decays.
@@ -45,6 +53,8 @@ public:
         // Pick decay angles according to desired distribution
         // based on polarization and particle/antiparticle.
         double cosThe = selectAngle( process[i].pol(), process[i].id() );
+        // Accumulate the raw angular distribution.
+        cosRaw.fill( cosThe );
         double sinThe = sqrt(1.0 - pow2(cosThe));
         double phi    = 2.0 * M_PI * rndmPtr->flat();
 
@@ -63,13 +73,24 @@ public:
         // Energy and absolute momentum of first decay product in W rest frame.
         double e1 = 0.5* (pow2(mV) + pow2(m1) - pow2(m2))/mV;
         double pA = sqrt(pow2(e1) - pow2(m1));
-        Vec4 p1( pA * sinThe * cos(phi), pA * sinThe * sin(phi),
+        // Four-vectors for the two decay products.
+        Vec4 p1( pA * sinThe * cos(phi), pA *sinThe * sin(phi),
           pA * cosThe, e1);
         Vec4 p2   = Vec4(0,0,0,mV) - p1;
 
+        // Reference four-vector for helicity definition.
+        Vec4 pM;
+        // Helicity is defined in the mother frame.
+        if( helicityDefinedByMother ) {
+          pM = process[process[i].mother1()].p();
+        // Helicity is defined in the process CMS frame.
+        // This is the convention for MadGraph.
+        } else {
+          pM = Vec4( 0., 0., 0., infoPtr->mHat());
+        }
+
         // Angular reference axis defined as opposite the mother
         // direction in W rest frame.
-        Vec4 pM = process[process[i].mother1()].p();
         pM.bstback( process[i].p() );
         pM.flip3();
         RotBstMatrix Mrotbst;
@@ -82,7 +103,6 @@ public:
         process[i1].p( p1 );
         process[i2].p( p2 );
       }
-
       // End of loop over W's. Do not veto any events.
     }
     return false;
@@ -107,7 +127,8 @@ public:
     // 3/8 * (1 + cos(theta))^2  --
     } else if (inputSpin < -eps) {
       cosThe = min( 2.0 * pow(rdNow, 1./3.) - 1.0,  1.0);
-    // 3/4 * sin(theta)^2        00   (by solution of cubic equation).
+    // 3/4 * sin(theta)^2        00
+    // Solution of cubic equation that yields the correct result.
     } else {
       double theA = (acos(1.0 - 2.0 * rdNow) + 4.0 * M_PI) / 3.0;
       cosThe = 2.0 * cos(theA);
@@ -116,6 +137,12 @@ public:
     // Return the selected cos(theta) value.
     return cosThe;
   }
+
+private:
+
+  Info* infoPtr;
+   // bool to define the frame for helicity.
+  bool helicityDefinedByMother;
 
 };
 
@@ -128,7 +155,10 @@ int main() {
   Event& event = pythia.event;
 
   // Set up to do a user veto and send it in. Initialize.
-  MyUserHooks* myUserHooks = new MyUserHooks();
+  //  Use this line for CMS definition of helicity.
+  //  MyUserHooks* myUserHooks = new MyUserHooks(&pythia.info,false);
+  // Default constructor uses mother frame for helicity.
+  MyUserHooks* myUserHooks = new MyUserHooks(&pythia.info);
   pythia.setUserHooksPtr( myUserHooks);
   pythia.readFile("main62.cmnd");
   pythia.init();
@@ -183,7 +213,7 @@ int main() {
 
   // Statistics. Histograms.
   pythia.stat();
-  cout << polarization << cosPlus << cosMinus << energy;
+  cout << polarization << cosPlus << cosMinus << energy << cosRaw;
 
   // Done.
   delete myUserHooks;

@@ -12,7 +12,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.208: 13 May 2015 
+<li>8.208: 17 May 2015 
 <ul> 
  
 <li>The "An Introduction to PYTHIA 8.2", arXiv:1410.3012 [hep-ph], 
@@ -31,10 +31,10 @@ flip step.</li>
 <li>New <code>ColourReconnection:forceResonance</code> switch 
 allows an additional colour reconnection step after late resonance 
 decays. This is especially relevant for 
-<ei>H^0 &rarr; W^+ W^- / Z^0 Z^0  &rarr; q_1 qbar_2 q_3 qbar_4</ei>,
-since the Higgs is so long-lived that its decay is well separated
-from the rest of the event.</li>
-
+<ei>H^0 &rarr; W^+ W^- / Z^0 Z^0  &rarr; q_1 qbar_2 q_3 qbar_4</ei>, 
+since the Higgs is so long-lived that its decay is well separated 
+from the rest of the event.</li> 
+ 
 <li>The old SK I and SK II colour reconnection models are now available. 
 These are specially aimed at the processes 
 <ei>e^+ e^- &rarr; W^+ W^- / Z^0 Z^0</ei>, but are also relevant for 
@@ -56,9 +56,26 @@ compression library, see new files <code>Streams.h</code> and
 mode, which requires no Boost headers. The new configure option 
 <code>--with-lhapdf6-plugin=LHAPDF6.h</code> uses native mode, and 
 then requires Boost headers.</li> 
+
+<li>The LHAPDF6 PDF values are frozen at the respective <ei>x</ei>
+and <ei>Q^2</ei> boundary if the <ei>(x, Q^2)</ei> pair falls outside
+the fit region.</li>
  
+<li>New functions to extract the fit boundaries, the current 
+<ei>alpha_s</ei> value, and the quark masses from LHADPF6.</li>
+  
 <li>New option in the HepMC interface, whereby PYTHIA particles can be 
 appended to an existing HepMC event. Thanks to Mikhail Kirsanov.</li> 
+ 
+<li>A new runtime interface to the POWHEGBOX matrix element programs, 
+bypassing the need for intermediate LHE files. The new files 
+<code>include/Pythia8Plugins/LHAPowheg.h</code> and 
+<code>include/Pythia8Plugins/PowhegProcs.h</code> contain the 
+LHAup class wrapper used to build the POWHEG plugin libraries and 
+the simple class that facilitates loading the POWHEG plugins, 
+respectively. The new <code>examples/main33.cc</code> demonstrates 
+how to use these plugins, and <code>examples/main33.cmnd</code> contains 
+the commands needed for POWHEGBOX to run the example.</li> 
  
 <li>When reading in particle data from the SLHA interface, changes done 
 by the user takes precedence over the SLHA input ones. To be more 
@@ -71,16 +88,16 @@ allows user-code preprecessors to make version-specific choices, and
 allows the <code>Pythia</code> class constructor to check that the 
 header-file version number matches those of the source code and the 
 XML files. Thanks to Pere Mato.</li> 
-
+ 
 <li>User-defined semi-internal processes can now be accompanied by 
 user-defined phase-space generators, via a second optional argument to 
-<code>Pythia::setSigmaPtr(SigmaProcess*, PhaseSpace* = 0)</code>.  
+<code>Pythia::setSigmaPtr(SigmaProcess*, PhaseSpace* = 0)</code>. 
 Default is the old behaviour, with PYTHIA selecting the phase-space 
 generator itself, based on the process type. Alternatively, the user 
 may provide a pointer to an instance of an object inheriting from 
 the <code>PhaseSpace</code> class. Sufficiently well-tested and general 
 such generators could be communicated to the PYTHIA authors for possible 
-inclusion in a future release.</li>
+inclusion in a future release.</li> 
  
 <li>Updated initialization of LHEF files in <code>LesHouches.cc</code> 
 to ignore file contents enclosed in comment tags, 
@@ -136,6 +153,12 @@ steer the selection of angles in a resonance decay.</li>
 <li>New machinery for hard diffraction now in place. Still to be 
 further checked, so not yet ready for public usage.</li> 
  
+<li>Minor correction in the treatment of the highest multiplicity in
+FxFx jet matching.</li> 
+
+<li>Minor correction in the interface to aMC@NLO for dijet and 
+photon+jet processes.</li>
+
 <li>Inserted missing endtag that corrupted the <code>Tunes.php</code> 
 page. Thanks to Tim Martin.</li> 
  
@@ -165,6 +188,8 @@ shower by the <code>Pythia</code> destructor.</li>
  
 <li>Initialized pointers to NULL in the <code>Info</code> class, 
 to avoid some problems. Thanks to Keno Fischer.</li> 
+ 
+<li>Minor <code>Makefile</code> improvements for LHAPDF linking.</li> 
  
 <li>Minor improvement to the <code>main89.cc</code> example program.</li> 
  

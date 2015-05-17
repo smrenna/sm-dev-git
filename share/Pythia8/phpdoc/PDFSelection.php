@@ -76,7 +76,8 @@ CTEQ 5L). Therefore there is no real need to link any external PDF sets.
 <p/> 
 If the internal PDF sets are not sufficient, the 
 <a href="http://projects.hepforge.org/lhapdf/" target="page">LHAPDF 
-library</a> [<a href="Bibliography.php" target="page">Wha05</a>] gives you access to a much wider selection. 
+library</a> [<a href="Bibliography.php" target="page">Wha05,Buc15</a>] gives you access to a much wider 
+selection. 
 <br/><b>Warning 1:</b> owing to previous problems with the behaviour 
 of PDF's beyond the <i>x</i> and <i>Q^2</i> boundaries of a set, 
 you should only use LHAPDF <b>version 5.3.0 or later</b>. 

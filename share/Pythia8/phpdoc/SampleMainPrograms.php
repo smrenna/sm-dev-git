@@ -210,6 +210,17 @@ in <code>main32_unw.par</code>. Madgraph events are taken from the
 <code>w+_production_lhc_2.lhe</code> file in this case. 
 </li> 
  
+<li><code>main33.cc</code> : demonstrates how to link the POWHEGBOX 
+matrix element programs dynamically, bypassing the need for intermediate 
+LHE files. Two special files are used in this option: 
+<code>include/Pythia8Plugins/LHAPowheg.h</code> contains the 
+LHAup class wrapper used to build the POWHEG plugin libraries, and 
+<code>include/Pythia8Plugins/PowhegProcs.h</code> the simple class that 
+facilitates loading the POWHEG plugins. In addition 
+<code>main33.cmnd</code> contains the commands needed for POWHEGBOX 
+to run the example. 
+</li> 
+ 
 <li><code>main37.cc</code> : shows how LHEF version 3.0 files can be 
 read and used to fill several histograms of the same property, but with 
 different event weights.</li> 

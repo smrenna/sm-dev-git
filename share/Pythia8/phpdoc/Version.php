@@ -39,7 +39,7 @@ Version and subversion number, with three significant decimals.
    
  
 <p/><code>mode&nbsp; </code><strong> Pythia:versionDate &nbsp;</strong> 
- (<code>default = <strong>20150513</strong></code>)<br/>
+ (<code>default = <strong>20150517</strong></code>)<br/>
 Last date of change of current (sub)version, in format yyyymmdd. 
    
  

@@ -3835,7 +3835,7 @@ bool PhaseSpace2to3yyycyl::finalKin() {
   pH[1] = 0.5 * (pInSum.e() + pInSum.pz()) * Vec4( 0., 0.,  1., 1.);
   pH[2] = 0.5 * (pInSum.e() - pInSum.pz()) * Vec4( 0., 0., -1., 1.);
 
-  // Some quantities meaningless for 2 -> 3. pT devined as average value.
+  // Some quantities meaningless for 2 -> 3. pT defined as average value.
   tH    = 0.;
   uH    = 0.;
   pTH = (pH[3].pT() + pH[4].pT() + pH[5].pT()) / 3.;

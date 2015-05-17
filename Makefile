@@ -2,10 +2,10 @@
 # Copyright (C) 2015 Torbjorn Sjostrand.
 # PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 # Please respect the MCnet Guidelines, see GUIDELINES for details.
-# Author: Philip Ilten, October 2014.
+# Author: Philip Ilten, October 2014 - May 2015.
 #
-# This is is the Makefile used to build PYTHIA on POSIX systems. Example usage 
-# is:
+# This is is the Makefile used to build PYTHIA on POSIX systems.
+# Example usage is:
 #     make -j2
 # For help using the make command please consult the local system documentation,
 # i.e. "man make" or "make --help".
@@ -44,6 +44,14 @@ ifeq ($(LHAPDF5_USE),true)
 endif
 ifeq ($(LHAPDF6_USE),true)
   TARGETS+=$(LOCAL_LIB)/libpythia8lhapdf6.so
+endif
+
+# POWHEG (needs directory that contains just POWHEG binaries and scripts).
+ifeq ($(POWHEG_USE),true)
+  ifneq ($(POWHEG_DIR),./)
+    TARGETS+=$(patsubst $(POWHEG_BIN)/%,$(LOCAL_LIB)/libpythia8powheg%.so,\
+             $(wildcard $(POWHEG_BIN)/*))
+  endif
 endif
 
 # GZIP.
@@ -88,16 +96,24 @@ $(LOCAL_LIB)/libpythia8$(LIB_SUFFIX): $(OBJECTS)
 	  $(LIB_COMMON)
 
 # LHAPDF (turn off all warnings for readability).
-$(LOCAL_TMP)/LHAPDF%.o: $(LOCAL_INCLUDE)/Pythia8Plugins/$$(LHAPDF%_PLUGIN)
+$(LOCAL_TMP)/LHAPDF%Plugin.o: $(LOCAL_INCLUDE)/Pythia8Plugins/$$(LHAPDF%_PLUGIN)
 	$(CXX) -x c++ $< -o $@ -c -MD -w -I$(LHAPDF$*_INCLUDE) $(CXX_COMMON)
-$(LOCAL_LIB)/libpythia8lhapdf5.so: $(LOCAL_TMP)/LHAPDF5.o\
+$(LOCAL_LIB)/libpythia8lhapdf5.so: $(LOCAL_TMP)/LHAPDF5Plugin.o\
 	$(LOCAL_LIB)/libpythia8.a
 	$(CXX) $^ -o $@ $(CXX_COMMON) $(CXX_SHARED) $(CXX_SONAME),$(notdir $@)\
 	 -L$(LHAPDF5_LIB) -Wl,-rpath $(LHAPDF5_LIB) -lLHAPDF -lgfortran
-$(LOCAL_LIB)/libpythia8lhapdf6.so: $(LOCAL_TMP)/LHAPDF6.o\
+$(LOCAL_LIB)/libpythia8lhapdf6.so: $(LOCAL_TMP)/LHAPDF6Plugin.o\
 	$(LOCAL_LIB)/libpythia8.a
 	$(CXX) $^ -o $@ $(CXX_COMMON) $(CXX_SHARED) $(CXX_SONAME),$(notdir $@)\
 	 -L$(LHAPDF6_LIB) -Wl,-rpath $(LHAPDF6_LIB) -lLHAPDF
+
+# POWHEG (exclude any executable ending with sh).
+$(LOCAL_TMP)/POWHEGPlugin.o: $(LOCAL_INCLUDE)/Pythia8Plugins/LHAPowheg.h
+	$(CXX) -x c++ $< -o $@ -c -MD -w $(CXX_COMMON)
+$(LOCAL_LIB)/libpythia8powheg%sh.so: $(POWHEG_BIN)/%sh;
+$(LOCAL_LIB)/libpythia8powheg%.so: $(POWHEG_BIN)/% $(LOCAL_TMP)/POWHEGPlugin.o\
+	$(LOCAL_LIB)/libpythia8.a
+	$(CXX) $^ -o $@ $(CXX_COMMON) $(CXX_SHARED) $(CXX_SONAME),$(notdir $@)
 
 # Install (rsync is used for finer control).
 install: all
@@ -109,7 +125,7 @@ install: all
 	rsync -a $(LOCAL_EXAMPLE) $(PREFIX_SHARE) --exclude .svn
 
 # Clean.
-clean:	
+clean:
 	rm -rf $(LOCAL_TMP) $(LOCAL_LIB)
 	rm -f $(LOCAL_EXAMPLE)/*Dct.*
 	rm -f $(LOCAL_EXAMPLE)/*[0-9]

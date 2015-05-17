@@ -369,18 +369,23 @@ where <code>beamShapePtr</code> derives from the
 <li> 
 If you want to implement a cross section of your own, you can use 
 <pre> 
-      pythia.setSigmaPtr( sigmaPtr, phaseSpacePtr); 
+      pythia.setSigmaPtr( sigmaPtr ); 
+</pre> 
+or, optionally, 
+<pre> 
+      pythia.setSigmaPtr( sigmaPtr, phaseSpacePtr ); 
 </pre> 
 where <code>sigmaPtr</code> is of type <code>SigmaProcess*</code> 
 and <code>phaseSpacePtr</code> is of type <code>PhaseSpace*</code>. 
-When you supply your own phase-space generator there is no fundamental 
-limit on the complexity of the process. It is possible only to provide 
-the cross-section expression, however, and make use of the built-in 
-phase-space selection machinery. Then <code>sigmaPtr</code> must be an 
-instance of a class derived from one of the <code>Sigma1Process</code>, 
-<code>Sigma2Process</code> and  <code>Sigma3Process</code> classes 
-for 1-, 2- and 3- particle production, in their turn derived from 
+When only the cross-section expression is provided, the built-in 
+phase-space selection machinery will be used. Then <code>sigmaPtr</code> 
+must be an instance of a class derived from one of the 
+<code>Sigma1Process</code>, <code>Sigma2Process</code> and 
+<code>Sigma3Process</code> classes for 1-, 2- and 3- particle production, 
+in their turn derived from 
 <code><aloc href="SemiInternalProcesses">SigmaProcess</aloc></code>. 
+When you supply your own phase-space generator there is no fundamental 
+limit on the complexity of the process. 
 This call can be used repeatedly to hand in several different processes, 
 mixing ones with and ones without their own phase-space generators. 
 </li> 

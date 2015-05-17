@@ -176,8 +176,8 @@ protected:
   // Event-specific kinematics properties, almost always available.
   double x1H, x2H, m3, m4, m5, s3, s4, s5, mHat, sH, tH, uH, pAbs, p2Abs,
          pTH, theta, phi, betaZ;
-  Vec4   pH[6];
-  double mH[6];
+  Vec4   pH[12];
+  double mH[12];
 
   // Reselect decay products momenta isotropically in phase space.
   void decayKinematicsStep( Event& process, int iRes);

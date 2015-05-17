@@ -414,20 +414,25 @@ echo "<a href='BeamShape.php?filepath=".$filepath."' target='page'>";?>BeamShape
 <li> 
 If you want to implement a cross section of your own, you can use 
 <pre> 
-      pythia.setSigmaPtr( sigmaPtr, phaseSpacePtr); 
+      pythia.setSigmaPtr( sigmaPtr ); 
 </pre> 
-where <code>sigmaPtr</code> is of type <code>SigmaProcess*</code>
-and <code>phaseSpacePtr</code> is of type <code>PhaseSpace*</code>.
-When you supply your own phase-space generator there is no fundamental 
-limit on the complexity of the process. It is possible only to provide 
-the cross-section expression, however, and make use of the built-in 
-phase-space selection machinery. Then <code>sigmaPtr</code> must be an 
-instance of a class derived from one of the <code>Sigma1Process</code>, 
-<code>Sigma2Process</code> and  <code>Sigma3Process</code> classes
-for 1-, 2- and 3- particle production, in their turn derived from 
+or, optionally, 
+<pre> 
+      pythia.setSigmaPtr( sigmaPtr, phaseSpacePtr ); 
+</pre> 
+where <code>sigmaPtr</code> is of type <code>SigmaProcess*</code> 
+and <code>phaseSpacePtr</code> is of type <code>PhaseSpace*</code>. 
+When only the cross-section expression is provided, the built-in 
+phase-space selection machinery will be used. Then <code>sigmaPtr</code> 
+must be an instance of a class derived from one of the 
+<code>Sigma1Process</code>, <code>Sigma2Process</code> and 
+<code>Sigma3Process</code> classes for 1-, 2- and 3- particle production, 
+in their turn derived from 
 <code><?php $filepath = $_GET["filepath"];
 echo "<a href='SemiInternalProcesses.php?filepath=".$filepath."' target='page'>";?>SigmaProcess</a></code>. 
-This call can be used repeatedly to hand in several different processes,
+When you supply your own phase-space generator there is no fundamental 
+limit on the complexity of the process. 
+This call can be used repeatedly to hand in several different processes, 
 mixing ones with and ones without their own phase-space generators. 
 </li> 
  
@@ -756,7 +761,7 @@ must be instantiated by you in your program.
    
  
 <a name="method11"></a>
-<p/><strong>bool Pythia::setSigmaPtr( SigmaProcess* sigmaPtr,PhaseSpace* phaseSpacePtrIn = 0) &nbsp;</strong> <br/>
+<p/><strong>bool Pythia::setSigmaPtr( SigmaProcess* sigmaPtr, PhaseSpace* phaseSpacePtrIn = 0) &nbsp;</strong> <br/>
 offers the possibility to link your own implementation of a process 
 and its cross section, to make it a part of the normal process 
 generation machinery, without having to recompile the 
@@ -771,7 +776,7 @@ must be instantiated by you in your program.
    
 <br/><code>argument</code><strong> phaseSpacePtr </strong>  :  
 pointer to a <code>PhaseSpace</code>-derived object. When not provided 
-the internal phase-space selection machinery wll be used. Then   
+the internal phase-space selection machinery wll be used. Then 
 <code>sigmaPtr</code> should be an instance of a class derived from 
 one of the <code>Sigma1Process</code>, <code>Sigma2Process</code> and 
 <code>Sigma3Process</code> classes for 1-, 2- and 3- particle production, 

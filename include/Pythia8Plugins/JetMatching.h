@@ -1570,6 +1570,7 @@ inline int JetMatchingMadgraph::matchPartonsToJetsLight() {
   // continues until the nPartonsNow hardest hadronic jets are matched to
   // partonic jets, or it is not possible to make a match for a hadronic jet.
   int iNow = 0;
+  int nMatched = 0;
   while ( doFxFx && iNow < tempSize ) {
 
     // Check if this shower jet matches any partonic jet.
@@ -1609,10 +1610,18 @@ inline int JetMatchingMadgraph::matchPartonsToJetsLight() {
     } // End loop over hard partons.
 
     // Veto if the jet could not be assigned to any parton.
-    if ( !jetAssigned[iNow] ) return UNMATCHED_PARTON;
+    if ( jetAssigned[iNow] ) nMatched++;
 
     // Continue;
     ++iNow;
+  }
+
+  // Jet matching veto for FxFx
+  if (doFxFx) {
+    if ( nRequested <  nJetMax && nMatched != nRequested )
+      return UNMATCHED_PARTON;
+    if ( nRequested == nJetMax && nMatched <  nRequested )
+      return UNMATCHED_PARTON;
   }
 
   // Do jet matching for MLM.
