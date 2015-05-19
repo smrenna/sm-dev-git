@@ -24,7 +24,7 @@ public:
 
   // Constructor.
   PowhegProcs(Pythia *pythiaPtrIn, string procIn, string dirIn = "powhegrun",
-    string pdfIn = "");
+    string pdfIn = "", bool random = true);
 
   // Destructor.
   ~PowhegProcs();
@@ -79,10 +79,19 @@ private:
 // since the matrix element generates a large number of files.
 
 // pdfIn: The full path and name of the PDF file to use, if not using
-// LHAPDF. This must be copied to the run directory.
+// LHAPDF. This file is copied to the run directory via the init()
+// method.
+
+// random: Flag to use the Pythia random number generator with
+// POWHEGBOX. If true, the POWHEGBOX random number block is
+// initialized for each event from the Pythia random number
+// generator. If false, the default POWHEGBOX random number generation
+// is performed. Note that the initialization is always performed
+// using the POWHEGBOX random number generation (which can be modified
+// via the POWHEGBOX configuration).
 
 PowhegProcs::PowhegProcs(Pythia *pythiaPtrIn, string procIn, string dirIn,
-  string pdfIn) : lhaup(0), proc(procIn), dir(dirIn), pdf(pdfIn),
+  string pdfIn, bool random) : lhaup(0), proc(procIn), dir(dirIn), pdf(pdfIn),
   pythia(pythiaPtrIn), lib(0) {
 
   if (!pythia) return;
@@ -108,19 +117,10 @@ PowhegProcs::PowhegProcs(Pythia *pythiaPtrIn, string procIn, string dirIn,
   }
   dlerror();
   pythia->settings.addWord("POWHEG:dir", dir);
+  pythia->settings.addFlag("POWHEG:pythiaRandom", random);
   if (sym) lhaup = sym(pythia);
 
   // Configure PYTHIA.
-  pythia->readString("POWHEG:nFinal = 2");
-  pythia->readString("POWHEG:veto = 1");
-  pythia->readString("POWHEG:vetoCount = 3");
-  pythia->readString("POWHEG:pThard = 2");
-  pythia->readString("POWHEG:pTemt = 0");
-  pythia->readString("POWHEG:emitted = 0");
-  pythia->readString("POWHEG:pTdef = 1");
-  pythia->readString("POWHEG:MPIveto = 0");
-  pythia->readString("POWHEG:QEDveto = 2");
-  pythia->readString("Beams:frameType = 5");
   pythia->setLHAupPtr(lhaup);
   pythia->setUserHooksPtr(&hooks);
 

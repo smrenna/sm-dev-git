@@ -29,42 +29,41 @@ int main() {
   Pythia pythia;
 
   // The constructor PowhegProcs(process name, pythia, run directory,
-  // PDF filename) where run directory by default is ./powhegrun and
-  // the PDF filename is empty. If using native PDFs rather than
-  // LHAPDF, the PDF filename is the full name of the PDF file to copy
-  // to the run directory.
+  // PDF filename, use Pythia random) where run directory by default
+  // is ./powhegrun, the PDF filename is empty, and using Pythia
+  // random is true. If using native PDFs rather than LHAPDF, the PDF
+  // filename is the full name of the PDF file to copy to the run
+  // directory.
   PowhegProcs procs(&pythia, "hvq");
+
+  // The PowhegProcs class automatically sets the Pythia user hooks to
+  // an instance of PowhegHooks. However, this can be modified to a
+  // user chosen set of hooks (or null).
+  // pythia->setUserHooksPtr(userHooksPtr);
+
+  // Pythia and the POWHEG user hooks must still be configured, here
+  // this is done via main33.cmnd. These settings are sensible
+  // defaults, but Powheg:nFinal is dependent upon the POWHEG matrix
+  // element being used and so must be changed as appropriate.
+  pythia.readFile("main33.cmnd");
 
   // The commands readFile and readString are used to configure the
   // POWHEG matrix element. If a setting is repeated a warning is
   // issued and the most recent setting is used.
-  procs.readFile("main33.cmnd");
+  procs.readFile("main33.pwhg");
 
   // This init call must be made before PYTHIA is initialized. It
   // copies the POWHEG input and PDF file to the POWHEG run directory.
   procs.init();
 
-  // Further configuration of PYTHIA can still be performed. By
-  // default the user hooks are set to a PowhegHooks instance and the
-  // following configuration is passed to PYTHIA.
-  //     POWHEG:nFinal = 2
-  //     POWHEG:veto = 1
-  //     POWHEG:vetoCount = 3
-  //     POWHEG:pThard = 2
-  //     POWHEG:pTemt = 0
-  //     POWHEG:emitted = 0
-  //     POWHEG:pTdef = 1
-  //     POWHEG:MPIveto = 0
-  //     POWHEG:QEDveto = 2
-  //     Beams:frameType = 5
-  // Note that POWHEG:nFinal should be changed to whatever is
-  // appropriate for the matrix element being used.
+  // Initialize Pythia, based on the specified settings.
   pythia.init();
 
   // Run PYTHIA. The random numbers are taken from the associated
   // PYTHIA random number generator.
   for (int iEvent = 0; iEvent < 100; ++iEvent) pythia.next();
 
+  // End of run.
   pythia.stat();
   return 0;
 }

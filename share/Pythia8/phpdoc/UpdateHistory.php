@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.208: 17 May 2015 
+<li>8.209: 19 May 2015 
 <ul> 
  
 <li>The "An Introduction to PYTHIA 8.2", arXiv:1410.3012 [hep-ph], 
@@ -83,14 +83,14 @@ compression library, see new files <code>Streams.h</code> and
 mode, which requires no Boost headers. The new configure option 
 <code>--with-lhapdf6-plugin=LHAPDF6.h</code> uses native mode, and 
 then requires Boost headers.</li> 
+
+<li>The LHAPDF6 PDF values are frozen at the respective <i>x</i>
+and <i>Q^2</i> boundary if the <i>(x, Q^2)</i> pair falls outside
+the fit region.</li>
  
 <li>New functions to extract the fit boundaries, the current 
-<i>alpha_s</i> value, and the quark masses from LHADPF6.</li> 
- 
-<li>The LHAPDF6 PDF values are frozen at the respective <i>x</i> 
-and <i>Q^2</i> boundary if the <i>(x, Q^2)</i> pair falls outside 
-the fit region.</li> 
- 
+<i>alpha_s</i> value, and the quark masses from LHADPF6.</li>
+  
 <li>New option in the HepMC interface, whereby PYTHIA particles can be 
 appended to an existing HepMC event. Thanks to Mikhail Kirsanov.</li> 
  
@@ -180,15 +180,20 @@ steer the selection of angles in a resonance decay.</li>
 <li>New machinery for hard diffraction now in place. Still to be 
 further checked, so not yet ready for public usage.</li> 
  
+<li>Minor correction in the treatment of the highest multiplicity in
+FxFx jet matching.</li> 
+
+<li>Minor correction in the interface to aMC@NLO for dijet and 
+photon+jet processes.</li>
+
 <li>Inserted missing endtag that corrupted the <code>Tunes.php</code> 
 page. Thanks to Tim Martin.</li> 
  
 <li>Minor fix for polarization sign when the <i>tau</i> polarization 
 is forced.</li> 
  
-<li>The new <code>HiggsXX:parity = 4</code> options for CP mixing 
-unintentionally were not implemented for the <i>W^+W^-</i> and 
-<i>Z^0Z^0</i> decays, but now are.</li> 
+<li>The meaning of the <code>HiggsXX:parity</code> options for CP mixing 
+has been slightly modified and is better described.</li> 
  
 <li>Clarification in the documentation that impact-parameter-enhancement 
 factor calculation for two hard processes does not work for the 

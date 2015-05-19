@@ -179,7 +179,7 @@ public:
     {return xfModified( indexMPI, idIn, x, Q2);}
 
   // Check whether x and Q2 values fall inside the fit bounds (LHAPDF6 only).
-  bool insideBounds(double x, double Q2) 
+  bool insideBounds(double x, double Q2)
     {return pdfBeamPtr->insideBounds(x,Q2);}
 
   // Access the running alpha_s of a PDF set (LHAPDF6 only).

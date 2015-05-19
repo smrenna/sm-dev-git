@@ -94,7 +94,7 @@ an <i>(x, Q^2)</i> pair falls inside the fit region or not. The
 <code>alphaS(double Q2)</code> method returns the <i>alpha_s</i> of the 
 PDF at the given <i>Q^2</i> scale, while <code>mQuarkPDF(int id)</code> 
 returns the quark masses used to set flavour thresholds. Currently these 
-three methods are onlu implemented for LHAPDF6. 
+three methods are only implemented for LHAPDF6. 
  
 <h3>Derived classes</h3> 
  

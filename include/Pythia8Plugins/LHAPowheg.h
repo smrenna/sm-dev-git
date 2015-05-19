@@ -76,6 +76,9 @@ private:
   // The run directory.
   string dir;
 
+  // Flag to reset the random number generator from Pythia.
+  bool random;
+
   // The current working directory.
   char cwd[FILENAME_MAX];
 
@@ -90,6 +93,8 @@ LHAupPowheg::LHAupPowheg(Pythia *pythiaIn) : dir("./") {
   pythia = pythiaIn;
   if (pythia && pythia->settings.isWord("POWHEG:dir"))
     dir = pythia->settings.word("POWHEG:dir");
+  if (pythia && pythia->settings.isFlag("POWHEG:pythiaRandom"))
+    random = pythia->settings.flag("POWHEG:pythiaRandom");
   mkdir(dir.c_str(), 0777);
 
 }
@@ -125,13 +130,20 @@ bool LHAupPowheg::fillHepRup() {
 
 bool LHAupPowheg::fillHepEup() {
 
+  // Change directory.
   if (!pythia) return false;
   getcwd(cwd, sizeof(cwd));
   chdir(dir.c_str());
-  r48st1_.i97 = 97;
-  r48st1_.j97 = 33;
-  r48st1_.c = pythia->rndm.flat();
-  for (int i = 0; i < 97; ++i) r48st1_.u[0] = pythia->rndm.flat();
+
+  // Reset the random block if requested.
+  if (random) {
+    r48st1_.i97 = 97;
+    r48st1_.j97 = 33;
+    r48st1_.c = pythia->rndm.flat();
+    for (int i = 0; i < 97; ++i) r48st1_.u[i] = pythia->rndm.flat();
+  }
+
+  // Generate the event.
   pwhgevent_();
   chdir(cwd);
   return true;

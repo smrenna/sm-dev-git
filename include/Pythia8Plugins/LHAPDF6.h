@@ -67,7 +67,7 @@ private:
   // Return the running alpha_s shipped with the LHAPDF set.
   double alphaS(double Q2) { return pdf->alphasQ2(Q2); }
 
-  // Return quark masses used in the PDF fit. 
+  // Return quark masses used in the PDF fit.
   double muPDFSave, mdPDFSave, mcPDFSave, msPDFSave, mbPDFSave;
   double mQuarkPDF(int id) {
     if (abs(id) == 1) return mdPDFSave;
