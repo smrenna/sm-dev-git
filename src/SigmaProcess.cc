@@ -544,15 +544,12 @@ double SigmaProcess::weightHiggsDecay( Event& process, int iResBeg,
   // Parameters depend on Higgs type: H0(H_1), H^0(H_2) or A^0(H_3).
   int    higgsParity = higgsH1parity;
   double higgsEta    = higgsH1eta;
-  double higgsPhi    = higgsH1phi;
   if (idH == 35) {
     higgsParity      = higgsH2parity;
     higgsEta         = higgsH2eta;
-    higgsPhi         = higgsH2phi;
   } else if (idH == 36) {
     higgsParity      = higgsA3parity;
     higgsEta         = higgsA3eta;
-    higgsPhi         = higgsA3phi;
   }
 
   // Option with isotropic decays (also for pseudoscalar fermion couplings).

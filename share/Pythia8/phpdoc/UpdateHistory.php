@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.209: 19 May 2015 
+<li>8.209: 25 May 2015 
 <ul> 
  
 <li>The "An Introduction to PYTHIA 8.2", arXiv:1410.3012 [hep-ph], 
@@ -177,9 +177,6 @@ when searching for a unique flavour match.</li>
 <li>New example <code>main62.cc</code> illustrates how a user hook can 
 steer the selection of angles in a resonance decay.</li> 
  
-<li>New machinery for hard diffraction now in place. Still to be 
-further checked, so not yet ready for public usage.</li> 
- 
 <li>Minor correction in the treatment of the highest multiplicity in
 FxFx jet matching.</li> 
 
@@ -225,6 +222,9 @@ fails.</li>
 <li>Minor fixes in <code>LHAFortran.h</code>, which is also moved to 
 <code>include/Pythia8Plugins</code> to better reflect its peripheral 
 role.</li> 
+ 
+<li>New machinery for hard diffraction now in place. Still being 
+debugged and tested, so not yet ready for public usage.</li> 
  
 </ul> 
 </li> 
