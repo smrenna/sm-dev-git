@@ -1,7 +1,7 @@
 // File: trimfile.cc
 // Copyright (C) 2015 Torbjorn Sjostrand
 
-// Execute with "private/trimfile filename".
+// Execute with "private/trimfile filename" from main directory.
 
 // Perform/prepare a number of cleanup operations on a file:
 // -- remove unwanted characters at the end of each line
@@ -109,6 +109,9 @@ int main(int argc, char* argv[]) {
                || (nameLen > 3 && fileName.substr(nameLen - 3, 3) == ".cc")
                || (nameLen > 5 && fileName.substr(nameLen - 5, 5) == ".cmnd");
     bool isXML  = (nameLen > 4 && fileName.substr(nameLen - 4, 4) == ".xml");
+
+    // Skip FJcore files; they give plenty of warnings not to be addressed.
+    if (fileName.find("FJcore") != string::npos) isCode = false;
 
     // Process code and xml files; also others with -f option.
     if (isCode || isXML || doForce) {
