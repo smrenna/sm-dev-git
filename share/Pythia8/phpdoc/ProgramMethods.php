@@ -57,6 +57,12 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
+<td>double</td>
+<td><a href="UserHooks.php#method43" target="page">getEnhancedEventWeight()</a></td>
+<td>User Hooks</td>
+</tr>
+
+<tr>
 <td>PDF*</td>
 <td><a href="ProgramFlow.php#method27" target="page">getPDFPtr(...)</a></td>
 <td>Program Flow</td>
@@ -5758,6 +5764,18 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>virtual bool</td>
+<td><a href="UserHooks.php#method40" target="page">UserHooks::canEnhanceEmission()</a></td>
+<td>User Hooks</td>
+</tr>
+
+<tr>
+<td>virtual bool</td>
+<td><a href="UserHooks.php#method44" target="page">UserHooks::canEnhanceTrial()</a></td>
+<td>User Hooks</td>
+</tr>
+
+<tr>
+<td>virtual bool</td>
 <td><a href="UserHooks.php#method28" target="page">UserHooks::canModifySigma()</a></td>
 <td>User Hooks</td>
 </tr>
@@ -5901,6 +5919,12 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
+<td>virtual double</td>
+<td><a href="UserHooks.php#method41" target="page">UserHooks::enhanceFactor(...)</a></td>
+<td>User Hooks</td>
+</tr>
+
+<tr>
 <td>virtual bool</td>
 <td><a href="UserHooks.php#method6" target="page">UserHooks::initAfterBeams()</a></td>
 <td>User Hooks</td>
@@ -5957,6 +5981,12 @@ Many of them are only intended for experts, while undocumented ones are only for
 <tr>
 <td> </td>
 <td><a href="UserHooks.php#method1" target="page">UserHooks::UserHooks()</a></td>
+<td>User Hooks</td>
+</tr>
+
+<tr>
+<td>virtual double</td>
+<td><a href="UserHooks.php#method42" target="page">UserHooks::vetoProbability(...)</a></td>
 <td>User Hooks</td>
 </tr>
 
