@@ -27,6 +27,12 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
+<td>virtual bool</td>
+<td><a href="UserHooks.php#method45" target="page">canChangeFragPar()</a></td>
+<td>User Hooks</td>
+</tr>
+
+<tr>
 <td>friend double</td>
 <td><a href="FourVectors.php#method25" target="page">cosphi(...)</a></td>
 <td>Four-Vectors</td>
@@ -51,9 +57,21 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
+<td>virtual bool</td>
+<td><a href="UserHooks.php#method46" target="page">doChangeFragPar(...)</a></td>
+<td>User Hooks</td>
+</tr>
+
+<tr>
 <td>friend double</td>
 <td><a href="FourVectors.php#method22" target="page">dot3(...)</a></td>
 <td>Four-Vectors</td>
+</tr>
+
+<tr>
+<td>virtual bool</td>
+<td><a href="UserHooks.php#method47" target="page">doVetoFragmentation(...)</a></td>
+<td>User Hooks</td>
 </tr>
 
 <tr>

@@ -199,6 +199,17 @@ public:
   double getEnhancedTrialPT() { return pTEnhanced;}
   double getEnhancedTrialWeight() { return wtEnhanced;}
 
+  // Can change fragmentation parameters.
+  virtual bool canChangeFragPar() { return false;}
+
+  // Do change fragmentation parameters.
+  // Input: flavPtr, zPtr, pTPtr, idEnd, m2Had, iParton.
+  virtual bool doChangeFragPar( StringFlav*, StringZ*, StringPT*, int,
+    double, vector<int>) { return false;}
+
+ // Do a veto on a hadron just before it is added to the final state.
+  virtual bool doVetoFragmentation( Particle) { return false;}
+
 protected:
 
   // Constructor.

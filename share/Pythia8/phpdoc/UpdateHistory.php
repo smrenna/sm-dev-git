@@ -39,19 +39,21 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.211: 9 July 2015 
+<li>8.211: 10 July 2015 
 <ul> 
  
 <li>Possibility to enhance the rate of rare initial-state shower 
 branchings, while preserving correct Sudakov form factors, introduced 
-by a new <code>UserHooks</code> functionality. 
-</li> 
+by a new <code>UserHooks</code> functionality.</li> 
  
 <li>Changes to allow for MEPS merging when using a shower plugin. 
 Several additional M&M changes, mostly to make the reclustering in the 
 merging numerically more stable, and to make UN2LOPS possible. 
-More documentation to come. 
-</li> 
+More documentation to come.</li> 
+ 
+<li>New possibility, via <code>UserHooks</code>, to access hadronization 
+parameters in each step in the hadronization process, and to veto 
+individual hadrons. Thanks to Christian Bierlich.</li> 
  
 <li>Minor fix for the <code>configure</code> script, for the case 
 of building a shared library on Mac OS X. Thanks to Mikhail Kirsanov. 

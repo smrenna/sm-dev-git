@@ -46,6 +46,9 @@ specifically for matching in resonance decays.
 <br/>(viii) Ones that allow colour reconnection, notably in connection 
 with resonance decays. 
 <br/>(ix) Ones that allow an enhanced rate of rare shower splittings. 
+<br/>(x) Ones that give you access to to hadronization parameters 
+in each step in the hadronization process, and allows for a veto 
+of individual hadrons. 
 <br/>They are described further in the following numbered subsections. 
  
 <p/> 
@@ -1043,6 +1046,75 @@ These are handled internally, so that users only have to ensure that
 <p/>A simple example of enhanced regular emissions is provided in 
 <code>main63.cc</code>, whereas <code>main64.cc</code> illustrates 
 the usefulness of enhanced trial emissions for expert users. 
+ 
+<h3>(x) Modified hadronization</h3> 
+ 
+The methods in this group are intended to allow for modifications of 
+the string hadronization model, involving changes to hadronization 
+parameters based on local properties of the string. Given information 
+on the hadronization history of a single string,  parameters can be 
+changed to control the selection of quark flavour, <i>z</i> and 
+<i>pT</i> in string breaks. Furthermore there is a option to veto 
+the creation of a hadron before it is added to the event record, 
+thus repeating a step in the hadronization procedure. 
+ 
+<a name="method45"></a>
+<p/><strong>virtual bool canChangeFragPar() &nbsp;</strong> <br/>
+In the base class this method returns false. If you redefine it to 
+return true, it will enable the methods <code>doChangeFragPar(...)</code> 
+and <code>doVetoFragmentation(...)</code>. 
+   
+ 
+<a name="method46"></a>
+<p/><strong>virtual bool doChangeFragPar(StringFlav* flavPtr, StringZ* zPtr, StringPT* pTPtr, int idEnd, double m2Had, vector<int> iParton) &nbsp;</strong> <br/>
+This is the method for changing fragmentation parameters. If all 
+parameters are changed as they should, the method should return true. 
+In case of errors the method returns false and a warning is printed. 
+The method takes as argument pointers to three objects that hold the 
+fragmentation parameters, and three arguments that give information 
+about the string currently being hadronized. 
+<br/><code>argument</code><strong> flavPtr </strong>  :  is a pointer to a <code>StringFlav</code> 
+object, which selects quark and diquark flavours and hadron species 
+formed in the string breaks. The parameters can be changed by setting 
+new parameters in a <code>Settings</code> object and reinitializing 
+with <code>flavPtr->init(settings,randomPtr)</code>, where 
+<code>settings</code> is the settings object and <code>randomPtr</code> 
+is a pointer to the desired random number generator. Note that the 
+<code>UserHooks</code> base class already holds pointers to the 
+<code>Settings</code> and <code>Random</code> objects. 
+   
+<br/><code>argument</code><strong> zPtr </strong>  :  is a pointer to a <code>StringZ</code> object, 
+which selects the hadron momentum fraction <i>z</i> using the Lund 
+fragmentation function. Parameters are changed by 
+<code>zPtr->init(settings,particleData,randomPtr)</code> 
+in the same way as above. 
+   
+<br/><code>argument</code><strong> pTPtr </strong>  :  is a pointer to a <code>StringPT</code> object 
+which selects the hadron <i>pT</i> from a Gaussian distribution. 
+Parameters are changed by 
+<code>pTPtr->init(settings,particleData,randomPtr)</code> 
+in the same way as above. 
+   
+<br/><code>argument</code><strong> idEnd </strong>  :  gives the code of the parton (quark, diquark or 
+gluon) in the string end that we are currently hadronizing from. 
+   
+<br/><code>argument</code><strong> m2Had </strong>  :  gives the invariant mass squared of all hadrons 
+produced from the current end of the string up to this point. Used to 
+keep track of where we are on the string. 
+   
+<br/><code>argument</code><strong> iParton </strong>  :  contains the indices in the standard event 
+record for all the partons in the string currently being hadronized. 
+   
+   
+ 
+<a name="method47"></a>
+<p/><strong>virtual bool doVetoFragmentation(Particle had) &nbsp;</strong> <br/>
+This method can veto the production of a hadron, whereby the current 
+string break is redone. 
+<br/><code>argument</code><strong> had </strong>  :  is a (copy of) the hadron being produced, 
+just before it is added to the event record. 
+   
+   
  
 </body>
 </html>

@@ -724,7 +724,7 @@ bool Pythia::init() {
   // Note: forceHadronLevel() can come, so we must always initialize.
   if ( !hadronLevel.init( &info, settings, &particleData, &rndm,
     couplingsPtr, timesDecPtr, &rHadrons, decayHandlePtr,
-    handledParticles) ) {
+    handledParticles, userHooksPtr) ) {
     info.errorMsg("Abort from Pythia::init: "
       "hadronLevel initialization failed");
     return false;
