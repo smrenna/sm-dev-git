@@ -12,7 +12,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.211: 10 July 2015 
+<li>8.211: 22 July 2015 
 <ul> 
  
 <li>Possibility to enhance the rate of rare initial-state shower 
@@ -24,13 +24,28 @@ Several additional M&M changes, mostly to make the reclustering in the
 merging numerically more stable, and to make UN2LOPS possible. 
 More documentation to come.</li> 
  
-<li>New possibility, via <code>UserHooks</code>, to access hadronization 
+<li>New possibility, via <code>UserHooks</code>, to access hadronization
 parameters in each step in the hadronization process, and to veto 
-individual hadrons. Thanks to Christian Bierlich.</li> 
+individual hadrons. Thanks to Christian Bierlich.</li>
  
 <li>Minor fix for the <code>configure</code> script, for the case 
 of building a shared library on Mac OS X. Thanks to Mikhail Kirsanov. 
-</li> 
+</li>
+ 
+<li>Several minor changes in the hard diffractive machinery.</li>
+ 
+<li>PDG codes 51 - 60 have been reserved for Dark Matter particles.
+51, 52 and 53 are intended for spin 0, 1/2 and 1 options, respectively, 
+whereas the rest can be used freely, say in models with several
+Dark Matter particles. Masses should be set appropriately.
+By default all have separate antiparticles, with negative codes. These 
+can be removed by setting the antiparticle name to be "void". 
+The <code>ParticleData::antiName(...)</code> method has been fixed to 
+accept this, just like <code>ParticleData::names(...)</code> already did. 
+</li>
+ 
+<li>Fix minor typo in <code>README</code>, in instruction for enabling 
+64 bit compilation.</li>
  
 </ul> 
 </li> 

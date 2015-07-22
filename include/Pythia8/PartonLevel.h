@@ -118,7 +118,7 @@ private:
   bool   isNonDiff, isDiffA, isDiffB, isDiffC, isDiff, isSingleDiff,
          isDoubleDiff, isCentralDiff, isResolved, isResolvedA,
          isResolvedB, isResolvedC, isHardDiffA, isHardDiffB, isHardDiff,
-         isSetupDiff, doDiffVeto;
+         doDiffVeto;
   int    sizeProcess, sizeEvent, nHardDone, nHardDoneRHad, iDS;
   double eCMsave;
   vector<bool> inRHadDecay;
