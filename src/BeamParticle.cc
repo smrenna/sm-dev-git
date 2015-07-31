@@ -1393,7 +1393,7 @@ bool BeamParticle::remnantFlavoursNew(Event& event) {
 
     // Either form di-quark or (anti-)junction.
     if (beamJunction) {
-      // Form anti junction.
+      // Form antijunction.
       if (resolved[iQ1].id() < 0) {
 
         // Start by finding last colour in the out going particles.
@@ -1404,7 +1404,7 @@ bool BeamParticle::remnantFlavoursNew(Event& event) {
         int acol = findSingleCol(event, true, true);
         if ( acol == 0) return false;
 
-        // Make the anti junction.
+        // Make the antijunction.
         int newCol1 = event.nextColTag();
         int newCol2 = event.nextColTag();
         resolved[iQ1].acol(newCol1);

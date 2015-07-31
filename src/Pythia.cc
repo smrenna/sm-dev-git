@@ -809,6 +809,10 @@ bool Pythia::checkBeams() {
   isUnresolvedA   = isLeptonA && (idAabs%2 == 0 || isUnresLep);
   isUnresolvedB   = isLeptonB && (idBabs%2 == 0 || isUnresLep);
 
+  // Equate Dark Matter "beams" with incoming neutrinos.
+  if (idAabs > 50 && idAabs < 61) isLeptonA = isUnresolvedA = true;
+  if (idBabs > 50 && idBabs < 61) isLeptonB = isUnresolvedB = true;
+
   // Lepton-lepton collisions OK (including neutrinos) if both (un)resolved.
   if (isLeptonA && isLeptonB && isUnresolvedA == isUnresolvedB) return true;
 

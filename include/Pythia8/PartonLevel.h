@@ -105,6 +105,7 @@ private:
          canVetoMPIStep, canVetoEarly, canSetScale, allowRH, earlyResDec,
          vetoWeakJets, canReconResSys, doReconnect, doHardDiff,
          forceResonanceCR;
+  int    pTmaxMatchMPI;
   double mMinDiff, mWidthDiff, pMaxDiff, vetoWeakDeltaR2;
 
   // Event generation strategy. Number of steps. Maximum pT scales.
