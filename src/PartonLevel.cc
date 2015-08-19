@@ -85,7 +85,7 @@ bool PartonLevel::init( Info* infoPtrIn, Settings& settings,
   if (!settings.flag("PartonLevel:all")) doMPIinit = false;
 
   // Nature of MPI matching also used here for one case.
-  pTmaxMatchMPI      = settings.mode("MultipartonInteractions:pTmaxMatch"); 
+  pTmaxMatchMPI      = settings.mode("MultipartonInteractions:pTmaxMatch");
 
   // Initialise trial shower switch.
   doTrial            = useAsTrial;
@@ -421,7 +421,7 @@ bool PartonLevel::next( Event& process, Event& event) {
 
     // Set hard scale, maximum for showers and multiparton interactions.
     double pTscaleRad  = process.scale();
-    double pTscaleMPI  = (doMPI && pTmaxMatchMPI == 3) 
+    double pTscaleMPI  = (doMPI && pTmaxMatchMPI == 3)
                        ? multiPtr->scaleLimitPT() : pTscaleRad;
     if (doSecondHard) {
       pTscaleRad       = max( pTscaleRad, process.scaleSecond() );

@@ -12,7 +12,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.211: 31 July 2015 
+<li>8.211: 19 August 2015 
 <ul> 
  
 <li>Possibility to enhance the rate of rare initial-state shower 
@@ -61,8 +61,33 @@ These can be removed by setting the antiparticle name to be "void". The
 <code>ParticleData::antiName(...)</code> method has been fixed to accept 
 this, just like <code>ParticleData::names(...)</code> already did. </li> 
  
+<li>Several processes have been set up with wrong process codes, and are 
+now fixed. The corrections are 4003 &rarr; 4203, 4004 &rarr; 4204, 
+4005 &rarr; 4205, 961 &rarr; 1061, 3124 &rarr; 3123, 3126 &rarr; 3124, 
+3144 &rarr; 3143, and 3146 &rarr; 3144.</li> 
+ 
+<li>For <ei>tau</ei> decay spin correlations the 
+<ei>f fbar &rarr; V &rarr; f fbar</ei> matrix element, 
+<ei>V = gamma/Z^0</ei> or <ei>W^+-</ei>, is now only used when the 
+incoming fermion pair has no other daughters. Else the simpler 
+<ei>V &rarr; f fbar</ei> matrix element is used.</li> 
+ 
+<li>Bug fix in the input of SLHA decay tables. Previously, the first DECAY 
+entry could be ignored under certain conditions, so that the internal SUSY 
+machinery was used to calculate decay properties. This was the case, in 
+particular, when internal SUSY processes were invoked to generate events. 
+</li> 
+ 
+<li>Minor correction in the cross section for <ei>f fbar &rarr; G*</ei> 
+for extra-dimensional processes.</li> 
+ 
+<li>Use the <code>PythiaStdlib.h</code> header rather than accessing 
+Stdlib directly in <code>SusyLesHouches.h</code>.</li> 
+ 
 <li>Fix minor typo in <code>README</code>, in instruction for enabling 
 64 bit compilation.</li> 
+ 
+<li>Clarify documentation on which particles are stable by default.</li> 
  
 </ul> 
 </li> 

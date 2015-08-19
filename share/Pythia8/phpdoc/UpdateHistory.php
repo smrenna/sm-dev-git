@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.211: 31 July 2015 
+<li>8.211: 19 August 2015 
 <ul> 
  
 <li>Possibility to enhance the rate of rare initial-state shower 
@@ -51,46 +51,70 @@ Several additional matching and merging changes, mostly to make the
 reclustering in the merging numerically more stable, and to make 
 UN2LOPS possible. More documentation to come.</li> 
  
-<li>New possibility, via <code>UserHooks</code>, to access hadronization
+<li>New possibility, via <code>UserHooks</code>, to access hadronization 
 parameters in each step in the hadronization process, and to veto 
-individual hadrons. Thanks to Christian Bierlich.</li>
-  
-<li>The EvtGen interface has been expanded with the possibility
-to force a rare decay of some of the particle species handled by
-EvtGen, with an event weight compensating for this bias. New status
-codes 95 or 96 single out particles from a forced decay, without or
-with oscillation.
-</li>
-
-<li>New option <code>MultipartonInteractions:pTmaxMatch = 3</code>
-introduced to allow better matching for multiparton final states.
-Thanks to Paolo Gunnellini.</li>
-
-<li>Bug fix in the junction handling for the case of gluinos.</li>
-
-<li>Minor fix for the path to the PowhegBox plugin, as used in the
-<code>Makefile</code>.</li>
-
+individual hadrons. Thanks to Christian Bierlich.</li> 
+ 
+<li>The EvtGen interface has been expanded with the possibility 
+to force a rare decay of some of the particle species handled by 
+EvtGen, with an event weight compensating for this bias. New status 
+codes 95 or 96 single out particles from a forced decay, without or 
+with oscillation.</li> 
+ 
+<li>New option <code>MultipartonInteractions:pTmaxMatch = 3</code> 
+introduced to allow better matching for multiparton final states. 
+Thanks to Paolo Gunnellini.</li> 
+ 
+<li>Bug fix in the junction handling for the case of gluinos.</li> 
+ 
+<li>Minor fix for the path to the PowhegBox plugin, as used in the 
+<code>Makefile</code>.</li> 
+ 
 <li>Minor fix for the <code>configure</code> script, for the case 
 of building a shared library on Mac OS X. Thanks to Mikhail Kirsanov. 
-</li>
+</li> 
  
-<li>Several minor changes in the hard diffractive machinery.</li>
+<li>Several minor changes in the hard diffractive machinery.</li> 
  
-<li>PDG codes 51 - 60 have been reserved for Dark Matter (DM) particles.
+<li>PDG codes 51 - 60 have been reserved for Dark Matter (DM) particles. 
 51, 52 and 53 are intended for spin 0, 1/2 and 1 stable DM particles, 
 respectively. 54 and 55 are for spin 0 and 1 unstable mediators of 
 s-channel DM pair creation or annihilation. The rest can be used freely, 
 say in models with several DM particles. Masses should be set 
-appropriately. Particles 54 and 55 come been equipped with a fictitious
-mix of potential decay modes, to be modified according to the specific
-model. By default all have separate antiparticles, with negative codes. 
+appropriately. Particles 54 and 55 come equipped with a fictitious mix 
+of potential decay modes, to be modified according to the specific model. 
+By default all have separate antiparticles, with negative codes. 
 These can be removed by setting the antiparticle name to be "void". The 
 <code>ParticleData::antiName(...)</code> method has been fixed to accept 
-this, just like <code>ParticleData::names(...)</code> already did. </li>
+this, just like <code>ParticleData::names(...)</code> already did. </li> 
+ 
+<li>Several processes have been set up with wrong process codes, and are 
+now fixed. The corrections are 4003 &rarr; 4203, 4004 &rarr; 4204, 
+4005 &rarr; 4205, 961 &rarr; 1061, 3124 &rarr; 3123, 3126 &rarr; 3124, 
+3144 &rarr; 3143, and 3146 &rarr; 3144.</li> 
+ 
+<li>For <i>tau</i> decay spin correlations the 
+<i>f fbar &rarr; V &rarr; f fbar</i> matrix element, 
+<i>V = gamma/Z^0</i> or <i>W^+-</i>, is now only used when the 
+incoming fermion pair has no other daughters. Else the simpler 
+<i>V &rarr; f fbar</i> matrix element is used.</li> 
+ 
+<li>Bug fix in the input of SLHA decay tables. Previously, the first DECAY 
+entry could be ignored under certain conditions, so that the internal SUSY 
+machinery was used to calculate decay properties. This was the case, in 
+particular, when internal SUSY processes were invoked to generate events. 
+</li> 
+ 
+<li>Minor correction in the cross section for <i>f fbar &rarr; G*</i> 
+for extra-dimensional processes.</li> 
+ 
+<li>Use the <code>PythiaStdlib.h</code> header rather than accessing 
+Stdlib directly in <code>SusyLesHouches.h</code>.</li> 
  
 <li>Fix minor typo in <code>README</code>, in instruction for enabling 
-64 bit compilation.</li>
+64 bit compilation.</li> 
+ 
+<li>Clarify documentation on which particles are stable by default.</li> 
  
 </ul> 
 </li> 

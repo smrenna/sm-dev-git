@@ -183,7 +183,7 @@ In detail, the list of used or foreseen status codes is:
   <li>93, 94 : decay handled by an external program, normally 
            or with oscillation</li> 
   <li>95, 96 : a forced decay handled by an external program, i.e. picked 
-           from a subset of the possible channels to enhance the rate
+           from a subset of the possible channels to enhance the rate 
            of rare signals, normally or with oscillation</li> 
   <li>99 : particles with momenta shifted by Bose-Einstein effects 
            (not a proper decay, but bookkept as an <i>1 &rarr; 1</i> such, 

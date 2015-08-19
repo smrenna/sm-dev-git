@@ -256,7 +256,7 @@ bool JunctionSplitting::splitJunGluons(Event& event,
         if (rndmPtr->flat() > 0.5) swap(xPos, xNeg);
 
         // Verify that intermediate particles are gluons (not gluinos).
-        if ( event[ iJunLegs[i][iReg] ].idAbs() != 21 
+        if ( event[ iJunLegs[i][iReg] ].idAbs() != 21
           || event[ iJunLegs[i][iReg + 1] ].idAbs() != 21 ) continue;
 
         // Pick up two "mother" gluons of breakup. Mark them decayed.
