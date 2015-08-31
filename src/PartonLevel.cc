@@ -549,9 +549,9 @@ bool PartonLevel::next( Event& process, Event& event) {
         }
 
         // Set maximal scales for next pT to pick.
-        pTmaxMPI = min(pTspace, pTmaxMPI);
-        pTmaxISR = pTspace;
-        pTmaxFSR = min(pTspace, pTmaxFSR);
+        pTmaxMPI = min( min(pTspace,pTmaxISR), pTmaxMPI);
+        pTmaxISR = min(pTspace,pTmaxISR);
+        pTmaxFSR = min( min(pTspace,pTmaxISR), pTmaxFSR);
         pTmax    = pTspace;
       }
 
@@ -576,9 +576,9 @@ bool PartonLevel::next( Event& process, Event& event) {
         }
 
         // Set maximal scales for next pT to pick.
-        pTmaxMPI = min(pTtimes, pTmaxMPI);
-        pTmaxISR = min(pTtimes, pTmaxISR);
-        pTmaxFSR = pTtimes;
+        pTmaxMPI = min( min(pTtimes,pTmaxFSR), pTmaxMPI);
+        pTmaxISR = min( min(pTtimes,pTmaxFSR), pTmaxISR);
+        pTmaxFSR = min(pTtimes, pTmaxFSR);
         pTmax    = pTtimes;
       }
 

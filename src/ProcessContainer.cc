@@ -330,6 +330,10 @@ bool ProcessContainer::constructProcess( Event& process, bool isHardest) {
     process[2].daughters(3, 5);
   }
 
+  // Reset the event information. Necessary if the previous event was read
+  // from LHEF, while the current event is not read from LHEF.
+  infoPtr->setLHEF3EventInfo();
+
   // Insert the subprocess partons - resolved processes.
   int idRes = sigmaProcessPtr->idSChannel();
   if (isResolved && !isLHA) {

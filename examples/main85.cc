@@ -62,7 +62,7 @@ int main( int argc, char* argv[] ){
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
-  // Switch off all showering and MPI when extimating the cross section after
+  // Switch off all showering and MPI when estimating the cross section after
   // the merging scale cut.
   bool fsr = pythia.flag("PartonLevel:FSR");
   bool isr = pythia.flag("PartonLevel:ISR");

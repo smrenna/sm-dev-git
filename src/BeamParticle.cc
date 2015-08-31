@@ -42,6 +42,9 @@ const double BeamParticle::XMINUNRESOLVED = 1. - 1e-10;
 // Fictitious Pomeron mass to leave some room for beam remnant.
 const double BeamParticle::POMERONMASS = 1.;
 
+// Avoid numerical instability in the x -> 1 limit for companion quark.
+const double BeamParticle::XMAXCOMPANION = 0.99;
+
 // Maximum number of tries to find a suitable colour.
 const int BeamParticle::NMAX = 1000;
 
@@ -439,6 +442,9 @@ double BeamParticle::xValFrac(int j, double Q2) {
 
 double BeamParticle::xCompFrac(double xs) {
 
+  // Tiny answer for xs -> 1 is numerically unstable, so set = 0.
+  if (xs > XMAXCOMPANION) return 0.;
+
   // Select case by power of gluon (1-x_g) shape.
   switch (companionPower) {
 
@@ -478,6 +484,9 @@ double BeamParticle::xCompFrac(double xs) {
 // The value corresponds to an unrescaled range between 0 and 1 - x_s.
 
 double BeamParticle::xCompDist(double xc, double xs) {
+
+  // Tiny answer for xs -> 1 is numerically unstable, so set = 0.
+  if (xs > XMAXCOMPANION) return 0.;
 
   // Mother gluon momentum fraction. Check physical limit.
   double xg = xc + xs;

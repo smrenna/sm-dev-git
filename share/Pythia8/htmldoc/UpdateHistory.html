@@ -18,7 +18,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.211: 19 August 2015 
+<li>8.211: 31 August 2015 
 <ul> 
  
 <li>Possibility to enhance the rate of rare initial-state shower 
@@ -43,6 +43,12 @@ with oscillation.</li>
 <li>New option <code>MultipartonInteractions:pTmaxMatch = 3</code> 
 introduced to allow better matching for multiparton final states. 
 Thanks to Paolo Gunnellini.</li> 
+ 
+<li>Fix bug for the <code>Beams:newLHEFsameInit = on</code> option, 
+whereby several LHE files can be read in without new initialization 
+for each. When the gzip support was improved in 8.209 the filenames 
+were no longer reset properly, and so no files beyond the first one 
+were read. Thanks to Roberto Franceschini.</li> 
  
 <li>Bug fix in the junction handling for the case of gluinos.</li> 
  
@@ -78,6 +84,9 @@ now fixed. The corrections are 4003 &rarr; 4203, 4004 &rarr; 4204,
 incoming fermion pair has no other daughters. Else the simpler 
 <i>V &rarr; f fbar</i> matrix element is used.</li> 
  
+<li>Minor technical changes, to allow for external <i>pT</i>-unordered 
+parton showers. No effect for the internal showers.</li> 
+ 
 <li>Bug fix in the input of SLHA decay tables. Previously, the first DECAY 
 entry could be ignored under certain conditions, so that the internal SUSY 
 machinery was used to calculate decay properties. This was the case, in 
@@ -86,6 +95,9 @@ particular, when internal SUSY processes were invoked to generate events.
  
 <li>Minor correction in the cross section for <i>f fbar &rarr; G*</i> 
 for extra-dimensional processes.</li> 
+ 
+<li>Introduce protection against numerical instability of companion quark 
+distribution in <i>x &rarr; 1</i> limit.</li> 
  
 <li>Use the <code>PythiaStdlib.h</code> header rather than accessing 
 Stdlib directly in <code>SusyLesHouches.h</code>.</li> 

@@ -330,7 +330,6 @@ public:
     is(NULL), is_gz(NULL), isHead(NULL), isHead_gz(NULL),
     readHeaders(readHeadersIn), reader(filenameIn),
     setScalesFromLHEF(setScalesFromLHEFIn) {
-
     is = (openFile(filenameIn, ifs));
     isHead = (headerfile == NULL) ? is : openFile(headerfile, ifsHead);
     is_gz = new igzstream(filename);
@@ -358,15 +357,16 @@ public:
 
   // Want to use new file with events, but without reinitialization.
   void newEventFile(const char* filenameIn) {
-    // Close files and then open new file
+    // Close files and then open new file.
     closeAllFiles();
-    is = (openFile(filenameIn, ifs));
-    is_gz = new igzstream(filename);
-    isHead_gz = new igzstream(headerfile);
-
+    is    = (openFile(filenameIn, ifs));
+    is_gz = new igzstream(filenameIn);
+    // Re-initialise Les Houches file reader.
+    reader.setup(filenameIn);
     // Set isHead to is to keep expected behaviour in
-    // fileFound() and closeAllFiles()
-    isHead = is;
+    // fileFound() and closeAllFiles().
+    isHead    = is;
+    isHead_gz = is_gz;
   }
 
   // Confirm that file was found and opened as expected.

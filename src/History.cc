@@ -2277,8 +2277,10 @@ double History::doTrialShower( PartonLevel* trial, int type,
     trial->resetTrial();
 
     // Get enhanced trial emission weight.
-    double pTEnhanced = trial->userHooksPtr->getEnhancedTrialPT();
-    double wtEnhanced = trial->userHooksPtr->getEnhancedTrialWeight();
+    double pTEnhanced = (canEnhanceTrial)
+                      ? trial->userHooksPtr->getEnhancedTrialPT() : 0.;
+    double wtEnhanced = (canEnhanceTrial)
+                      ? trial->userHooksPtr->getEnhancedTrialWeight() : 1.;
     if ( canEnhanceTrial && pTEnhanced > 0.) pTtrial = pTEnhanced;
 
     // Get veto (merging) scale value
@@ -2445,8 +2447,10 @@ History::countEmissions(PartonLevel* trial, double maxscale,
     trial->resetTrial();
 
     // Get enhanced trial emission weight.
-    double pTEnhanced = trial->userHooksPtr->getEnhancedTrialPT();
-    double wtEnhanced = trial->userHooksPtr->getEnhancedTrialWeight();
+    double pTEnhanced = (canEnhanceTrial)
+                      ? trial->userHooksPtr->getEnhancedTrialPT() : 0.;
+    double wtEnhanced = (canEnhanceTrial)
+                      ? trial->userHooksPtr->getEnhancedTrialWeight() : 1.;
     if ( canEnhanceTrial && pTEnhanced > 0.) pTtrial = pTEnhanced;
 
     // Get veto (merging) scale value
