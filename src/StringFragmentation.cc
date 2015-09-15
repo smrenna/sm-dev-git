@@ -304,6 +304,9 @@ const double StringFragmentation::MDIQUARKMIN   = -2.0;
 // Consider junction-leg parton as massless if m2 tiny.
 const double StringFragmentation::M2MAXJRF      = 1e-4;
 
+// Protect against numerical precision giving zero or negative m2.
+const double StringFragmentation::M2MINJRF      = 1e-4;
+
 // Iterate junction rest frame equation until convergence or too many tries.
 const double StringFragmentation::CONVJRFEQ     = 1e-12;
 const int    StringFragmentation::NTRYJRFEQ     = 40;
@@ -1282,7 +1285,8 @@ RotBstMatrix StringFragmentation::junctionRestFrame(Vec4& p0, Vec4& p1,
       double pkMin = sqrtpos( ekMin*ekMin - m2k );
       double fMin  = ejMin * ekMin + 0.5 * pjMin * pkMin - pjpk;
       // Maximum estimated when j + k is at rest, alternatively j at rest.
-      double eiMax = (pipj + pipk) / sqrt(m2j + m2k + 2. * pjpk);
+      double eiMax = (pipj + pipk)
+                   / sqrt( max( M2MINJRF, m2j + m2k + 2. * pjpk) );
       if (m2j > M2MAXJRF) eiMax = min( eiMax, pipj / sqrt(m2j) );
       double piMax = sqrtpos( eiMax*eiMax - m2i );
       double temp  = eiMax*eiMax - 0.25 *piMax*piMax;

@@ -108,7 +108,7 @@ private:
                       NTRYJNMATCH, NTRYJRFEQ;
   static const double FACSTOPMASS, CLOSEDM2MAX, CLOSEDM2FRAC, EXPMAX,
                       MATCHPOSNEG, EJNWEIGHTMAX, CONVJNREST, M2MAXJRF,
-                      EEXTRAJNMATCH, MDIQUARKMIN, CONVJRFEQ;
+                      M2MINJRF, EEXTRAJNMATCH, MDIQUARKMIN, CONVJRFEQ;
 
   // Pointer to various information on the generation.
   Info*         infoPtr;

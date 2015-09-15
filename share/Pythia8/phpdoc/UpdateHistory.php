@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.211: 31 August 2015 
+<li>8.212: 15 September 2015 
 <ul> 
  
 <li>Possibility to enhance the rate of rare initial-state shower 
@@ -108,6 +108,11 @@ incoming fermion pair has no other daughters. Else the simpler
 <li>Minor technical changes, to allow for external <i>pT</i>-unordered 
 parton showers. No effect for the internal showers.</li> 
  
+<li>The SLHA reading operation has become significantly less verbose: 
+where previously identical warning messages could be issued for 
+many particle codes, now these codes are collected into a single list 
+that is written once.</li> 
+ 
 <li>Bug fix in the input of SLHA decay tables. Previously, the first DECAY 
 entry could be ignored under certain conditions, so that the internal SUSY 
 machinery was used to calculate decay properties. This was the case, in 
@@ -117,14 +122,29 @@ particular, when internal SUSY processes were invoked to generate events.
 <li>Minor correction in the cross section for <i>f fbar &rarr; G*</i> 
 for extra-dimensional processes.</li> 
  
+<li>Protect against rare but disastrous negative mass-squared by numerical 
+roundoff in string fragmentation.</li> 
+ 
 <li>Introduce protection against numerical instability of companion quark 
 distribution in <i>x &rarr; 1</i> limit.</li> 
  
 <li>Use the <code>PythiaStdlib.h</code> header rather than accessing 
 Stdlib directly in <code>SusyLesHouches.h</code>.</li> 
  
+<li>Output to <code>cerr</code> replaced by ditto to <code>cout</code>. 
+Excepted is the examples main programs, where it serves a pedagogical 
+function, while a separate <code>cerr</code> is less relevant for big 
+batch runs. (<code>Also FJcore</code> code is excepted).</li> 
+ 
 <li>Fix minor typo in <code>README</code>, in instruction for enabling 
 64 bit compilation.</li> 
+ 
+<li>Insert two missing <code>std::</code> in 
+<code>Pythia8Plugins/GeneratorInputs.h</code>.</li> 
+ 
+<li>Add to the documentation that 
+<code>TimeShower:weightGluonToQuark = 1</code> is required for consistent 
+aMC@NLO merging.</li> 
  
 <li>Clarify documentation on which particles are stable by default.</li> 
  
