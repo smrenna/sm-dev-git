@@ -1008,6 +1008,11 @@ void SpaceShower::pT2nearQCDthreshold( BeamParticle& beam,
   pdfScale2 = (useFixedFacScale) ? fixedFacScale2
     : factorMultFac * m2Threshold;
   double xPDFmotherOld = beam.xfISR(iSysNow, 21, xDaughter, pdfScale2);
+  // Check that xPDF is not vanishing.
+  if ( xPDFmotherOld < TINYPDF ) {
+    infoPtr->errorMsg("Error in SpaceShower::pT2nearQCDthreshold: xPDF = 0");
+    return;
+  }
 
   // Variables used inside evolution loop. (Mainly dummy start values.)
   int    loop    = 0;

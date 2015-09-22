@@ -82,8 +82,8 @@ bool JunctionSplitting::checkColours( Event& event) {
   for (int i  = 0; i < event.size(); ++i) {
     if (event[i].isFinal() && event[i].col() != 0 &&
         event[i].col() == event[i].acol()) {
-      infoPtr->errorMsg("Warning in JunctionSplitting::CheckColours:"
-      "Made a gluon colour singlet. Redoing colour configuration");
+      infoPtr->errorMsg("Warning in JunctionSplitting::CheckColours: "
+      "Made a gluon colour singlet; redoing colours");
       return false;
     }
   }
@@ -96,23 +96,23 @@ bool JunctionSplitting::checkColours( Event& event) {
 
   // Try to split up the junction chains by splitting gluons
   if (!splitJunGluons(event, iPartonJun, iPartonAntiJun) ) {
-    infoPtr->errorMsg("Warning in JunctionSplitting::CheckColours:"
-      "Not possible to split junctions. Making new colour configuration");
+    infoPtr->errorMsg("Warning in JunctionSplitting::CheckColours: "
+      "Not possible to split junctions; making new colours");
     return false;
   }
 
   // Remove junctions if more than 2 are connected.
   if (!splitJunChains(event) ) {
-    infoPtr->errorMsg("Warning in JunctionSplitting::CheckColours:"
-      "Not possible to split junctions. Making new colour configuration");
+    infoPtr->errorMsg("Warning in JunctionSplitting::CheckColours: "
+      "Not possible to split junctions; making new colours");
     return false;
   }
 
   // Split up junction pairs.
   getPartonLists(event, iPartonJun, iPartonAntiJun);
   if (!splitJunPairs(event, iPartonJun, iPartonAntiJun) ) {
-    infoPtr->errorMsg("Warning in JunctionSplitting::CheckColours:"
-      "Not possible to split junctions. Making new colour configuration");
+    infoPtr->errorMsg("Warning in JunctionSplitting::CheckColours: "
+      "Not possible to split junctions; making new colours");
     return false;
   }
 
@@ -560,12 +560,16 @@ bool JunctionSplitting::splitJunPairs(Event& event,
             iJunList = l;
             break;
           }
-
         for (int l = 0;l < int(iPartonAntiJun.size()); ++l)
           if (- iPartonAntiJun[l][0]/10 - 1 == iAnti) {
             iAntiList = l;
             break;
           }
+        if (iJunList == -1 || iAntiList == -1) {
+          infoPtr->errorMsg("Error in JunctionSplitting::SplitJunChain:"
+            " failed to find junctions in the parton list");
+          return false;
+        }
 
         // Fill in vector of the legs content.
         vector<vector <int> > iJunLegs;
