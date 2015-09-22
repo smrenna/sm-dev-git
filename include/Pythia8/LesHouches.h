@@ -178,10 +178,10 @@ public:
     if (!setEvent()) return false; return true;}
 
   // Four routines to write a Les Houches Event file in steps.
-  bool   openLHEF(string fileNameIn);
+  virtual bool openLHEF(string fileNameIn);
+  virtual bool closeLHEF(bool updateInit = false);
   bool   initLHEF();
   bool   eventLHEF(bool verbose = true);
-  bool   closeLHEF(bool updateInit = false);
 
   // Get access to the Les Houches Event file name.
   string getFileName()     const {return fileName;}
@@ -469,6 +469,55 @@ private:
   // Pointers to process event record and further information.
   Event* processPtr;
   Info*  infoPtr;
+
+};
+
+//==========================================================================
+
+// A derived class with LHEF 3.0 information read from PYTHIA 8 itself, for
+// output.
+
+class LHEF3FromPythia8 : public LHAup {
+
+public:
+
+  // Constructor.
+  LHEF3FromPythia8(Event* eventPtrIn, Settings* settingsPtrIn,
+    Info* infoPtrIn, ParticleData* particleDataPtrIn, int pDigitsIn = 15) :
+    eventPtr(eventPtrIn),settingsPtr(settingsPtrIn), infoPtr(infoPtrIn),
+    particleDataPtr(particleDataPtrIn), writer(osLHEF), pDigits(pDigitsIn) {}
+
+  // Routine for reading, setting and printing the initialisation info.
+  bool setInit();
+
+  // Routine for reading, setting and printing the next event.
+  bool setEvent(int = 0);
+
+  // Function to open the output file.
+  bool openLHEF(string fileNameIn);
+
+  // Function to close (and possibly update) the output file.
+  bool closeLHEF(bool updateInit = false);
+
+private:
+
+  // Pointer to event that should be printed.
+  Event* eventPtr;
+
+  // Pointer to settings and info objects.
+  Settings* settingsPtr;
+  Info* infoPtr;
+  ParticleData* particleDataPtr;
+
+  // LHEF3 writer
+  Writer writer;
+
+  // Number of digits to set width of double write out
+  int pDigits;
+
+  // Some internal init and event block objects for convenience.
+  HEPRUP heprup;
+  HEPEUP hepeup;
 
 };
 

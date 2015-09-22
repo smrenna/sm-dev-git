@@ -936,8 +936,10 @@ compensatory weight. The advantages of obtaining higher statistics
 for rare branchings thus is mitigated, and the usefulness has to be 
 evaluated case by case. 
  
-<p/>Currently only enhancements of ISR branchings have been included, 
-but FSR will come soon. It should also be noted that the threshold 
+<p/>Currently enhancements of ISR and FSR branchings have been 
+included. These enhancements are currently not phase-space dependent, 
+i.e. emissions will be enhanced uniformly in phase space. 
+It should also be noted that the threshold 
 region for gluon branchings to a pair of heavy quarks, specifically 
 <ei>g &rarr; c + cbar</ei> and <ei>g &rarr; b + bbar</ei>, are not 
 enhanced in this algorithm. Technically it is because this case is 
@@ -951,7 +953,9 @@ the strategy of section 4 in <ref>Lon13a</ref>.
 <method name="virtual bool UserHooks::canEnhanceEmission()"> 
 In the base class this method returns false. If you redefine it to 
 return true then the method <code>enhanceFactor(...)</code> will be 
-used to rescale an initial-state splitting probability. 
+used to rescale an initial-state splitting probability. Both 
+<code>enhanceFactor(...)</code> and <code>vetoProbability(...)</code> 
+will have to be derived to allow for a branching enhancement. 
 </method> 
  
 <method name="virtual double UserHooks::enhanceFactor( string name)"> 
@@ -960,20 +964,61 @@ probability with identifier <code>name</code>. It should return 1.
 by default, i.e. for all input strings it does not propose to handle. 
 <argument name="name"> the name of the splitting that can enhanced. 
 Currently, the following input names are recognized by the PYTHIA 
-initial-state shower, and can thus be used to enhance the respective 
-splittings: 
+showers, and can thus be used to enhance the respective 
+splittings. 
+</p> 
+ISR QCD branchings: 
 <br/><code>isr:G2GG</code> for <ei>g &rarr; g + g</ei>, 
 <br/><code>isr:G2QQ</code> for <ei>g &rarr; q + qbar</ei>, 
 <br/><code>isr:Q2QG</code> for <ei>q &rarr; q + g</ei>, 
-<br/><code>isr:Q2GQ</code> for <ei>q &rarr; g + q</ei>, 
+<br/><code>isr:Q2GQ</code> for <ei>q &rarr; g + q</ei>; 
+</p> 
+ISR QED branchings: 
 <br/><code>isr:Q2QA</code> for <ei>q &rarr; q + photon</ei>, 
-<br/><code>isr:Q2AQ</code> for <ei>q &rarr; photon + q</ei>, and 
+<br/><code>isr:Q2AQ</code> for <ei>q &rarr; photon + q</ei>; 
+</p> 
+ISR weak shower branchings: 
 <br/><code>isr:Q2QW</code> for <ei>q &rarr; q + W</ei> or 
-<ei>q &rarr; q + Z</ei>. 
+<ei>q &rarr; q + Z</ei>; 
+</p> 
+FSR QCD branchings: 
+<br/><code>fsr:G2GG</code> for <ei>g &rarr; g + g</ei>, 
+<br/><code>fsr:G2QQ</code> for <ei>g &rarr; q + qbar</ei>, 
+<br/><code>fsr:Q2QG</code> for <ei>q &rarr; q + g</ei>; 
+</p> 
+FSR QED branchings: 
+<br/><code>fsr:Q2QA</code> for <ei>q &rarr; q + photon</ei>, 
+<br/><code>fsr:A2QQ</code> for <ei>photon &rarr; q + qbar</ei>, 
+<br/><code>fsr:A2LL</code> for <ei>photon &rarr; lepton + antilepton</ei>, 
+</p> 
+FSR weak shower branchings: 
+<br/><code>fsr:Q2QW</code> for <ei>q &rarr; q + W</ei> or 
+<ei>q &rarr; q + Z</ei>; 
+</p> 
+FSR hidden valley branchings: 
+<br/><code>fsr:Q2QHV</code> for all hidden valley branchings. 
+<br/> 
 <br/>Charge-conjugated branchings are included whenever relevant. 
 Note that the order of the daughters matters: in the backwards 
 evolution machinery the step is from the first daughter to the mother 
 by the emission of the second daughter. 
+ 
+<p/> 
+Let's consider some examples. 
+The evolution step changing the partonic state from 
+<ei>q qbar &rarr; e+ e-</ei> to <ei>g qbar &rarr; e+ e- qbar</ei> 
+through an initial state splitting can be enhanced 
+by allowing a non-unity return value for the splitting with 
+<code>name</code> equalling <code>isr:G2QQ</code>. Another evolution 
+step changing <ei>g qbar &rarr; e+ e- qbar</ei> to 
+<ei>g qbar &rarr; e+ e- qbar gluon</ei> through FSR (ISR) can be 
+enhanced by allowing a non-unity return value for the splitting with 
+<code>name</code> equalling <code>fsr:Q2QG</code> 
+(<code>isr:Q2QG</code>). Yet another ISR branching converting 
+<ei>g qbar &rarr; e+ e- qbar</ei> to <ei>q qbar &rarr; e+ e- qbar q</ei> can 
+be enhanced by non-unity return value for the splitting with 
+<code>name</code> equalling <code>isr:Q2GQ</code> 
+(note the ordering in the branching name). 
 </argument> 
 </method> 
  

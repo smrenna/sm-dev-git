@@ -469,7 +469,8 @@ bool PartonLevel::next( Event& process, Event& event) {
       // Order calls to minimize time expenditure.
       double pTgen = 0.;
       double pTtimes = (doFSRduringProcess)
-        ? timesPtr->pTnext( event, pTmaxFSR, pTgen, isFirstTrial) : -1.;
+        ? timesPtr->pTnext( event, pTmaxFSR, pTgen, isFirstTrial, doTrial)
+        : -1.;
       pTgen = max( pTgen, pTtimes);
       double pTmulti = (doMPI)
         ? multiPtr->pTnext( pTmaxMPI, pTgen, event) : -1.;

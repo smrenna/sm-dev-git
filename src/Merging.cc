@@ -200,6 +200,7 @@ int Merging::mergeProcessCKKWL( Event& process) {
   History FullHistory( nSteps, 0.0, newProcess, Clustering(), mergingHooksPtr,
             (*beamAPtr), (*beamBPtr), particleDataPtr, infoPtr,
             trialPartonLevelPtr, true, true, true, true, 1.0, 0);
+
   // Project histories onto desired branches, e.g. only ordered paths.
   FullHistory.projectOntoDesiredHistories();
 
@@ -228,7 +229,7 @@ int Merging::mergeProcessCKKWL( Event& process) {
   // Perform reweighting with Sudakov factors, save alpha_s ratios and
   // PDF ratio weights.
   wgt = FullHistory.weightTREE( trialPartonLevelPtr,
-          mergingHooksPtr->AlphaS_FSR(), mergingHooksPtr->AlphaS_ISR(), RN);
+    mergingHooksPtr->AlphaS_FSR(), mergingHooksPtr->AlphaS_ISR(), RN);
 
   // Event with production scales set for further (trial) showering
   // and starting conditions for the shower.
@@ -311,7 +312,7 @@ int Merging::mergeProcessUMEPS( Event& process) {
   mergingHooksPtr->storeHardProcessCandidates( newProcess );
 
   // Check if event passes the merging scale cut.
-  double tmsval   = mergingHooksPtr->tms();
+  double tmsval  = mergingHooksPtr->tms();
   // Get merging scale in current event.
   double tmsnow  = mergingHooksPtr->tmsNow( newProcess );
   // Calculate number of clustering steps.
@@ -477,7 +478,7 @@ int Merging::mergeProcessNL3( Event& process) {
   // Get merging scale in current event.
   double tmsnow  = mergingHooksPtr->tmsNow( newProcess );
   // Calculate number of clustering steps
-  int nSteps   = mergingHooksPtr->getNumberOfClusteringSteps( newProcess);
+  int nSteps = mergingHooksPtr->getNumberOfClusteringSteps( newProcess);
 
   // Too few steps can be possible if a chain of resonance decays has been
   // removed. In this case, reject this event, since it will be handled in
@@ -702,7 +703,7 @@ int Merging::mergeProcessUNLOPS( Event& process) {
   // Get merging scale in current event.
   double tmsnow  = mergingHooksPtr->tmsNow( newProcess );
   // Calculate number of clustering steps
-  int nSteps     = mergingHooksPtr->getNumberOfClusteringSteps( newProcess);
+  int nSteps = mergingHooksPtr->getNumberOfClusteringSteps( newProcess);
 
   // Too few steps can be possible if a chain of resonance decays has been
   // removed. In this case, reject this event, since it will be handled in
@@ -801,10 +802,6 @@ int Merging::mergeProcessUNLOPS( Event& process) {
     }
   }
 
-  // New UNLOPS strategy based on UN2LOPS.
-  bool doUNLOPS2 = false;
-  int depth = (!doUNLOPS2) ? -1 : ( (containsRealKin) ? nSteps-1 : nSteps);
-
   // Calculate weights.
   // Do LO or first part of NLO tree-level reweighting
   if( doUNLOPSTree ) {
@@ -812,23 +809,23 @@ int Merging::mergeProcessUNLOPS( Event& process) {
     // PDF ratio weights
     wgt = FullHistory.weight_UNLOPS_TREE( trialPartonLevelPtr,
             mergingHooksPtr->AlphaS_FSR(), mergingHooksPtr->AlphaS_ISR(),
-            RN, depth);
+            RN, -1);
   } else if( doUNLOPSLoop ) {
     // Set event scales properly, reweight for new UNLOPS
     wgt = FullHistory.weight_UNLOPS_LOOP( trialPartonLevelPtr,
             mergingHooksPtr->AlphaS_FSR(), mergingHooksPtr->AlphaS_ISR(),
-            RN, depth);
+            RN, -1);
   } else if( doUNLOPSSubtNLO ) {
     // Set event scales properly, reweight for new UNLOPS
     wgt = FullHistory.weight_UNLOPS_SUBTNLO( trialPartonLevelPtr,
             mergingHooksPtr->AlphaS_FSR(), mergingHooksPtr->AlphaS_ISR(),
-            RN, depth);
+            RN, -1);
   } else if( doUNLOPSSubt ) {
     // Perform reweighting with Sudakov factors, save as ratios and
     // PDF ratio weights
     wgt = FullHistory.weight_UNLOPS_SUBT( trialPartonLevelPtr,
             mergingHooksPtr->AlphaS_FSR(), mergingHooksPtr->AlphaS_ISR(),
-            RN, depth);
+            RN, -1);
   }
 
   // Event with production scales set for further (trial) showering
@@ -908,10 +905,7 @@ int Merging::mergeProcessUNLOPS( Event& process) {
     mergingHooksPtr->setWeightFIRST(wgtFIRST);
     // Subtract the O(\alpha_s)-term from the CKKW-L weight
     // If PDF contributions have not been included, subtract these later
-
-    // New UNLOPS based on UN2LOPS.
-    if (doUNLOPS2 && order > -1) wgt = -wgt*(wgtFIRST-1.);
-    else if (order > -1) wgt = wgt - wgtFIRST;
+    wgt = wgt - wgtFIRST;
 
   }
 
@@ -1003,7 +997,7 @@ bool Merging::cutOnProcess( Event& process) {
   // Get merging scale in current event.
   double tmsnow  = mergingHooksPtr->tmsNow( newProcess );
   // Calculate number of clustering steps
-  int nSteps     = mergingHooksPtr->getNumberOfClusteringSteps( newProcess);
+  int nSteps = mergingHooksPtr->getNumberOfClusteringSteps( newProcess);
 
   // Too few steps can be possible if a chain of resonance decays has been
   // removed. In this case, reject this event, since it will be handled in

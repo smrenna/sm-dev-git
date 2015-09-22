@@ -661,8 +661,7 @@ private:
 
   // Function to compute "pythia pT separation" from Particle input
   double pTLund(const Particle& radAfterBranch,const Particle& emtAfterBranch,
-                const Particle& recAfterBranch, int showerType,
-                bool massive=true);
+                const Particle& recAfterBranch, int showerType);
 
   // Function to give back the ratio of PDFs and PDF * splitting kernels
   // needed to convert a splitting at scale pdfScale, chosen with running

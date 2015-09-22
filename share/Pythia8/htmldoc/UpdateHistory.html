@@ -18,21 +18,23 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.212: 15 September 2015 
+<li>8.212: 22 September 2015 
 <ul> 
  
-<li>Possibility to enhance the rate of rare initial-state shower 
-branchings, while preserving correct Sudakov form factors, introduced 
-by a new <code>UserHooks</code> functionality.</li> 
+<li>Included new weighting facilities in initial- and final-state showers. 
+This allows to consistently enhance rare shower branchings without 
+impairing the no-emission probabilities, see 
+<a href="UserHooks.html" target="page">User Hooks</a>. A new <code>main63.cc</code>, 
+together with <code>main63.cmnd</code>, illustrates this feature.</li> 
  
-<li>Changes to allow for MEPS merging when using a shower plugin. 
-Several additional matching and merging changes, mostly to make the 
-reclustering in the merging numerically more stable, and to make 
-UN2LOPS possible. More documentation to come.</li> 
+<li>Added new functionality to time- and spacelike showers to streamline 
+merging with external shower plugins, see 
+<a href="ImplementNewShowers.html" target="page">Implement New Showers</a>.</li> 
  
-<li>New possibility, via <code>UserHooks</code>, to access hadronization 
-parameters in each step in the hadronization process, and to veto 
-individual hadrons. Thanks to Christian Bierlich.</li> 
+<li>New possibility to access hadronization parameters in each step of 
+the hadronization process, and to veto individual hadrons, see 
+<a href="UserHooks.html" target="page">User Hooks</a>. Thanks to Christian Bierlich. 
+</li> 
  
 <li>The EvtGen interface has been expanded with the possibility 
 to force a rare decay of some of the particle species handled by 
@@ -43,6 +45,20 @@ with oscillation.</li>
 <li>New option <code>MultipartonInteractions:pTmaxMatch = 3</code> 
 introduced to allow better matching for multiparton final states. 
 Thanks to Paolo Gunnellini.</li> 
+ 
+<li>Added possibility to write Les Houches Event Files abiding to the 
+latest (v. 3) standard,see 
+<a href="LesHouchesAccord.html" target="page">Les Houches Accord</a>. The new 
+<code>main64.cc</code> illustrates how to use the LHEF3 writer.</li> 
+ 
+<li>Fixes in the merging machinery, related to the scales associated 
+with final-state splittings with an initial-state recoiler. The 
+evolution scales and energy sharing values associated with this 
+configuration were not calculated correctly, as an incorrect recoiler 
+momentum was used, leading to a numerical small deviation from the 
+actual result. This issue has now been corrected. Some additional 
+matching and merging changes, mostly to make the reclustering in the 
+merging numerically more stable, and to make UN2LOPS possible.</li> 
  
 <li>Fix bug for the <code>Beams:newLHEFsameInit = on</code> option, 
 whereby several LHE files can be read in without new initialization 
@@ -101,6 +117,12 @@ particular, when internal SUSY processes were invoked to generate events.
 <li>Minor correction in the cross section for <i>f fbar &rarr; G*</i> 
 for extra-dimensional processes.</li> 
  
+<li><code>main85.cc</code> has been updated so it can handle weighted 
+events.</li> 
+ 
+<li><code>main89mlm.cmnd</code> contained misleading instructions which 
+are now changed.</li> 
+ 
 <li>Protect against rare but disastrous negative mass-squared by numerical 
 roundoff in string fragmentation.</li> 
  
@@ -115,11 +137,16 @@ Excepted is the examples main programs, where it serves a pedagogical
 function, while a separate <code>cerr</code> is less relevant for big 
 batch runs. (<code>Also FJcore</code> code is excepted).</li> 
  
+<li>Give final-state showers used for decays access to the beams; 
+not needed for PYTHIA itself but for some plugin showers.</li> 
+ 
 <li>Fix minor typo in <code>README</code>, in instruction for enabling 
 64 bit compilation.</li> 
  
 <li>Insert two missing <code>std::</code> in 
 <code>Pythia8Plugins/GeneratorInputs.h</code>.</li> 
+ 
+<li>Minor update in histogram overflow handling.</li> 
  
 <li>Add to the documentation that 
 <code>TimeShower:weightGluonToQuark = 1</code> is required for consistent 

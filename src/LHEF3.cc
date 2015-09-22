@@ -48,7 +48,7 @@ void LHAweights::print(ostream & file) const {
   for ( map<string,string>::const_iterator it = attributes.begin();
         it != attributes.end(); ++it )
     file << " " << it->first << "=\"" << it->second << "\"";
-  file << " >";
+  file << ">";
   for ( int j = 0, M = weights.size(); j < M; ++j ) file << " " << weights[j];
   file << "</weights>" << endl;
 }
@@ -86,7 +86,7 @@ void LHAscales::print(ostream & file) const {
   for ( map<string,double>::const_iterator it = attributes.begin();
         it != attributes.end(); ++it )
     file << " " << it->first << "=\"" << it->second << "\"";
-  file << contents;
+  file << ">" << contents;
   file << "</scales>" << endl;
 }
 
@@ -867,7 +867,7 @@ void Writer::init() {
 // Write out the event stored in hepeup, followed by optional
 // comment lines.
 
-bool Writer::writeEvent(HEPEUP * peup) {
+bool Writer::writeEvent(HEPEUP * peup, int pDigits) {
 
   HEPEUP & eup = (peup? *peup: hepeup);
 
@@ -875,7 +875,7 @@ bool Writer::writeEvent(HEPEUP * peup) {
   for ( map<string,string>::const_iterator it = eup.attributes.begin();
         it != eup.attributes.end(); ++it )
     file << " " << it->first << "=\"" << it->second << "\"";
-  file << ">" << endl;
+  file << ">" << std::flush << endl;
   file << " " << setw(4) << eup.NUP
        << " " << setw(6) << eup.IDPRUP
        << " " << setw(14) << eup.XWGTUP
@@ -883,8 +883,6 @@ bool Writer::writeEvent(HEPEUP * peup) {
        << " " << setw(14) << eup.AQEDUP
        << " " << setw(14) << eup.AQCDUP << endl;
   eup.resize();
-
-  int pDigits = 18;
 
   for ( int i = 0; i < eup.NUP; ++i )
     file << " " << setw(8) << eup.IDUP[i]

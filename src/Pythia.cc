@@ -490,6 +490,7 @@ bool Pythia::init() {
         string lhefIn = (frameType == 4) ? lhef : "";
         mergingHooksPtr->setLHEInputFile( lhefIn);
       }
+
       // Initialise counting of Les Houches Events significantly above the
       // merging scale.
       info.setCounter(41,0);
@@ -618,14 +619,13 @@ bool Pythia::init() {
     useNewSpace = true;
   }
 
-  // Initialize showers, especially for simple showers in decays.
+  // Initialize pointers in showers.
   timesPtr->initPtr( &info, &settings, &particleData, &rndm, couplingsPtr,
     &partonSystems, userHooksPtr, mergingHooksPtr);
   timesDecPtr->initPtr( &info, &settings, &particleData, &rndm, couplingsPtr,
     &partonSystems, userHooksPtr, mergingHooksPtr);
   spacePtr->initPtr( &info, &settings, &particleData, &rndm, couplingsPtr,
     &partonSystems, userHooksPtr, mergingHooksPtr);
-  timesDecPtr->init( 0, 0);
 
   // Set up values related to beam shape.
   if (beamShapePtr == 0) {
@@ -682,6 +682,10 @@ bool Pythia::init() {
       "processLevel initialization failed");
     return false;
   }
+
+  // Initialize timelike showers already here, since needed in decays.
+  // The pointers to the beams are needed by some external plugin showers.
+  timesDecPtr->init( &beamA, &beamB);
 
   // Alternatively only initialize resonance decays.
   if ( !doProcessLevel) processLevel.initDecays( &info, &particleData,
@@ -1098,6 +1102,10 @@ bool Pythia::next() {
 
     // Provide the hard process that starts it off. Only one try.
     info.clear();
+
+    // Reset the event information. Necessary if the previous event was read
+    // from LHEF, while the current event is not read from LHEF.
+    info.setLHEF3EventInfo();
     process.clear();
 
     if ( !processLevel.next( process) ) {

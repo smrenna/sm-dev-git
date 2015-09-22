@@ -122,7 +122,7 @@ public:
   virtual bool branch( Event& event);
 
   // Tell which system was the last processed one.
-  int system() const {return iSysSel;}
+  virtual int system() const {return iSysSel;}
 
   // Flag for failure in branch(...) that will force a retry of parton level.
   bool doRestart() const {return rescatterFail;}
@@ -138,27 +138,41 @@ public:
   // Virtual so that shower plugins can overwrite these functions.
   // This makes it possible for another piece of the code to request
   // these - which is very convenient for merging.
-  // Clustering kinematics - as needed form merging.
+  // Function variable names are not included to avoid compiler warnings.
+  // Please see the documentation under "Implement New Showers" for details.
+
+  // Return clustering kinematics - as needed form merging.
+  // Usage: clustered( const Event& event, string name, int iRad, int iEmt,
+  //                   int iRec)
   virtual Event clustered( const Event&, string, int, int, int)
     { return Event();}
-  // State after a branching, as needed to evaluate more complicated kernels.
+
+  // Return state after a branching, as needed to evaluate more complicated
+  // kernels.
+  // Usage: branched( const Event& event, int iRadBef, int iRecBef, int idEmt,
+  //                  double pT2, double z, double RN, vector<double> aux)
   virtual Event branched( const Event&, int, int, int, int, double,
-    double, double, double)
-   { return Event();}
-  // Easy access to evolution variable.
-  virtual double pT2Space ( const Particle&, const Particle&,
-    const Particle&)
+    double, double, vector<double>) { return Event();}
+
+  // Return the evolution variable.
+  // Usage: pT2Space( const Particle& rad, const Particle& emt,
+  //                  const Particle& rec)
+  virtual double pT2Space ( const Particle&, const Particle&, const Particle&)
     { return 0.;}
-  // Easy access to auxiliary variable.
-  virtual double zSpace ( const Particle&, const Particle&,
-    const Particle&)
+
+  // Return the auxiliary (energy sharing) variable.
+  // Usage: zSpace( const Particle& rad, const Particle& emt,
+  //                const Particle& rec)
+  virtual double zSpace ( const Particle&, const Particle&, const Particle&)
     { return 0.;}
-  // Easy access to identifier of a splitting.
-  virtual string getSplittingName( const Event&, int, int)
-    { return "";}
-  // Easy access to splitting probability.
-  virtual double getSplittingProb( const Event&, int, int, int )
-    { return 0.;}
+
+  // Return a string to identifier of a splitting.
+  // Usage: getSplittingName( const Event& event, int iRad, int iEmt)
+  virtual string getSplittingName( const Event&, int, int) { return "";}
+
+  // Return the splitting probability.
+  // Usage: getSplittingProb( const Event& event, int iRad, int iEmt, int iRec)
+  virtual double getSplittingProb( const Event&, int, int, int ) { return 0.;}
 
 protected:
 

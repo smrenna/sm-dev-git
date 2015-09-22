@@ -972,7 +972,7 @@ public:
 
   // Write out the event stored in hepeup, followed by optional
   // comment lines.
-  bool writeEvent(HEPEUP * peup = 0);
+  bool writeEvent(HEPEUP * peup = 0, int pDigits = 15);
 
 protected:
 
