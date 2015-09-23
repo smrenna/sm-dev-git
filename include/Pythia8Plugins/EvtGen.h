@@ -138,7 +138,7 @@ protected:
 
   // Update the Pythia event record with an EvtGen decay tree.
   void updateEvent(Particle *pyPro, EvtParticle *egPro,
-    vector<Particle*> *pySigs = 0, vector<EvtParticle*> *egSigs = 0,
+    vector<int> *pySigs = 0, vector<EvtParticle*> *egSigs = 0,
     vector<double> *bfs = 0, double *wgt = 0);
 
   // Check if a particle can decay.
@@ -287,7 +287,7 @@ double EvtGenDecays::decay() {
 
   // Loop over all particles in the Pythia event.
   Event &event = pythiaPtr->event;
-  vector<Particle*> pySigs; vector<EvtParticle*> egSigs, egPrts;
+  vector<int> pySigs; vector<EvtParticle*> egSigs, egPrts;
   vector<double> bfs; double wgt(1.);
   for (int iPro = 0; iPro < event.size(); ++iPro) {
 
@@ -313,7 +313,7 @@ double EvtGenDecays::decay() {
 
     // Undo decay if signal (duplicate to stop oscillations).
     else if (checkSignal(pyPro)) {
-      pySigs.push_back(pyPro);
+      pySigs.push_back(pyPro->index());
       egSigs.push_back(egPro);
       bfs.push_back(signal->second.bfs[0]);
       wgt *= 1 - bfs.back();
@@ -353,7 +353,7 @@ double EvtGenDecays::decay() {
   // Decay the signal particles and mark forced decay.
   for (int iSig = 0; iSig < (int)pySigs.size(); ++iSig) {
     EvtParticle *egSig = egSigs[iSig];
-    Particle    *pySig = pySigs[iSig];
+    Particle    *pySig = &event[pySigs[iSig]];
     signal = signals.find(pySig->id());
     if (egSig->getNDaug() > 0) egSig = egSig->getDaug(0);
     if (modes[iSig] == 0) egSig->setId(signal->second.egId);
@@ -522,7 +522,7 @@ void EvtGenDecays::updateData(bool final) {
 // these arguments is NULL then the entire tree is written.
 
 void EvtGenDecays::updateEvent(Particle *pyPro, EvtParticle *egPro,
-  vector<Particle*> *pySigs, vector<EvtParticle*> *egSigs,
+  vector<int> *pySigs, vector<EvtParticle*> *egSigs,
   vector<double> *bfs, double *wgt) {
 
   // Set up the mother vector.
@@ -559,7 +559,7 @@ void EvtGenDecays::updateEvent(Particle *pyPro, EvtParticle *egPro,
       pyDtr->vProd(vProd);
       pyDtr->tau(egDtr->getLifetime());
       if (pySigs && egSigs && bfs && wgt && checkSignal(pyDtr)) {
-        pySigs->push_back(pyDtr);
+        pySigs->push_back(pyDtr->index());
         egSigs->push_back(egDtr);
         bfs->push_back(signal->second.bfs[0]);
         (*wgt) *= 1 - bfs->back();

@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.212: 22 September 2015 
+<li>8.212: 23 September 2015 
 <ul> 
  
 <li>Included new weighting facilities in initial- and final-state showers. 
@@ -60,11 +60,13 @@ the hadronization process, and to veto individual hadrons, see
 echo "<a href='UserHooks.php?filepath=".$filepath."' target='page'>";?>User Hooks</a>. Thanks to Christian Bierlich. 
 </li> 
  
-<li>The EvtGen interface has been expanded with the possibility 
-to force a rare decay of some of the particle species handled by 
-EvtGen, with an event weight compensating for this bias. New status 
-codes 95 or 96 single out particles from a forced decay, without or 
-with oscillation.</li> 
+<li>The <?php $filepath = $_GET["filepath"];
+echo "<a href='ExternalDecays.php?filepath=".$filepath."' target='page'>";?>EvtGen interface</a> has been 
+expanded with the possibility to force a rare decay of some of the 
+particle species handled by EvtGen, with an event weight compensating 
+for this bias. New status codes 95 or 96 single out particles from a 
+forced decay, without or with oscillation. Documentation has been 
+expanded.</li> 
  
 <li>New option <code>MultipartonInteractions:pTmaxMatch = 3</code> 
 introduced to allow better matching for multiparton final states. 
@@ -92,6 +94,9 @@ were no longer reset properly, and so no files beyond the first one
 were read. Thanks to Roberto Franceschini.</li> 
  
 <li>Bug fix in the junction handling for the case of gluinos.</li> 
+ 
+<li>Avoid segmentation fault for some rare junction topologies. 
+Thanks to Gabriel Magill.</li> 
  
 <li>Minor fix for the path to the PowhegBox plugin, as used in the 
 <code>Makefile</code>.</li> 
