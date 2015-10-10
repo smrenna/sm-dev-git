@@ -121,7 +121,7 @@ public:
   bool extOwner, fsrOwner;
   EvtExternalGenList *extPtr;
   EvtAbsRadCorr      *fsrPtr;
-  list<EvtDecayBase*> models;
+  std::list<EvtDecayBase*> models;
 
   // Map of signal particle info.
   struct Signal {int status; EvtId egId; vector<double> bfs; vector<int> map;

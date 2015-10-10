@@ -93,6 +93,7 @@ bool ResonanceDecays::next( Event& process, int iDecNow) {
         }
 
         // Pick masses. Pick new channel if fail.
+        mProd.resize(1);
         if (!pickMasses()) continue;
         foundChannel = true;
         break;

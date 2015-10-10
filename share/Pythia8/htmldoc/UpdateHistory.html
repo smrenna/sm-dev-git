@@ -18,6 +18,37 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
+<li>8.213: 10 October 2015 
+<ul> 
+ 
+<li>By default the program will now assign the PYTHIA mass for 
+massless <i>c</i> and <i>b</i> quarks in Les Houches input, see 
+<code><a href="LesHouchesAccord.html" target="page">LesHouches:setQuarkMass</a></code>. 
+Usually a logical recoiler is found that can transfer the needed 
+four-momentum to the quark. The already existing machinery for 
+giving masses to massless leptons has been expanded to use the more 
+sophisticated algorithm now in place.</li> 
+ 
+<li>New method <code>Particle::daughterListRecursive()</code> 
+that uses the <code>daughterList()</code> method to trace 
+consecutive generations of decay products.</li> 
+ 
+<li>New <code>Vec4</code> friend method <code>pShift(...)</code> 
+to transfer four-momentum between two four-vectors so as to bring them 
+to have specified new masses.</li> 
+ 
+<li>Bug fix in the selection of masses in resonance decays. 
+In rare situations this could give wrong masses for particles. 
+Thanks to Are Raklev and Anders Kvellestad.</li> 
+ 
+<li>Minor corrections for the LHAPDF6 description in README. 
+Thanks to Radek Zlebcik.</li> 
+ 
+<li>Updated address for Philip Ilten.</li> 
+ 
+</ul> 
+</li> 
+ 
 <li>8.212: 23 September 2015 
 <ul> 
  

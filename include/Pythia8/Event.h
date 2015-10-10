@@ -193,6 +193,7 @@ public:
   int iBotCopyId(bool simplify = false) const;
   vector<int> motherList()   const;
   vector<int> daughterList() const;
+  vector<int> daughterListRecursive() const;
   vector<int> sisterList(bool traceTopBot = false) const;
   bool isAncestor(int iAncestor) const;
   int statusHepMC()  const;

@@ -725,6 +725,17 @@ may have the same <code>daughterList</code>. Daughters are listed in
 ascending order. 
 </method> 
  
+<method name="vector&lt;int&gt; Particle::daughterListRecursive()"> 
+returns a vector of all the daughter indices of the particle, recursively 
+including all subsequent decay generations. It is based on the 
+<code>daughterList()</code> method, so obeys the rules given there, 
+except that the listing does not necessarily have to be in ascending 
+order. Its primary application is for the decay of a hadron, or of a 
+resonance in the <code>process</code> record. It is less convenient 
+e.g. for the full parton-shower evolution, and should there only be 
+used with caution. 
+</method> 
+ 
 <method name="vector&lt;int&gt; Particle::sisterList(bool traceTopBot 
 = false)"> 
 returns a vector of all the sister indices of the particle, i.e. all the 

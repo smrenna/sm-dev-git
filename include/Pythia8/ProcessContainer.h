@@ -160,8 +160,8 @@ private:
 
   // Possibility to modify Les Houches input.
   bool   matchInOut;
-  int    idRenameBeams, setLifetime, setLeptonMass, idLep[3];
-  double mRecalculate, mLep[3];
+  int    idRenameBeams, setLifetime, setQuarkMass, setLeptonMass, idNewM[9];
+  double mRecalculate, mNewM[9];
 
   // Info on process.
   bool   isLHA, isNonDiff, isResolved, isDiffA, isDiffB, isDiffC, isQCD3body,

@@ -23,7 +23,7 @@ namespace Pythia8 {
 
 // The current Pythia (sub)version number, to agree with XML version.
 const double Pythia::VERSIONNUMBERHEAD = PYTHIA_VERSION;
-const double Pythia::VERSIONNUMBERCODE = 8.212;
+const double Pythia::VERSIONNUMBERCODE = 8.213;
 
 //--------------------------------------------------------------------------
 
@@ -1622,8 +1622,8 @@ void Pythia::banner(ostream& os) {
      << "erg.de                                |  | \n"
      << " |  |   Philip Ilten;  Massachusetts Institut"
      << "e of Technology,                      |  | \n"
-     << " |  |      stationed at CERN, CH-1211 Geneva "
-     << "23, Switzerland;                      |  | \n"
+     << " |  |      77 Massachusetts Ave, Cambridge, M"
+     << "A 02139, USA;                         |  | \n"
      << " |  |      e-mail: philten@cern.ch           "
      << "                                      |  | \n"
      << " |  |   Stephen Mrenna;  Computing Division, "

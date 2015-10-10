@@ -229,6 +229,37 @@ vector<int> Particle::daughterList() const {
 
 //--------------------------------------------------------------------------
 
+// Find complete list of daughters recursively, i.e. including subsequent
+// generations. Is intended specifically for resonance decays.
+
+vector<int> Particle::daughterListRecursive() const {
+
+  // Vector of all the daughters; created empty. Done if no event pointer.
+  vector<int> daughterVec;
+  if (evtPtr == 0) return daughterVec;
+
+  // Find first generation of daughters.
+  daughterVec = daughterList();
+
+  // Recursively add daughters of unstable particles.
+  int size = daughterVec.size();
+  for (int iDau = 0; iDau < size; ++iDau) {
+    Particle& partNow = (*evtPtr)[daughterVec[iDau]];
+    if (!partNow.isFinal()) {
+      vector<int> grandDauVec = partNow.daughterList();
+      for (int i = 0; i < int(grandDauVec.size()); ++i)
+        daughterVec.push_back( grandDauVec[i] );
+      size += grandDauVec.size();
+    }
+  }
+
+  // Done.
+  return daughterVec;
+
+}
+
+//--------------------------------------------------------------------------
+
 // Find complete list of sisters. Optionally traces up with iTopCopy
 // and down with iBotCopy to give sisters at same level of evolution.
 
