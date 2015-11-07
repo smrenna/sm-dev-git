@@ -51,6 +51,7 @@ void HardDiffraction::init(Info* infoPtrIn, Settings& settingsPtrIn,
   mB  = (beamBPtr != 0) ? beamBPtr->m()  : 0.;
 
   // Set up Pomeron flux constants.
+  rescale = settings.parm("Diffraction:PomFluxRescale");
   if (pomFlux == 1) {
     double sigmaRefPomP = settings.parm("Diffraction:sigmaRefPomP");
     normPom = pow2(sigmaRefPomP) * 0.02;
@@ -254,7 +255,7 @@ double HardDiffraction::xfPom(double xIn) {
   }
 
   // Done
-  return xFlux;
+  return xFlux * rescale;
 }
 
 //--------------------------------------------------------------------------
@@ -375,7 +376,7 @@ double HardDiffraction::xfPomWithT(double xIn, double tIn) {
     xFlux = normPom * exp(b0*t)/pow(x, 2. * (a0 + ap*t) - 2.);
 
   // Done
-  return xFlux;
+  return xFlux * rescale;
 }
 
 //--------------------------------------------------------------------------

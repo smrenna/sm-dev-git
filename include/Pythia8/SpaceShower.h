@@ -223,9 +223,9 @@ private:
   // Initialization data, normally only set once.
   bool   doQCDshower, doQEDshowerByQ, doQEDshowerByL, useSamePTasMPI,
          doWeakShower, doMEcorrections, doMEafterFirst, doPhiPolAsym,
-         doPhiIntAsym, doRapidityOrder, useFixedFacScale, doSecondHard,
-         canVetoEmission, hasUserHooks, alphaSuseCMW, singleWeakEmission,
-         vetoWeakJets;
+         doPhiPolAsymHard, doPhiIntAsym, doRapidityOrder, useFixedFacScale,
+         doSecondHard, canVetoEmission, hasUserHooks, alphaSuseCMW,
+         singleWeakEmission, vetoWeakJets;
   int    pTmaxMatch, pTdampMatch, alphaSorder, alphaSnfmax, alphaEMorder,
          nQuarkIn, enhanceScreening, weakMode;
   double pTdampFudge, mc, mb, m2c, m2b, renormMultFac, factorMultFac,

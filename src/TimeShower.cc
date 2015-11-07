@@ -80,6 +80,7 @@ void TimeShower::init( BeamParticle* beamAPtrIn,
   doMEcorrections    = settingsPtr->flag("TimeShower:MEcorrections");
   doMEafterFirst     = settingsPtr->flag("TimeShower:MEafterFirst");
   doPhiPolAsym       = settingsPtr->flag("TimeShower:phiPolAsym");
+  doPhiPolAsymHard   = settingsPtr->flag("TimeShower:phiPolAsymHard");
   doInterleave       = settingsPtr->flag("TimeShower:interleave");
   allowBeamRecoil    = settingsPtr->flag("TimeShower:allowBeamRecoil");
   dampenBeamRecoil   = settingsPtr->flag("TimeShower:dampenBeamRecoil");
@@ -5182,10 +5183,11 @@ void TimeShower::findAsymPol( Event& event, TimeDipoleEnd* dip) {
   int iGrandM = event[iMother].mother1();
 
   // If grandmother in initial state of hard scattering,
-  // then only keep gg and qq initial states.
+  // then at most keep only gg and qq initial states.
   int statusGrandM = event[iGrandM].status();
   bool isHardProc  = (statusGrandM == -21 || statusGrandM == -31);
   if (isHardProc) {
+    if (!doPhiPolAsymHard) return;
     if (event[iGrandM + 1].status() != statusGrandM) return;
     if (event[iGrandM].isGluon() && event[iGrandM + 1].isGluon());
     else if (event[iGrandM].isQuark() && event[iGrandM + 1].isQuark());
@@ -5206,9 +5208,9 @@ void TimeShower::findAsymPol( Event& event, TimeDipoleEnd* dip) {
   else dip->asymPol = 2. * (1. - zProd) / (1. + pow2(1. - zProd) );
 
   // Coefficients from gluon decay.
-  if (dip->flavour == 21) dip->asymPol *= pow2( (1. - dip->z)
+  if (dip->flavour == 21) dip->asymPol *= pow2( dip->z * (1. - dip->z)
     / (1. - dip->z * (1. - dip->z) ) );
-  else  dip->asymPol *= -2. * dip->z *( 1. - dip->z )
+  else  dip->asymPol *= -2. * dip->z * ( 1. - dip->z )
     / (1. - 2. * dip->z * (1. - dip->z) );
 
 }

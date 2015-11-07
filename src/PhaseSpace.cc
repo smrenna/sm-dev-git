@@ -469,7 +469,7 @@ void PhaseSpace::decayKinematicsStep( Event& process, int iRes) {
     for (int i = iFrame; i <= mult; ++i) pProd[i].bst(pInv[iFrame]);
 
   // Done for multibody decay.
-  for (int i = 1; i < mult; ++i)
+  for (int i = 1; i <= mult; ++i)
     process[i1 + i - 1].p( pProd[i] );
   return;
 

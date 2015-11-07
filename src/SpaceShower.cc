@@ -203,6 +203,7 @@ void SpaceShower::init( BeamParticle* beamAPtrIn,
   doMEcorrections    = settingsPtr->flag("SpaceShower:MEcorrections");
   doMEafterFirst     = settingsPtr->flag("SpaceShower:MEafterFirst");
   doPhiPolAsym       = settingsPtr->flag("SpaceShower:phiPolAsym");
+  doPhiPolAsymHard   = settingsPtr->flag("SpaceShower:phiPolAsymHard");
   doPhiIntAsym       = settingsPtr->flag("SpaceShower:phiIntAsym");
   strengthIntAsym    = settingsPtr->parm("SpaceShower:strengthIntAsym");
   nQuarkIn           = settingsPtr->mode("SpaceShower:nQuarkIn");
@@ -2683,7 +2684,7 @@ void SpaceShower::findAsymPol( Event& event, SpaceDipoleEnd* dip) {
 
   // Check if granddaughter in final state of hard scattering.
   // (May need to trace across carbon copies to find granddaughters.)
-  // If so, only accept 2 -> 2 scatterings with gg or qq in final state.
+  // If so, at most accept 2 -> 2 scatterings with gg or qq in final state.
   int iGrandD1 = event[iRad].daughter1();
   int iGrandD2 = event[iRad].daughter2();
   bool traceCopy = false;
@@ -2698,6 +2699,7 @@ void SpaceShower::findAsymPol( Event& event, SpaceDipoleEnd* dip) {
   int statusGrandD1 = event[ iGrandD1 ].statusAbs();
   bool isHardProc  = (statusGrandD1 == 23 || statusGrandD1 == 33);
   if (isHardProc) {
+    if (!doPhiPolAsymHard) return;
     if (iGrandD2 != iGrandD1 + 1) return;
     if (event[iGrandD1].isGluon() && event[iGrandD2].isGluon());
     else if (event[iGrandD1].isQuark() && event[iGrandD2].isQuark());
@@ -2712,7 +2714,7 @@ void SpaceShower::findAsymPol( Event& event, SpaceDipoleEnd* dip) {
 
   // Coefficients from gluon decay. Put z = 1/2 for hard process.
   double zDau  = (isHardProc) ? 0.5 : dip->zOld;
-  if (event[iGrandD1].isGluon()) dip->asymPol *= pow2( (1. - zDau)
+  if (event[iGrandD1].isGluon()) dip->asymPol *= pow2( zDau * (1. - zDau)
     / (1. - zDau * (1. - zDau) ) );
   else  dip->asymPol *= -2. * zDau *( 1. - zDau )
     / (1. - 2. * zDau * (1. - zDau) );

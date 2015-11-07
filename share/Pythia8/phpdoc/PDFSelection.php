@@ -363,7 +363,10 @@ should be used. You can use <code>examples/main51.cc</code> to get
 a more precise value. Note that also other parameters in the 
 <?php $filepath = $_GET["filepath"];
 echo "<a href='Diffraction.php?filepath=".$filepath."' target='page'>";?>diffraction</a> framework may need to 
-be retuned when this parameter is changed. 
+be retuned when this parameter is changed. Specifically 
+<code>Diffraction:PomFluxRescale</code> should be set to the inverse 
+of <code>PDF:PomRescale</code> to preserve the cross section for hard 
+diffractive processes. 
    
  
 <h3>Parton densities for leptons</h3> 

@@ -397,6 +397,13 @@ bool MultipartonInteractions::init( bool doMPIinit, int iDiffSysIn,
     expPow       = max(EXPPOWMIN, expPow);
   }
 
+  // No x-dependent impact-parameter profile for diffraction.
+  if ((iDiffSys > 0 || settings.flag("Diffraction:doHard")) && bProfile == 4) {
+    infoPtr->errorMsg("Error in MultipartonInteractions::init:"
+      " chosen b profile not allowed for diffraction");
+    return false;
+  }
+
   // Common choice of "pT" scale for determining impact parameter.
   bSelScale      = settings.mode("MultipartonInteractions:bSelScale");
 
@@ -430,6 +437,7 @@ bool MultipartonInteractions::init( bool doMPIinit, int iDiffSysIn,
   mPomP          = settings.parm("Diffraction:mRefPomP");
   pPomP          = settings.parm("Diffraction:mPowPomP");
   mMinPertDiff   = settings.parm("Diffraction:mMinPert");
+  bSelHard       = settings.mode("Diffraction:bSelHard");
 
   // Possibility to allow user veto of MPI
   canVetoMPI = (userHooksPtr != 0) ? userHooksPtr->canVetoMPIEmission()
@@ -876,6 +884,7 @@ void MultipartonInteractions::pTfirst() {
           else swap(dSigmaDtSel, dSigmaDtSelSave);
 
           // Accept.
+          bNow  /= bAvg;
           bIsSet = true;
           break;
         }
@@ -2151,7 +2160,7 @@ void MultipartonInteractions::overlapFirst() {
 
   // Trivial values if no impact parameter dependence.
   if (bProfile <= 0 || bProfile > 4) {
-    bNow     = bAvg;
+    bNow     = 1.;
     enhanceB = zeroIntCorr;
     bIsSet   = true;
     isAtLowB = true;
@@ -2231,6 +2240,7 @@ void MultipartonInteractions::overlapFirst() {
   enhanceB = enhanceBmax = enhanceBnow = (normOverlap / normPi) * overlapNow;
 
   // Done.
+  bNow  /= bAvg;
   bIsSet = true;
 
 }
@@ -2240,7 +2250,37 @@ void MultipartonInteractions::overlapFirst() {
 // Pick impact parameter and interaction rate enhancement afterwards,
 // i.e. after a hard interaction is known but before rest of MPI treatment.
 
-void MultipartonInteractions::overlapNext(Event& event, double pTscale) {
+void MultipartonInteractions::overlapNext(Event& event, double pTscale,
+  bool rehashB) {
+
+  // Special case for hard diffraction if unchanged/related b.
+  if (rehashB && bSelHard < 3) {
+
+    // One option: bring b closer to its average value.
+    bNow = infoPtr->bMPI();
+    if (bSelHard == 2) bNow = sqrt(bNow);
+    bNow *= bAvg;
+    double b2 = bNow * bNow;
+
+    // Caclulate new overlap enhancement factor.
+    if (bProfile == 1) {
+      double expb2 = exp( -min(EXPMAX, b2));
+      enhanceB = enhanceBmax = enhanceBnow = normOverlap * expb2;
+    } else if (bProfile == 2) {
+      enhanceB = enhanceBmax = enhanceBnow = normOverlap *
+        ( fracA * exp( -min(EXPMAX, b2))
+        + fracB * exp( -min(EXPMAX, b2 / radius2B)) / radius2B
+        + fracC * exp( -min(EXPMAX, b2 / radius2C)) / radius2C );
+    } else {
+      double cNow = pow( bNow, expPow);
+      enhanceB = enhanceBmax = enhanceBnow = normOverlap * exp(-cNow);
+    }
+
+    // Done for simple cases.
+    bNow  /= bAvg;
+    bIsSet = true;
+    return;
+  }
 
   // Default, valid for bProfile = 0. Also initial Sudakov.
   enhanceB = zeroIntCorr;
@@ -2281,6 +2321,7 @@ void MultipartonInteractions::overlapNext(Event& event, double pTscale) {
       // Trial interaction. Keep going until pTtrial < pTscale.
       pTtrial = pTnext(pTmax, pTmin, event);
     } while (pTtrial > pTscale);
+    bNow  /= bAvg;
     bIsSet = true;
     return;
   }
@@ -2353,6 +2394,7 @@ void MultipartonInteractions::overlapNext(Event& event, double pTscale) {
   } while (sudakov(pT2scale, enhanceB) < rndmPtr->flat());
 
   // Done.
+  bNow  /= bAvg;
   bIsSet = true;
 }
 

@@ -238,11 +238,11 @@ private:
   // Initialization data, normally only set once.
   bool   doQCDshower, doQEDshowerByQ, doQEDshowerByL, doQEDshowerByGamma,
          doWeakShower, doMEcorrections, doMEafterFirst, doPhiPolAsym,
-         doInterleave, allowBeamRecoil, dampenBeamRecoil, recoilToColoured,
-         useFixedFacScale, allowRescatter, canVetoEmission, doHVshower,
-         brokenHVsym, globalRecoil, useLocalRecoilNow, doSecondHard,
-         hasUserHooks, singleWeakEmission, alphaSuseCMW, vetoWeakJets,
-         allowMPIdipole;
+         doPhiPolAsymHard, doInterleave, allowBeamRecoil, dampenBeamRecoil,
+         recoilToColoured, useFixedFacScale, allowRescatter, canVetoEmission,
+         doHVshower, brokenHVsym, globalRecoil, useLocalRecoilNow,
+         doSecondHard, hasUserHooks, singleWeakEmission, alphaSuseCMW,
+         vetoWeakJets, allowMPIdipole;
   int    pTmaxMatch, pTdampMatch, alphaSorder, alphaSnfmax, nGluonToQuark,
          weightGluonToQuark, alphaEMorder, nGammaToQuark, nGammaToLepton,
          nCHV, idHV, nMaxGlobalRecoil, weakMode;

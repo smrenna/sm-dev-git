@@ -444,7 +444,7 @@ bool PartonLevel::next( Event& process, Event& event) {
     pTsaveFSR       = pTmaxFSR;
 
     // Prepare the classes to begin the generation.
-    if (doMPI) multiPtr->prepare( event, pTmaxMPI);
+    if (doMPI) multiPtr->prepare( event, pTmaxMPI, (iHardDiffLoop == 2) );
     if (doISR) spacePtr->prepare( 0, event, limitPTmaxISR);
     if (doFSRduringProcess) timesPtr->prepare( 0, event, limitPTmaxFSR);
     if (doSecondHard && doISR) spacePtr->prepare( 1, event, limitPTmaxISR);
@@ -453,7 +453,7 @@ bool PartonLevel::next( Event& process, Event& event) {
 
     // Impact parameter has now been chosen, except for diffraction.
     if (!isDiff) infoPtr->setImpact( multiPtr->bMPI(),
-      multiPtr->enhanceMPI(), true);
+      multiPtr->enhanceMPI(), true, (iHardDiffLoop == 2));
     // Set up initial veto scale.
     doVeto        = false;
     double pTveto = pTvetoPT;

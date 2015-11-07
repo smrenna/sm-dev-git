@@ -346,7 +346,10 @@ a momentum sum of order 0.5, suggesting that a factor around 2.0
 should be used. You can use <code>examples/main51.cc</code> to get 
 a more precise value. Note that also other parameters in the 
 <aloc href="Diffraction">diffraction</aloc> framework may need to 
-be retuned when this parameter is changed. 
+be retuned when this parameter is changed. Specifically 
+<code>Diffraction:PomFluxRescale</code> should be set to the inverse 
+of <code>PDF:PomRescale</code> to preserve the cross section for hard 
+diffractive processes. 
 </parm> 
  
 <h3>Parton densities for leptons</h3> 

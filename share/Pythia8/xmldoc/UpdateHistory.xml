@@ -12,7 +12,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.213: 10 October 2015 
+<li>8.213: 7 November 2015 
 <ul> 
  
 <li>By default the program will now assign the PYTHIA mass for 
@@ -22,6 +22,22 @@ Usually a logical recoiler is found that can transfer the needed
 four-momentum to the quark. The already existing machinery for 
 giving masses to massless leptons has been expanded to use the more 
 sophisticated algorithm now in place.</li> 
+ 
+<li>Significant bug found in timelike and spacelike showers, whereby 
+the azimuthal anisotropy from gluon polarization in the past has been 
+overestimated. This does not affect multijet rates, but can influence 
+distributions sensitive to angular correlations. New switches 
+<code>TimeShower:phiPolAsymHard</code> and 
+<code>SpaceShower:phiPolAsymHard</code> regulate whether the first 
+branching after/before the hard process can correlate with the 
+hard-process event plane. Thanks to Radek Zlebcik.</li> 
+ 
+<li>Some further new options and minor additions in the machinery for 
+hard diffraction. This includes three options for setting the impact 
+parameter for the <ei>Pomeron p</ei> subcollision, a possibility to 
+access both it and the impact parameter both for the original 
+<ei>p p</ei>, and an option to rescale the Pomeron flux. Some default 
+values changed, notably that now MPI is checked.</li> 
  
 <li>New method <code>Particle::daughterListRecursive()</code> 
 that uses the <code>daughterList()</code> method to trace 
@@ -34,6 +50,21 @@ to have specified new masses.</li>
 <li>Bug fix in the selection of masses in resonance decays. 
 In rare situations this could give wrong masses for particles. 
 Thanks to Are Raklev and Anders Kvellestad.</li> 
+ 
+<li>The <code>StringFlav::combine( int, int bool)</code> method is 
+renamed <code>combineId</code> to avoid a potential incorrect 
+method overloading. Thanks to James Monk.</li> 
+ 
+<li>Bug fix for excited quarks <ei>q^*</ei> and leptons <ei>l^*</ei>, 
+that if new decay channels were introduced they could incorrectly make 
+use of the matrix element expressions for the existing decay modes. 
+Thanks to Simone Amoroso.</li> 
+ 
+<li>Bug fix in the kinematics of four or more resonance decay products 
+when  kinematics is redone owing to matrix-element corrections. 
+Thanks to Simone Amoroso.</li> 
+ 
+<li>Minor technical changes in the LHEF3 machinery.</li> 
  
 <li>Minor corrections for the LHAPDF6 description in README. 
 Thanks to Radek Zlebcik.</li> 

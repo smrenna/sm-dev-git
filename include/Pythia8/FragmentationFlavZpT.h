@@ -90,7 +90,7 @@ public:
   virtual int combine(FlavContainer& flav1, FlavContainer& flav2);
 
   // Ditto, simplified input argument for simple configurations.
-  virtual int combine( int id1, int id2, bool keepTrying = true) {
+  virtual int combineId( int id1, int id2, bool keepTrying = true) {
     FlavContainer flag1(id1); FlavContainer flag2(id2);
     for (int i = 0; i < 100; ++i) { int idNew = combine( flag1, flag2);
       if (idNew != 0 || !keepTrying) return idNew;} return 0;}

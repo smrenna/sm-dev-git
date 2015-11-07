@@ -141,6 +141,8 @@ public:
   double bMPI()               const {return (bIsSet) ? bMPISave : 1.;}
   double enhanceMPI()         const {return (bIsSet) ? enhanceMPISave : 1.;}
   double eMPI(int i)          const {return (bIsSet) ? eMPISave[i] : 1.;}
+  double bMPIold()            const {return (bIsSet) ? bMPIoldSave : 1.;}
+  double enhanceMPIold()      const {return (bIsSet) ? enhanceMPIoldSave : 1.;}
 
   // Number of multiparton interactions, with code and pT for them.
   int    nMPI()               const {return nMPISave;}
@@ -362,8 +364,9 @@ private:
          pdf2Save[4], Q2FacSave[4], alphaEMSave[4], alphaSSave[4],
          Q2RenSave[4], scalupSave[4], sH[4], tH[4], uH[4], pTH[4], m3H[4],
          m4H[4], thetaH[4], phiH[4], weightSave, bMPISave, enhanceMPISave,
-         pTmaxMPISave, pTmaxISRSave, pTmaxFSRSave, pTnowSave,
-         zNowISRSave, pT2NowISRSave, xPomA, xPomB, tPomA, tPomB;
+         bMPIoldSave, enhanceMPIoldSave, pTmaxMPISave, pTmaxISRSave,
+         pTmaxFSRSave, pTnowSave, zNowISRSave, pT2NowISRSave, xPomA, xPomB,
+         tPomA, tPomB;
   string nameSave, nameSubSave[4];
   vector<int>    codeMPISave, iAMPISave, iBMPISave;
   vector<double> pTMPISave, eMPISave;
@@ -404,7 +407,8 @@ private:
       = isHardDiffA = isHardDiffB = hasUnresBeams = hasPomPsys = false;
     codeSave = nFinalSave = nTotal = nMPISave = nISRSave = nFSRinProcSave
       = nFSRinResSave = 0;
-    weightSave = bMPISave = enhanceMPISave = weightCKKWLSave = 1.;
+    weightSave = bMPISave = enhanceMPISave = bMPIoldSave = enhanceMPIoldSave
+      = weightCKKWLSave = 1.;
     pTmaxMPISave = pTmaxISRSave = pTmaxFSRSave = pTnowSave = zNowISRSave
       = pT2NowISRSave = weightFIRSTSave = 0.;
     nameSave = " ";
@@ -479,7 +483,9 @@ private:
     sigErrM[i] = sqrtpos(sigErrM[i]*sigErrM[i] + sigErrIn*sigErrIn); }
 
   // Set info on impact parameter: from PartonLevel.
-  void setImpact( double bMPIIn, double enhanceMPIIn, bool bIsSetIn = true) {
+  void setImpact( double bMPIIn, double enhanceMPIIn, bool bIsSetIn = true,
+    bool pushBack = false) {
+    if (pushBack) {bMPIoldSave = bMPISave; enhanceMPIoldSave = enhanceMPISave;}
     bMPISave = bMPIIn; enhanceMPISave = eMPISave[0] = enhanceMPIIn,
     bIsSet = bIsSetIn;}
 

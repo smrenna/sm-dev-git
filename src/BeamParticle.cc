@@ -596,7 +596,7 @@ bool BeamParticle::remnantFlavours(Event& event, bool isDIS) {
     int i12         = (colType1 == -colTypeComp) ? 1 : 2;
 
     // Combine to new hadron flavour.
-    int idHad = flavSelPtr->combine( resolved[i12].id(), resolved[3].id() );
+    int idHad = flavSelPtr->combineId( resolved[i12].id(), resolved[3].id() );
     if (idHad == 0) {
       infoPtr->errorMsg("Error in BeamParticle::remnantFlavours: "
         "failed to combine hadron for DIS");
