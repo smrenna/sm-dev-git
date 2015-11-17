@@ -293,7 +293,7 @@ void LHArwgt::print(ostream & file) const {
   file << " >\n";
   for ( map<string,LHAwgt>::const_iterator it = wgts.begin();
         it != wgts.end(); ++it ) it->second.print(file);
-  file << "</rgwt>" << endl;
+  file << "</rwgt>" << endl;
 }
 
 //==========================================================================
@@ -393,7 +393,7 @@ void LHAinitrwgt::print(ostream & file) const {
         it != weightgroups.end(); ++it ) it->second.print(file);
   for ( map<string,LHAweight>::const_iterator it = weights.begin();
         it != weights.end(); ++it ) it->second.print(file);
-  file << "</initrgwt>" << endl;
+  file << "</initrwgt>" << endl;
 }
 
 //==========================================================================

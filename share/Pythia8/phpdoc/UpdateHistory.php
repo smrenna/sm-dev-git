@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.213: 7 November 2015 
+<li>8.213: 17 November 2015 
 <ul> 
  
 <li>By default the program will now assign the PYTHIA mass for 
@@ -83,6 +83,11 @@ Thanks to Are Raklev and Anders Kvellestad.</li>
 renamed <code>combineId</code> to avoid a potential incorrect 
 method overloading. Thanks to James Monk.</li> 
  
+<li>Bug fix: copy vertex information when a long-lived particle 
+decays to three quarks (typically with baryon number violation), 
+whereof two have such a small invariant mass that they collapse to a 
+diquark. Thanks to Cristiano Alpigiani.</li> 
+ 
 <li>Bug fix for excited quarks <i>q^*</i> and leptons <i>l^*</i>, 
 that if new decay channels were introduced they could incorrectly make 
 use of the matrix element expressions for the existing decay modes. 
@@ -92,7 +97,11 @@ Thanks to Simone Amoroso.</li>
 when  kinematics is redone owing to matrix-element corrections. 
 Thanks to Simone Amoroso.</li> 
  
-<li>Minor technical changes in the LHEF3 machinery.</li> 
+<li>Correct two misspelt endtags for LHEF3 output from Pythia. 
+Minor technical changes in the LHEF3 machinery.</li> 
+ 
+<li>Introduce protection against (close-to-)zero-energy partons in 
+string length calculations. Thanks to Jan Fiete Grosse-Oetringhaus.</li> 
  
 <li>Minor corrections for the LHAPDF6 description in README. 
 Thanks to Radek Zlebcik.</li> 
@@ -598,7 +607,7 @@ Alexander Pukhov.</li>
 <li>Bug fix in the conversion from the <code>xml</code> settings files 
 to their <code>php</code> radio-button equivalents, whereby the text 
 describing some options was not set properly. (Typically the text of 
-the previous option was repeated.) Thanks to Radek Ziebcik.</li> 
+the previous option was repeated.) Thanks to Radek Zlebcik.</li> 
  
 <li>Minor fixes in the LHEF version 3 reader. Introduce a new 
 matching writer of LHEF version 1 or 3 files.</li> 
@@ -642,7 +651,7 @@ beam contents were not properly reset. Thanks to Josh Bendavid.</li>
  
 <li>Bug fix such that the valence content of a <i>pi^0</i>, 
 <i>K^0_S</i>, <i>K^0_L</i> and Pomeron is reselected for each 
-new event. Thanks to Radek Ziebcik.</li> 
+new event. Thanks to Radek Zlebcik.</li> 
  
 <li>Fix typo in constants of the <i>tau &rarr; 3 pi</i> current 
 for the amplitudes of the <i>rho</i>, <i>rho(1450)</i>, and 
