@@ -2,14 +2,14 @@
  
 <h2>PDF Selection</h2> 
  
-This page contains five subsections. The first deals with how to 
+This page contains six subsections. The first deals with how to 
 pick the parton distribution set for protons, including from LHAPDF, 
 to be used for all proton and antiproton beams. The second is a special 
 option that allows a separate PDF set to be used for the hard process 
 only, while the first choice would still apply to everything else. 
-The third and fourth give access to pion and Pomeron PDF's, respectively, 
-the latter being used to describe diffractive systems. 
-The fifth gives the possibility to switch off the lepton 
+The third, fourth and fifth give access to pion, Pomeron and photon PDF's, 
+respectively, the second being used to describe diffractive systems. 
+The sixth gives the possibility to switch off the lepton 
 "parton density". More information on PDF classes is found 
 <aloc href="PartonDistributions">here</aloc>. 
  
@@ -351,6 +351,22 @@ be retuned when this parameter is changed. Specifically
 of <code>PDF:PomRescale</code> to preserve the cross section for hard 
 diffractive processes. 
 </parm> 
+ 
+<h3>Parton densities for photons</h3> 
+ 
+Photon PDFs describe the partonic content of the resolved photons and 
+can be used to generate any hard process initiated by quarks and gluons. 
+Currently parton-level generation is not included for photon beams. 
+ 
+There are several PDF sets available for photons, although there have not 
+been much activity recently. Currently only one set is included. 
+ 
+<modepick name="PDF:GammaSet" default="1"> 
+Parton densities that can be used for photon beams. 
+<option value="1"> CJKL, based on <ref>Cor03</ref> but the rescaling 
+for heavy quarks due to kinematic constraints in DIS is undone to obtain 
+correct behaviour for photon-photon collisions.</option> 
+</modepick> 
  
 <h3>Parton densities for leptons</h3> 
  

@@ -515,6 +515,20 @@ flux and PDFs, but for greater flxibility the two can be set separately.
    
  
 <p/> 
+When using the MBR flux, the model requires a renormalization of 
+the Pomeron flux. This suppresses the flux with approximately a factor 
+of ten, thus making it incompatible with the MPI suppression of the 
+hard diffraction framework. We have thus implemented an option to 
+renormalize the flux. If you wish to use the renormalized flux of the 
+MBR model, you must generate the MPI-unchecked samples, otherwise 
+diffractive events will be suppressed twice. 
+ 
+<p/><code>flag&nbsp; </code><strong> Diffraction:useMBRrenormalization &nbsp;</strong> 
+ (<code>default = <strong>off</strong></code>)<br/>
+Use the renormalized MBR flux. 
+   
+ 
+<p/> 
 The transverse matter profile of the Pomeron, relative to that of the 
 proton, is not known. Generally a Pomeron is supposed to be a smaller 
 object in a localized part of the proton, but one should keep an open 
@@ -550,7 +564,7 @@ options. This offers an extreme picture, even if not the most likely
 one. 
    
    
- 
+  
 </body>
 </html>
  

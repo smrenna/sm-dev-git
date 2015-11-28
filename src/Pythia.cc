@@ -363,7 +363,11 @@ bool Pythia::init() {
     return false;
   }
 
-  // Begin initialization. Find which frame type to use.
+  // Initialize the random number generator.
+  if ( settings.flag("Random:setSeed") )
+    rndm.init( settings.mode("Random:seed") );
+
+  // Find which frame type to use.
   info.addCounter(1);
   frameType = mode("Beams:frameType");
 
@@ -567,10 +571,6 @@ bool Pythia::init() {
   if ( doMerging && (hasMergingHooks || hasOwnMergingHooks) )
     mergingHooksPtr->init( settings, &info, &particleData, &partonSystems );
 
-  // Initialize the random number generator.
-  if ( settings.flag("Random:setSeed") )
-    rndm.init( settings.mode("Random:seed") );
-
   // Check that combinations of settings are allowed; change if not.
   checkSettings();
 
@@ -639,6 +639,21 @@ bool Pythia::init() {
     info.errorMsg("Abort from Pythia::init: "
       "checkBeams initialization failed");
     return false;
+  }
+
+  // Further checks for photon-photon events as not all features included yet.
+  if ( idA == 22 && idB == 22 ) {
+    if (settings.flag("SoftQCD:nonDiffractive")){
+      info.errorMsg("Abort from Pythia::init: "
+        "Soft QCD events not implemented for photon-photon collisions");
+      return false;
+    }
+
+    if ( doDiffraction || doHardDiff ){
+      info.errorMsg("Abort from Pythia::init: "
+        "Diffractive events not implemented for photon-photon collisions");
+      return false;
+    }
   }
 
   // Do not set up beam kinematics when no process level.
@@ -793,6 +808,13 @@ void Pythia::checkSettings() {
     settings.flag("MultipartonInteractions:allowDoubleRescatter", false);
   }
 
+  // Photon-photon collisions only with ProcessLevel generation.
+  if ( (idA == 22 && idB == 22) && settings.flag("PartonLevel:all") ) {
+    info.errorMsg("Warning in Pythia::checkSettings: "
+        "Parton level switched off for photon-photon.");
+    settings.flag("PartonLevel:all", false);
+  }
+
 }
 
 //--------------------------------------------------------------------------
@@ -837,6 +859,9 @@ bool Pythia::checkBeams() {
   bool isHadronB = (idBabs == 2212) || (idBabs == 2112) || (idB == 111)
                 || (idBabs == 211)  || (idB == 990);
   if (isHadronA && isHadronB) return true;
+
+  // Photon-photon collisions OK.
+  if ( (idAabs == 22) && (idBabs == 22) ) return true;
 
   // Lepton-hadron collisions OK for DIS processes or LHEF input,
   // although still primitive.
@@ -1620,6 +1645,12 @@ void Pythia::banner(ostream& os) {
      << "nweg 16, D-69120 Heidelberg, Germany; |  | \n"
      << " |  |      e-mail: n.desai@thphys.uni-heidelb"
      << "erg.de                                |  | \n"
+     << " |  |   Ilkka Helenius;  Department of Astron"
+     << "omy and Theoretical Physics,          |  | \n"
+     << " |  |      Lund University, Solvegatan 14A, S"
+     << "E-223 62 Lund, Sweden;                |  | \n"
+     << " |  |      e-mail: ilkka.helenius@thep.lu.se "
+     << "                                      |  | \n"
      << " |  |   Philip Ilten;  Massachusetts Institut"
      << "e of Technology,                      |  | \n"
      << " |  |      77 Massachusetts Ave, Cambridge, M"
@@ -2146,6 +2177,13 @@ PDF* Pythia::getPDFPtr(int idIn, int sequence, string beam) {
       tempPDFPtr = new PomH1Jets( 990, rescale, xmlPath, &info);
     else if (pomSet == 6)
       tempPDFPtr = new PomH1FitAB( 990, 3, rescale, xmlPath, &info);
+  }
+
+  // Photon beam.
+  else if (abs(idIn) == 22) {
+    int gammaSet  = settings.mode("PDF:GammaSet");
+    if (gammaSet == 1) tempPDFPtr = new CJKL(idIn, &rndm);
+    else               tempPDFPtr = 0;
   }
 
   // Lepton beam: neutrino, resolved charged lepton or unresolved ditto.

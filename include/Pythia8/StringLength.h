@@ -54,7 +54,7 @@ public:
 
 private:
 
-  static const double TINY, MINDELTAR;
+  static const double TINY, MINANGLE;
 
   double m0, m0sqr, sqrt2, juncCorr;
   int lambdaForm;

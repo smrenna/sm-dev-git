@@ -18,8 +18,10 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.213: 17 November 2015 
+<li>8.213: 28 November 2015 
 <ul> 
+ 
+<li>Ilkka Helenius joins as new PYTHIA co-author.</li> 
  
 <li>By default the program will now assign the PYTHIA mass for 
 massless <i>c</i> and <i>b</i> quarks in Les Houches input, see 
@@ -32,7 +34,8 @@ sophisticated algorithm now in place.</li>
 <li>Significant bug found in timelike and spacelike showers, whereby 
 the azimuthal anisotropy from gluon polarization in the past has been 
 overestimated. This does not affect multijet rates, but can influence 
-distributions sensitive to angular correlations. New switches 
+distributions sensitive to angular correlations, although checks have 
+not revealed any appreciable effects. New switches 
 <code>TimeShower:phiPolAsymHard</code> and 
 <code>SpaceShower:phiPolAsymHard</code> regulate whether the first 
 branching after/before the hard process can correlate with the 
@@ -42,8 +45,13 @@ hard-process event plane. Thanks to Radek Zlebcik.</li>
 hard diffraction. This includes three options for setting the impact 
 parameter for the <i>Pomeron p</i> subcollision, a possibility to 
 access both it and the impact parameter both for the original 
-<i>p p</i>, and an option to rescale the Pomeron flux. Some default 
-values changed, notably that now MPI is checked.</li> 
+<i>p p</i>, and options to rescale the Pomeron flux, including one 
+that uses the MBR renormalization. Some default values changed, notably 
+that now MPI is checked.</li> 
+ 
+<li>The beginnings of a machinery for <i>gamma-gamma</i> collisions 
+now available, so far only for hard processes. The CJKL parton 
+distributions of the photon have been implemented.</li> 
  
 <li>New method <code>Particle::daughterListRecursive()</code> 
 that uses the <code>daughterList()</code> method to trace 
@@ -52,6 +60,12 @@ consecutive generations of decay products.</li>
 <li>New <code>Vec4</code> friend method <code>pShift(...)</code> 
 to transfer four-momentum between two four-vectors so as to bring them 
 to have specified new masses.</li> 
+ 
+<li>Initialize the random number generator earlier, so a non-default 
+seed choice also could benefit early external initialization making 
+use of it.</li> 
+ 
+<li>Minor update in the beam-remnant handling for DIS.</li> 
  
 <li>Bug fix in the selection of masses in resonance decays. 
 In rare situations this could give wrong masses for particles. 
@@ -78,8 +92,9 @@ Thanks to Simone Amoroso.</li>
 <li>Correct two misspelt endtags for LHEF3 output from Pythia. 
 Minor technical changes in the LHEF3 machinery.</li> 
  
-<li>Introduce protection against (close-to-)zero-energy partons in 
-string length calculations. Thanks to Jan Fiete Grosse-Oetringhaus.</li> 
+<li>Introduce protection against (close-to-)zero-energy partons in string 
+length calculations, and against topologies with extremely small angles 
+between two junction legs. Thanks to Jan Fiete Grosse-Oetringhaus.</li> 
  
 <li>Minor corrections for the LHAPDF6 description in README. 
 Thanks to Radek Zlebcik.</li> 

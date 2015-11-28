@@ -21,10 +21,10 @@ namespace Pythia8 {
 // Constants: could be changed here if desired, but normally should not.
 // These are of technical nature, as described for each.
 
-// Minimum energy of a parton and minimum delta R between two partons.
+// Minimum energy of a parton and minimum angle between two partons.
 // This is to avoid problems with infinities.
-const double StringLength::TINY      = 1e-20;
-const double StringLength::MINDELTAR = 1e-20;
+const double StringLength::TINY     = 1e-20;
+const double StringLength::MINANGLE = 1e-7;
 
 //--------------------------------------------------------------------------
 
@@ -60,19 +60,16 @@ double StringLength::getStringLength( Event& event, int i, int j) {
 
 double StringLength::getStringLength( Vec4 p1, Vec4 p2) {
 
-  // Check for very small energies.
-  if (p1.e() < TINY || p2.e() < TINY) return 1e9;
+  // Check for very small energies and angles.
+  if (p1.e() < TINY || p2.e() < TINY || theta(p1,p2) < MINANGLE) return 1e9;
 
-  // Check that particles are not completely paralel.
-  if (REtaPhi(p1,p2) < MINDELTAR) return 1e9;
-
-  // Boost to rest frame.
+  // Boost to restframe.
   Vec4 pSum = p1 + p2;
   p1.bstback(pSum);
   p2.bstback(pSum);
 
   // Calculate string length.
-  Vec4 p0( 0., 0., 0. ,1.);
+  Vec4 p0( 0., 0., 0., 1.);
 
   return getLength(p1,p0) + getLength(p2,p0);
 }
@@ -81,7 +78,7 @@ double StringLength::getStringLength( Vec4 p1, Vec4 p2) {
 
 // Calculate string length of a single particle.
 // The first vector is the 4 vector of the particle.
-// The second vector represents (1,0,0,0) in dipole rest frame.
+// The second vector represents (1,0,0,0) in dipole restframe.
 
 double StringLength::getLength(Vec4 p, Vec4 v, bool isJunc) {
 
@@ -114,12 +111,10 @@ double StringLength::getJuncLength( Event& event, int i, int j, int k) {
 
 double StringLength::getJuncLength(Vec4 p1, Vec4 p2, Vec4 p3) {
 
-  // Check for very small energies.
-  if (p1.e() < TINY || p2.e() < TINY || p3.e() < TINY) return 1e9;
-
-  // Check for parallel particles.
-  if ( REtaPhi(p1,p2) < MINDELTAR || REtaPhi(p1,p3) < MINDELTAR
-    || REtaPhi(p2,p3) < MINDELTAR) return 1e9;
+  // Check for very small energies and angles.
+  if (p1.e() < TINY || p2.e() < TINY || p3.e() < TINY
+    || theta(p1,p2) < MINANGLE || theta(p1,p3) < MINANGLE
+    || theta(p2,p3) < MINANGLE) return 1e9;
 
   // Find the junction rest frame.
   RotBstMatrix MfromJRF1 = stringFragmentation.junctionRestFrame(p1,p2,p3);
@@ -168,17 +163,15 @@ double StringLength::getJuncLength( Event& event, int i, int j, int k, int l) {
 
 double StringLength::getJuncLength(Vec4 p1, Vec4 p2, Vec4 p3, Vec4 p4) {
 
-  // Check for very small energies.
-  if (p1.e() < TINY || p2.e() < TINY || p3.e() < TINY || p4.e() < TINY)
-    return 1e9;
-
-  // Check for parallel problems.
-  if ( REtaPhi(p1,p2) < MINDELTAR || REtaPhi(p1,p3) < MINDELTAR
-    || REtaPhi(p1,p4) < MINDELTAR || REtaPhi(p2,p3) < MINDELTAR
-    || REtaPhi(p2,p4) < MINDELTAR || REtaPhi(p3,p4) < MINDELTAR) return 1e9;
+  // Check for very small energies and angles.
+  if ( p1.e() < TINY || p2.e() < TINY || p3.e() < TINY || p4.e() < TINY
+    || theta(p1,p2) < MINANGLE || theta(p1,p3) < MINANGLE
+    || theta(p1,p4) < MINANGLE || theta(p2,p3) < MINANGLE
+    || theta(p2,p4) < MINANGLE || theta(p3,p4) < MINANGLE) return 1e9;
 
   // Calculate velocity of first junction.
   Vec4 pSum1 = p3 +p4;
+
   RotBstMatrix MfromJRF1 = stringFragmentation.junctionRestFrame(p1,p2,pSum1);
   MfromJRF1.invert();
   Vec4 v1( 0., 0., 0., 1.);
@@ -186,6 +179,7 @@ double StringLength::getJuncLength(Vec4 p1, Vec4 p2, Vec4 p3, Vec4 p4) {
 
   // Calculate velocity of second junction.
   Vec4 pSum2 = p1 + p2;
+
   RotBstMatrix MfromJRF2 = stringFragmentation.junctionRestFrame(p3,p4,pSum2);
   MfromJRF2.invert();
   Vec4 v2( 0., 0., 0., 1.);

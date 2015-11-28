@@ -461,6 +461,21 @@ flux and PDFs, but for greater flxibility the two can be set separately.
    
  
 <p/> 
+When using the MBR flux, the model requires a renormalization of 
+the Pomeron flux. This suppresses the flux with approximately a factor 
+of ten, thus making it incompatible with the MPI suppression of the 
+hard diffraction framework. We have thus implemented an option to 
+renormalize the flux. If you wish to use the renormalized flux of the 
+MBR model, you must generate the MPI-unchecked samples, otherwise 
+diffractive events will be suppressed twice. 
+ 
+<br/><br/><strong>Diffraction:useMBRrenormalization</strong>  <input type="radio" name="35" value="on"><strong>On</strong>
+<input type="radio" name="35" value="off" checked="checked"><strong>Off</strong>
+ &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
+Use the renormalized MBR flux. 
+   
+ 
+<p/> 
 The transverse matter profile of the Pomeron, relative to that of the 
 proton, is not known. Generally a Pomeron is supposed to be a smaller 
 object in a localized part of the proton, but one should keep an open 
@@ -473,10 +488,10 @@ factor for the Pomeron-proton subsystem when the MPI check is carried
 out. This affects the underlying-event activity in hard diffractive 
 events. 
 <br/>
-<input type="radio" name="35" value="1" checked="checked"><strong>1 </strong>: Use the same <ei>b</ei> as already assigned for the  proton-proton collision. This implicitly assumes that a Pomeron is  as big as a proton and centered in the same place. Since small  <ei>b</ei> values already have been suppressed, few events should  have high enhancement factors.  <br/>
-<input type="radio" name="35" value="2"><strong>2 </strong>: Use the square root of the <ei>b</ei> as already  assigned for the proton-proton collision, thereby making the  enhancement factor fluctuate less between events. If the Pomeron  is very tiny then what matters is where it strikes the other proton,  not the details of its shape. Thus the variation with <ei>b</ei> is  of one proton, not two, and so the square root of the normal variation,  loosely speaking. Tecnhically this is difficult to implement, but  the current simple recipe provides the main effect of reducing the  variation, bringing all <ei>b</ei> values closer to the average.  <br/>
-<input type="radio" name="35" value="3"><strong>3 </strong>: Pick a completely new <ei>b</ei>. This allows a broad  spread from central to peripheral values, and thereby also a more  varying MPI activity inside the diffractive system than the other two  options. This offers an extreme picture, even if not the most likely  one.  <br/>
- 
+<input type="radio" name="36" value="1" checked="checked"><strong>1 </strong>: Use the same <ei>b</ei> as already assigned for the  proton-proton collision. This implicitly assumes that a Pomeron is  as big as a proton and centered in the same place. Since small  <ei>b</ei> values already have been suppressed, few events should  have high enhancement factors.  <br/>
+<input type="radio" name="36" value="2"><strong>2 </strong>: Use the square root of the <ei>b</ei> as already  assigned for the proton-proton collision, thereby making the  enhancement factor fluctuate less between events. If the Pomeron  is very tiny then what matters is where it strikes the other proton,  not the details of its shape. Thus the variation with <ei>b</ei> is  of one proton, not two, and so the square root of the normal variation,  loosely speaking. Tecnhically this is difficult to implement, but  the current simple recipe provides the main effect of reducing the  variation, bringing all <ei>b</ei> values closer to the average.  <br/>
+<input type="radio" name="36" value="3"><strong>3 </strong>: Pick a completely new <ei>b</ei>. This allows a broad  spread from central to peripheral values, and thereby also a more  varying MPI activity inside the diffractive system than the other two  options. This offers an extreme picture, even if not the most likely  one.  <br/>
+  
 <input type="hidden" name="saved" value="1"/>
 
 <?php
@@ -662,9 +677,14 @@ if($_POST["34"] != "1.0")
 $data = "Diffraction:PomFluxRescale = ".$_POST["34"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["35"] != "1")
+if($_POST["35"] != "off")
 {
-$data = "Diffraction:bSelHard = ".$_POST["35"]."\n";
+$data = "Diffraction:useMBRrenormalization = ".$_POST["35"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["36"] != "1")
+{
+$data = "Diffraction:bSelHard = ".$_POST["36"]."\n";
 fwrite($handle,$data);
 }
 fclose($handle);

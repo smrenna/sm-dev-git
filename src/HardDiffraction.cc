@@ -79,13 +79,30 @@ void HardDiffraction::init(Info* infoPtrIn, Settings& settingsPtrIn,
     A3      = 0.18;
     a3      = 1.36;
   } else if (pomFlux == 5) {
-    normPom = 0.858;
     A1      = 0.9;
     a1      = 4.6;
     A2      = 0.1;
     a2      = 0.6;
-    a0      = 1.104;
-    ap      = 0.25;
+    a0      = 1. + settings.parm("Diffraction:MBRepsilon");
+    ap      = settings.parm("Diffraction:MBRalpha");
+    bool renormalize   = settings.flag("Diffraction:useMBRrenormalization");
+    double cflux       = 0.858;
+    double m2min       = settings.parm("Diffraction:MBRm2Min");
+    double dyminSDflux = settings.parm("Diffraction:MBRdyminSDflux");
+    double dymaxSD     = log(infoPtr->eCM()*infoPtr->eCM() / m2min);
+    double nGap        = 0.;
+    if (renormalize) {
+      double step        = (dymaxSD - dyminSDflux) / 1000.;
+      // Calculate the integral of the flux to renormalize the gap.
+      for (int i = 0; i < 1000; ++i) {
+        double dy = dyminSDflux + (i + 0.5) * step;
+        double f  = exp(2.*(a0 - 1.)*dy) * ( (A1/(a1 + 2.*ap*dy))
+                     + (A2/(a2 + 2. * ap*dy)) );
+        nGap      += step * cflux * f;
+      }
+    }
+    if (nGap < 1.) nGap = 1.;
+    normPom = cflux/nGap;
   } else if (pomFlux == 6 || pomFlux == 7) {
     normPom = 1.57285;
     ap      = 0.06;
@@ -390,8 +407,8 @@ pair<double, double> HardDiffraction::tRange(double xIn) {
   // s3 = M^2 (= mA^2 if A scatteres elastically)
   // s4 = M^2 (= mB^2 if B scatteres elastically)
   double eCM = infoPtr->eCM();
-  double M2  = xIn * s;
   s          = eCM * eCM;
+  double M2  = xIn * s;
   s1         = pow2(mA);
   s2         = pow2(mB);
   s3         = (iBeam == 1) ? s1 : M2;
@@ -421,8 +438,8 @@ double HardDiffraction::getThetaNow( double xIn, double tIn) {
   // s3 = M^2 (= mA^2 if A scatteres elastically)
   // s4 = M^2 (= mB^2 if B scatteres elastically)
   double eCM = infoPtr->eCM();
-  double M2  = xIn * s;
   s          = eCM * eCM;
+  double M2  = xIn * s;
   s1         = pow2(mA);
   s2         = pow2(mB);
   s3         = (iBeam == 1) ? s1 : M2;

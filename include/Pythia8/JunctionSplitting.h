@@ -42,7 +42,8 @@ private:
 
   // Constants: could only be changed in the code itself.
   static const int    NTRYJNREST;
-  static const double JJSTRINGM2MAX, JJSTRINGM2FRAC, CONVJNREST, MTHAD;
+  static const double JJSTRINGM2MAX, JJSTRINGM2FRAC, CONVJNREST, MTHAD,
+                      MINANGLE;
 
   double eNormJunction;
   bool allowDoubleJunRem;

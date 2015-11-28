@@ -583,7 +583,7 @@ bool BeamParticle::remnantFlavours(Event& event, bool isDIS) {
   }
 
   // For DIS allow collapse to one colour singlet hadron.
-  if (isHadronBeam && isDIS && size() > 2) {
+  if (isHadronBeam && isDIS && size() > 2 && resolved[0].id() != 21) {
     if (size() != 4) {
       infoPtr->errorMsg("Error in BeamParticle::remnantFlavours: "
         "unexpected number of beam remnants for DIS");
