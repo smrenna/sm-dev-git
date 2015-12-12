@@ -12,7 +12,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.213: 5 December 2015 
+<li>8.214: 12 December 2015 
 <ul> 
  
 <li>Ilkka Helenius joins as new PYTHIA co-author.</li> 
@@ -46,6 +46,11 @@ that now MPI is checked.</li>
 <li>The beginnings of a machinery for <ei>gamma-gamma</ei> collisions 
 now available, so far only for hard processes. The CJKL parton 
 distributions of the photon have been implemented.</li> 
+ 
+<li>A new constructor for the <code>Pythia</code> class takes references 
+to a <code>Settings</code> and a <code>ParticleData</code> object as 
+inputs. In cases where multiple <code>Pythia</code> copies are created 
+this allows the  <code>xmldoc</code> files to be read only once.</li> 
  
 <li>New method <code>Particle::daughterListRecursive()</code> 
 that uses the <code>daughterList()</code> method to trace 
@@ -86,11 +91,18 @@ Thanks to Simone Amoroso.</li>
 <li>Correct two misspelt endtags for LHEF3 output from Pythia. 
 Minor technical changes in the LHEF3 machinery.</li> 
  
+<li>Bug fix for information on the pdf value chosen for the hardest MPI, 
+which was reported a factor 9/4 too large for an incoming gluon. Does 
+not effect the event generation itself.</li> 
+ 
+<li>Correct <code>BeamRemnants:primordialKThard</code> from 2.0 to 1.71 
+for ATLAS tune AZ. Thanks to Christian Bauer.</li> 
+ 
 <li>Introduce protection against (close-to-)zero-energy partons in string 
 length calculations, and against topologies with extremely small angles 
 between two junction legs. Thanks to Jan Fiete Grosse-Oetringhaus.</li> 
  
-<li>Check by trial whether a given LHAPDF5 set contains photons or not,
+<li>Check by trial whether a given LHAPDF5 set contains photons or not, 
 therey avoiding explicit enumeration of such sets.</li> 
  
 <li>Make the BOOST include directory available when the LHAPDF6 plugin 

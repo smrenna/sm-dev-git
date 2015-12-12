@@ -2103,7 +2103,7 @@ void Settings::initTunePP( int ppTune) {
       parm("SpaceShower:alphaSvalue",           0.1237);
       parm("SpaceShower:pT0Ref",                0.59  );
       parm("MultipartonInteractions:pT0Ref",    2.18  );
-      parm("BeamRemnants:primordialKThard",     2.0   );
+      parm("BeamRemnants:primordialKThard",     1.71  );
     }
   }
 

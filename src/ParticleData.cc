@@ -776,8 +776,44 @@ void ParticleData::initWidths( vector<ResonanceWidths*> resonancePtrs) {
 
 bool ParticleData::readXML(string inFile, bool reset) {
 
+  // Load XML file into memory.
+  if (!loadXML(inFile,reset)) return false;
+
+  // Process XML file (now stored in memory).
+  if (!processXML(reset)) return false;
+
+  // Done.
+  return true;
+}
+
+  //--------------------------------------------------------------------------
+
+// Read in database from pre-initialised particleData object.
+
+bool ParticleData::copyXML(const ParticleData &particleDataIn) {
+
+  // First reset everything.
+  pdt.clear();
+  xmlFileSav.clear();
+  isInit = false;
+  xmlFileSav=particleDataIn.xmlFileSav;
+
+  // Process XML file (now stored in memory).
+  if (!processXML(true)) return false;
+
+  // Done.
+  return true;
+}
+
+
+//--------------------------------------------------------------------------
+
+// Load a specific XML file into memory (which may refer to others).
+
+bool ParticleData::loadXML(string inFile, bool reset) {
+
   // Normally reset whole database before beginning.
-  if (reset) {pdt.clear(); isInit = false;}
+  if (reset) {pdt.clear(); xmlFileSav.clear(); isInit = false;}
 
   // List of files to be checked.
   vector<string> files;
@@ -805,73 +841,8 @@ bool ParticleData::readXML(string inFile, bool reset) {
       string word1;
       getfirst >> word1;
 
-      // Check for occurence of a particle. Add any continuation lines.
-      if (word1 == "<particle") {
-        while (line.find(">") == string::npos) {
-          string addLine;
-          getline(is, addLine);
-          line += addLine;
-        }
-
-        // Read in particle properties.
-        int idTmp          = intAttributeValue( line, "id");
-        string nameTmp     = attributeValue( line, "name");
-        string antiNameTmp = attributeValue( line, "antiName");
-        if (antiNameTmp == "") antiNameTmp = "void";
-        int spinTypeTmp    = intAttributeValue( line, "spinType");
-        int chargeTypeTmp  = intAttributeValue( line, "chargeType");
-        int colTypeTmp     = intAttributeValue( line, "colType");
-        double m0Tmp       = doubleAttributeValue( line, "m0");
-        double mWidthTmp   = doubleAttributeValue( line, "mWidth");
-        double mMinTmp     = doubleAttributeValue( line, "mMin");
-        double mMaxTmp     = doubleAttributeValue( line, "mMax");
-        double tau0Tmp     = doubleAttributeValue( line, "tau0");
-
-        // Erase if particle already exists.
-        if (isParticle(idTmp)) pdt.erase(idTmp);
-
-        // Store new particle. Save pointer, to be used for decay channels.
-        addParticle( idTmp, nameTmp, antiNameTmp, spinTypeTmp, chargeTypeTmp,
-          colTypeTmp, m0Tmp, mWidthTmp, mMinTmp, mMaxTmp, tau0Tmp);
-        particlePtr = particleDataEntryPtr(idTmp);
-
-      // Check for occurence of a decay channel. Add any continuation lines.
-      } else if (word1 == "<channel") {
-        while (line.find(">") == string::npos) {
-          string addLine;
-          getline(is, addLine);
-          line += addLine;
-        }
-
-        // Read in channel properties - products so far only as a string.
-        int onMode      = intAttributeValue( line, "onMode");
-        double bRatio   = doubleAttributeValue( line, "bRatio");
-        int meMode      = intAttributeValue( line, "meMode");
-        string products = attributeValue( line, "products");
-
-        // Read in decay products from stream. Must have at least one.
-        istringstream prodStream(products);
-        int prod0 = 0; int prod1 = 0; int prod2 = 0; int prod3 = 0;
-        int prod4 = 0; int prod5 = 0; int prod6 = 0; int prod7 = 0;
-        prodStream >> prod0 >> prod1 >> prod2 >> prod3 >> prod4 >> prod5
-                   >> prod6 >> prod7;
-        if (prod0 == 0) {
-          infoPtr->errorMsg("Error in ParticleData::readXML:"
-            " incomplete decay channel", line);
-          return false;
-        }
-
-        // Store new channel (if particle already known).
-        if (particlePtr == 0) {
-          infoPtr->errorMsg("Error in ParticleData::readXML:"
-            " orphan decay channel", line);
-          return false;
-        }
-        particlePtr->addChannel(onMode, bRatio, meMode, prod0, prod1,
-          prod2, prod3, prod4, prod5, prod6, prod7);
-
       // Check for occurence of a file also to be read.
-      } else if (word1 == "<file") {
+      if (word1 == "<file") {
         string file = attributeValue(line, "name");
         if (file == "") {
           infoPtr->errorMsg("Error in ParticleData::readXML:"
@@ -879,7 +850,106 @@ bool ParticleData::readXML(string inFile, bool reset) {
         } else files.push_back(file);
       }
 
-    // End of loop over lines in input file and loop over files.
+      // Else save line to memory.
+      else {
+        xmlFileSav.push_back(line);
+      }
+    }
+  }
+
+  //Done.
+  return true;
+
+}
+
+//--------------------------------------------------------------------------
+
+// Process XML contents stored in memory.
+
+bool ParticleData::processXML(bool reset) {
+
+  // Number of lines saved.
+  int nLines = xmlFileSav.size();
+
+  // Process each line sequentially.
+  particlePtr = 0;
+  int i = -1;
+  while (++i < nLines) {
+
+    // Retrieve line
+    string line = xmlFileSav[i];
+
+    // Get first word of a line.
+    istringstream getfirst(line);
+    string word1;
+    getfirst >> word1;
+
+    // Check for occurence of a particle. Add any continuation lines.
+    if (word1 == "<particle") {
+      while (line.find(">") == string::npos) {
+        if (++i >= nLines) break;
+        string addLine = xmlFileSav[i];
+        line += addLine;
+      }
+
+      // Read in particle properties.
+      int idTmp          = intAttributeValue( line, "id");
+      string nameTmp     = attributeValue( line, "name");
+      string antiNameTmp = attributeValue( line, "antiName");
+      if (antiNameTmp == "") antiNameTmp = "void";
+      int spinTypeTmp    = intAttributeValue( line, "spinType");
+      int chargeTypeTmp  = intAttributeValue( line, "chargeType");
+      int colTypeTmp     = intAttributeValue( line, "colType");
+      double m0Tmp       = doubleAttributeValue( line, "m0");
+      double mWidthTmp   = doubleAttributeValue( line, "mWidth");
+      double mMinTmp     = doubleAttributeValue( line, "mMin");
+      double mMaxTmp     = doubleAttributeValue( line, "mMax");
+      double tau0Tmp     = doubleAttributeValue( line, "tau0");
+
+      // Erase if particle already exists.
+      if (isParticle(idTmp)) pdt.erase(idTmp);
+
+      // Store new particle. Save pointer, to be used for decay channels.
+      addParticle( idTmp, nameTmp, antiNameTmp, spinTypeTmp, chargeTypeTmp,
+                   colTypeTmp, m0Tmp, mWidthTmp, mMinTmp, mMaxTmp, tau0Tmp);
+      particlePtr = particleDataEntryPtr(idTmp);
+
+      // Check for occurence of a decay channel. Add any continuation lines.
+    } else if (word1 == "<channel") {
+      while (line.find(">") == string::npos) {
+        if (++i >= nLines) break;
+        string addLine = xmlFileSav[i];
+        line += addLine;
+      }
+
+      // Read in channel properties - products so far only as a string.
+      int onMode      = intAttributeValue( line, "onMode");
+      double bRatio   = doubleAttributeValue( line, "bRatio");
+      int meMode      = intAttributeValue( line, "meMode");
+      string products = attributeValue( line, "products");
+
+      // Read in decay products from stream. Must have at least one.
+      istringstream prodStream(products);
+      int prod0 = 0; int prod1 = 0; int prod2 = 0; int prod3 = 0;
+      int prod4 = 0; int prod5 = 0; int prod6 = 0; int prod7 = 0;
+      prodStream >> prod0 >> prod1 >> prod2 >> prod3 >> prod4 >> prod5
+                 >> prod6 >> prod7;
+      if (prod0 == 0) {
+        infoPtr->errorMsg("Error in ParticleData::readXML:"
+          " incomplete decay channel", line);
+        return false;
+      }
+
+      // Store new channel (if particle already known).
+      if (particlePtr == 0) {
+        infoPtr->errorMsg("Error in ParticleData::readXML:"
+          " orphan decay channel", line);
+        return false;
+      }
+      particlePtr->addChannel(onMode, bRatio, meMode, prod0, prod1,
+        prod2, prod3, prod4, prod5, prod6, prod7);
+
+      // End of loop over lines in input file and loop over files.
     };
   };
 

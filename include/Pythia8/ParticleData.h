@@ -347,6 +347,10 @@ public:
   bool init(string startFile = "../xmldoc/ParticleData.xml") {
     initCommon(); return readXML(startFile);}
 
+  // Read in database from saved file stored in memory.
+  bool init(const ParticleData &particleDataIn) {
+    initCommon(); return copyXML(particleDataIn);}
+
   // Overwrite existing database by reading from specific file.
   bool reInit(string startFile, bool xmlFormat = true) { initCommon();
     return (xmlFormat) ? readXML(startFile) : readFF(startFile);}
@@ -354,9 +358,16 @@ public:
   // Initialize pointers, normal Breit-Wigners and special resonances.
   void initWidths(vector<ResonanceWidths*> resonancePtrs);
 
-  // Read or list whole (or part of) database from/to an XML file.
+  // Read and process or list whole (or part of) database from/to an XML file.
   bool readXML(string inFile, bool reset = true) ;
   void listXML(string outFile);
+
+  // Copy and process XML information from another particleData object.
+  bool copyXML(const ParticleData &particleDataIn);
+
+  // Auxiliary functions to readXML() and copyXML().
+  bool loadXML(string inFile, bool reset = true) ;
+  bool processXML(bool reset = true) ;
 
   // Read or list whole (or part of) database from/to a free format file.
   bool readFF(string inFile, bool reset = true) ;
@@ -560,6 +571,9 @@ public:
   ParticleDataEntry* particleDataEntryPtr(int idIn) {
     return (isParticle(idIn)) ? &pdt[abs(idIn)] : &pdt[0]; }
 
+  // Check initialisation status.
+  bool getIsInit() {return isInit;}
+
 private:
 
   // Common data, accessible for the individual particles.
@@ -606,6 +620,9 @@ private:
   bool   boolAttributeValue(string line, string attribute);
   int    intAttributeValue(string line, string attribute);
   double doubleAttributeValue(string line, string attribute);
+
+  // Vector of strings containing the readable lines of the XML file.
+  vector<string> xmlFileSav;
 
 };
 

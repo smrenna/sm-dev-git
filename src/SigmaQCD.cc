@@ -248,6 +248,7 @@ void Sigma2qg2qg::setIdColAcol() {
 // Sigma2qq2qq class.
 // Cross section for q qbar' -> q qbar' or q q' -> q q'
 // (qbar qbar' -> qbar qbar'), q' may be same as q.
+// s-channel part of q qbar -> q qbar / q' qbar' handled separately below.
 
 //--------------------------------------------------------------------------
 

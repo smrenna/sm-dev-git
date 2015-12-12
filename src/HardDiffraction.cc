@@ -91,7 +91,7 @@ void HardDiffraction::init(Info* infoPtrIn, Settings& settingsPtrIn,
     double dyminSDflux = settings.parm("Diffraction:MBRdyminSDflux");
     double dymaxSD     = log(infoPtr->eCM()*infoPtr->eCM() / m2min);
     double nGap        = 0.;
-    if (renormalize){ 
+    if (renormalize){
       double step        = (dymaxSD - dyminSDflux) / 1000.;
       // Calculate the integral of the flux
       // to renormalize the gap:
@@ -116,7 +116,7 @@ void HardDiffraction::init(Info* infoPtrIn, Settings& settingsPtrIn,
     double fNorm = exp(log(1./xNorm) * ( 2.*a0 - 2.));
     fNorm       *= (exp(b*tmin) - exp(b*tcut))/b;
     normPom      = 1./fNorm;
-  } 
+  }
 
   // Initialise Pomeron values to zero.
   xPomA = tPomA = thetaPomA = 0.;

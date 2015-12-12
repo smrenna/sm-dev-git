@@ -212,7 +212,7 @@
        note here. First, the LHAPDF6 package provides the exact same C
        interface as the LHAPDF5 package, and so technically supplying
        LHAPDF6 libraries to the LHAPDF5 package option will work. This
-       is not recommended except for checkin that the new C++
+       is not recommended except for checking that the new C++
        interface works properly. Second, both LHAPDF5 and LHAPDF6 can
        be used simultaneously, technically. This behavior has not
        been tested and is not recommended.

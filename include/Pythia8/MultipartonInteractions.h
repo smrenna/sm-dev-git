@@ -142,8 +142,8 @@ public:
   double x1H()        const {return x1;}
   double x2H()        const {return x2;}
   double Q2Fac()      const {return pT2Fac;}
-  double pdf1()       const {return xPDF1now;}
-  double pdf2()       const {return xPDF2now;}
+  double pdf1()       const {return (id1 == 21 ? 4./9. : 1.) * xPDF1now;}
+  double pdf2()       const {return (id2 == 21 ? 4./9. : 1.) * xPDF2now;}
   double bMPI()       const {return (bIsSet) ? bNow : 0.;}
   double enhanceMPI() const {return (bIsSet) ? enhanceB / zeroIntCorr : 1.;}
 

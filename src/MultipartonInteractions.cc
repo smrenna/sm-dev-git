@@ -955,7 +955,8 @@ void MultipartonInteractions::setupFirstSys( Event& process) {
     enhanceB / zeroIntCorr);
 
   // Further standard info on process.
-  infoPtr->setPDFalpha( iDiffSys, id1, id2, x1, x2, xPDF1now, xPDF2now,
+  infoPtr->setPDFalpha( iDiffSys, id1, id2, x1, x2,
+    (id1 == 21 ? 4./9. : 1.) * xPDF1now, (id2 == 21 ? 4./9. : 1.) * xPDF2now,
     pT2Fac, alpEM, alpS, pT2Ren, 0.);
   double m3    = dSigmaDtSel->m(3);
   double m4    = dSigmaDtSel->m(4);

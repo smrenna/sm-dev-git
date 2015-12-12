@@ -23,7 +23,7 @@ namespace Pythia8 {
 
 // The current Pythia (sub)version number, to agree with XML version.
 const double Pythia::VERSIONNUMBERHEAD = PYTHIA_VERSION;
-const double Pythia::VERSIONNUMBERCODE = 8.213;
+const double Pythia::VERSIONNUMBERCODE = 8.214;
 
 //--------------------------------------------------------------------------
 
@@ -41,6 +41,140 @@ const int Pythia::SUBRUNDEFAULT = -999;
 // Constructor.
 
 Pythia::Pythia(string xmlDir, bool printBanner) {
+
+  // Initialise / reset pointers and global variables.
+  initPtrs();
+
+  // Find path to data files, i.e. xmldoc directory location.
+  // Environment variable takes precedence, then constructor input,
+  // and finally the pre-processor constant XMLDIR.
+  xmlPath = "";
+  const char* PYTHIA8DATA = "PYTHIA8DATA";
+  char* envPath = getenv(PYTHIA8DATA);
+  if (envPath != 0 && *envPath != '\0') {
+    int i = 0;
+    while (*(envPath+i) != '\0') xmlPath += *(envPath+(i++));
+  } else {
+    if (xmlDir[ xmlDir.length() - 1 ] != '/') xmlDir += "/";
+    xmlPath = xmlDir;
+    ifstream xmlFile((xmlPath + "Index.xml").c_str());
+    if (!xmlFile.good()) xmlPath = XMLDIR;
+    xmlFile.close();
+  }
+  if (xmlPath[ xmlPath.length() - 1 ] != '/') xmlPath += "/";
+
+  // Read in files with all flags, modes, parms and words.
+  settings.initPtr( &info);
+  string initFile = xmlPath + "Index.xml";
+  isConstructed = settings.init( initFile);
+  if (!isConstructed) {
+    info.errorMsg("Abort from Pythia::Pythia: settings unavailable");
+    return;
+  }
+
+  // Save XML path in settings.
+  settings.addWord("xmlPath",xmlPath);
+
+  // Check XML and header version numbers match code version number.
+  if (!checkVersion()) return;
+
+  // Read in files with all particle data.
+  particleData.initPtr( &info, &settings, &rndm, couplingsPtr);
+  string dataFile = xmlPath + "ParticleData.xml";
+  isConstructed = particleData.init( dataFile);
+  if (!isConstructed) {
+    info.errorMsg("Abort from Pythia::Pythia: particle data unavailable");
+    return;
+  }
+
+  // Write the Pythia banner to output.
+  if (printBanner) banner();
+
+  // Not initialized until at the end of the init() call.
+  isInit = false;
+  info.addCounter(0);
+
+}
+
+//--------------------------------------------------------------------------
+
+// Constructor from pre-initialised ParticleData and Settings objects.
+
+Pythia::Pythia(Settings& settingsIn,ParticleData& particleDataIn,
+  bool printBanner) {
+
+  // Initialise / reset pointers and global variables.
+  initPtrs();
+
+  // Copy XML path from existing Settings database.
+  const string key = "xmlPath";
+  xmlPath = settingsIn.word(key);
+
+  // Copy settings database.
+  settings = settingsIn;
+  // Reset pointers to pertain to this PYTHIA object.
+  settings.initPtr( &info);
+  isConstructed = settings.getIsInit();
+  if (!isConstructed) {
+    info.errorMsg("Abort from Pythia::Pythia: settings unavailable");
+    return;
+  }
+
+  // Check XML and header version numbers match code version number.
+  if (!checkVersion()) return;
+
+  // Read in files with all particle data.
+  particleData.initPtr( &info, &settings, &rndm, couplingsPtr);
+  isConstructed = particleData.init( particleDataIn);
+  if (!isConstructed) {
+    info.errorMsg("Abort from Pythia::Pythia: particle data unavailable");
+    return;
+  }
+
+  // Write the Pythia banner to output.
+  if (printBanner) banner();
+
+  // Not initialized until at the end of the init() call.
+  isInit = false;
+  info.addCounter(0);
+
+}
+
+//--------------------------------------------------------------------------
+
+// Destructor.
+
+Pythia::~Pythia() {
+
+  // Delete the PDF's created with new.
+  if (useNewPdfHard && pdfHardAPtr != pdfAPtr) delete pdfHardAPtr;
+  if (useNewPdfHard && pdfHardBPtr != pdfBPtr) delete pdfHardBPtr;
+  if (useNewPdfA) delete pdfAPtr;
+  if (useNewPdfB) delete pdfBPtr;
+  if (useNewPdfPomA) delete pdfPomAPtr;
+  if (useNewPdfPomB) delete pdfPomBPtr;
+
+  // Delete the Les Houches object created with new.
+  if (useNewLHA) delete lhaUpPtr;
+
+  // Delete the MergingHooks object created with new.
+  if (hasOwnMergingHooks) delete mergingHooksPtr;
+
+  // Delete the BeamShape object created with new.
+  if (useNewBeamShape) delete beamShapePtr;
+
+  // Delete the timelike and spacelike showers created with new.
+  if (useNewTimesDec) delete timesDecPtr;
+  if (useNewTimes && !useNewTimesDec) delete timesPtr;
+  if (useNewSpace) delete spacePtr;
+
+}
+
+//--------------------------------------------------------------------------
+
+// Initialise new Pythia object (common code called by constructors).
+
+void Pythia::initPtrs() {
 
   // Initial values for pointers to PDF's.
   useNewPdfA      = false;
@@ -87,32 +221,13 @@ Pythia::Pythia(string xmlDir, bool printBanner) {
   timesPtr        = 0;
   spacePtr        = 0;
 
-  // Find path to data files, i.e. xmldoc directory location.
-  // Environment variable takes precedence, then constructor input,
-  // and finally the pre-processor constant XMLDIR.
-  xmlPath = "";
-  const char* PYTHIA8DATA = "PYTHIA8DATA";
-  char* envPath = getenv(PYTHIA8DATA);
-  if (envPath != 0 && *envPath != '\0') {
-    int i = 0;
-    while (*(envPath+i) != '\0') xmlPath += *(envPath+(i++));
-  } else {
-    if (xmlDir[ xmlDir.length() - 1 ] != '/') xmlDir += "/";
-    xmlPath = xmlDir;
-    ifstream xmlFile((xmlPath + "Index.xml").c_str());
-    if (!xmlFile.good()) xmlPath = XMLDIR;
-    xmlFile.close();
-  }
-  if (xmlPath[ xmlPath.length() - 1 ] != '/') xmlPath += "/";
+}
 
-  // Read in files with all flags, modes, parms and words.
-  settings.initPtr( &info);
-  string initFile = xmlPath + "Index.xml";
-  isConstructed = settings.init( initFile);
-  if (!isConstructed) {
-    info.errorMsg("Abort from Pythia::Pythia: settings unavailable");
-    return;
-  }
+//--------------------------------------------------------------------------
+
+// Check for consistency of version numbers (called by constructors).
+
+bool Pythia::checkVersion() {
 
   // Check that XML version number matches code version number.
   double versionNumberXML = parm("Pythia:versionNumber");
@@ -123,7 +238,7 @@ Pythia::Pythia(string xmlDir, bool printBanner) {
             << " but in XML " << versionNumberXML;
     info.errorMsg("Abort from Pythia::Pythia: unmatched version numbers",
       errCode.str());
-    return;
+    return false;
   }
 
   // Check that header version number matches code version number.
@@ -134,54 +249,11 @@ Pythia::Pythia(string xmlDir, bool printBanner) {
             << " but in header " << VERSIONNUMBERHEAD;
     info.errorMsg("Abort from Pythia::Pythia: unmatched version numbers",
       errCode.str());
-    return;
+    return false;
   }
 
-  // Read in files with all particle data.
-  particleData.initPtr( &info, &settings, &rndm, couplingsPtr);
-  string dataFile = xmlPath + "ParticleData.xml";
-  isConstructed = particleData.init( dataFile);
-  if (!isConstructed) {
-    info.errorMsg("Abort from Pythia::Pythia: particle data unavailable");
-    return;
-  }
-
-  // Write the Pythia banner to output.
-  if (printBanner) banner();
-
-  // Not initialized until at the end of the init() call.
-  isInit = false;
-  info.addCounter(0);
-
-}
-
-//--------------------------------------------------------------------------
-
-// Destructor.
-
-Pythia::~Pythia() {
-
-  // Delete the PDF's created with new.
-  if (useNewPdfHard && pdfHardAPtr != pdfAPtr) delete pdfHardAPtr;
-  if (useNewPdfHard && pdfHardBPtr != pdfBPtr) delete pdfHardBPtr;
-  if (useNewPdfA) delete pdfAPtr;
-  if (useNewPdfB) delete pdfBPtr;
-  if (useNewPdfPomA) delete pdfPomAPtr;
-  if (useNewPdfPomB) delete pdfPomBPtr;
-
-  // Delete the Les Houches object created with new.
-  if (useNewLHA) delete lhaUpPtr;
-
-  // Delete the MergingHooks object created with new.
-  if (hasOwnMergingHooks) delete mergingHooksPtr;
-
-  // Delete the BeamShape object created with new.
-  if (useNewBeamShape) delete beamShapePtr;
-
-  // Delete the timelike and spacelike showers created with new.
-  if (useNewTimesDec) delete timesDecPtr;
-  if (useNewTimes && !useNewTimesDec) delete timesPtr;
-  if (useNewSpace) delete spacePtr;
+  // All is well that ends well.
+  return true;
 
 }
 

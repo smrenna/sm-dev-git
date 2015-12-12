@@ -302,6 +302,9 @@ public:
   void resetMVec(string keyIn);
   void resetPVec(string keyIn);
 
+  // Check initialisation status.
+  bool getIsInit() {return isInit;}
+
 private:
 
   // Pointer to various information on the generation.
