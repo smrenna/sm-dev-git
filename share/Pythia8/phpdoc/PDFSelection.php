@@ -373,12 +373,18 @@ diffractive processes.
  
 Photon PDFs describe the partonic content of the resolved photons and 
 can be used to generate any hard process initiated by quarks and gluons. 
-Currently parton-level generation is not included for photon beams. 
+Currently hard-processes with parton showers and hadronization can 
+be generated but MPIs and soft interactions are not included. 
  
+<p/> 
 There are several PDF sets available for photons, although there have not 
-been much activity recently. Currently only one set is included. 
+been much activity recently. Currently one internal set is included. 
+Even though LHAPDF5 includes some older photon PDF sets, only the 
+internal set should be used here as the parton shower and beam remnant 
+generation require additional methods that are not present in external 
+sets. 
  
-<br/><br/><table><tr><td><strong>PDF:GammaSet  </td><td>  &nbsp;&nbsp;(<code>default = <strong>1</strong></code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>PDF:GammaSet  </td><td>  &nbsp;&nbsp;(<code>default = <strong>1</strong></code>; <code>minimum = 1</code>; <code>maximum = 1</code>)</td></tr></table>
 Parton densities that can be used for photon beams. 
 <br/>
 <input type="radio" name="17" value="1" checked="checked"><strong>1 </strong>:  CJKL, based on <ref>Cor03</ref> but the rescaling  for heavy quarks due to kinematic constraints in DIS is undone to obtain  correct behaviour for photon-photon collisions.<br/>

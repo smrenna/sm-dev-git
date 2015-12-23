@@ -18,10 +18,20 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.214: 12 December 2015 
+<li>8.214: 23 December 2015 
 <ul> 
  
 <li>Ilkka Helenius joins as new PYTHIA co-author.</li> 
+ 
+<li>A new machinery for <i>gamma-gamma</i> collisions is now available, 
+see <a href="PhotonPhoton.html" target="page">Photon-photon Interactions</a>.
+So far only hard processes can be generated, along with parton showers 
+and hadronization, but without multiparton interactions. The CJKL parton 
+distributions of the photon have been implemented and are used.</li> 
+ 
+<li>Double production of charmonium and bottomonium <i>3S1</i> states 
+is now available, but with only the colour-singlet processes included, 
+see <a href="OniaProcesses.html" target="page">Onia Processes</a> for details.</li> 
  
 <li>By default the program will now assign the PYTHIA mass for 
 massless <i>c</i> and <i>b</i> quarks in Les Houches input, see 
@@ -49,14 +59,11 @@ access both it and the impact parameter both for the original
 that uses the MBR renormalization. Some default values changed, notably 
 that now MPI is checked.</li> 
  
-<li>The beginnings of a machinery for <i>gamma-gamma</i> collisions 
-now available, so far only for hard processes. The CJKL parton 
-distributions of the photon have been implemented.</li> 
- 
 <li>A new constructor for the <code>Pythia</code> class takes references 
 to a <code>Settings</code> and a <code>ParticleData</code> object as 
 inputs. In cases where multiple <code>Pythia</code> copies are created 
-this allows the  <code>xmldoc</code> files to be read only once.</li> 
+this allows the  <code>xmldoc</code> files to be read only once. 
+Updated <code>examples/main19.cc</code> illustrates.</li> 
  
 <li>New method <code>Particle::daughterListRecursive()</code> 
 that uses the <code>daughterList()</code> method to trace 
@@ -110,6 +117,9 @@ between two junction legs. Thanks to Jan Fiete Grosse-Oetringhaus.</li>
  
 <li>Check by trial whether a given LHAPDF5 set contains photons or not, 
 therey avoiding explicit enumeration of such sets.</li> 
+ 
+<li>When the ARCH environment variable does not have a valid value it 
+is set to LINUX in configure. Thanks to Alessandro Degano.</li> 
  
 <li>Make the BOOST include directory available when the LHAPDF6 plugin 
 is used.</li> 

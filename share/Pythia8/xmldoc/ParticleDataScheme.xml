@@ -551,6 +551,13 @@ quantity of the expected type.
 the constructor has no arguments and does not do anything. Internal. 
 </method> 
  
+<method name="ParticleData& operator=( const ParticleData& particleDataIn)"> 
+copy the database from an existing <code>ParticleData</code> object. 
+Can be useful when running with multiple <code>Pythia</code> instances. 
+Does not include the links to the resonance decay handling set up by 
+<code>initWidths(...)</code>. 
+</method> 
+ 
 <method name="void ParticleData::initPtr(Info* infoPtr, 
 Settings* settingsPtrIn, Rndm* rndmPtrIn, CoupSM* coupSMPtrIn)"> 
 initialize pointers to a few other classes. Internal. 
@@ -569,11 +576,6 @@ the name of the data file to be read. When called from the
 environment variable, if set, else by the argument of this constructor, 
 which has the default value &quot;../xmldoc&quot;. 
 </argument> 
-</method> 
- 
-<method name="void ParticleData::init(const ParticleData &particleDataIn)"> 
-read in the database from an existing <code>ParticleData</code> object. 
-Can be useful when running with multiple <code>Pythia</code> instances. 
 </method> 
  
 <method name="bool ParticleData::reInit(string startFile, 
@@ -608,17 +610,6 @@ read in XML-style data from a file or write it out to a file. For the
 former one can also decide whether to reset all particles to scratch, 
 or only overwrite those particles in the file. The former method is 
 used by <code>init</code> and <code>reInit</code> above. 
-</methodmore> 
- 
-<method name="bool ParticleData::copyXML(const ParticleData &particleDataIn)"> 
-auxiliary to copy and process XML information from another particleData 
-object. 
-</method> 
-<br/><methodmore name="bool ParticleData::loadXML(string inFile, bool reset = true)"> 
-auxiliary to load a specific XML file into memory (which may refer to others). 
-</methodmore> 
-<br/><methodmore name="bool ParticleData::processXML(bool reset = true)"> 
-auxiliary to process XML contents stored in memory. 
 </methodmore> 
  
 <method name="bool ParticleData::readFF(string inFile, 
@@ -1065,6 +1056,12 @@ particle-antiparticle pair (but if the antiparticle name is
 <code>void</code> one reverts back to the particle-only case). 
 </methodmore> 
  
+<method name="ParticleDataEntry& operator=( const ParticleDataEntry& 
+particleDataEntryIn)"> 
+copy the values stored in an existing <code>ParticleDataEntry</code> 
+object. 
+</method> 
+ 
 <method name="ParticleDataEntry::~ParticleDataEntry"> 
 the destructor is needed to delete any <code>ResonanceWidths</code> 
 objects that have been created and linked to the respective particle. 
@@ -1441,6 +1438,10 @@ double bRatio = 0., int meMode = 0, int prod0 = 0, int prod1 = 0,
 int prod2 = 0, int prod3 = 0, int prod4 = 0, int prod5 = 0, 
 int prod6 = 0, int prod7 = 0)"> 
 the constructor for a decay channel. Internal. 
+</method> 
+ 
+<method name="DecayChannel& operator=( const DecayChannel& decayChannelIn)"> 
+copy the values stored in an existing <code>DecayChannel</code> object. 
 </method> 
  
 <method name="void DecayChannel::onMode(int onMode)"> 

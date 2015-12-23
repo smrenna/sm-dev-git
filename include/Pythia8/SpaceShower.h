@@ -218,7 +218,7 @@ private:
          TINYPDF, TINYKERNELPDF, TINYPT2, HEAVYPT2EVOL, HEAVYXEVOL,
          EXTRASPACEQ, LAMBDA3MARGIN, PT2MINWARN, LEPTONXMIN, LEPTONXMAX,
          LEPTONPT2MIN, LEPTONFUDGE, WEAKPSWEIGHT, HEADROOMQ2Q, HEADROOMQ2G,
-         HEADROOMG2G, HEADROOMG2Q;
+         HEADROOMG2G, HEADROOMG2Q, HEADROOMHQG;
 
   // Initialization data, normally only set once.
   bool   doQCDshower, doQEDshowerByQ, doQEDshowerByL, useSamePTasMPI,
@@ -267,8 +267,8 @@ private:
   // Evolve a QCD dipole end.
   void pT2nextQCD( double pT2begDip, double pT2endDip);
 
-  // Evolve a QCD dipole end near heavy quark threshold region.
-  void pT2nearQCDthreshold( BeamParticle& beam, double m2Massive,
+  // Evolve a QCD and QED dipole end near heavy quark threshold region.
+  void pT2nearThreshold( BeamParticle& beam, double m2Massive,
     double m2Threshold, double xMaxAbs, double zMinAbs,
     double zMaxMassive);
 

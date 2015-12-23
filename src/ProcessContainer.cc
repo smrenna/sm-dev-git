@@ -1338,9 +1338,11 @@ bool SetupContainers::init(vector<ProcessContainer*>& containerPtrs,
   charmonium.setupSigma2gg(charmoniumSigmaPtrs);
   charmonium.setupSigma2qg(charmoniumSigmaPtrs);
   charmonium.setupSigma2qq(charmoniumSigmaPtrs);
+  charmonium.setupSigma2dbl(charmoniumSigmaPtrs);
   bottomonium.setupSigma2gg(bottomoniumSigmaPtrs);
   bottomonium.setupSigma2qg(bottomoniumSigmaPtrs);
   bottomonium.setupSigma2qq(bottomoniumSigmaPtrs);
+  bottomonium.setupSigma2dbl(bottomoniumSigmaPtrs);
   for (unsigned int i = 0; i < charmoniumSigmaPtrs.size(); ++i)
     containerPtrs.push_back( new ProcessContainer(charmoniumSigmaPtrs[i]) );
   for (unsigned int i = 0; i < bottomoniumSigmaPtrs.size(); ++i)

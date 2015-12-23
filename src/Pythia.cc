@@ -73,9 +73,9 @@ Pythia::Pythia(string xmlDir, bool printBanner) {
   }
 
   // Save XML path in settings.
-  settings.addWord("xmlPath",xmlPath);
+  settings.addWord( "xmlPath", xmlPath);
 
-  // Check XML and header version numbers match code version number.
+  // Check that XML and header version numbers match code version number.
   if (!checkVersion()) return;
 
   // Read in files with all particle data.
@@ -107,12 +107,10 @@ Pythia::Pythia(Settings& settingsIn,ParticleData& particleDataIn,
   initPtrs();
 
   // Copy XML path from existing Settings database.
-  const string key = "xmlPath";
-  xmlPath = settingsIn.word(key);
+  xmlPath = settingsIn.word("xmlPath");
 
-  // Copy settings database.
+  // Copy settings database and redirect pointers.
   settings = settingsIn;
-  // Reset pointers to pertain to this PYTHIA object.
   settings.initPtr( &info);
   isConstructed = settings.getIsInit();
   if (!isConstructed) {
@@ -123,9 +121,10 @@ Pythia::Pythia(Settings& settingsIn,ParticleData& particleDataIn,
   // Check XML and header version numbers match code version number.
   if (!checkVersion()) return;
 
-  // Read in files with all particle data.
+  // Copy particleData database and redirect pointers.
+  particleData = particleDataIn;
   particleData.initPtr( &info, &settings, &rndm, couplingsPtr);
-  isConstructed = particleData.init( particleDataIn);
+  isConstructed = particleData.getIsInit();
   if (!isConstructed) {
     info.errorMsg("Abort from Pythia::Pythia: particle data unavailable");
     return;
@@ -880,11 +879,11 @@ void Pythia::checkSettings() {
     settings.flag("MultipartonInteractions:allowDoubleRescatter", false);
   }
 
-  // Photon-photon collisions only with ProcessLevel generation.
-  if ( (idA == 22 && idB == 22) && settings.flag("PartonLevel:all") ) {
+  // No MPIs for photon-photon collisions.
+  if ( (idA == 22 && idB == 22) && settings.flag("PartonLevel:MPI") ) {
     info.errorMsg("Warning in Pythia::checkSettings: "
-        "Parton level switched off for photon-photon.");
-    settings.flag("PartonLevel:all", false);
+                  "MPI switched off for photon-photon collisions.");
+    settings.flag("PartonLevel:MPI", false);
   }
 
 }
@@ -1758,7 +1757,7 @@ void Pythia::banner(ostream& os) {
      << " |  |   The main program reference is 'An Int"
      << "roduction to PYTHIA 8.2',             |  | \n"
      << " |  |   T. Sjostrand et al, Comput. Phys. Com"
-     << "mun. 191 (2005) 159                   |  | \n"
+     << "mun. 191 (2015) 159                   |  | \n"
      << " |  |   [arXiv:1410.3012 [hep-ph]]           "
      << "                                      |  | \n"
      << " |  |                                        "

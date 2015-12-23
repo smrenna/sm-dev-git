@@ -84,6 +84,7 @@ const double SpaceShower::HEADROOMQ2G = 1.35;
 const double SpaceShower::HEADROOMQ2Q = 1.15;
 const double SpaceShower::HEADROOMG2Q = 1.35;
 const double SpaceShower::HEADROOMG2G = 1.35;
+const double SpaceShower::HEADROOMHQG = 1.35;
 
 //--------------------------------------------------------------------------
 
@@ -734,6 +735,10 @@ void SpaceShower::pT2nextQCD( double pT2begDip, double pT2endDip) {
         // Optionally enhanced branching rate.
         if (canEnhanceET) g2qInt *= userHooksPtr->enhanceFactor("isr:G2QQ");
 
+        // Increase the upper weight for heavy quarks in photon beam
+        // due to different behavior of the PDFs.
+        if (beam.isGamma() && isMassive) q2qInt *= HEADROOMHQG;
+
         // Increase estimated upper weight for g -> Q + Qbar.
         if (isMassive) {
           if (alphaSorder == 0) g2Qenhance = log(pT2/m2Massive)
@@ -787,7 +792,7 @@ void SpaceShower::pT2nextQCD( double pT2begDip, double pT2endDip) {
 
     // If fallen into b threshold region, force g -> b + bbar.
     if (idMassive == 5 && pT2 < m2Threshold) {
-      pT2nearQCDthreshold( beam, m2Massive, m2Threshold, xMaxAbs,
+      pT2nearThreshold( beam, m2Massive, m2Threshold, xMaxAbs,
         zMinAbs, zMaxMassive );
       return;
 
@@ -799,7 +804,7 @@ void SpaceShower::pT2nextQCD( double pT2begDip, double pT2endDip) {
 
     // If fallen into c threshold region, force g -> c + cbar.
     } else if (idMassive == 4 && pT2 < m2Threshold) {
-      pT2nearQCDthreshold( beam, m2Massive, m2Threshold, xMaxAbs,
+      pT2nearThreshold( beam, m2Massive, m2Threshold, xMaxAbs,
         zMinAbs, zMaxMassive );
       return;
 
@@ -881,6 +886,8 @@ void SpaceShower::pT2nextQCD( double pT2begDip, double pT2endDip) {
         if (isValence) wt *= sqrt(z);
         // Account for headroom factor for sea quarks
         else wt /= HEADROOMQ2Q;
+        // Account for headroom factor for heavy quarks in photon beam.
+        if (beam.isGamma() && isMassive) wt /= HEADROOMHQG;
         // Optionally enhanced branching rate.
         nameNow = "isr:Q2QG";
         if (canEnhanceET) {
@@ -944,6 +951,24 @@ void SpaceShower::pT2nextQCD( double pT2begDip, double pT2endDip) {
       if (pT2QQcorr < TINYPT2) { wt = 0.; continue; }
     }
 
+    // Check that room left for beam remnants with photon beam.
+    if ( beam.isGamma() ) {
+      BeamParticle& beamOther = (sideA) ? *beamBPtr : *beamAPtr;
+      if ( !beamOther.getGammaRemnants() ) {
+        // Check that room left for 1 beam remnant if other fixed
+        if ( !beam.roomFor1Remnant( idMother, xMother, eCM) ) {
+          wt = 0.;
+          continue;
+        }
+      // Otherwise check that room left for 2 beam remnants.
+      } else {
+        if ( !beamOther.roomFor2Remnants( idMother, xMother, eCM ) ) {
+          wt = 0.;
+          continue;
+        }
+      }
+    }
+
     // Evaluation of ME correction.
     if (doMEcorrections) wt *= calcMEcorr(MEtype, idMother, idDaughter,
       m2Dip, z, Q2, m2Sister) / calcMEmax(MEtype, idMother, idDaughter);
@@ -966,7 +991,6 @@ void SpaceShower::pT2nextQCD( double pT2begDip, double pT2endDip) {
       beam.xfISR(iSysNow, idDaughter, xDaughter, pdfScale2) );
     double xPDFmotherNew =
       beam.xfISR(iSysNow, idMother, xMother, pdfScale2);
-
     wt *= xPDFmotherNew / xPDFdaughterNew;
 
     // Check that valence step does not cause problem.
@@ -997,8 +1021,9 @@ void SpaceShower::pT2nextQCD( double pT2begDip, double pT2endDip) {
 // Note: No explicit Sudakov factor formalism here. Instead use that
 // df_Q(x, pT2) = (alpha_s/2pi) * (dT2/pT2) * ((gluon) * (splitting)).
 // This implies that effects of Q -> Q + g are neglected in this range.
+// Now includes also threshold behaviour with photon beams.
 
-void SpaceShower::pT2nearQCDthreshold( BeamParticle& beam,
+void SpaceShower::pT2nearThreshold( BeamParticle& beam,
   double m2Massive, double m2Threshold, double xMaxAbs,
   double zMinAbs, double zMaxMassive) {
 
@@ -1024,13 +1049,21 @@ void SpaceShower::pT2nearQCDthreshold( BeamParticle& beam,
   double pT2corr = 0.;
   double xMother = 0.;
 
+  // Check if photon beam.
+  bool isGammaBeam = beam.isGamma();
+  if( isGammaBeam ){
+    BeamParticle& beamOther = (sideA) ? *beamBPtr : *beamAPtr;
+    // Allow splitting only if room for remnants in the other side.
+    if ( !beamOther.roomFor1Remnant(eCM) ) return;
+  }
+
   // Begin loop over tries to find acceptable g -> Q + Qbar branching.
   do {
     wt = 0.;
 
     // Check that not caught in infinite loop with impossible kinematics.
     if (++loop > 100) {
-      infoPtr->errorMsg("Error in SpaceShower::pT2nearQCDthreshold: "
+      infoPtr->errorMsg("Error in SpaceShower::pT2nearThreshold: "
         "stuck in loop");
       return;
     }
@@ -1038,39 +1071,53 @@ void SpaceShower::pT2nearQCDthreshold( BeamParticle& beam,
     // Pick dpT2/pT2 in range [m2Massive,thresholdRatio * m2Massive].
     pT2 = m2Massive * pow( m2Threshold / m2Massive, rndmPtr->flat() );
 
+    // For photon beams kinematics are fixed.
+    if (isGammaBeam) {
+      xMother = xMaxAbs;
+      z       = xDaughter/xMother;
     // Pick z flat in allowed range.
-    z = zMinAbs + rndmPtr->flat() * (zMaxMassive - zMinAbs);
+    } else {
+      z = zMinAbs + rndmPtr->flat() * (zMaxMassive - zMinAbs);
+    }
 
     // Check that kinematically possible choice.
     Q2 = pT2 / (1.-z) - m2Massive;
     pT2corr = Q2 - z * (m2Dip + Q2) * (Q2 + m2Massive) / m2Dip;
     if (pT2corr < TINYPT2) continue;
 
-    // Correction factor for running alpha_s. (Only first order for now.)
-    wt = (alphaSorder > 0) ? logM2Lambda2 / log( pT2 / Lambda2 ) : 1.;
-
     // Correction factor for splitting kernel.
-    wt *= pow2(z) + pow2(1.-z) + 2. * z * (1.-z) * m2Massive / pT2;
+    wt = pow2(z) + pow2(1.-z) + 2. * z * (1.-z) * m2Massive / pT2;
 
-    // x, including correction for massive recoiler from rescattering.
-    xMother = xDaughter / z;
-    if (!dipEndNow->normalRecoil) {
-      if (sideA) xMother += (m2Rec / (x2Now * sCM)) * (1. / z - 1.);
-      else       xMother += (m2Rec / (x1Now * sCM)) * (1. / z - 1.);
+    // Sample the kinematics for hadron beams.
+    if (!isGammaBeam) {
+
+      // Correction factor for running alpha_s. (Only first order for now.)
+      wt *= (alphaSorder > 0) ? logM2Lambda2 / log( pT2 / Lambda2 ) : 1.;
+
+      // x, including correction for massive recoiler from rescattering.
+      xMother = xDaughter / z;
+      if (!dipEndNow->normalRecoil) {
+        if (sideA) xMother += (m2Rec / (x2Now * sCM)) * (1. / z - 1.);
+        else       xMother += (m2Rec / (x1Now * sCM)) * (1. / z - 1.);
+      }
+      if (xMother > xMaxAbs) { wt = 0.; continue; }
+
+      // Correction factor for gluon density.
+      pdfScale2 = (useFixedFacScale) ? fixedFacScale2 : factorMultFac * pT2;
+      double xPDFmotherNew = beam.xfISR(iSysNow, 21, xMother, pdfScale2);
+      wt *= xPDFmotherNew / xPDFmotherOld;
+
     }
-    if (xMother > xMaxAbs) { wt = 0.; continue; }
-
-    // Correction factor for gluon density.
-    pdfScale2 = (useFixedFacScale) ? fixedFacScale2 : factorMultFac * pT2;
-    double xPDFmotherNew = beam.xfISR(iSysNow, 21, xMother, pdfScale2);
-    wt *= xPDFmotherNew / xPDFmotherOld;
 
   // Iterate until acceptable pT and z.
   } while (wt < rndmPtr->flat()) ;
 
+  // Select correct mother for the splitting.
+  int idMother = isGammaBeam ? 22 : 21;
+
   // Save values for (so far) acceptable branching.
   double mSister = (abs(idDaughter) == 4) ? mc : mb;
-  dipEndNow->store( idDaughter, 21, -idDaughter, x1Now, x2Now, m2Dip,
+  dipEndNow->store( idDaughter, idMother, -idDaughter, x1Now, x2Now, m2Dip,
     pT2, z, xMother, Q2, mSister, pow2(mSister), pT2corr);
 
 }
@@ -1084,14 +1131,15 @@ void SpaceShower::pT2nextQED( double pT2begDip, double pT2endDip) {
   // Type of dipole and starting values.
   BeamParticle& beam  = (sideA) ? *beamAPtr : *beamBPtr;
   bool   isLeptonBeam = beam.isLepton();
+  bool   isGammaBeam  = beam.isGamma();
   int    MEtype       = dipEndNow->MEtype;
   bool   isPhoton     = (idDaughter == 22);
   double pT2          = pT2begDip;
   double m2Lepton     = (isLeptonBeam) ? pow2(beam.m()) : 0.;
   if (isLeptonBeam && pT2begDip < m2Lepton) return;
 
-  // Currently no f -> gamma branching implemented for lepton beams
-  if (isPhoton && isLeptonBeam) return;
+  // Currently no f -> gamma branching implemented for lepton or photon beams.
+  if (isPhoton && (isLeptonBeam || isGammaBeam) ) return;
 
   // alpha_em at maximum scale provides upper estimate.
   double alphaEMmax  = alphaEM.alphaEM(renormMultFac * pT2begDip);
@@ -1114,6 +1162,29 @@ void SpaceShower::pT2nextQED( double pT2begDip, double pT2endDip) {
     if (zMaxLepton < zMaxAbs) zMaxAbs = zMaxLepton;
   }
   if (zMaxAbs < zMinAbs) return;
+
+  // Similar threshold behaviour as in QCD evolution for photon beams.
+  double idMassive   = 0;
+  if ( isGammaBeam && abs(idDaughter) == 4 ) idMassive = 4;
+  if ( isGammaBeam && abs(idDaughter) == 5 ) idMassive = 5;
+  bool   isMassive   = (idMassive > 0);
+  double m2Massive   = 0.;
+  double mRatio      = 0.;
+  double zMaxMassive = 1.;
+  double m2Threshold = pT2;
+
+  // Evolution below scale of massive quark or at large x is impossible.
+  if (isMassive) {
+    m2Massive = (idMassive == 4) ? m2c : m2b;
+    if (pT2 < HEAVYPT2EVOL * m2Massive) return;
+    mRatio = sqrt( m2Massive / m2Dip );
+    zMaxMassive = (1. -  mRatio) / ( 1. +  mRatio * (1. -  mRatio) );
+    if (xDaughter > HEAVYXEVOL * zMaxMassive * xMaxAbs) return;
+
+  // Find threshold scale below which only gamma -> Q + Qbar will be allowed.
+    m2Threshold = (idMassive == 4) ? min( pT2, CTHRESHOLD * m2c)
+      : min( pT2, BTHRESHOLD * m2b);
+  }
 
   // Variables used inside evolution loop. (Mainly dummy start values.)
   int    idMother = 0;
@@ -1145,114 +1216,227 @@ void SpaceShower::pT2nextQED( double pT2begDip, double pT2endDip) {
       f2fInt       = f2fIntA + f2fIntB;
     } else f2fInt  = pow2(dipEndNow->chgType / 3.) * f2fIntA;
 
+    // gamma -> q qbar splitting where gamma is the original beam particle.
+    // P(z) = 3e_q^2(z^2 + (1-z)^2)
+    // Correct for the weight function (currently constant*log(pT2/pT2ref)).
+    double gamma2f = 0;
+    double pT2ref   = 0;
+    double xfApprox = 0;
+    if (isGammaBeam) {
+
+      // For photon beams approximate PDFs to estimate the splitting
+      // probability.
+      pT2ref   = beam.gammaPDFRefScale(idDaughter);
+      xfApprox = beam.gammaPDFxDependence(idDaughter, xDaughter);
+
+      // Allow splitting only if room for remnants at the other side.
+      BeamParticle& beamOther = (sideA) ? *beamBPtr : *beamAPtr;
+      if ( beamOther.roomFor1Remnant(eCM) ) {
+        gamma2f = alphaEM2pi * pow2(double(dipEndNow->chgType) / 3.)* 3.
+          * (pow2(xDaughter) + pow2(1. - xDaughter))/xfApprox;
+      }
+    }
+
     // Upper estimate for evolution equation, including fudge factor.
     if (doMEcorrections) f2fInt *= calcMEmax(MEtype, 1, 1);
     double kernelPDF = alphaEM2pi * f2fInt;
     double fudge = (isLeptonBeam) ? LEPTONFUDGE * log(m2Dip/m2Lepton) : 1.;
     kernelPDF *= fudge;
-    if (kernelPDF < TINYKERNELPDF) return;
+    // Check the kernelPDF value before possible enhancement but do not
+    // enhance gamma -> q qbar splittings.
+    if ( (kernelPDF + gamma2f) < TINYKERNELPDF ) return;
     // Optionally enhanced branching rate.
     if (canEnhanceET) kernelPDF *= userHooksPtr->enhanceFactor("isr:Q2QA");
+
+    // Add gamma -> q qbar splittings to kernelPDF for photon beam.
+    kernelPDF += gamma2f;
 
     // Begin evolution loop towards smaller pT values.
     do {
 
-      // Default values for current tentative emission.
-      isEnhancedQ2QA = false;
-      enhanceNow = 1.;
-      nameNow = "";
+      // gamma -> f fbar splitting with photon beam.
+      if( (rndmPtr->flat() * kernelPDF) < gamma2f ){
 
-      // Pick pT2 (in overestimated z range).
-      // For l -> l gamma include extrafactor 1 / ln(pT2 / m2l) in evolution.
-      double shift = pow(rndmPtr->flat(), 1. / kernelPDF);
-      if (isLeptonBeam) pT2 = m2Lepton * pow( pT2 / m2Lepton, shift);
-      else              pT2 = pT2 * shift;
+        // Sample pT2 using pT2ref.
+        pT2 = pT2ref*pow(pT2/pT2ref, pow(rndmPtr->flat(), 1. / kernelPDF));
 
-      // Abort evolution if below cutoff scale, or below another branching.
-      if (pT2 < pT2endDip) return;
-      if (isLeptonBeam && pT2 < LEPTONPT2MIN * m2Lepton) return;
+        // If fallen into b or c threshold region, force gamma -> q + qbar.
+        if ( isMassive && (pT2 < m2Threshold ) ) {
+          pT2nearThreshold( beam, m2Massive, m2Threshold, xMaxAbs,
+                            zMinAbs, zMaxMassive );
+          return;
+        } else if (pT2 < pT2endDip) return;
 
-      // Select z value of branching f -> f + gamma, and corrective weight.
-      idMother = idDaughter;
-      wt = 1.;
-      if (isLeptonBeam) {
-        if (f2fIntA > rndmPtr->flat() * (f2fIntA + f2fIntB)) {
+        // Fix the flavors and masses for the partons.
+        idMother = 22;
+        xMother = xMaxAbs;
+        z = xDaughter/xMother;
+        idSister = -idDaughter;
+        mSister  = particleDataPtr->m0(idSister);
+        m2Sister = pow2(mSister);
+
+        // Derive Q2 from pT2 and z.
+        Q2 = pT2 / (1. - z);
+
+        // Forbidden emission if outside allowed z range for given pT2.
+        pT2corr  = Q2 - z * (m2Dip + Q2) * (Q2 + m2Sister) / m2Dip;
+        if (pT2corr < TINYPT2) { wt = 0.; continue; }
+
+        // Weight with the x*log(pT2/pT2ref)/(x*pdf).
+        pdfScale2 = (useFixedFacScale) ? fixedFacScale2 : factorMultFac * pT2;
+        double daughterPDF = max ( TINYPDF,
+            beam.xfISR(iSysNow, idDaughter, xDaughter, pdfScale2) );
+        wt = xDaughter*log(pT2/pT2ref)/daughterPDF;
+
+        // Correct for the x-dependence of PDFs
+        // (Currently only constant depending on the quark flavor).
+        wt *= xfApprox;
+
+        // Correct to current value of alpha_EM.
+        double alphaEMnow = alphaEM.alphaEM(renormMultFac * pT2);
+        wt *= (alphaEMnow / alphaEMmax);
+
+        // Check that gamma -> q qbar step does not cause problem.
+        if (wt > 1. && pT2 > PT2MINWARN){
+          infoPtr->errorMsg("Warning in "
+                            "SpaceShower::pT2nextQED: weight above unity");
+        }
+
+      // f -> f gamma splittings
+      } else {
+
+        // Default values for current tentative emission.
+        isEnhancedQ2QA = false;
+        enhanceNow = 1.;
+        nameNow = "";
+
+        // Pick pT2 (in overestimated z range).
+        // For l -> l gamma include extrafactor 1 / ln(pT2/m2l) in evolution.
+        double shift = pow(rndmPtr->flat(), 1. / kernelPDF);
+        if (isLeptonBeam) pT2 = m2Lepton * pow( pT2 / m2Lepton, shift);
+        else              pT2 = pT2 * shift;
+
+        // If fallen into b or c threshold region, force gamma -> Q + Qbar.
+        if ( isGammaBeam && isMassive && (pT2 < m2Threshold ) ) {
+          pT2nearThreshold( beam, m2Massive, m2Threshold, xMaxAbs,
+                            zMinAbs, zMaxMassive );
+          return;
+        }
+
+        // Abort evolution if below cutoff scale, or below another branching.
+        if (pT2 < pT2endDip) return;
+        if (isLeptonBeam && pT2 < LEPTONPT2MIN * m2Lepton) return;
+
+        // Set the IDs for f -> f + gamma splittings.
+        idSister = 22;
+        idMother = idDaughter;
+
+        // Select z value of branching f -> f + gamma, and corrective weight.
+        wt = 1.;
+        if (isLeptonBeam) {
+          if (f2fIntA > rndmPtr->flat() * (f2fIntA + f2fIntB)) {
+            z = 1. - (1. - zMinAbs)
+              * pow( (1. - zMaxAbs) / (1. - zMinAbs), rndmPtr->flat() );
+          } else {
+            z = xDaughter + (zMinAbs - xDaughter)
+              * pow( (zMaxAbs - xDaughter) / (zMinAbs - xDaughter),
+                     rndmPtr->flat() );
+          }
+          wt *= (z - xDaughter) / (1. - xDaughter);
+        } else {
           z = 1. - (1. - zMinAbs)
             * pow( (1. - zMaxAbs) / (1. - zMinAbs), rndmPtr->flat() );
+        }
+
+        // The same mass corrections as for QCD q -> q g
+        if (!isMassive) {
+          wt *= 0.5 * (1. + pow2(z));
         } else {
-          z = xDaughter + (zMinAbs - xDaughter)
-            * pow( (zMaxAbs - xDaughter) / (zMinAbs - xDaughter),
-                  rndmPtr->flat() );
+          wt *= 0.5 * (1. + pow2(z)) - z * pow2(1.-z) * m2Massive / pT2;
         }
-        wt *= (z - xDaughter) / (1. - xDaughter);
-      } else {
-        z = 1. - (1. - zMinAbs)
-          * pow( (1. - zMaxAbs) / (1. - zMinAbs), rndmPtr->flat() );
-      }
-      wt *= 0.5 * (1. + pow2(z));
 
-      // Optionally enhanced branching rate.
-      nameNow      = "isr:Q2QA";
-      if (canEnhanceET) {
-        double enhance = userHooksPtr->enhanceFactor(nameNow);
-        if (enhance != 1.) {
-          enhanceNow = enhance;
-          isEnhancedQ2QA = true;
+        // Optionally enhanced branching rate.
+        nameNow      = "isr:Q2QA";
+        if (canEnhanceET) {
+          double enhance = userHooksPtr->enhanceFactor(nameNow);
+          if (enhance != 1.) {
+            enhanceNow = enhance;
+            isEnhancedQ2QA = true;
+          }
         }
-      }
 
-      // Derive Q2 and x of mother from pT2 and z.
-      Q2      = pT2 / (1. - z);
-      xMother = xDaughter / z;
-      // Correction to x for massive recoiler from rescattering.
-      if (!dipEndNow->normalRecoil) {
-        if (sideA) xMother += (m2Rec / (x2Now * sCM)) * (1. / z - 1.);
-        else       xMother += (m2Rec / (x1Now * sCM)) * (1. / z - 1.);
-      }
-      if (xMother > xMaxAbs) { wt = 0.; continue; }
+        // Derive Q2 and x of mother from pT2 and z.
+        Q2      = pT2 / (1. - z);
+        xMother = xDaughter / z;
+        // Correction to x for massive recoiler from rescattering.
+        if (!dipEndNow->normalRecoil) {
+          if (sideA) xMother += (m2Rec / (x2Now * sCM)) * (1. / z - 1.);
+          else       xMother += (m2Rec / (x1Now * sCM)) * (1. / z - 1.);
+        }
+        if (xMother > xMaxAbs) { wt = 0.; continue; }
 
-      // Forbidden emission if outside allowed z range for given pT2.
-      mSister  = 0.;
-      m2Sister = 0.;
-      pT2corr  = Q2 - z * (m2Dip + Q2) * (Q2 + m2Sister) / m2Dip;
-      if (pT2corr < TINYPT2) { wt = 0.; continue; }
+        // Forbidden emission if outside allowed z range for given pT2.
+        mSister  = 0.;
+        m2Sister = 0.;
+        pT2corr  = Q2 - z * (m2Dip + Q2) * (Q2 + m2Sister) / m2Dip;
+        if (pT2corr < TINYPT2) { wt = 0.; continue; }
 
-      // Correct by ln(pT2 / m2l) and fudge factor.
-      if (isLeptonBeam) wt *= log(pT2 / m2Lepton) / fudge;
+        // Check that room left for beam remnants with photon beams.
+        if ( beam.isGamma() ) {
+          BeamParticle& beamOther = (sideA) ? *beamBPtr : *beamAPtr;
+          // Room for one remnant, other already fixed by ISR.
+          if( !beamOther.getGammaRemnants() ){
+            if ( !beam.roomFor1Remnant( idMother, xMother, eCM) ) {
+              wt = 0.;
+              continue;
+            }
+          // Room left for two beam remnants.
+          } else {
+            if( !beamOther.roomFor2Remnants( idMother, xMother, eCM ) ) {
+              wt = 0.;
+              continue;
+            }
+          }
+        }
 
-      // Evaluation of ME correction.
-      if (doMEcorrections) wt *= calcMEcorr(MEtype, idMother, idDaughter,
-         m2Dip, z, Q2, m2Sister) / calcMEmax(MEtype, idMother, idDaughter);
+        // Correct by ln(pT2 / m2l) and fudge factor.
+        if (isLeptonBeam) wt *= log(pT2 / m2Lepton) / fudge;
 
-      // Extra QED correction for f fbar -> W+- gamma. Debug??
-      if (doMEcorrections && MEtype == 1 && idDaughter == idMother
-        && ( (iSysNow == 0 && idResFirst  == 24)
-          || (iSysNow == 1 && idResSecond == 24) ) ) {
-        double tHe  = -Q2;
-        double uHe  = Q2 - m2Dip * (1. - z) / z;
-        double chg1 = abs(dipEndNow->chgType / 3.);
-        double chg2 = 1. - chg1;
-        wt *= pow2(chg1 * uHe - chg2 * tHe)
+        // Evaluation of ME correction.
+        if (doMEcorrections) wt *= calcMEcorr(MEtype, idMother, idDaughter,
+          m2Dip, z, Q2, m2Sister) / calcMEmax(MEtype, idMother, idDaughter);
+
+        // Extra QED correction for f fbar -> W+- gamma. Debug??
+        if (doMEcorrections && MEtype == 1 && idDaughter == idMother
+            && ( (iSysNow == 0 && idResFirst  == 24)
+                 || (iSysNow == 1 && idResSecond == 24) ) ) {
+          double tHe  = -Q2;
+          double uHe  = Q2 - m2Dip * (1. - z) / z;
+          double chg1 = abs(dipEndNow->chgType / 3.);
+          double chg2 = 1. - chg1;
+          wt *= pow2(chg1 * uHe - chg2 * tHe)
           / ( (tHe + uHe) * (pow2(chg1) * uHe + pow2(chg2) * tHe) );
+        }
+
+        // Optional dampening of large pT values in first radiation.
+        if (dopTdamp && iSysNow == 0 && MEtype == 0 && nRad == 0)
+          wt *= pT2damp / (pT2 + pT2damp);
+
+        // Correct to current value of alpha_EM.
+        double alphaEMnow = alphaEM.alphaEM(renormMultFac * pT2);
+        wt *= (alphaEMnow / alphaEMmax);
+
+        // Evaluation of new daughter and mother PDF's.
+        pdfScale2 = (useFixedFacScale) ? fixedFacScale2 : factorMultFac * pT2;
+        double xPDFdaughterNew = max ( TINYPDF,
+          beam.xfISR(iSysNow, idDaughter, xDaughter, pdfScale2) );
+        double xPDFmotherNew   =
+          beam.xfISR(iSysNow, idMother, xMother, pdfScale2);
+        wt *= xPDFmotherNew / xPDFdaughterNew;
+
       }
 
-      // Optional dampening of large pT values in first radiation.
-      if (dopTdamp && iSysNow == 0 && MEtype == 0 && nRad == 0)
-        wt *= pT2damp / (pT2 + pT2damp);
-
-      // Correct to current value of alpha_EM.
-      double alphaEMnow = alphaEM.alphaEM(renormMultFac * pT2);
-      wt *= (alphaEMnow / alphaEMmax);
-
-      // Evaluation of new daughter and mother PDF's.
-      pdfScale2 = (useFixedFacScale) ? fixedFacScale2 : factorMultFac * pT2;
-      double xPDFdaughterNew = max ( TINYPDF,
-        beam.xfISR(iSysNow, idDaughter, xDaughter, pdfScale2) );
-      double xPDFmotherNew   =
-        beam.xfISR(iSysNow, idMother, xMother, pdfScale2);
-      wt *= xPDFmotherNew / xPDFdaughterNew;
-
-    // Iterate until acceptable pT (or have fallen below pTmin).
+      // Iterate until acceptable pT (or have fallen below pTmin).
     } while (wt < rndmPtr->flat()) ;
   }
 
@@ -1782,6 +1966,9 @@ bool SpaceShower::branch( Event& event) {
   double x1New      = (side == 1) ? xMo : x1;
   double x2New      = (side == 2) ? xMo : x2;
 
+  // Flag for gamma -> q qbar splittings.
+  bool gamma2qqbar  = false;
+
   // Read in MEtype:
   int MEtype        = dipEndSel->MEtype;
 
@@ -1887,12 +2074,12 @@ bool SpaceShower::branch( Event& event) {
     acolMother      = acolDaughter;
     colMother       = 0;
     acolSister      = colDaughter;
-  // g -> q + qbar.
-  } else if (idDaughterNow > 0 && idDaughterNow < 9) {
+  // g -> q + qbar but not gamma -> q + qbar.
+  } else if ( (idDaughterNow > 0 && idDaughterNow < 9) && idMother != 22) {
     acolMother      = event.nextColTag();
     acolSister      = acolMother;
-  // g -> qbar + q.
-  } else if (idDaughterNow < 0 && idDaughterNow > -9) {
+  // g -> qbar + q but not gamma -> qbar + q.
+  } else if ( (idDaughterNow < 0 && idDaughterNow > -9) && idMother != 22) {
     colMother       = event.nextColTag();
     colSister       = colMother;
   // q -> gamma + q.
@@ -1903,6 +2090,18 @@ bool SpaceShower::branch( Event& event) {
   } else if (idDaughterNow == 22) {
     acolMother      = event.nextColTag();
     acolSister      = acolMother;
+  // gamma -> q + qbar.
+  } else if ( (idDaughterNow > 0 && idDaughterNow < 9) && idMother == 22) {
+    colMother       = 0;
+    acolMother      = 0;
+    acolSister      = colDaughter;
+    gamma2qqbar     = true;
+  // gamma -> qbar + q.
+  } else if ( (idDaughterNow < 0 && idDaughterNow > -9) && idMother == 22) {
+    colMother       = 0;
+    acolMother      = 0;
+    colSister       = acolDaughter;
+    gamma2qqbar     = true;
   }
 
   // Indices of partons involved. Add new sister.
@@ -2345,8 +2544,12 @@ bool SpaceShower::branch( Event& event) {
   // Redo choice of companion kind whenever new flavour.
   if (idMother != idDaughterNow) {
     pdfScale2 = (useFixedFacScale) ? fixedFacScale2 : factorMultFac * pT2;
-    beamNow.xfISR( iSysSel, idMother, xNew, pdfScale2);
-    beamNow.pickValSeaComp();
+    // For photon beams decide the valence content after evolution.
+    if (beamNow.isGamma()) ;
+    else {
+      beamNow.xfISR( iSysSel, idMother, xNew, pdfScale2);
+      beamNow.pickValSeaComp();
+    }
   }
   BeamParticle& beamRec = (side == 1) ? *beamBPtr : *beamAPtr;
   beamRec[iSysSel].iPos( iNewRecoiler);
@@ -2466,6 +2669,9 @@ bool SpaceShower::branch( Event& event) {
     rescatterFail = true;
     return false;
   }
+
+  // If gamma -> q qbar valid with photon beam no need for remnants.
+  if ( beamNow.isGamma() ) beamNow.setGammaRemnants(!gamma2qqbar);
 
   // Done without any errors.
   return true;

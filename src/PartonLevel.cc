@@ -393,6 +393,10 @@ bool PartonLevel::next( Event& process, Event& event) {
     pTsaveISR  = 0.;
     pTsaveFSR  = 0.;
 
+    // Set remnants on for photon beams. Can be switched off by ISR.
+    if( beamAPtr->isGamma() ) beamAPtr->setGammaRemnants(true);
+    if( beamBPtr->isGamma() ) beamBPtr->setGammaRemnants(true);
+
     // Identify hard interaction system for showers.
     setupHardSys( process, event);
 
@@ -1191,10 +1195,12 @@ void PartonLevel::setupHardSys( Event& process, Event& event) {
   beamAPtr->xfISR( 0, process[inP].id(), x1, scale*scale);
   if (isNonDiff && (vsc1 = multiPtr->getVSC1()) != 0)
     (*beamAPtr)[0].companion(vsc1);
+  else if (beamAPtr->isGamma()) vsc1 = beamAPtr->gammaValSeaComp(0);
   else vsc1 = beamAPtr->pickValSeaComp();
   beamBPtr->xfISR( 0, process[inM].id(), x2, scale*scale);
   if (isNonDiff && (vsc2 = multiPtr->getVSC2()) != 0)
     (*beamBPtr)[0].companion(vsc2);
+  else if (beamBPtr->isGamma()) vsc2 = beamBPtr->gammaValSeaComp(0);
   else vsc2 = beamBPtr->pickValSeaComp();
   bool isVal1 = (vsc1 == -3);
   bool isVal2 = (vsc2 == -3);

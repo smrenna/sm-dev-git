@@ -3060,6 +3060,29 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
     if (!rescatterPropagateRecoil(event, pNew)) return false;
   }
 
+  // For photon-beam recoiler check that room for remnants after branching.
+  if ( isrTypeNow != 0 ) {
+    BeamParticle& beamRec = (isrTypeNow == 1) ? *beamAPtr : *beamBPtr;
+    if ( beamRec.isGamma() ) {
+      // If recoiler kinematics fixed by ISR can't act as recoiler.
+      if ( !beamRec.getGammaRemnants() ) return false;
+      BeamParticle& beamOther = (isrTypeNow == 1) ? *beamBPtr : *beamAPtr;
+      bool physical   = true;
+      double xRec     = 2. * pRec.e() / (beamRec.e() + beamOther.e());
+      double sCM      = m2( beamRec.p(), beamOther.p());
+      double eCM      = sqrt(sCM);
+      // One-remnant system.
+      if ( !beamOther.getGammaRemnants() ) {
+        physical = beamRec.roomFor1Remnant(beamRec[0].id(), xRec, eCM);
+      // Two-remnants systems.
+      } else {
+        physical = beamOther.roomFor2Remnants(beamRec[0].id(), xRec, eCM);
+      }
+
+      if (!physical) return false;
+    }
+  }
+
   // Save properties to be restored in case of user-hook veto of emission.
   int eventSizeOld = event.size();
   int iRadStatusV  = event[iRadBef].status();
