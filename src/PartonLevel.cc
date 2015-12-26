@@ -394,8 +394,8 @@ bool PartonLevel::next( Event& process, Event& event) {
     pTsaveFSR  = 0.;
 
     // Set remnants on for photon beams. Can be switched off by ISR.
-    if( beamAPtr->isGamma() ) beamAPtr->setGammaRemnants(true);
-    if( beamBPtr->isGamma() ) beamBPtr->setGammaRemnants(true);
+    beamAPtr->setGammaRemnants( beamAPtr->isGamma() );
+    beamBPtr->setGammaRemnants( beamBPtr->isGamma() );
 
     // Identify hard interaction system for showers.
     setupHardSys( process, event);

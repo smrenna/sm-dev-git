@@ -39,14 +39,14 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.214: 23 December 2015 
+<li>8.214: 26 December 2015 
 <ul> 
  
 <li>Ilkka Helenius joins as new PYTHIA co-author.</li> 
  
 <li>A new machinery for <i>gamma-gamma</i> collisions is now available, 
 see <?php $filepath = $_GET["filepath"];
-echo "<a href='PhotonPhoton.php?filepath=".$filepath."' target='page'>";?>Photon-photon Interactions</a>.
+echo "<a href='PhotonPhoton.php?filepath=".$filepath."' target='page'>";?>Photon-photon Interactions</a>. 
 So far only hard processes can be generated, along with parton showers 
 and hadronization, but without multiparton interactions. The CJKL parton 
 distributions of the photon have been implemented and are used.</li> 
@@ -55,6 +55,25 @@ distributions of the photon have been implemented and are used.</li>
 is now available, but with only the colour-singlet processes included, 
 see <?php $filepath = $_GET["filepath"];
 echo "<a href='OniaProcesses.php?filepath=".$filepath."' target='page'>";?>Onia Processes</a> for details.</li> 
+ 
+<li>Weak merging implemented, i.e. <i>W</i> gauge bosons can be 
+produced either as part of the hard matrix element or in the parton 
+shower, and a proper treatment merges these two possibilities consistently. 
+See the <?php $filepath = $_GET["filepath"];
+echo "<a href='CKKWLMerging.php?filepath=".$filepath."' target='page'>";?>CKKW-L</a> page for details.</li> 
+ 
+<li>Running <i>alpha_em</i> in merging description.</li> 
+ 
+<li>Improved interface to external parton showers, such as 
+<a href="http://vincia.hepforge.org/" target="_top">VINCIA</a> and 
+<a href="http://www.slac.stanford.edu/~prestel/DIRE/" target="_top">DIRE</a>, 
+so that these now also can use the various matching and merging 
+frameworks implemented in Pythia.</li> 
+ 
+<li>New options in the <?php $filepath = $_GET["filepath"];
+echo "<a href='JetMatching.php?filepath=".$filepath."' target='page'>";?>jet matching</a> 
+framework, such that expert users can use their own veto code for 
+Madgraph-style jet matching.</li> 
  
 <li>By default the program will now assign the PYTHIA mass for 
 massless <i>c</i> and <i>b</i> quarks in Les Houches input, see 
@@ -100,6 +119,14 @@ to have specified new masses.</li>
 <li>Initialize the random number generator earlier, so a non-default 
 seed choice also could benefit early external initialization making 
 use of it.</li> 
+ 
+<li>Minor fix in interface to zlib.</li> 
+ 
+<li>Changed default setting in <code>main89mlm.cmnd</code>, to better 
+agree with common practice.</li> 
+ 
+<li>Minor improvements and fixes in the weighting facilities for 
+initial- and final-state showers.</li> 
  
 <li>Minor update in the beam-remnant handling for DIS.</li> 
  

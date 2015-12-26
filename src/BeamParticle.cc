@@ -116,7 +116,7 @@ void BeamParticle::init( int idIn, double pzIn, double eIn, double mIn,
   pTminISR          = settings.parm("SpaceShower:pTmin");
 
   // Add remnants for photon beam unless ISR ends up as a photon.
-  gammaRemnants     = true;
+  gammaRemnants     = false;
 
   // Store info on the incoming beam.
   idBeam            = idIn;

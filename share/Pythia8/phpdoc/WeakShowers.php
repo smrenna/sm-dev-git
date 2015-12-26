@@ -205,6 +205,14 @@ the veto algorithm used to avoid double counting. Relates to the relative
 importance given to ISR and FSR emissionbs. 
    
  
+<br/><br/><strong>WeakShower:externalSetup</strong>  <input type="radio" name="6" value="on"><strong>On</strong>
+<input type="radio" name="6" value="off" checked="checked"><strong>Off</strong>
+ &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
+This flags tells the shower to use an external setup stored in the 
+info pointer. This is mainly expected to be used in conjunction with the weak 
+merging, and has to be switched on when the weak merging is used. 
+   
+ 
 <input type="hidden" name="saved" value="1"/>
 
 <?php
@@ -243,6 +251,11 @@ fwrite($handle,$data);
 if($_POST["5"] != "0.6")
 {
 $data = "WeakShower:vetoWeakDeltaR = ".$_POST["5"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["6"] != "off")
+{
+$data = "WeakShower:externalSetup = ".$_POST["6"]."\n";
 fwrite($handle,$data);
 }
 fclose($handle);

@@ -23,6 +23,7 @@
 #include "Pythia8/MergingHooks.h"
 #include "Pythia8/WeakShowerMEs.h"
 
+
 namespace Pythia8 {
 
 //==========================================================================
@@ -138,41 +139,41 @@ public:
   // Virtual so that shower plugins can overwrite these functions.
   // This makes it possible for another piece of the code to request
   // these - which is very convenient for merging.
+
   // Function variable names are not included to avoid compiler warnings.
   // Please see the documentation under "Implement New Showers" for details.
 
   // Return clustering kinematics - as needed form merging.
-  // Usage: clustered( const Event& event, string name, int iRad, int iEmt,
-  //                   int iRec)
-  virtual Event clustered( const Event&, string, int, int, int)
+  virtual Event clustered( const Event&, int, int, int, string)
     { return Event();}
 
-  // Return state after a branching, as needed to evaluate more complicated
-  // kernels.
-  // Usage: branched( const Event& event, int iRadBef, int iRecBef, int idEmt,
-  //                  double pT2, double z, double RN, vector<double> aux)
-  virtual Event branched( const Event&, int, int, int, int, double,
-    double, double, vector<double>) { return Event();}
-
   // Return the evolution variable.
-  // Usage: pT2Space( const Particle& rad, const Particle& emt,
-  //                  const Particle& rec)
-  virtual double pT2Space ( const Particle&, const Particle&, const Particle&)
-    { return 0.;}
+  // Usage: getStateVariables( const Event& event,  int iRad, int iEmt,
+  //                   int iRec, string name)
+  // Important note:
+  //  - The first element of the return vector *must* be the value of the
+  //    shower evolution variable corresponding to the branching defined by
+  //    the integers.
+  //  - The second element of the return vector *must* be the value of the
+  //    shower evolution variable from which the shower would restart after
+  //    the branching (two values will often be identical).
+  virtual vector<double> getStateVariables (const Event&,int,int,int,string)
+    { return vector<double>();}
 
-  // Return the auxiliary (energy sharing) variable.
-  // Usage: zSpace( const Particle& rad, const Particle& emt,
-  //                const Particle& rec)
-  virtual double zSpace ( const Particle&, const Particle&, const Particle&)
-    { return 0.;}
+  // Check if attempted clustering is handled by timelike shower
+  // Usage: isSpacelike( const Event& event,  int iRad, int iEmt,
+  //                   int iRec, string name)
+  virtual bool isSpacelike(const Event&, int, int, int, string)
+    { return false; }
 
-  // Return a string to identifier of a splitting.
-  // Usage: getSplittingName( const Event& event, int iRad, int iEmt)
-  virtual string getSplittingName( const Event&, int, int) { return "";}
+  // Return a string identifier of a splitting.
+  // Usage: getSplittingName( const Event& event, int iRad, int iEmt, int iRec)
+  virtual string getSplittingName( const Event&, int, int, int) { return "";}
 
   // Return the splitting probability.
   // Usage: getSplittingProb( const Event& event, int iRad, int iEmt, int iRec)
-  virtual double getSplittingProb( const Event&, int, int, int ) { return 0.;}
+  virtual double getSplittingProb( const Event&, int, int, int, string)
+    { return 0.;}
 
 protected:
 
@@ -225,7 +226,7 @@ private:
          doWeakShower, doMEcorrections, doMEafterFirst, doPhiPolAsym,
          doPhiPolAsymHard, doPhiIntAsym, doRapidityOrder, useFixedFacScale,
          doSecondHard, canVetoEmission, hasUserHooks, alphaSuseCMW,
-         singleWeakEmission, vetoWeakJets;
+         singleWeakEmission, vetoWeakJets, weakExternal;
   int    pTmaxMatch, pTdampMatch, alphaSorder, alphaSnfmax, alphaEMorder,
          nQuarkIn, enhanceScreening, weakMode;
   double pTdampFudge, mc, mb, m2c, m2b, renormMultFac, factorMultFac,
@@ -257,6 +258,9 @@ private:
 
   // All dipole ends
   vector<SpaceDipoleEnd> dipEnd;
+
+  // List of 2 -> 2 momenta for external weak setup.
+  vector<Vec4> weakMomenta;
 
   // Pointers to the current and hardest (so far) dipole ends.
   int iDipNow, iSysNow;

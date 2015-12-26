@@ -199,6 +199,7 @@ void SpaceShower::init( BeamParticle* beamAPtrIn,
   singleWeakEmission = settingsPtr->flag("WeakShower:singleEmission");
   vetoWeakJets       = settingsPtr->flag("WeakShower:vetoWeakJets");
   vetoWeakDeltaR2    = pow2(settingsPtr->parm("weakShower:vetoWeakDeltaR"));
+  weakExternal       = settingsPtr->flag("WeakShower:externalSetup");
 
   // Various other parameters.
   doMEcorrections    = settingsPtr->flag("SpaceShower:MEcorrections");
@@ -386,49 +387,92 @@ void SpaceShower::prepare( int iSys, Event& event, bool limitPTmaxIn) {
   // Currently leptons are not allow to emit W bosons and only
   // emissions from the hard process are included.
   if (doWeakShower && iSys == 0) {
+    // Normal internal setup.
+    if (!weakExternal) {
+      // Determine what type of 2 -> 2 process it is.
+      int MEtypeWeak = findMEtype( iSys, event, true);
+      if (MEtypeWeak == 201 || MEtypeWeak == 202 || MEtypeWeak == 203 ||
+          MEtypeWeak == 206 || MEtypeWeak == 207 || MEtypeWeak == 208) {
 
-    // Determine what type of 2 -> 2 process it is.
-    int MEtypeWeak = findMEtype( iSys, event, true);
-    if (MEtypeWeak == 201 || MEtypeWeak == 202 || MEtypeWeak == 203 ||
-        MEtypeWeak == 206 || MEtypeWeak == 207 || MEtypeWeak == 208) {
+        // Nonidentical incoming flavours.
+        if (event[in1].id() != event[in2].id()) {
+          if (event[in1].id() == event[in1 + 2].id()) tChannel = true;
+          else if (event[in2].id() == event[in1 + 2].id()) tChannel = false;
+          // No quark matches the outgoing, choose randomly.
+          else tChannel = (rndmPtr->flat() < 0.5);
+          // In case of same quark flavours, choose randomly.
+        } else tChannel = (rndmPtr->flat() < 0.5);
+      }
 
-      // Nonidentical incoming flavours.
-      if (event[in1].id() != event[in2].id()) {
-        if (event[in1].id() == event[in1 + 2].id()) tChannel = true;
-        else if (event[in2].id() == event[in1 + 2].id()) tChannel = false;
-        // No quark matches the outgoing, choose randomly.
-        else tChannel = (rndmPtr->flat() < 0.5);
-      // In case of same quark flavours, choose randomly.
-      } else tChannel = (rndmPtr->flat() < 0.5);
-    }
+      // Set up weak dipole ends for first incoming parton.
+      int weakPol = (rndmPtr->flat() > 0.5) ? -1 : 1;
+      if (event[in1].idAbs() < 20) event[in1].pol(weakPol);
+      if (canRadiate1) {
+        if ( (weakMode == 0 || weakMode == 1) && weakPol == -1
+             && event[in1].isQuark() )
+          dipEnd.push_back( SpaceDipoleEnd( iSys, 1, in1, in2, pTmax1,
+            0, 0, 1, MEtypeWeak, canRadiate2, weakPol) );
+        if ( (weakMode == 0 || weakMode == 2)
+             && (event[in1].isQuark() || event[in1].isLepton()) )
+          dipEnd.push_back( SpaceDipoleEnd( iSys, 1, in1, in2, pTmax1,
+            0, 0, 2, MEtypeWeak + 5, canRadiate2, weakPol) );
+      }
 
-    // Set up weak dipole ends for first incoming parton.
-    int weakPol = (rndmPtr->flat() > 0.5) ? -1 : 1;
-    if (event[in1].idAbs() < 20) event[in1].pol(weakPol);
-    if (canRadiate1) {
-      if ( (weakMode == 0 || weakMode == 1) && weakPol == -1
-        && event[in1].isQuark() )
-        dipEnd.push_back( SpaceDipoleEnd( iSys, 1, in1, in2, pTmax1,
-          0, 0, 1, MEtypeWeak, canRadiate2, weakPol) );
-      if ( (weakMode == 0 || weakMode == 2)
-        && (event[in1].isQuark() || event[in1].isLepton()) )
-        dipEnd.push_back( SpaceDipoleEnd( iSys, 1, in1, in2, pTmax1,
-          0, 0, 2, MEtypeWeak + 5, canRadiate2, weakPol) );
-    }
+      // Set up weak dipole ends for second incoming parton.
+      if (event[in1].id() != - event[in2].id())
+        weakPol = (rndmPtr->flat() > 0.5) ? -1 : 1;
+      if (event[in2].idAbs() < 20) event[in2].pol(weakPol);
+      if (canRadiate2) {
+        if ( (weakMode == 0 || weakMode == 1) && weakPol == -1
+             && event[in2].isQuark())
+          dipEnd.push_back( SpaceDipoleEnd( iSys, 2, in2, in1, pTmax2,
+            0, 0, 1, MEtypeWeak, canRadiate1, weakPol) );
+        if ( (weakMode == 0 || weakMode == 2) &&
+             (event[in2].isQuark() || event[in2].isLepton()) )
+          dipEnd.push_back( SpaceDipoleEnd( iSys, 2, in2, in1, pTmax2,
+            0, 0, 2, MEtypeWeak + 5, canRadiate1, weakPol) );
+      }
+    // External setup from infoPtr.
+    } else {
+      // Get information.
+      vector<pair<int,int> > weakDipoles = infoPtr->getWeakDipoles();
+      vector<int> weakModes = infoPtr->getWeakModes();
+      weakMomenta = infoPtr->getWeakMomenta();
+      tChannel = true;
+      // Loop over dipoles.
+      for (int i = 0; i < int(weakDipoles.size()); ++i) {
+        // Only consider ISR dipoles.
 
-    // Set up weak dipole ends for second incoming parton.
-    if (event[in1].id() != - event[in2].id())
-      weakPol = (rndmPtr->flat() > 0.5) ? -1 : 1;
-    if (event[in2].idAbs() < 20) event[in2].pol(weakPol);
-    if (canRadiate2) {
-      if ( (weakMode == 0 || weakMode == 1) && weakPol == -1
-        && event[in2].isQuark())
-        dipEnd.push_back( SpaceDipoleEnd( iSys, 2, in2, in1, pTmax2,
-          0, 0, 1, MEtypeWeak, canRadiate1, weakPol) );
-      if ( (weakMode == 0 || weakMode == 2) &&
-        (event[in2].isQuark() || event[in2].isLepton()) )
-        dipEnd.push_back( SpaceDipoleEnd( iSys, 2, in2, in1, pTmax2,
-          0, 0, 2, MEtypeWeak + 5, canRadiate1, weakPol) );
+        if (event[weakDipoles[i].first].status() < 0) {
+          // Find ME.
+          int iRadLocal = weakDipoles[i].first;
+          int iRecLocal = weakDipoles[i].second;
+          int side = (iRadLocal == 3) ? 1 : 2;
+          double pTmax = (side == 1) ? pTmax1 : pTmax2;
+
+          // Find MEtype.
+          int MEtypeWeak = 0;
+          if (weakModes[weakDipoles[i].first] == 1) MEtypeWeak = 200;
+          else if (weakModes[weakDipoles[i].first] == 2) MEtypeWeak = 201;
+          else if (weakModes[weakDipoles[i].first] == 3) MEtypeWeak = 202;
+          else MEtypeWeak = 203;
+
+          // Find correct polarization, if it is already set use it.
+          // Otherwise pick randomly.
+          int weakPol = (rndmPtr->flat() > 0.5) ? -1 : 1;
+          if (event[weakDipoles[i].first].pol() != 9)
+            weakPol = event[weakDipoles[i].first].pol();
+          event[weakDipoles[i].first].pol(weakPol);
+
+          // Add the dipoles.
+          if ( (weakMode == 0 || weakMode == 1) && weakPol == -1)
+            dipEnd.push_back( SpaceDipoleEnd( iSys, side, iRadLocal, iRecLocal,
+              pTmax, 0, 0, 1, MEtypeWeak, true, weakPol) );
+          if (weakMode == 0 || weakMode == 2)
+            dipEnd.push_back( SpaceDipoleEnd( iSys, side, iRadLocal, iRecLocal,
+              pTmax, 0, 0, 2, MEtypeWeak + 5, true, weakPol) );
+        }
+      }
     }
   }
 
@@ -888,6 +932,7 @@ void SpaceShower::pT2nextQCD( double pT2begDip, double pT2endDip) {
         else wt /= HEADROOMQ2Q;
         // Account for headroom factor for heavy quarks in photon beam.
         if (beam.isGamma() && isMassive) wt /= HEADROOMHQG;
+
         // Optionally enhanced branching rate.
         nameNow = "isr:Q2QG";
         if (canEnhanceET) {
@@ -1036,7 +1081,7 @@ void SpaceShower::pT2nearThreshold( BeamParticle& beam,
   double xPDFmotherOld = beam.xfISR(iSysNow, 21, xDaughter, pdfScale2);
   // Check that xPDF is not vanishing.
   if ( xPDFmotherOld < TINYPDF ) {
-    infoPtr->errorMsg("Error in SpaceShower::pT2nearQCDthreshold: xPDF = 0");
+    infoPtr->errorMsg("Error in SpaceShower::pT2nearThreshold: xPDF = 0");
     return;
   }
 
@@ -1049,7 +1094,7 @@ void SpaceShower::pT2nearThreshold( BeamParticle& beam,
   double pT2corr = 0.;
   double xMother = 0.;
 
-  // Check if photon beam.
+  // Check if photon beam is being evolved.
   bool isGammaBeam = beam.isGamma();
   if( isGammaBeam ){
     BeamParticle& beamOther = (sideA) ? *beamBPtr : *beamAPtr;
@@ -1181,7 +1226,7 @@ void SpaceShower::pT2nextQED( double pT2begDip, double pT2endDip) {
     zMaxMassive = (1. -  mRatio) / ( 1. +  mRatio * (1. -  mRatio) );
     if (xDaughter > HEAVYXEVOL * zMaxMassive * xMaxAbs) return;
 
-  // Find threshold scale below which only gamma -> Q + Qbar will be allowed.
+    // Find threshold scale below which only gamma -> Q + Qbar will be allowed.
     m2Threshold = (idMassive == 4) ? min( pT2, CTHRESHOLD * m2c)
       : min( pT2, BTHRESHOLD * m2b);
   }
@@ -1198,8 +1243,8 @@ void SpaceShower::pT2nextQED( double pT2begDip, double pT2endDip) {
   double pT2corr  = 0.;
 
   // Set default values for enhanced emissions.
-  bool isEnhancedQ2QA, isEnhancedQ2AQ;
-  isEnhancedQ2QA = isEnhancedQ2AQ = false;
+  bool isEnhancedQ2QA, isEnhancedQ2AQ, isEnhancedA2QQ;
+  isEnhancedQ2QA = isEnhancedQ2AQ = isEnhancedA2QQ = false;
   double enhanceNow = 1.;
   string nameNow = "";
 
@@ -1245,14 +1290,23 @@ void SpaceShower::pT2nextQED( double pT2begDip, double pT2endDip) {
     // Check the kernelPDF value before possible enhancement but do not
     // enhance gamma -> q qbar splittings.
     if ( (kernelPDF + gamma2f) < TINYKERNELPDF ) return;
+
     // Optionally enhanced branching rate.
     if (canEnhanceET) kernelPDF *= userHooksPtr->enhanceFactor("isr:Q2QA");
+
+    // Optionally enhanced branching rate.
+    if (canEnhanceET) gamma2f *= userHooksPtr->enhanceFactor("isr:A2QQ");
 
     // Add gamma -> q qbar splittings to kernelPDF for photon beam.
     kernelPDF += gamma2f;
 
     // Begin evolution loop towards smaller pT values.
     do {
+
+      // Default values for current tentative emission.
+      isEnhancedQ2QA = isEnhancedA2QQ = false;
+      enhanceNow = 1.;
+      nameNow = "";
 
       // gamma -> f fbar splitting with photon beam.
       if( (rndmPtr->flat() * kernelPDF) < gamma2f ){
@@ -1296,6 +1350,16 @@ void SpaceShower::pT2nextQED( double pT2begDip, double pT2endDip) {
         double alphaEMnow = alphaEM.alphaEM(renormMultFac * pT2);
         wt *= (alphaEMnow / alphaEMmax);
 
+        // Optionally enhanced branching rate.
+        nameNow = "isr:A2QQ";
+        if (canEnhanceET) {
+          double enhance = userHooksPtr->enhanceFactor(nameNow);
+          if (enhance != 1.) {
+            enhanceNow = enhance;
+            isEnhancedA2QQ = true;
+          }
+        }
+
         // Check that gamma -> q qbar step does not cause problem.
         if (wt > 1. && pT2 > PT2MINWARN){
           infoPtr->errorMsg("Warning in "
@@ -1304,11 +1368,6 @@ void SpaceShower::pT2nextQED( double pT2begDip, double pT2endDip) {
 
       // f -> f gamma splittings
       } else {
-
-        // Default values for current tentative emission.
-        isEnhancedQ2QA = false;
-        enhanceNow = 1.;
-        nameNow = "";
 
         // Pick pT2 (in overestimated z range).
         // For l -> l gamma include extrafactor 1 / ln(pT2/m2l) in evolution.
@@ -1340,7 +1399,7 @@ void SpaceShower::pT2nextQED( double pT2begDip, double pT2endDip) {
           } else {
             z = xDaughter + (zMinAbs - xDaughter)
               * pow( (zMaxAbs - xDaughter) / (zMinAbs - xDaughter),
-                     rndmPtr->flat() );
+                    rndmPtr->flat() );
           }
           wt *= (z - xDaughter) / (1. - xDaughter);
         } else {
@@ -1356,14 +1415,14 @@ void SpaceShower::pT2nextQED( double pT2begDip, double pT2endDip) {
         }
 
         // Optionally enhanced branching rate.
-        nameNow      = "isr:Q2QA";
+        nameNow = "isr:Q2QA";
         if (canEnhanceET) {
           double enhance = userHooksPtr->enhanceFactor(nameNow);
           if (enhance != 1.) {
             enhanceNow = enhance;
             isEnhancedQ2QA = true;
           }
-        }
+       }
 
         // Derive Q2 and x of mother from pT2 and z.
         Q2      = pT2 / (1. - z);
@@ -1404,18 +1463,18 @@ void SpaceShower::pT2nextQED( double pT2begDip, double pT2endDip) {
 
         // Evaluation of ME correction.
         if (doMEcorrections) wt *= calcMEcorr(MEtype, idMother, idDaughter,
-          m2Dip, z, Q2, m2Sister) / calcMEmax(MEtype, idMother, idDaughter);
+           m2Dip, z, Q2, m2Sister) / calcMEmax(MEtype, idMother, idDaughter);
 
         // Extra QED correction for f fbar -> W+- gamma. Debug??
         if (doMEcorrections && MEtype == 1 && idDaughter == idMother
-            && ( (iSysNow == 0 && idResFirst  == 24)
-                 || (iSysNow == 1 && idResSecond == 24) ) ) {
+          && ( (iSysNow == 0 && idResFirst  == 24)
+          || (iSysNow == 1 && idResSecond == 24) ) ) {
           double tHe  = -Q2;
           double uHe  = Q2 - m2Dip * (1. - z) / z;
           double chg1 = abs(dipEndNow->chgType / 3.);
           double chg2 = 1. - chg1;
           wt *= pow2(chg1 * uHe - chg2 * tHe)
-          / ( (tHe + uHe) * (pow2(chg1) * uHe + pow2(chg2) * tHe) );
+            / ( (tHe + uHe) * (pow2(chg1) * uHe + pow2(chg2) * tHe) );
         }
 
         // Optional dampening of large pT values in first radiation.
@@ -1433,11 +1492,11 @@ void SpaceShower::pT2nextQED( double pT2begDip, double pT2endDip) {
         double xPDFmotherNew   =
           beam.xfISR(iSysNow, idMother, xMother, pdfScale2);
         wt *= xPDFmotherNew / xPDFdaughterNew;
-
       }
 
-      // Iterate until acceptable pT (or have fallen below pTmin).
+    // Iterate until acceptable pT (or have fallen below pTmin).
     } while (wt < rndmPtr->flat()) ;
+
   }
 
   // QED evolution of photons (so far only for hadron beams).
@@ -1574,6 +1633,7 @@ void SpaceShower::pT2nextQED( double pT2begDip, double pT2endDip) {
       // Trial weight: running alpha_EM
       double alphaEMnow = alphaEM.alphaEM(renormMultFac * pT2);
       wt *= (alphaEMnow / alphaEMmax);
+
       // Optionally enhanced branching rate.
       nameNow      = "isr:Q2AQ";
       if (canEnhanceET) {
@@ -1636,6 +1696,7 @@ void SpaceShower::pT2nextQED( double pT2begDip, double pT2endDip) {
   if (canEnhanceET) {
     if (isEnhancedQ2QA) storeEnhanceFactor(pT2,"isr:Q2QA", enhanceNow);
     if (isEnhancedQ2AQ) storeEnhanceFactor(pT2,"isr:Q2AQ", enhanceNow);
+    if (isEnhancedA2QQ) storeEnhanceFactor(pT2,"isr:A2QQ", enhanceNow);
   }
 
   // Save values for (so far) acceptable branching.
@@ -1835,6 +1896,7 @@ void SpaceShower::pT2nextWeak( double pT2begDip, double pT2endDip) {
         / (1. - zMinAbs * m2R1), rndmPtr->flat() ) ) / m2R1;
     }
     wt *= (1. + pow2(z * m2R1)) / (1. + pow2(zMaxAbs * m2R1));
+
     // Optionally enhanced branching rate.
     nameNow      = "isr:Q2QW";
     if (canEnhanceET) {
@@ -2237,12 +2299,16 @@ bool SpaceShower::branch( Event& event) {
     Vec4 pA0     = mother.p();
     Vec4 pB      = newRecoiler.p();
     bool sideRad = (abs(side) == 1);
-    Vec4 p1      = event[5].p();
-    Vec4 p2      = event[6].p();
-    int id1      = event[5].id();
-    int id2      = event[6].id();
-    if (!tChannel) {swap(p1,p2); swap(id1,id2);}
-    if (!sideRad)  {swap(p1,p2); swap(id1,id2);}
+    Vec4 p1,p2;
+    if (weakExternal) {
+      p1 = weakMomenta[2];
+      p2 = weakMomenta[3];
+    } else {
+      p1 = event[5].p();
+      p2 = event[6].p();
+    }
+    if (!tChannel) swap(p1,p2);
+    if (!sideRad)  swap(p1,p2);
 
     // Rotate with -phi to keep correct for the later +phi rotation.
     p1.rot(0., -phi);
@@ -2379,8 +2445,8 @@ bool SpaceShower::branch( Event& event) {
       if (it->second.first.find(splittingNameSel) != string::npos
         && abs(it->second.second-1.0) > 1e-9) {
         foundEnhance = true;
-        weight     = it->second.second;
-        vp         = userHooksPtr->vetoProbability(it->second.first);
+        weight       = it->second.second;
+        vp           = userHooksPtr->vetoProbability(it->second.first);
         break;
       }
     }
@@ -2393,7 +2459,7 @@ bool SpaceShower::branch( Event& event) {
     if (foundEnhance && vetoedEnhancedEmission) rwgt *= (1.-1./weight)/vp;
     else if (foundEnhance) rwgt *= 1./((1.-vp)*weight);
 
-    // Reset weight enhance factors after usage.
+    // Reset enhance factors after usage.
     enhanceFactors.clear();
 
     // Set events weights, so that these could be used externally.
@@ -2847,14 +2913,14 @@ double SpaceShower::calcMEcorrWeak(int MEtype, double m2, double z,
   double wt = 4. * sHat / (pMother + pB).m2Calc() * pT2 * ( 1. - z * m2R1)
     / (1. + pow2(z * m2R1)) / (1.-z);
   if (MEtype == 201 || MEtype == 206)
-    wt *= weakShowerMEs.getTchanneluGuGZME(pMother, pB, p2, pSister, p1)
-        / weakShowerMEs.getTchanneluGuGME(sHat, tHat, uHat);
+    wt *= weakShowerMEs.getMEqg2qgZ(pMother, pB, p2, pSister, p1)
+      / weakShowerMEs.getMEqg2qg(sHat, tHat, uHat);
   else if (MEtype == 202 || MEtype == 207)
-    wt *= weakShowerMEs.getTchannelududZME(pMother, pB, pSister, p2, p1)
-        / weakShowerMEs.getTchanneluuuuME(sHat, tHat, uHat);
+    wt *= weakShowerMEs.getMEqq2qqZ(pMother, pB, pSister, p2, p1)
+        / weakShowerMEs.getMEqq2qq(sHat, tHat, uHat, true);
   else if (MEtype == 203 || MEtype == 208)
-     wt *= weakShowerMEs.getTchannelududZME(pMother, pB, pSister, p2, p1)
-         / weakShowerMEs.getTchannelududME(sHat, tHat, uHat);
+     wt *= weakShowerMEs.getMEqq2qqZ(pMother, pB, pSister, p2, p1)
+         / weakShowerMEs.getMEqq2qq(sHat, tHat, uHat, false);
 
   // Split of ME into an ISR part and FSR part.
   wt *= (pSister + p1).m2Calc() / ( (pSister + p1).m2Calc()
@@ -2949,7 +3015,7 @@ void SpaceShower::list(ostream& os) const {
 
   // Header.
   os << "\n --------  PYTHIA SpaceShower Dipole Listing  -------------- \n"
-     << "\n    i  syst  side   rad   rec       pTmax  col  chg   ME rec \n"
+     << "\n    i  syst  side   rad   rec       pTmax  col  chg  ME rec \n"
      << fixed << setprecision(3);
 
   // Loop over dipole list and print it.

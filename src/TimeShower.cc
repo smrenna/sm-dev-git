@@ -166,6 +166,7 @@ void TimeShower::init( BeamParticle* beamAPtrIn,
   singleWeakEmission = settingsPtr->flag("WeakShower:singleEmission");
   vetoWeakJets       = settingsPtr->flag("WeakShower:vetoWeakJets");
   vetoWeakDeltaR2    = pow2(settingsPtr->parm("WeakShower:vetoWeakDeltaR"));
+  weakExternal       = settingsPtr->flag("WeakShower:externalSetup");
 
   // Consisteny check for gamma -> f fbar variables.
   if (nGammaToQuark <= 0 && nGammaToLepton <= 0) doQEDshowerByGamma = false;
@@ -641,7 +642,8 @@ void TimeShower::prepare( int iSys, Event& event, bool limitPTmaxIn) {
 
       // Find weak diple ends.
       if (doWeakShower && (iSys == 0 || !partonSystemsPtr->hasInAB(iSys))
-        && (event[iRad].isQuark()  || event[iRad].isLepton())) {
+        && (event[iRad].isQuark()  || event[iRad].isLepton())
+          && (!weakExternal || iSys != 0)  ) {
         if (weakMode == 0 || weakMode == 1)
           setupWeakdip( iSys, i, 1, event, limitPTmaxIn);
         if (weakMode == 0 || weakMode == 2)
@@ -657,6 +659,10 @@ void TimeShower::prepare( int iSys, Event& event, bool limitPTmaxIn) {
     // End loop over system final state. Have now found the dipole ends.
     }
   }
+
+  // Special setup for weak dipoles if they are setup externally.
+  if (doWeakShower && weakExternal && iSys == 0)
+    setupWeakdipExternal(event, limitPTmaxIn);
 
   // Loop through dipole ends to find matrix element corrections.
   for (int iDip = dipEndSizeBeg; iDip < int(dipEnd.size()); ++iDip)
@@ -1697,6 +1703,87 @@ void TimeShower::setupWeakdip( int iSys, int i, int weakType, Event& event,
     infoPtr->errorMsg("Error in TimeShower::setupWeakdip: "
       "failed to locate any recoiling partner");
   }
+}
+
+//--------------------------------------------------------------------------
+
+// Special setup for weak dipoles if already specified in info ptr.
+void TimeShower::setupWeakdipExternal(Event& event, bool limitPTmaxIn) {
+
+  // Get information.
+  vector<pair<int,int> > weakDipoles = infoPtr->getWeakDipoles();
+  vector<int> weakModes = infoPtr->getWeakModes();
+  weakMomenta = infoPtr->getWeakMomenta();
+  weak2to2lines = infoPtr->getWeak2to2lines();
+  weakHardSize = int(weakModes.size());
+
+  // Loop over dipoles.
+  for (int i = 0; i < int(weakDipoles.size()); ++i) {
+    // Only consider FSR dipoles.
+    if (event[weakDipoles[i].first].status() > 0) {
+      // Find ME.
+      int iRad = weakDipoles[i].first;
+      int iRec = weakDipoles[i].second;
+
+      // Find MEtype.
+      int MEtypeWeak = 0;
+      if (weakModes[weakDipoles[i].first] == 1) MEtypeWeak = 200;
+      else if (weakModes[weakDipoles[i].first] == 2) MEtypeWeak = 201;
+      else if (weakModes[weakDipoles[i].first] == 3) MEtypeWeak = 202;
+      else MEtypeWeak = 203;
+
+      // Find correct polarization, if it is already set use it.
+      // Otherwise pick randomly.
+      int weakPol = (rndmPtr->flat() > 0.5) ? -1 : 1;
+      if (event[weakDipoles[i].first].pol() != 9)
+        weakPol = event[weakDipoles[i].first].pol();
+      else if (event[weakDipoles[i].second].pol() != 9) {
+        if (event[weakDipoles[i].second].status() < 0)
+          weakPol = event[weakDipoles[i].second].pol();
+        else
+          weakPol = -event[weakDipoles[i].second].pol();
+      }
+      event[weakDipoles[i].first].pol(weakPol);
+
+      // Max scale either by parton scale or by half dipole mass.
+      double pTmax = event[iRad].scale();
+
+      if (limitPTmaxIn) {
+        pTmax *= pTmaxFudge;
+      } else pTmax = 0.5 * m( event[iRad], event[iRec]);
+
+      // Recoiler is always final state.
+      int isrType = 0;
+
+      // No right-handed W emission.
+      // Add the dipoles.
+      if ( (weakMode == 0 || weakMode == 1) && weakPol == -1)
+        dipEnd.push_back( TimeDipoleEnd(iRad, iRec, pTmax,
+          0, 0, 0, 1, isrType, 0, MEtypeWeak, -1, weakPol) );
+
+      if (weakMode == 0 || weakMode == 2)
+         dipEnd.push_back( TimeDipoleEnd(iRad, iRec, pTmax,
+          0, 0, 0, 2, isrType, 0, MEtypeWeak +5, -1, weakPol) );
+
+    }
+  }
+
+  for (int i = 0;i < int(dipEnd.size()); ++i) {
+    Vec4 p3weak, p4weak;
+    if (dipEnd[i].MEtype > 200) {
+      int i2to2Mother = dipEnd[i].iRadiator;
+      while (i2to2Mother >= weakHardSize)
+        i2to2Mother = event[i2to2Mother].mother1();
+      if (weak2to2lines[2] == i2to2Mother) {
+        p3weak = weakMomenta[0];
+        p4weak = weakMomenta[1];
+      } else {
+        p3weak = weakMomenta[1];
+        p4weak = weakMomenta[0];
+      }
+    }
+  }
+
 }
 
 //--------------------------------------------------------------------------
@@ -2814,21 +2901,35 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
   if ( dipSel->MEtype == 201 || dipSel->MEtype == 202
     || dipSel->MEtype == 203 || dipSel->MEtype == 206
     || dipSel->MEtype == 207 || dipSel->MEtype == 208) {
-    // Trace back to original mother. MPI not allowed to radiate weakly.
-    int i2to2Mother = iRadBef;
-    while (i2to2Mother != 5 && i2to2Mother != 6 && i2to2Mother != 0)
-      i2to2Mother = event[i2to2Mother].mother1();
-    if (i2to2Mother == 0) return false;
+    if (!weakExternal) {
+      // Trace back to original mother. MPI not allowed to radiate weakly.
+      int i2to2Mother = iRadBef;
+      while (i2to2Mother != 5 && i2to2Mother != 6 && i2to2Mother != 0)
+        i2to2Mother = event[i2to2Mother].mother1();
+      if (i2to2Mother == 0) return false;
 
-    // u d -> u d  && u g -> u g.
-    if (event[3].id() != event[4].id()) {
-      if (event[3].id() == event[i2to2Mother].id());
-      else if (event[4].id() == event[i2to2Mother].id()) swap(p3weak, p4weak);
-      // In case of no match, assign random combination.
+      // u d -> u d  && u g -> u g.
+      if (event[3].id() != event[4].id()) {
+        if (event[3].id() == event[i2to2Mother].id());
+        else if (event[4].id() == event[i2to2Mother].id())
+          swap(p3weak, p4weak);
+        // In case of no match, assign random combination.
+        else if (rndmPtr->flat() < 0.5) swap(p3weak, p4weak);
+      }
+      // u u -> u u, assign random combination.
       else if (rndmPtr->flat() < 0.5) swap(p3weak, p4weak);
+    } else {
+      int i2to2Mother = iRadBef;
+      while (i2to2Mother >= weakHardSize)
+        i2to2Mother = event[i2to2Mother].mother1();
+      if (weak2to2lines[2] == i2to2Mother) {
+        p3weak = weakMomenta[0];
+        p4weak = weakMomenta[1];
+      } else {
+        p3weak = weakMomenta[1];
+        p4weak = weakMomenta[0];
+      }
     }
-    // u u -> u u, assign random combination.
-    else if (rndmPtr->flat() < 0.5) swap(p3weak, p4weak);
   }
 
   // Default flavours and colour tags for new particles in dipole branching.
@@ -3910,6 +4011,9 @@ void TimeShower::findMEtype( Event& event, TimeDipoleEnd& dip) {
 
   // If no ME partner set, assume it is the recoiler.
   if (dip.iMEpartner < 0) dip.iMEpartner = dip.iRecoiler;
+
+  // If ME already set, assume everything is in order.
+  if (dip.MEtype != -1) return;
 
   // Now begin processing of colour dipole, including Hidden Valley.
   if (dip.colType != 0 || dip.colvType != 0) {
@@ -5168,14 +5272,14 @@ double TimeShower::findMEcorrWeak(TimeDipoleEnd* dip,Vec4 rad,
   // ME weight. Prefactor mainly from Jacobian.
   double wt = 2. * pT2 / z * (Q2+sHat)/sHat * (1. - kRad - kEmt) / 4.;
   if (dip->MEtype == 201 || dip->MEtype == 206)
-    wt *= weakShowerMEs.getTchanneluGuGZME( p3, p4, rec, emt, rad)
-        / weakShowerMEs.getTchanneluGuGME( sHat, tHat, uHat);
+    wt *= weakShowerMEs.getMEqg2qgZ( p3, p4, rec, emt, rad)
+        / weakShowerMEs.getMEqg2qg( sHat, tHat, uHat);
   else if (dip->MEtype == 202 || dip->MEtype == 207)
-    wt *= weakShowerMEs.getTchannelududZME( p3, p4, emt, rec, rad)
-        / weakShowerMEs.getTchanneluuuuME( sHat, tHat, uHat);
+    wt *= weakShowerMEs.getMEqq2qqZ( p3, p4, emt, rec, rad)
+        / weakShowerMEs.getMEqq2qq( sHat, tHat, uHat, true);
   else if (dip->MEtype == 203 || dip->MEtype == 208)
-    wt *= weakShowerMEs.getTchannelududZME( p3, p4, emt, rec, rad)
-        / weakShowerMEs.getTchannelududME( sHat, tHat, uHat);
+    wt *= weakShowerMEs.getMEqq2qqZ( p3, p4, emt, rec, rad)
+        / weakShowerMEs.getMEqq2qq( sHat, tHat, uHat, false);
 
   // Split of ME into an ISR part and FSR part.
   wt *= abs((-emt + p3).m2Calc()) / ((emt + rad).m2Calc()

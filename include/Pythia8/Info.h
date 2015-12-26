@@ -11,6 +11,7 @@
 
 #include "Pythia8/PythiaStdlib.h"
 #include "Pythia8/LHEF3.h"
+#include "Pythia8/Basics.h"
 
 namespace Pythia8 {
 
@@ -326,6 +327,19 @@ public:
   double tPomeronA()          const {return tPomA;}
   double tPomeronB()          const {return tPomB;}
 
+  // History information needed to setup the weak shower for 2 -> n.
+  vector<int> getWeakModes() {return weakModes;}
+  vector<pair<int,int> > getWeakDipoles() {return weakDipoles;}
+  vector<Vec4> getWeakMomenta() {return weakMomenta;}
+  vector<int> getWeak2to2lines() {return weak2to2lines;}
+  void setWeakModes(vector<int> weakModesIn) {weakModes = weakModesIn;}
+  void setWeakDipoles(vector<pair<int,int> > weakDipolesIn)
+    {weakDipoles = weakDipolesIn;}
+  void setWeakMomenta(vector<Vec4> weakMomentaIn)
+    {weakMomenta = weakMomentaIn;}
+  void setWeak2to2lines(vector<int> weak2to2linesIn)
+    {weak2to2lines = weak2to2linesIn;}
+
 private:
 
   // Number of times the same error message is repeated, unless overridden.
@@ -532,6 +546,11 @@ private:
   void setHasUnresolvedBeams(bool hasUnresBeamsIn)
     {hasUnresBeams = hasUnresBeamsIn;}
   void setHasPomPsystem(bool hasPomPsysIn) {hasPomPsys = hasPomPsysIn;}
+
+  // Variables for weak shower setup.
+  vector<int> weakModes, weak2to2lines;
+  vector<Vec4> weakMomenta;
+  vector<pair<int, int> > weakDipoles;
 
 };
 

@@ -12,13 +12,13 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.214: 23 December 2015 
+<li>8.214: 26 December 2015 
 <ul> 
  
 <li>Ilkka Helenius joins as new PYTHIA co-author.</li> 
  
 <li>A new machinery for <ei>gamma-gamma</ei> collisions is now available, 
-see <aloc href="PhotonPhoton">Photon-photon Interactions</aloc>.
+see <aloc href="PhotonPhoton">Photon-photon Interactions</aloc>. 
 So far only hard processes can be generated, along with parton showers 
 and hadronization, but without multiparton interactions. The CJKL parton 
 distributions of the photon have been implemented and are used.</li> 
@@ -26,6 +26,23 @@ distributions of the photon have been implemented and are used.</li>
 <li>Double production of charmonium and bottomonium <ei>3S1</ei> states 
 is now available, but with only the colour-singlet processes included, 
 see <aloc href="OniaProcesses">Onia Processes</aloc> for details.</li> 
+ 
+<li>Weak merging implemented, i.e. <ei>W</ei> gauge bosons can be 
+produced either as part of the hard matrix element or in the parton 
+shower, and a proper treatment merges these two possibilities consistently. 
+See the <aloc href="CKKWLMerging">CKKW-L</aloc> page for details.</li> 
+ 
+<li>Running <ei>alpha_em</ei> in merging description.</li> 
+ 
+<li>Improved interface to external parton showers, such as 
+<a href="http://vincia.hepforge.org/" target="_top">VINCIA</a> and 
+<a href="http://www.slac.stanford.edu/~prestel/DIRE/" target="_top">DIRE</a>, 
+so that these now also can use the various matching and merging 
+frameworks implemented in Pythia.</li> 
+ 
+<li>New options in the <aloc href="JetMatching">jet matching</aloc> 
+framework, such that expert users can use their own veto code for 
+Madgraph-style jet matching.</li> 
  
 <li>By default the program will now assign the PYTHIA mass for 
 massless <ei>c</ei> and <ei>b</ei> quarks in Les Houches input, see 
@@ -70,6 +87,14 @@ to have specified new masses.</li>
 <li>Initialize the random number generator earlier, so a non-default 
 seed choice also could benefit early external initialization making 
 use of it.</li> 
+ 
+<li>Minor fix in interface to zlib.</li> 
+ 
+<li>Changed default setting in <code>main89mlm.cmnd</code>, to better 
+agree with common practice.</li> 
+ 
+<li>Minor improvements and fixes in the weighting facilities for 
+initial- and final-state showers.</li> 
  
 <li>Minor update in the beam-remnant handling for DIS.</li> 
  

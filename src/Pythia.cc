@@ -808,7 +808,7 @@ bool Pythia::init() {
 
   // Initialise the merging wrapper class.
   if (doMerging ) merging.init( &settings, &info, &particleData, &rndm,
-    &beamA, &beamB, mergingHooksPtr, &trialPartonLevel );
+    &beamA, &beamB, mergingHooksPtr, &trialPartonLevel, couplingsPtr );
 
   // Send info/pointers to hadron level for initialization.
   // Note: forceHadronLevel() can come, so we must always initialize.

@@ -424,13 +424,13 @@ The color-singlet long-distance matrix elements
 states. 
    
  
-<br/><br/><table><tr><td><strong>Charmonium:gg2ccbar(3S1)[3S1(1)]ccbar(3S1)[3S1(1)]  </td><td></td><td> <input type="text" name="44" value="off,off,off" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>off,off,off</strong></code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>Charmonium:gg2doubleccbar(3S1)[3S1(1)]  </td><td></td><td> <input type="text" name="44" value="off,off,off" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>off,off,off</strong></code>)</td></tr></table>
 Colour-singlet production of <i>3S1</i> charmonium state pairs via 
 <i>g g &rarr; ccbar[3S1(1)] ccbar[3S1(1)] </i>. 
 Code 421. 
    
  
-<br/><br/><table><tr><td><strong>Charmonium:qqbar2ccbar(3S1)[3S1(1)]ccbar(3S1)[3S1(1)]  </td><td></td><td> <input type="text" name="45" value="off,off,off" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>off,off,off</strong></code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>Charmonium:qqbar2doubleccbar(3S1)[3S1(1)]  </td><td></td><td> <input type="text" name="45" value="off,off,off" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>off,off,off</strong></code>)</td></tr></table>
 Colour-singlet production of <i>3S1</i> charmonium state pairs via 
 <i>q qbar &rarr; ccbar[3S1(1)] ccbar[3S1(1)] </i>. 
 Code 422. 
@@ -678,13 +678,13 @@ The color-singlet long-distance matrix elements
 states. 
    
  
-<br/><br/><table><tr><td><strong>Bottomonium:gg2bbbar(3S1)[3S1(1)]bbbar(3S1)[3S1(1)]  </td><td></td><td> <input type="text" name="81" value="off,off,off,off,off,off" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>off,off,off,off,off,off</strong></code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>Bottomonium:gg2doublebbbar(3S1)[3S1(1)]  </td><td></td><td> <input type="text" name="81" value="off,off,off,off,off,off" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>off,off,off,off,off,off</strong></code>)</td></tr></table>
 Colour-singlet production of <i>3S1</i> bottomonium state pairs via 
 <i>g g &rarr; bbbar[3S1(1)] bbbar[3S1(1)] </i>. 
 Code 521. 
    
  
-<br/><br/><table><tr><td><strong>Bottomonium:qqbar2bbbar(3S1)[3S1(1)]bbbar(3S1)[3S1(1)]  </td><td></td><td> <input type="text" name="82" value="off,off,off,off,off,off" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>off,off,off,off,off,off</strong></code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>Bottomonium:qqbar2doublebbbar(3S1)[3S1(1)]  </td><td></td><td> <input type="text" name="82" value="off,off,off,off,off,off" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>off,off,off,off,off,off</strong></code>)</td></tr></table>
 Colour-singlet production of <i>3S1</i> bottomonium state pairs via 
 <i>q qbar &rarr; bbbar[3S1(1)] bbbar[3S1(1)] </i>. 
 Code 522. 
@@ -922,12 +922,12 @@ fwrite($handle,$data);
 }
 if($_POST["44"] != "off,off,off")
 {
-$data = "Charmonium:gg2ccbar(3S1)[3S1(1)]ccbar(3S1)[3S1(1)] = ".$_POST["44"]."\n";
+$data = "Charmonium:gg2doubleccbar(3S1)[3S1(1)] = ".$_POST["44"]."\n";
 fwrite($handle,$data);
 }
 if($_POST["45"] != "off,off,off")
 {
-$data = "Charmonium:qqbar2ccbar(3S1)[3S1(1)]ccbar(3S1)[3S1(1)] = ".$_POST["45"]."\n";
+$data = "Charmonium:qqbar2doubleccbar(3S1)[3S1(1)] = ".$_POST["45"]."\n";
 fwrite($handle,$data);
 }
 if($_POST["46"] != "553,100553,200553")
@@ -1107,12 +1107,12 @@ fwrite($handle,$data);
 }
 if($_POST["81"] != "off,off,off,off,off,off")
 {
-$data = "Bottomonium:gg2bbbar(3S1)[3S1(1)]bbbar(3S1)[3S1(1)] = ".$_POST["81"]."\n";
+$data = "Bottomonium:gg2doublebbbar(3S1)[3S1(1)] = ".$_POST["81"]."\n";
 fwrite($handle,$data);
 }
 if($_POST["82"] != "off,off,off,off,off,off")
 {
-$data = "Bottomonium:qqbar2bbbar(3S1)[3S1(1)]bbbar(3S1)[3S1(1)] = ".$_POST["82"]."\n";
+$data = "Bottomonium:qqbar2doublebbbar(3S1)[3S1(1)] = ".$_POST["82"]."\n";
 fwrite($handle,$data);
 }
 fclose($handle);
