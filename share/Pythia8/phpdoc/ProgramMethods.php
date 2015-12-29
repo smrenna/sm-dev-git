@@ -2517,6 +2517,36 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
+<td> </td>
+<td><a href="MadGraph5Processes.php#method1" target="page">LHAupMadgraph::LHAupMadgraph(...)</a></td>
+<td>Mad Graph5 Processes</td>
+</tr>
+
+<tr>
+<td>bool</td>
+<td><a href="MadGraph5Processes.php#method2" target="page">LHAupMadgraph::readString(...)</a></td>
+<td>Mad Graph5 Processes</td>
+</tr>
+
+<tr>
+<td>void</td>
+<td><a href="MadGraph5Processes.php#method3" target="page">LHAupMadgraph::setEvents(...)</a></td>
+<td>Mad Graph5 Processes</td>
+</tr>
+
+<tr>
+<td>void</td>
+<td><a href="MadGraph5Processes.php#method5" target="page">LHAupMadgraph::setJets(...)</a></td>
+<td>Mad Graph5 Processes</td>
+</tr>
+
+<tr>
+<td>void</td>
+<td><a href="MadGraph5Processes.php#method4" target="page">LHAupMadgraph::setSeed(...)</a></td>
+<td>Mad Graph5 Processes</td>
+</tr>
+
+<tr>
 <td>virtual bool</td>
 <td><a href="CKKWLMerging.php#method12" target="page">MergingHooks::canCutOnRecState()</a></td>
 <td>C K K W L Merging</td>

@@ -169,7 +169,7 @@ class JetMatchingMadgraph : virtual public JetMatching {
 public:
 
   // Constructor and destructor
-  JetMatchingMadgraph() { }
+  JetMatchingMadgraph() : slowJetDJR(NULL) { }
   ~JetMatchingMadgraph() { if (slowJetDJR) delete slowJetDJR; }
 
   // Initialisation
@@ -190,7 +190,7 @@ public:
   // Functions to return the jet clustering scales and number of ME partons.
   // These are useful to investigate the matching systematics.
   vector<double> getDJR() { return DJR;}
-  vector<double> GetDJR() { return getDJR();}
+  //vector<double> GetDJR() { return getDJR();}
   pair<int,int> nMEpartons() { return nMEpartonsSave;}
 
   // For systematic variations of the jet matching parameters, it is helpful

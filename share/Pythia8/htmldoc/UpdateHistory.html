@@ -18,7 +18,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.214: 26 December 2015 
+<li>8.214: 29 December 2015 
 <ul> 
  
 <li>Ilkka Helenius joins as new PYTHIA co-author.</li> 
@@ -49,6 +49,15 @@ frameworks implemented in Pythia.</li>
 <li>New options in the <a href="JetMatching.html" target="page">jet matching</a> 
 framework, such that expert users can use their own veto code for 
 Madgraph-style jet matching.</li> 
+ 
+<li>New convenient possibility to run Madgraph5_aMC@NLO from within 
+Pythia, by wrapping the Madgraph5_aMC@NLO executable inside a new 
+<code>LHAupMadgraph</code> class that derives from the Pythia 
+<code>LHAup</code> base class. 
+See <a href="MadGraph5Processes.html" target="page">MadGraph5 Processes</a> 
+for a brief overview, and <code>examples/main34.cc</code> for an example 
+how to use it. Still at an experimental stage, and only tested for 
+Madgraph5_aMC@NLO v2.3.3.</li> 
  
 <li>By default the program will now assign the PYTHIA mass for 
 massless <i>c</i> and <i>b</i> quarks in Les Houches input, see 
@@ -104,6 +113,12 @@ initial- and final-state showers.</li>
  
 <li>Minor update in the beam-remnant handling for DIS.</li> 
  
+<li>Minor improvements in the handling of resonance mass selection.</li> 
+ 
+<li>The GetDJR function of the <code>JetMatchingMadgraph</code> class 
+has been renamed <code>getDJR</code> to adhere to standard naming 
+conventions. A pointer in the same class is explicitly nulled.</li> 
+ 
 <li>Bug fix in the selection of masses in resonance decays. 
 In rare situations this could give wrong masses for particles. 
 Thanks to Are Raklev and Anders Kvellestad.</li> 
@@ -125,6 +140,12 @@ Thanks to Simone Amoroso.</li>
 <li>Bug fix in the kinematics of four or more resonance decay products 
 when  kinematics is redone owing to matrix-element corrections. 
 Thanks to Simone Amoroso.</li> 
+ 
+<li>Changed off-shell behaviour for squark pair production.</li> 
+ 
+<li>Minor fix for random number start-up in the PowhegBox interface, 
+and inserted warning that using LHAPDF5 in both Pythia and PowhegBox 
+can be dangerous.</li> 
  
 <li>Correct two misspelt endtags for LHEF3 output from Pythia. 
 Minor technical changes in the LHEF3 machinery.</li> 

@@ -414,8 +414,8 @@ recoiling partner of the dipole, which ensures overall energy and momentum
 conservation in the splitting, and <code>iEmt</code> is the position of the 
 radiated parton, all after the splitting. (The ones before are stored in 
 <code>iRadBef</code> and <code>iRecBef</code>, not used here.) Obviously 
-the distinction between <code>iRad</code> and <code>iEmt</code> is a matter 
-of choice. 
+the distinctions between <code>iRad</code> and <code>iEmt</code>, or 
+between <code>iRad</code> and <code>iRec</code>, are a matter of choice. 
  
 <a name="method20"></a>
 <p/><strong>virtual bool TimeShower::isTimelike( const Event& event, int iRad, int iEmt, int iRec, string name) &nbsp;</strong> <br/>

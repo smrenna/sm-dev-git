@@ -193,6 +193,11 @@ facilitates loading the POWHEG plugins. In addition
 to run the example. 
 </li> 
  
+<li><code>main34.cc</code> : demonstrates how Madgraph5_aMC@NLO can 
+be run "from within" Pythia, making use of the <code>LHAupMadgraph</code> 
+wrapper/interface of Madgraph5_aMC@NLO and the Pythia jet matching 
+facilities.</li> 
+ 
 <li><code>main37.cc</code> : shows how LHEF version 3.0 files can be 
 read and used to fill several histograms of the same property, but with 
 different event weights.</li> 

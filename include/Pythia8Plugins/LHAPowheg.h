@@ -120,7 +120,7 @@ bool LHAupPowheg::fillHepRup() {
   resetcnt_("upper bound failures in generation of radiation", 47);
   resetcnt_("vetoed radiation", 16);
   chdir(cwd);
-  return true;
+  return fillHepEup();
 
 }
 

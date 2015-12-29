@@ -18,6 +18,13 @@ namespace Pythia8 {
 // matrix elements. See http://powhegbox.mib.infn.it/ for further
 // details on POWHEGBOX.
 
+// WARNING: If one wishes to use LHAPDF with both POWHEGBOX and
+// Pythia, only LHAPDF 6 configured with the option
+// "--with-lhapdf6-plugin=LHAPDF6.h" for Pythia should be used. If
+// not, and differing PDF sets are used between POWHEGBOX and Pythia,
+// POWHEGBOX will not re-initialize the PDF set and consequently will
+// use the PDF set last used by Pythia.
+
 class PowhegProcs {
 
 public:

@@ -56,6 +56,14 @@ $(PREFIX_LIB)/libpythia8.a :
 main% : main%.cc $(PREFIX_LIB)/libpythia8.a
 	$(CXX) $^ -o $@ $(CXX_COMMON)
 
+# GZIP (required).
+main34: $$@.cc $(PREFIX_LIB)/libpythia8.a
+ifeq ($(GZIP_USE),true)
+	$(CXX) $^ -o $@ $(CXX_COMMON)
+else
+	@echo "Error: $@ requires GZIP"
+endif
+
 # HEPMC2.
 main41 main42 main43 main85 main86 main87 main88 main89: $$@.cc\
 	$(PREFIX_LIB)/libpythia8.a
