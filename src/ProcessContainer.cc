@@ -1,5 +1,5 @@
 // ProcessContainer.cc is a part of the PYTHIA event generator.
-// Copyright (C) 2015 Torbjorn Sjostrand.
+// Copyright (C) 2016 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
@@ -550,8 +550,8 @@ bool ProcessContainer::constructProcess( Event& process, bool isHardest) {
     }
 
     // Second pass to catch vanishing final lepton and quark masses.
-    int nFinal = iFinal.size();
-    for (int iF = 0; iF < nFinal; ++iF) {
+    int iFinalSz = iFinal.size();
+    for (int iF = 0; iF < iFinalSz; ++iF) {
       int iMod = iFinal[iF];
       int iQLmod  = 0;
       double mOld = process[iMod].m();
@@ -569,7 +569,7 @@ bool ProcessContainer::constructProcess( Event& process, bool isHardest) {
 
       // Find partner to exchange energy and momentum with: general.
       int iRec = 0;
-      if (nFinal == 2) iRec = iFinal[1 - iF];
+      if (iFinalSz == 2) iRec = iFinal[1 - iF];
       else if (process[iMod].mother1() > 2) {
         int iMother = process[iMod].mother1();
         int iMDau1  = process[iMother].daughter1();
@@ -580,14 +580,14 @@ bool ProcessContainer::constructProcess( Event& process, bool isHardest) {
 
       // Find partner to exchange energy and momentum with: lepton.
       if (iRec == 0 && iQLmod > 5) {
-        for (int iR = 0; iR < nFinal; ++iR) if (iR != iF) {
+        for (int iR = 0; iR < iFinalSz; ++iR) if (iR != iF) {
           int iRtmp = iFinal[iR];
           if (process[iRtmp].idAbs() == idNewM[iQLmod] + 1
             && process[iRtmp].id() * process[iMod].id() < 0) iRec = iRtmp;
         }
       }
       if (iRec == 0 && iQLmod > 5) {
-        for (int iR = 0; iR < nFinal; ++iR) if (iR != iF) {
+        for (int iR = 0; iR < iFinalSz; ++iR) if (iR != iF) {
           int iRtmp = iFinal[iR];
           if (process[iRtmp].id() == -process[iMod].id()) iRec = iRtmp;
         }
@@ -595,13 +595,13 @@ bool ProcessContainer::constructProcess( Event& process, bool isHardest) {
 
       // Find partner to exchange energy and momentum with: quark.
       if (iRec == 0 && iQLmod < 6 && process[iMod].col() != 0) {
-        for (int iR = 0; iR < nFinal; ++iR) if (iR != iF) {
+        for (int iR = 0; iR < iFinalSz; ++iR) if (iR != iF) {
           int iRtmp = iFinal[iR];
           if (process[iRtmp].acol() == process[iMod].col()) iRec = iRtmp;
         }
       }
       if (iRec == 0 && iQLmod < 6 && process[iMod].acol() != 0) {
-        for (int iR = 0; iR < nFinal; ++iR) if (iR != iF) {
+        for (int iR = 0; iR < iFinalSz; ++iR) if (iR != iF) {
           int iRtmp = iFinal[iR];
           if (process[iRtmp].col() == process[iMod].acol()) iRec = iRtmp;
         }
@@ -610,7 +610,7 @@ bool ProcessContainer::constructProcess( Event& process, bool isHardest) {
       // Find partner to exchange energy and momentum with: largest mass.
       if (iRec == 0) {
         double mMax = 0.;
-        for (int iR = 0; iR < nFinal; ++iR) if (iR != iF) {
+        for (int iR = 0; iR < iFinalSz; ++iR) if (iR != iF) {
           int iRtmp   = iFinal[iR];
           double mTmp = m( process[iMod], process[iRtmp]) - process[iRtmp].m();
           if (mTmp > mMax) { iRec = iRtmp; mMax = mTmp;}
@@ -653,7 +653,7 @@ bool ProcessContainer::constructProcess( Event& process, bool isHardest) {
     // Reassign momenta and masses for incoming partons.
     if (matchInOut) {
       Vec4 pSumOut;
-      for (int iF = 0; iF < nFinal; ++iF)
+      for (int iF = 0; iF < iFinalSz; ++iF)
         pSumOut += process[iFinal[iF]].p();
       double e1 = 0.5 * (pSumOut.e() + pSumOut.pz());
       double e2 = 0.5 * (pSumOut.e() - pSumOut.pz());

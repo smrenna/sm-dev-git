@@ -30,16 +30,20 @@ echo "<font color='red'>NO FILE SELECTED YET.. PLEASE DO SO </font><a href='Save
  
 <h2>CKKW-L Merging</h2> 
  
-CKKW-L merging [<a href="Bibliography.php" target="page">Lon01</a>] allows for a consistent merging of parton 
-showers with 
-matrix elements to include multiple well-separated partons. The 
+CKKW-L merging [<a href="Bibliography.php" target="page">Lon01</a>] allows for a consistent combination 
+of tree-level matrix elements containing multiple well-separated partons 
+with each other and with parton showers. The result is a calculation that 
+contains a mix of processes with different number of well-separated jets 
+with fixed-order accuracy, improved by all-order resummation. The 
 algorithm implemented  in PYTHIA is described in [<a href="Bibliography.php" target="page">Lon11</a>]. To 
 perform matrix element merging,  the user has to supply LHE 
-files [<a href="Bibliography.php" target="page">Alw07</a>] for the hard process  and the corresponding 
-process with up to N additional jets. Please note that subtleties and 
-setting scheme for the EW-improved "merging of mergings" strategy 
-presented in [<a href="Bibliography.php" target="page">Chr15a</a>] is discussed in the section 
-Electroweak Merging below. 
+files [<a href="Bibliography.php" target="page">Alw07</a>] for the hard process and the corresponding 
+process with up to N additional jets. This mix of processes is then 
+internally disentangled to ensure that the inclusive fixed-order inputs 
+can be converted to exclusive cross sections that no longer overlap. 
+Please note that subtleties (and setting scheme) for the EW-improved way of 
+disentangling processes presented in [<a href="Bibliography.php" target="page">Chr15a</a>] is discussed in 
+the section Electroweak Merging below. 
  
 <p/> The usage of the merging procedure is illustrated in a few 
 example main  programs 
@@ -571,9 +575,9 @@ the generated cross section for each jet multiplicity separately.
 applied on an  event-by-event basis is the CKKW-L-weight. This 
 corrective weight is the main  outcome of the merging procedure and 
 includes the correct no-emission  probabilities, PDF weights and 
-&alpha;<sub>s</sub> factors. This means that the merging 
-implementation will generate weighted events. The CKKW-L-weight can be 
-accessed by the following function: 
+coupling (&alpha;<sub>s</sub> or &alpha;<sub>em</sub>) factors. This means 
+that the merging implementation will generate weighted events. The 
+CKKW-L-weight can be accessed by the following function: 
  
 <p/><strong> double Info::mergingWeight() &nbsp;</strong> <br/> 
 Returns the CKKW-L weight for the current event. 
@@ -924,8 +928,12 @@ in [<a href="Bibliography.php" target="page">Chr15a</a>], this philosophy is not
 an unconvincing physics model. The bias can be greatly reduced by considering 
 that in perturbation theory, corrections to seemingly very different 
 underlying processes mix, so that there is no justification to classify 
-some states as corrections to only one underlying process. The process 
-<code> p p &rarr; W jet jet</code> provides a good example, since 
+some states as corrections to only one underlying process. Interactions 
+that only contain vertices of only one theory (e.g. QCD) will mix with 
+processes that contain only vertices of another interactions (e.g. QED). 
+Underlying processes with very different coupling structures should thus 
+be considered. This is the main aim of the electroweak merging scheme. 
+The process <code> p p &rarr; W jet jet</code> provides a good example, since 
 it can be interpreted either as double-real-QCD-emission correction to 
 <code> p p &rarr; W</code> or as real-electroweak-emission 
 correction to <code> p p &rarr; jet jet</code>. The distinction is artificial, 
@@ -950,6 +958,10 @@ In order to e.g. ensure that a state in the <code> p p &rarr; jet jet</code>
 does not, via W-boson emission, evolve into a state overlapping 
 with <code> p p &rarr; W</code> + two QCD emissions, the former 
 has to be reweighted with an all-order no-electroweak-emission probability. 
+As always, a small merging scale dependence is facilitated by accounting for 
+for dynamical PDF evaluation and running couplings. An electroweak merging 
+thus includes a reweighting with &alpha;<sub>em</sub> ratios that are 
+automatically included in the "merging weight". 
  
 <p/> 
 As another consequence of probabilistically assigning the underlying process 
@@ -1557,4 +1569,4 @@ fclose($handle);
 </body>
 </html>
  
-<!-- Copyright (C) 2015 Torbjorn Sjostrand --> 
+<!-- Copyright (C) 2016 Torbjorn Sjostrand --> 

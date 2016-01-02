@@ -1180,4 +1180,4 @@ echo "<a href='AdvancedUsage.php?filepath=".$filepath."' target='page'>";?>here<
 </body>
 </html>
  
-<!-- Copyright (C) 2015 Torbjorn Sjostrand --> 
+<!-- Copyright (C) 2016 Torbjorn Sjostrand --> 

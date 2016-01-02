@@ -1,5 +1,5 @@
 // History.cc is a part of the PYTHIA event generator.
-// Copyright (C) 2015 Torbjorn Sjostrand.
+// Copyright (C) 2016 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
@@ -3655,12 +3655,12 @@ void History::attachClusterings (vector<Clustering>& clus, int iEmt, int iRad,
   } else {
 
   // Check if spins are already assigned.
-  int radSpin   = event[iRad].pol();
-  int emtSpin   = event[iEmt].pol();
-  int recSpin   = event[iRec].pol();
-  bool hasRadSpin = radSpin != 9;
-  bool hasEmtSpin = emtSpin != 9;
-  bool hasRecSpin = recSpin != 9;
+  int radSpin   = event[iRad].intPol();
+  int emtSpin   = event[iEmt].intPol();
+  int recSpin   = event[iRec].intPol();
+  bool hasRadSpin = (radSpin != 9);
+  bool hasEmtSpin = (emtSpin != 9);
+  bool hasRecSpin = (recSpin != 9);
 
   // Check if any of the partons are quarks.
   bool radQuark = event[iRad].idAbs()  < 10;
@@ -4187,7 +4187,7 @@ vector<Clustering> History::findEWTripleW ( int emtTagIn, const Event& event,
     if (iRad != emtTag) {
 
       // Spin information.
-      int spinRad = event[iRad].pol();
+      int spinRad = event[iRad].intPol();
       if (spinRad == -1 || spinRad == 9 || spinRad == 0) {
 
         int pTdef = 1;
@@ -4243,7 +4243,7 @@ vector<Clustering> History::findEWTripleW ( int emtTagIn, const Event& event,
     if (event[iRad].isQuark() || event[iRad].isLepton()) {
 
       // Spin information.
-      int spinRad = event[iRad].pol();
+      int spinRad = event[iRad].intPol();
       if (spinRad == -1 || spinRad == 9 || spinRad == 0) {
 
         // Check if the W+- matches that of the quark/lepton.
@@ -5422,11 +5422,11 @@ double History::getProb(const Clustering & SystemIn) {
     // To remove this overcounting, multiply by QCD probabilities by 1/2,
     // for each quark spin that has been assigned.
     double factor = 1.;
-    if (state[Rad].idAbs()  < 10 && state[Rad].pol() == 9
+    if (state[Rad].idAbs()  < 10 && state[Rad].intPol() == 9
       && SystemIn.spinRad != 9) factor *= 0.5;
-    if (state[Emt].idAbs()  < 10 && state[Emt].pol() == 9
+    if (state[Emt].idAbs()  < 10 && state[Emt].intPol() == 9
       && SystemIn.spinEmt != 9) factor *= 0.5;
-    if (state[Rec].idAbs()  < 10 && state[Rec].pol() == 9
+    if (state[Rec].idAbs()  < 10 && state[Rec].intPol() == 9
       && SystemIn.spinRec != 9) factor *= 0.5;
     if ( state[Emt].colType() != 0 ) {
       showerProb *= factor;

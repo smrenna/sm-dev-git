@@ -1,5 +1,5 @@
 // main34.cc is a part of the PYTHIA event generator.
-// Copyright (C) 2015 Torbjorn Sjostrand.
+// Copyright (C) 2016 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
@@ -40,10 +40,10 @@ void run(Pythia* pythia, Hist& hist, int nEvent) {
       if (!iMu1 && pythia->event[i].id() == 13)  iMu1 = i;
       if (!iMu2 && pythia->event[i].id() == -13) iMu2 = i;
       if (iMu1 && iMu2) {
-	iMu1 = pythia->event[iMu1].iBotCopyId();
-	iMu2 = pythia->event[iMu2].iBotCopyId();
-	hist.fill((pythia->event[iMu1].p() + pythia->event[iMu2].p()).pT());
-	break;
+        iMu1 = pythia->event[iMu1].iBotCopyId();
+        iMu2 = pythia->event[iMu2].iBotCopyId();
+        hist.fill((pythia->event[iMu1].p() + pythia->event[iMu2].p()).pT());
+        break;
       }
     }
   }
@@ -53,10 +53,10 @@ void run(Pythia* pythia, Hist& hist, int nEvent) {
 //==========================================================================
 
 int main() {
-  
+
   // The name of the MadGraph5_aMC@NLO executable.
   // You must prepend this string with the path to the executable
-  // on your local installation, or otherwise make it available. 
+  // on your local installation, or otherwise make it available.
   string exe("mg5_aMC");
 
   // Create the histograms.

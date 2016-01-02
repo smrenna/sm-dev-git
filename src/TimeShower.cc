@@ -1,5 +1,5 @@
 // TimeShower.cc is a part of the PYTHIA event generator.
-// Copyright (C) 2015 Torbjorn Sjostrand.
+// Copyright (C) 2016 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
@@ -1641,35 +1641,35 @@ void TimeShower::setupWeakdip( int iSys, int i, int weakType, Event& event,
     // Find correct helicity.
     int weakPol = (rndmPtr->flat() > 0.5) ? -1 : 1;
     // Check if particle has already gotten a helicity.
-    if (event[iRad].pol() == 1 || event[iRad].pol() == -1)
-      weakPol = event[iRad].pol();
+    if (event[iRad].intPol() == 1 || event[iRad].intPol() == -1)
+      weakPol = event[iRad].intPol();
     // If particle come from ISR radiation.
     else if (event[iRad].statusAbs() > 40) {
       if (event[event[iRad].mother1()].idAbs() < 20)
-        weakPol = event[event[iRad].mother1()].pol();
+        weakPol = event[event[iRad].mother1()].intPol();
       else if (int(event[iRad].sisterList(true).size()) != 0)
-        weakPol = event[event[iRad].sisterList(true)[0]].pol();
+        weakPol = event[event[iRad].sisterList(true)[0]].intPol();
     }
     // If it is not a 2 to 2 process, always use recoiler.
     else if (infoPtr->nFinal() != 2) {
-      if (event[iRec].pol() == 1 || event[iRec].pol() == -1)
-        weakPol = event[iRec].pol();
+      if (event[iRec].intPol() == 1 || event[iRec].intPol() == -1)
+        weakPol = event[iRec].intPol();
     }
     // If s-channel, choose same spin as recoiler.
     else if (idRad == - event[iRec].id()) {
-      if (event[iRec].pol() == 1 || event[iRec].pol() == -1)
-        weakPol = event[iRec].pol();
+      if (event[iRec].intPol() == 1 || event[iRec].intPol() == -1)
+        weakPol = event[iRec].intPol();
     }
     // if W-decay, choose always left handed.
     else if (event[event[iRad].mother1()].idAbs() == 24) weakPol = -1;
     // If four particles of the same type.
     else if (idRad == event[iRec].id()) {
-      if (uHat*uHat/(tHat*tHat + uHat*uHat) > 0.5) weakPol = event[3].pol();
-      else weakPol = event[4].pol();
+      if (uHat*uHat/(tHat*tHat + uHat*uHat) > 0.5) weakPol = event[3].intPol();
+      else weakPol = event[4].intPol();
     }
     // For different particle types, choose correct fermion line.
-    else if (event[3].id() == idRad) weakPol = event[3].pol();
-    else if (event[4].id() == idRad) weakPol = event[4].pol();
+    else if (event[3].id() == idRad) weakPol = event[3].intPol();
+    else if (event[4].id() == idRad) weakPol = event[4].intPol();
     // If weak ISR is turned off, this would try to use polarization
     // that is not set as expected. In this case use random polarization.
     if (weakPol > 1) weakPol = (rndmPtr->flat() > 0.5) ? -1 : 1;
@@ -1735,13 +1735,13 @@ void TimeShower::setupWeakdipExternal(Event& event, bool limitPTmaxIn) {
       // Find correct polarization, if it is already set use it.
       // Otherwise pick randomly.
       int weakPol = (rndmPtr->flat() > 0.5) ? -1 : 1;
-      if (event[weakDipoles[i].first].pol() != 9)
-        weakPol = event[weakDipoles[i].first].pol();
-      else if (event[weakDipoles[i].second].pol() != 9) {
+      if (event[weakDipoles[i].first].intPol() != 9)
+        weakPol = event[weakDipoles[i].first].intPol();
+      else if (event[weakDipoles[i].second].intPol() != 9) {
         if (event[weakDipoles[i].second].status() < 0)
-          weakPol = event[weakDipoles[i].second].pol();
+          weakPol = event[weakDipoles[i].second].intPol();
         else
-          weakPol = -event[weakDipoles[i].second].pol();
+          weakPol = -event[weakDipoles[i].second].intPol();
       }
       event[weakDipoles[i].first].pol(weakPol);
 

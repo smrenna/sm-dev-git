@@ -1,5 +1,5 @@
 // main19.cc is a part of the PYTHIA event generator.
-// Copyright (C) 2015 Torbjorn Sjostrand.
+// Copyright (C) 2016 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
@@ -11,8 +11,8 @@
 // event records into one, but should be used with caution.
 
 // The possibility to instantiate Pythia with Settings and ParticleData
-// databases is illustrated, but not essential here. It means that the   
-// share/Pythia8/xmldoc/*.xml files are only read once, saving some time. 
+// databases is illustrated, but not essential here. It means that the
+// share/Pythia8/xmldoc/*.xml files are only read once, saving some time.
 
 // Note that each instance of Pythia is running independently of any other,
 // but with two important points to remember.

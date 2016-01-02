@@ -1,5 +1,5 @@
 // LHAMadgraph.h is a part of the PYTHIA event generator.
-// Copyright (C) 2015 Torbjorn Sjostrand.
+// Copyright (C) 2016 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
@@ -159,7 +159,7 @@ LHAupMadgraph::~LHAupMadgraph() {if (lhef) delete lhef; if (hook) delete hook;}
 // If the stage is set to Auto, commands beginning with " set" are
 // used in the launch stage (these must begin with a single space to
 // differentiate from generate stage set commands), commands begining
-// with "config" are used in the configuration stage, and all
+// with "configure" are used in the configuration stage, and all
 // remaining commands (excluding output and launch) are used in the
 // generate stage. Output, launch, seed, and shower commands are
 // automatically handled. If the user wishes to override commands,
@@ -204,7 +204,7 @@ bool LHAupMadgraph::readString(string line, Stage stage) {
 //    (random seed - 1) * (maximum runs) + (number of runs) + 1
 
 // MadGraph can only handle random seeds up to 30081 * 30081. So, with
-// this strategy, one can generate Pythia jobs with seeds from 0 to
+// this strategy, one can generate Pythia jobs with seeds from 1 to
 // 30081, with each job running MadGraph less than 30081 times, and
 // ensure a fully statistically independent sample. If more than 30081
 // jobs are needed, then the maximum allowed runs can be lowered

@@ -132,4 +132,4 @@ parton-level generation fails and the hard process is rejected.
 </body>
 </html>
  
-<!-- Copyright (C) 2015 Torbjorn Sjostrand --> 
+<!-- Copyright (C) 2016 Torbjorn Sjostrand --> 

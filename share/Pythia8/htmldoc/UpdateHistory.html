@@ -18,7 +18,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.214: 29 December 2015 
+<li>8.215: 2 January 2016 
 <ul> 
  
 <li>Ilkka Helenius joins as new PYTHIA co-author.</li> 
@@ -99,6 +99,10 @@ consecutive generations of decay products.</li>
 to transfer four-momentum between two four-vectors so as to bring them 
 to have specified new masses.</li> 
  
+<li>New particle method <code>intPol()</code> returns the polarization 
+as an integer if the stored double-precision number is very close to 
+0, +-1, +-2 or 9, and else -9.</li> 
+ 
 <li>Initialize the random number generator earlier, so a non-default 
 seed choice also could benefit early external initialization making 
 use of it.</li> 
@@ -172,6 +176,8 @@ is used.</li>
  
 <li>Minor corrections for the LHAPDF6 description in README. 
 Thanks to Radek Zlebcik.</li> 
+ 
+<li>Fix harmless name overloading in <code>ProcessContainer.cc</code>.</li> 
  
 <li>Updated address for Philip Ilten.</li> 
  
@@ -998,4 +1004,4 @@ to six flavours at the top mass.</li>
 </body>
 </html>
  
-<!-- Copyright (C) 2015 Torbjorn Sjostrand --> 
+<!-- Copyright (C) 2016 Torbjorn Sjostrand --> 

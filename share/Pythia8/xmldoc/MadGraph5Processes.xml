@@ -3,9 +3,9 @@
 <h2>MadGraph5 Processes</h2> 
  
 Here we will describe two special ways to make use of MadGraph5 and 
-MadGraph5_aMC@NLO inside PYTHIA, either by exporting  Madgraph process 
-code or by wrapping the MadGraph5_aMC@NLO generator as a PYTHIA 
-Les Houches interface. 
+MadGraph5_aMC@NLO <ref>Alw11,Alw14</ref>inside PYTHIA, either by exporting 
+Madgraph process code or by wrapping the MadGraph5_aMC@NLO generator as 
+a PYTHIA Les Houches interface. 
  
 <p/> 
 Of course, MadGraph5 can also output files of parton-level events 
@@ -163,8 +163,7 @@ represent other matching strategies or parameter values.
 directory, into which MadGraph puts its (intermediate) results. 
 </argument> 
 <argument name="exe" default="mg5_aMC"> the name of the MadGraph5_aMC@NLO 
-executable that <code>LHAupMadgraph</code> is meant to wrap. For 
-leading-order generation "mg5" would be an alternative. In additon 
+executable that <code>LHAupMadgraph</code> is meant to wrap. In additon 
 it may be necessary to prepend the full pathname of the executable: 
 <code>"(something)/MG5_aMC_v2_3_3/bin/mg5_aMC"</code>. 
 </argument> 
@@ -183,9 +182,10 @@ di-muon events from 13 TeV proton proton collisions at NLO in QCD:
 <br/><code>readString("generate p p > mu+ mu- [QCD]");</code> 
 </argument> 
 <argument name="stage" default="Auto"> if the stage is set to Auto, 
-commands beginning with <code>" set"</code> are used in the launch stage, 
-commands begining with <code>"config"</code> are used in the configuration 
-stage, and all remaining commands (excluding <code>output</code> and 
+commands beginning with <code>" set"</code> are used in the launch 
+stage, commands begining with <code>"configure"</code> are used in the 
+configuration stage, and all remaining commands 
+(excluding <code>output</code> and 
 <code>launch</code>) are used in the generate stage. Output, launch, seed, 
 and shower commands are automatically handled. If the user wishes to 
 override commands, then the stage can be specified. This will prevent any 
@@ -208,7 +208,7 @@ must be greater than 0. If the maximum number of allowed runs is exceeded
 (default of 30081) an error is thrown. The seed for a MadGraph run is set as: 
 <br/> (random seed - 1) * (maximum runs) + (number of runs) + 1. 
 <br/>MadGraph can only handle random seeds up to 30081 * 30081. So, with 
-this strategy, one can generate Pythia jobs with seeds from 0 to 30081, 
+this strategy, one can generate Pythia jobs with seeds from 1 to 30081, 
 with each job running MadGraph less than 30081 times, and ensure a fully 
 statistically independent sample. If more than 30081 jobs are needed, then 
 the maximum allowed runs can be lowered accordingly, and if need be, 
@@ -240,4 +240,4 @@ initialization can be skipped after the initial run.
  
 </chapter> 
  
-<!-- Copyright (C) 2015 Torbjorn Sjostrand --> 
+<!-- Copyright (C) 2016 Torbjorn Sjostrand --> 

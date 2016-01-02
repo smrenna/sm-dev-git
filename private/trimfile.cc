@@ -1,5 +1,5 @@
 // File: trimfile.cc
-// Copyright (C) 2015 Torbjorn Sjostrand
+// Copyright (C) 2016 Torbjorn Sjostrand
 
 // Execute with "private/trimfile filename" from main directory.
 
@@ -46,8 +46,8 @@ int maxLen = 79;
 
 // Possibility to replace strings inside file.
 // (Could be promoted to vectors for multiple replacements.)
-string replaceOld = "Copyright (C) 2014";
-string replaceNew = "Copyright (C) 2015";
+string replaceOld = "Copyright (C) 2015";
+string replaceNew = "Copyright (C) 2016";
 int    replaceLen  = replaceOld.size();
 
 //--------------------------------------------------------------------------

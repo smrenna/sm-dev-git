@@ -1,5 +1,5 @@
 // Event.cc is a part of the PYTHIA event generator.
-// Copyright (C) 2015 Torbjorn Sjostrand.
+// Copyright (C) 2016 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
@@ -30,6 +30,20 @@ const double Particle::TINY = 1e-20;
 void Particle::setPDEPtr(ParticleDataEntry* pdePtrIn) {
   pdePtr = pdePtrIn; if (pdePtrIn != 0 || evtPtr == 0) return;
   pdePtr = (*evtPtr).particleDataPtr->particleDataEntryPtr( idSave);}
+
+//--------------------------------------------------------------------------
+
+// Find out if polarization is (close to) an integer.
+
+int Particle::intPol() const {
+
+  double smallDbls[6] = { 0., 1., -1., 2., -2., 9.};
+  int    smallInts[6] = { 0,  1,  -1,  2,  -2,  9 };
+  for (int iPol = 0; iPol < 6; ++ iPol)
+    if (abs(polSave - smallDbls[iPol]) < 1e-10) return smallInts[iPol];
+  return -9;
+
+}
 
 //--------------------------------------------------------------------------
 

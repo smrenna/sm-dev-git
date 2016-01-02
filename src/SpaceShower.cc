@@ -1,5 +1,5 @@
 // SpaceShower.cc is a part of the PYTHIA event generator.
-// Copyright (C) 2015 Torbjorn Sjostrand.
+// Copyright (C) 2016 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
@@ -460,8 +460,8 @@ void SpaceShower::prepare( int iSys, Event& event, bool limitPTmaxIn) {
           // Find correct polarization, if it is already set use it.
           // Otherwise pick randomly.
           int weakPol = (rndmPtr->flat() > 0.5) ? -1 : 1;
-          if (event[weakDipoles[i].first].pol() != 9)
-            weakPol = event[weakDipoles[i].first].pol();
+          if (event[weakDipoles[i].first].intPol() != 9)
+            weakPol = event[weakDipoles[i].first].intPol();
           event[weakDipoles[i].first].pol(weakPol);
 
           // Add the dipoles.

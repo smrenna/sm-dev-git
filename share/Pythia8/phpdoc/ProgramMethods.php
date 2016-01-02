@@ -100,7 +100,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method38" target="page">m(...)</a></td>
+<td><a href="ParticleProperties.php#method39" target="page">m(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -112,7 +112,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method38" target="page">m2(...)</a></td>
+<td><a href="ParticleProperties.php#method39" target="page">m2(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -268,7 +268,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>ParticleDataEntry&</td>
-<td><a href="ParticleProperties.php#method61" target="page">particleDataEntry()</a></td>
+<td><a href="ParticleProperties.php#method62" target="page">particleDataEntry()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -2638,12 +2638,6 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="ParticleProperties.php#method77" target="page">Particle::bst(...)</a></td>
-<td>Particle Properties</td>
-</tr>
-
-<tr>
-<td>void</td>
 <td><a href="ParticleProperties.php#method78" target="page">Particle::bst(...)</a></td>
 <td>Particle Properties</td>
 </tr>
@@ -2662,31 +2656,37 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="ParticleProperties.php#method81" target="page">Particle::bstback(...)</a></td>
+<td><a href="ParticleProperties.php#method81" target="page">Particle::bst(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleProperties.php#method81" target="page">Particle::bstback(...)</a></td>
+<td><a href="ParticleProperties.php#method82" target="page">Particle::bstback(...)</a></td>
+<td>Particle Properties</td>
+</tr>
+
+<tr>
+<td>void</td>
+<td><a href="ParticleProperties.php#method82" target="page">Particle::bstback(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#method51" target="page">Particle::canDecay()</a></td>
+<td><a href="ParticleProperties.php#method52" target="page">Particle::canDecay()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method42" target="page">Particle::charge()</a></td>
+<td><a href="ParticleProperties.php#method43" target="page">Particle::charge()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleProperties.php#method42" target="page">Particle::chargeType()</a></td>
+<td><a href="ParticleProperties.php#method43" target="page">Particle::chargeType()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -2704,13 +2704,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>int</td>
-<td><a href="ParticleProperties.php#method44" target="page">Particle::colType()</a></td>
+<td><a href="ParticleProperties.php#method45" target="page">Particle::colType()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method48" target="page">Particle::constituentMass()</a></td>
+<td><a href="ParticleProperties.php#method49" target="page">Particle::constituentMass()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -2728,13 +2728,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>vector&lt;int&gt;</td>
-<td><a href="ParticleProperties.php#method66" target="page">Particle::daughterList()</a></td>
+<td><a href="ParticleProperties.php#method67" target="page">Particle::daughterList()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>vector&lt;int&gt;</td>
-<td><a href="ParticleProperties.php#method67" target="page">Particle::daughterListRecursive()</a></td>
+<td><a href="ParticleProperties.php#method68" target="page">Particle::daughterListRecursive()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -2746,7 +2746,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#method52" target="page">Particle::doExternalDecay()</a></td>
+<td><a href="ParticleProperties.php#method53" target="page">Particle::doExternalDecay()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -2758,43 +2758,43 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method28" target="page">Particle::eCalc()</a></td>
+<td><a href="ParticleProperties.php#method29" target="page">Particle::eCalc()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method32" target="page">Particle::eT()</a></td>
+<td><a href="ParticleProperties.php#method33" target="page">Particle::eT()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method32" target="page">Particle::eT2()</a></td>
+<td><a href="ParticleProperties.php#method33" target="page">Particle::eT2()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method36" target="page">Particle::eta()</a></td>
+<td><a href="ParticleProperties.php#method37" target="page">Particle::eta()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#method25" target="page">Particle::hasVertex()</a></td>
+<td><a href="ParticleProperties.php#method26" target="page">Particle::hasVertex()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleProperties.php#method63" target="page">Particle::iBotCopy()</a></td>
+<td><a href="ParticleProperties.php#method64" target="page">Particle::iBotCopy()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleProperties.php#method64" target="page">Particle::iBotCopyId(...)</a></td>
+<td><a href="ParticleProperties.php#method65" target="page">Particle::iBotCopyId(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -2812,25 +2812,31 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="ParticleProperties.php#method62" target="page">Particle::index()</a></td>
+<td><a href="ParticleProperties.php#method63" target="page">Particle::index()</a></td>
+<td>Particle Properties</td>
+</tr>
+
+<tr>
+<td>int</td>
+<td><a href="ParticleProperties.php#method24" target="page">Particle::intPol()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#method69" target="page">Particle::isAncestor(...)</a></td>
+<td><a href="ParticleProperties.php#method70" target="page">Particle::isAncestor(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#method43" target="page">Particle::isCharged()</a></td>
+<td><a href="ParticleProperties.php#method44" target="page">Particle::isCharged()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#method58" target="page">Particle::isDiquark()</a></td>
+<td><a href="ParticleProperties.php#method59" target="page">Particle::isDiquark()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -2842,73 +2848,73 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#method70" target="page">Particle::isFinalPartonLevel()</a></td>
+<td><a href="ParticleProperties.php#method71" target="page">Particle::isFinalPartonLevel()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#method57" target="page">Particle::isGluon()</a></td>
+<td><a href="ParticleProperties.php#method58" target="page">Particle::isGluon()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#method60" target="page">Particle::isHadron()</a></td>
+<td><a href="ParticleProperties.php#method61" target="page">Particle::isHadron()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#method55" target="page">Particle::isLepton()</a></td>
+<td><a href="ParticleProperties.php#method56" target="page">Particle::isLepton()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#method43" target="page">Particle::isNeutral()</a></td>
+<td><a href="ParticleProperties.php#method44" target="page">Particle::isNeutral()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#method59" target="page">Particle::isParton()</a></td>
+<td><a href="ParticleProperties.php#method60" target="page">Particle::isParton()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#method56" target="page">Particle::isQuark()</a></td>
+<td><a href="ParticleProperties.php#method57" target="page">Particle::isQuark()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#method24" target="page">Particle::isRescatteredIncoming()</a></td>
+<td><a href="ParticleProperties.php#method25" target="page">Particle::isRescatteredIncoming()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#method53" target="page">Particle::isResonance()</a></td>
+<td><a href="ParticleProperties.php#method54" target="page">Particle::isResonance()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#method54" target="page">Particle::isVisible()</a></td>
+<td><a href="ParticleProperties.php#method55" target="page">Particle::isVisible()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleProperties.php#method63" target="page">Particle::iTopCopy()</a></td>
+<td><a href="ParticleProperties.php#method64" target="page">Particle::iTopCopy()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleProperties.php#method64" target="page">Particle::iTopCopyId(...)</a></td>
+<td><a href="ParticleProperties.php#method65" target="page">Particle::iTopCopyId(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -2920,43 +2926,43 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method45" target="page">Particle::m0()</a></td>
+<td><a href="ParticleProperties.php#method46" target="page">Particle::m0()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method26" target="page">Particle::m2()</a></td>
+<td><a href="ParticleProperties.php#method27" target="page">Particle::m2()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method27" target="page">Particle::m2Calc()</a></td>
+<td><a href="ParticleProperties.php#method28" target="page">Particle::m2Calc()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#method50" target="page">Particle::mayDecay()</a></td>
+<td><a href="ParticleProperties.php#method51" target="page">Particle::mayDecay()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method27" target="page">Particle::mCalc()</a></td>
+<td><a href="ParticleProperties.php#method28" target="page">Particle::mCalc()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method46" target="page">Particle::mMax()</a></td>
+<td><a href="ParticleProperties.php#method47" target="page">Particle::mMax()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method46" target="page">Particle::mMin()</a></td>
+<td><a href="ParticleProperties.php#method47" target="page">Particle::mMin()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -2974,7 +2980,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>vector&lt;int&gt;</td>
-<td><a href="ParticleProperties.php#method65" target="page">Particle::motherList()</a></td>
+<td><a href="ParticleProperties.php#method66" target="page">Particle::motherList()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -2986,55 +2992,55 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method47" target="page">Particle::mSel()</a></td>
+<td><a href="ParticleProperties.php#method48" target="page">Particle::mSel()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method30" target="page">Particle::mT()</a></td>
+<td><a href="ParticleProperties.php#method31" target="page">Particle::mT()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method30" target="page">Particle::mT2()</a></td>
+<td><a href="ParticleProperties.php#method31" target="page">Particle::mT2()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method46" target="page">Particle::mWidth()</a></td>
+<td><a href="ParticleProperties.php#method47" target="page">Particle::mWidth()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>string</td>
-<td><a href="ParticleProperties.php#method39" target="page">Particle::name()</a></td>
+<td><a href="ParticleProperties.php#method40" target="page">Particle::name()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>string</td>
-<td><a href="ParticleProperties.php#method40" target="page">Particle::nameWithStatus()</a></td>
+<td><a href="ParticleProperties.php#method41" target="page">Particle::nameWithStatus()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleProperties.php#method84" target="page">Particle::offsetCol(...)</a></td>
+<td><a href="ParticleProperties.php#method85" target="page">Particle::offsetCol(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleProperties.php#method83" target="page">Particle::offsetHistory(...))</a></td>
+<td><a href="ParticleProperties.php#method84" target="page">Particle::offsetHistory(...))</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>Particle&</td>
-<td><a href="ParticleProperties.php#method89" target="page">Particle::operator=(...)</a></td>
+<td><a href="ParticleProperties.php#method90" target="page">Particle::operator=(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3052,25 +3058,19 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method31" target="page">Particle::pAbs()</a></td>
+<td><a href="ParticleProperties.php#method32" target="page">Particle::pAbs()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method31" target="page">Particle::pAbs2()</a></td>
+<td><a href="ParticleProperties.php#method32" target="page">Particle::pAbs2()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td> </td>
-<td><a href="ParticleProperties.php#method85" target="page">Particle::Particle()</a></td>
-<td>Particle Properties</td>
-</tr>
-
-<tr>
-<td> </td>
-<td><a href="ParticleProperties.php#method86" target="page">Particle::Particle(...)</a></td>
+<td><a href="ParticleProperties.php#method86" target="page">Particle::Particle()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3087,14 +3087,20 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
-<td>double</td>
-<td><a href="ParticleProperties.php#method33" target="page">Particle::phi()</a></td>
+<td> </td>
+<td><a href="ParticleProperties.php#method89" target="page">Particle::Particle(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method35" target="page">Particle::pNeg()</a></td>
+<td><a href="ParticleProperties.php#method34" target="page">Particle::phi()</a></td>
+<td>Particle Properties</td>
+</tr>
+
+<tr>
+<td>double</td>
+<td><a href="ParticleProperties.php#method36" target="page">Particle::pNeg()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3106,19 +3112,19 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method35" target="page">Particle::pPos()</a></td>
+<td><a href="ParticleProperties.php#method36" target="page">Particle::pPos()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method29" target="page">Particle::pT()</a></td>
+<td><a href="ParticleProperties.php#method30" target="page">Particle::pT()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method29" target="page">Particle::pT2()</a></td>
+<td><a href="ParticleProperties.php#method30" target="page">Particle::pT2()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3142,31 +3148,31 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="ParticleProperties.php#method73" target="page">Particle::rescale3(...)</a></td>
+<td><a href="ParticleProperties.php#method74" target="page">Particle::rescale3(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleProperties.php#method74" target="page">Particle::rescale4(...)</a></td>
+<td><a href="ParticleProperties.php#method75" target="page">Particle::rescale4(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleProperties.php#method75" target="page">Particle::rescale5(...)</a></td>
+<td><a href="ParticleProperties.php#method76" target="page">Particle::rescale5(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleProperties.php#method76" target="page">Particle::rot(...)</a></td>
+<td><a href="ParticleProperties.php#method77" target="page">Particle::rot(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleProperties.php#method82" target="page">Particle::rotbst(...)</a></td>
+<td><a href="ParticleProperties.php#method83" target="page">Particle::rotbst(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3178,25 +3184,25 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="ParticleProperties.php#method90" target="page">Particle::setEvtPtr(...)</a></td>
+<td><a href="ParticleProperties.php#method91" target="page">Particle::setEvtPtr(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleProperties.php#method91" target="page">Particle::setPDEPtr(...)</a></td>
+<td><a href="ParticleProperties.php#method92" target="page">Particle::setPDEPtr(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>vector&lt;int&gt;</td>
-<td><a href="ParticleProperties.php#method68" target="page">Particle::sisterList(...)</a></td>
+<td><a href="ParticleProperties.php#method69" target="page">Particle::sisterList(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleProperties.php#method41" target="page">Particle::spinType()</a></td>
+<td><a href="ParticleProperties.php#method42" target="page">Particle::spinType()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3220,7 +3226,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>int</td>
-<td><a href="ParticleProperties.php#method71" target="page">Particle::statusHepMC()</a></td>
+<td><a href="ParticleProperties.php#method72" target="page">Particle::statusHepMC()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3244,25 +3250,25 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method49" target="page">Particle::tau0()</a></td>
+<td><a href="ParticleProperties.php#method50" target="page">Particle::tau0()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method37" target="page">Particle::tDec()</a></td>
+<td><a href="ParticleProperties.php#method38" target="page">Particle::tDec()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method33" target="page">Particle::theta()</a></td>
+<td><a href="ParticleProperties.php#method34" target="page">Particle::theta()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method34" target="page">Particle::thetaXZ()</a></td>
+<td><a href="ParticleProperties.php#method35" target="page">Particle::thetaXZ()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3274,13 +3280,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#method72" target="page">Particle::undoDecay()</a></td>
+<td><a href="ParticleProperties.php#method73" target="page">Particle::undoDecay()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>Vec4</td>
-<td><a href="ParticleProperties.php#method37" target="page">Particle::vDec()</a></td>
+<td><a href="ParticleProperties.php#method38" target="page">Particle::vDec()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3298,7 +3304,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method37" target="page">Particle::xDec()</a></td>
+<td><a href="ParticleProperties.php#method38" target="page">Particle::xDec()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3310,13 +3316,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method36" target="page">Particle::y()</a></td>
+<td><a href="ParticleProperties.php#method37" target="page">Particle::y()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method37" target="page">Particle::yDec()</a></td>
+<td><a href="ParticleProperties.php#method38" target="page">Particle::yDec()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3328,7 +3334,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#method37" target="page">Particle::zDec()</a></td>
+<td><a href="ParticleProperties.php#method38" target="page">Particle::zDec()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -6508,4 +6514,4 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 </table>
 
-<!-- Copyright (C) 2015 Torbjorn Sjostrand -->
+<!-- Copyright (C) 2016 Torbjorn Sjostrand -->
