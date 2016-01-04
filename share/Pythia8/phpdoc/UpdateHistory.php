@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.215: 2 January 2016 
+<li>8.215: 4 January 2016 
 <ul> 
  
 <li>Ilkka Helenius joins as new PYTHIA co-author.</li> 
@@ -183,7 +183,7 @@ Minor technical changes in the LHEF3 machinery.</li>
  
 <li>Bug fix for information on the pdf value chosen for the hardest MPI, 
 which was reported a factor 9/4 too large for an incoming gluon. Does 
-not effect the event generation itself.</li> 
+not affect the event generation itself.</li> 
  
 <li>Correct <code>BeamRemnants:primordialKThard</code> from 2.0 to 1.71 
 for ATLAS tune AZ. Thanks to Christian Bauer.</li> 
@@ -207,6 +207,10 @@ Thanks to Radek Zlebcik.</li>
 <li>Fix harmless name overloading in <code>ProcessContainer.cc</code>.</li> 
  
 <li>Updated address for Philip Ilten.</li> 
+ 
+<li>A few bibliography updates.</li> 
+ 
+<li>Year updated to 2016.</li> 
  
 </ul> 
 </li> 
