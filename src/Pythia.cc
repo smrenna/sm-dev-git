@@ -23,7 +23,7 @@ namespace Pythia8 {
 
 // The current Pythia (sub)version number, to agree with XML version.
 const double Pythia::VERSIONNUMBERHEAD = PYTHIA_VERSION;
-const double Pythia::VERSIONNUMBERCODE = 8.215;
+const double Pythia::VERSIONNUMBERCODE = 8.216;
 
 //--------------------------------------------------------------------------
 
@@ -2202,7 +2202,7 @@ PDF* Pythia::getPDFPtr(int idIn, int sequence, string beam) {
     else if (pSetInt <= 6)
       tempPDFPtr = new MSTWpdf(idIn, pSetInt - 2, xmlPath, &info);
     else if (pSetInt <= 12)
-      tempPDFPtr = new CTEQ6pdf(idIn, pSetInt - 6, xmlPath, &info);
+      tempPDFPtr = new CTEQ6pdf(idIn, pSetInt - 6, 1., xmlPath, &info);
     else if (pSetInt <= 16)
       tempPDFPtr = new NNPDF(idIn, pSetInt - 12, xmlPath, &info);
     else tempPDFPtr = 0;
@@ -2248,6 +2248,15 @@ PDF* Pythia::getPDFPtr(int idIn, int sequence, string beam) {
       tempPDFPtr = new PomH1Jets( 990, rescale, xmlPath, &info);
     else if (pomSet == 6)
       tempPDFPtr = new PomH1FitAB( 990, 3, rescale, xmlPath, &info);
+    // The parametrizations of Alvero, Collins, Terron and Whitmore.
+    else if (pomSet > 6 && pomSet < 11)  {
+      tempPDFPtr = new CTEQ6pdf( 990, pomSet + 4, rescale, xmlPath, &info);
+      info.errorMsg("Warning: Pomeron flux parameters forced for ACTW PDFs");
+      settings.mode("Diffraction:PomFlux", 4);
+      double pomFluxEps = (pomSet == 10) ? 0.19 : 0.14;
+      settings.parm("Diffraction:PomFluxEpsilon", pomFluxEps);
+      settings.parm("Diffraction:PomFluxAlphaPrime", 0.25);
+    }
   }
 
   // Photon beam.

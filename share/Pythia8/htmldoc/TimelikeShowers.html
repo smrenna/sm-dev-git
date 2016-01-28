@@ -203,9 +203,9 @@ can be applied to the <i>alpha_strong</i> values used for
 timelike showers. Note that tunes using this option need lower values of 
 <i>alpha_strong(m_Z^2)</i> than tunes that do not. 
 <p/><code>flag&nbsp; </code><strong> TimeShower:alphaSuseCMW &nbsp;</strong> 
- (<code>default = <strong>false</strong></code>)<br/>
-<br/><code>option </code><strong> false</strong> : Do not apply the CMW rescaling.    
-<br/><code>option </code><strong> true</strong> : Apply the CMW rescaling, increasing 
+ (<code>default = <strong>off</strong></code>)<br/>
+<br/><code>option </code><strong> off</strong> : Do not apply the CMW rescaling.    
+<br/><code>option </code><strong> on</strong> : Apply the CMW rescaling, increasing 
  <i>Lambda_QCD</i> for timelike showers by a factor roughly 1.6. 
    
    
@@ -724,6 +724,24 @@ Extra scale parameter <i>k</i> for
 <code>TimeShower:weightGluonToQuark</code> options 5 - 8. Comes on top of 
 <code>TimeShower:renormMultFac</code>, which affects <i>alpha_s(pT^2)</i> 
 alike. 
+   
+ 
+<p/><code>flag&nbsp; </code><strong> TimeShower:recoilDeadCone &nbsp;</strong> 
+ (<code>default = <strong>on</strong></code>)<br/>
+For topologies where a gluon recoils against a massive quark (or another 
+massive coloured particle) there are no suitable ME corrections implemented 
+into PYTHIA. When the dipole radiation pattern is split into two ends, 
+with a smooth transition between the two, this means that the  gluon end 
+can radiate into the quark hemisphere as if the quark were massless. The 
+"dead cone" effect, that radiation collinear with a massive quark is 
+strongly suppressed, thereby is not fully respected. (Unlike  radiation 
+from the quark end itself, where mass effects are included.) With this 
+switch on, a further suppression is therefore introduced for 
+<i>g &rarr; g g</i> branchings, derived as the massive/massless ratio 
+of the eikonal expression for dipole radiation, which kills radiation 
+collinear with the quark. The <i>g &rarr; q qbar</i> branchings currently 
+are not affected; the absence of a soft singularity implies that there 
+is hardly any radiation into the recoiler hemisphere anyway. 
    
  
 <p/><code>flag&nbsp; </code><strong> TimeShower:QEDshowerByQ &nbsp;</strong> 

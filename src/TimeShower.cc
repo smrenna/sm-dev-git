@@ -129,6 +129,7 @@ void TimeShower::init( BeamParticle* beamAPtrIn,
   weightGluonToQuark = settingsPtr->mode("TimeShower:weightGluonToQuark");
   scaleGluonToQuark  = settingsPtr->parm("TimeShower:scaleGluonToQuark");
   extraGluonToQuark  = (weightGluonToQuark%4 == 3) ? WG2QEXTRA : 1.;
+  recoilDeadCone     = settingsPtr->flag("TimeShower:recoilDeadCone");
   pTcolCutMin        = settingsPtr->parm("TimeShower:pTmin");
   if (pTcolCutMin > LAMBDA3MARGIN * Lambda3flav / sqrt(renormMultFac))
     pTcolCut         = pTcolCutMin;
@@ -2207,8 +2208,16 @@ void TimeShower::pT2nextQCD(double pT2begDip, double pT2sel,
           && (colTypeAbs == 1 || colTypeAbs == 3) ) {
           wt = (1. + pow2(dip.z)) / wtPSglue;
 
+        // z weight for g -> g g; optional suppression for massive recoiler.
         } else if (dip.flavour == 21) {
           wt = (1. + pow3(dip.z)) / wtPSglue;
+          if (recoilDeadCone && dip.mRec > 0.) {
+            double r2G = dip.m2Rec / dip.m2Dip;
+            double x1G = (1. - r2G + dip.m2 / dip.m2Dip) * dip.z;
+            double x2G =  1. + r2G - dip.m2 / dip.m2Dip;
+            wt *= 1. - (r2G / max(XMARGIN, x1G + x2G - 1. - r2G))
+              * (max(XMARGIN, 1. + r2G - x2G) / max(XMARGIN,1. - r2G - x1G));
+          }
 
         // z weight for g -> q qbar: different options.
         } else {

@@ -1226,7 +1226,8 @@ double MSTWpdf::polderivative3(double x1, double x2, double x3, double y1,
 //==========================================================================
 
 // The CTEQ6pdf class.
-// Code for handling CTEQ6L, CTEQ6L1, CTEQ66.00, CT09MC1, CT09MC2, (CT09MCS?).
+// Code for handling CTEQ6L, CTEQ6L1, CTEQ66.00, CT09MC1, CT09MC2, CT09MCS.
+// Also handles ACTW Pomeron sets B, D and SG (alpha = 1.14) and D (= 1.19).
 
 // Constants: could be changed here if desired, but normally should not.
 // These are of technical nature, as described for each.
@@ -1255,6 +1256,11 @@ void CTEQ6pdf::init(int iFitIn, string xmlPath, Info* infoPtr) {
   if (iFit == 4) fileName = "ct09mc1.pds";
   if (iFit == 5) fileName = "ct09mc2.pds";
   if (iFit == 6) fileName = "ct09mcs.pds";
+  // Ditto for current Pomeron fit.
+  if (iFit == 11) fileName = "pomactwb14.pds";
+  if (iFit == 12) fileName = "pomactwd14.pds";
+  if (iFit == 13) fileName = "pomactwsg14.pds";
+  if (iFit == 14) fileName = "pomactwd19.pds";
   bool isPdsGrid = (iFit > 2);
 
   // Open data file.
@@ -1389,9 +1395,9 @@ void CTEQ6pdf::xfUpdate(int , double x, double Q2) {
 
   // Gluon:
   double glu  = xEps * parton6( 0, xEps, qEps);
-  // Sea quarks (note wrong order u, d):
-  double bot  = xEps * parton6( 5, xEps, qEps);
-  double chm  = xEps * parton6( 4, xEps, qEps);
+  // Sea quarks (note wrong order u, d). ACTW has no s, c, b.
+  double bot  = (iFit > 10) ? 0. : xEps * parton6( 5, xEps, qEps);
+  double chm  = (iFit > 10) ? 0. : xEps * parton6( 4, xEps, qEps);
   double str  = xEps * parton6( 3, xEps, qEps);
   double usea = xEps * parton6(-1, xEps, qEps);
   double dsea = xEps * parton6(-2, xEps, qEps);
@@ -1399,23 +1405,26 @@ void CTEQ6pdf::xfUpdate(int , double x, double Q2) {
   double upv  = xEps * parton6( 1, xEps, qEps) - usea;
   double dnv  = xEps * parton6( 2, xEps, qEps) - dsea;
 
+  // Check that rescaling *only* occurs for ACTW Pomeron PDF sets.
+  if (iFit < 10) rescale = 1.;
+
   // Transfer to Pythia notation.
-  xg     = glu;
-  xu     = upv + usea;
-  xd     = dnv + dsea;
-  xubar  = usea;
-  xdbar  = dsea;
-  xs     = str;
-  xsbar  = str;
-  xc     = chm;
-  xb     = bot;
+  xg     = rescale * glu;
+  xu     = rescale * (upv + usea);
+  xd     = rescale * (dnv + dsea);
+  xubar  = rescale * usea;
+  xdbar  = rescale * dsea;
+  xs     = rescale * str;
+  xsbar  = rescale * str;
+  xc     = rescale * chm;
+  xb     = rescale * bot;
   xgamma = 0.;
 
   // Subdivision of valence and sea.
-  xuVal  = upv;
-  xuSea  = usea;
-  xdVal  = dnv;
-  xdSea  = dsea;
+  xuVal  = rescale * upv;
+  xuSea  = rescale * usea;
+  xdVal  = rescale * dnv;
+  xdSea  = rescale * dsea;
 
   // idSav = 9 to indicate that all flavours reset.
   idSav  = 9;

@@ -241,7 +241,7 @@ private:
          recoilToColoured, useFixedFacScale, allowRescatter, canVetoEmission,
          doHVshower, brokenHVsym, globalRecoil, useLocalRecoilNow,
          doSecondHard, hasUserHooks, singleWeakEmission, alphaSuseCMW,
-         vetoWeakJets, allowMPIdipole, weakExternal;
+         vetoWeakJets, allowMPIdipole, weakExternal, recoilDeadCone;
   int    pTmaxMatch, pTdampMatch, alphaSorder, alphaSnfmax, nGluonToQuark,
          weightGluonToQuark, alphaEMorder, nGammaToQuark, nGammaToLepton,
          nCHV, idHV, nMaxGlobalRecoil, weakMode;

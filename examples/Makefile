@@ -79,7 +79,8 @@ main46: $$@.cc $(PREFIX_LIB)/libpythia8.a
 ifeq ($(PROMC_USE),true)
 	$(CXX) $^ -o $@ -I$(PROMC_INCLUDE)/src -I$(PROMC_INCLUDE)/include\
 	 $(CXX_COMMON) -DPROMC=\"$(PROMC_INCLUDE)\" -Wno-long-long\
-	 -L$(PROMC_LIB) -lpromc -lprotoc -lprotobuf -lprotobuf-lite -lcbook
+	 -L$(PROMC_LIB) -Wl,-rpath $(PROMC_LIB) -lpromc -lprotoc -lprotobuf\
+	 -lprotobuf-lite -lcbook
 else
 	@echo "Error: $@ requires PROMC"
 endif

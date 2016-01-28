@@ -174,10 +174,10 @@ can be applied to the <i>alpha_strong</i> values used for spacelike showers.
 Note that tunes using this option need lower values of 
 <i>alpha_strong(m_Z^2)</i> than tunes that do not. 
 <br/><br/><strong>SpaceShower:alphaSuseCMW</strong>  <input type="radio" name="8" value="on"><strong>On</strong>
-<input type="radio" name="8" value="off"><strong>Off</strong>
- &nbsp;&nbsp;(<code>default = <strong>false</strong></code>)<br/>
-<br/><code>option </code><strong> false</strong> : Do not apply the CMW rescaling.    
-<br/><code>option </code><strong> true</strong> : Apply the CMW rescaling, increasing 
+<input type="radio" name="8" value="off" checked="checked"><strong>Off</strong>
+ &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
+<br/><code>option </code><strong> off</strong> : Do not apply the CMW rescaling.    
+<br/><code>option </code><strong> on</strong> : Apply the CMW rescaling, increasing 
 <i>Lambda_QCD</i> for spacelike showers by a factor roughly 1.6. 
    
    
@@ -509,7 +509,7 @@ if($_POST["7"] != "1")
 $data = "SpaceShower:alphaSorder = ".$_POST["7"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["8"] != "false")
+if($_POST["8"] != "off")
 {
 $data = "SpaceShower:alphaSuseCMW = ".$_POST["8"]."\n";
 fwrite($handle,$data);

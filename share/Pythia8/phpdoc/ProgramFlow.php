@@ -570,7 +570,7 @@ that it is only the directory location you can change, its contents
 must be the ones of the <code>xmldoc</code> directory in the 
 standard distribution. 
    
-<br/><code>argument</code><strong> printBanner </strong> (<code>default = <strong>true</strong></code>) :  can be set 
+<br/><code>argument</code><strong> printBanner </strong> (<code>default = <strong>on</strong></code>) :  can be set 
 <code>false</code> to stop the program from printing a banner. 
 The banner contains useful information, so this option is only 
 intended for runs with multiple <code>Pythia</code> instances, 
@@ -587,7 +587,7 @@ Pythia instances, where only the first one needs to read the
 <code>xmldoc</code> files, while subsequent ones can "inherit" 
 this information. 
    
-<br/><code>argument</code><strong> printBanner </strong> (<code>default = <strong>true</strong></code>) :  can be set 
+<br/><code>argument</code><strong> printBanner </strong> (<code>default = <strong>on</strong></code>) :  can be set 
 <code>false</code> to stop the program from printing a banner. 
 The banner contains useful information, so this option is only 
 intended for runs with multiple <code>Pythia</code> instances, 
@@ -619,7 +619,7 @@ above.
 <br/><code>argument</code><strong> line </strong>  :  
 the string to be interpreted as an instruction. 
    
-<br/><code>argument</code><strong> warn </strong> (<code>default = <strong>true</strong></code>) :  
+<br/><code>argument</code><strong> warn </strong> (<code>default = <strong>on</strong></code>) :  
 write a warning message or not whenever the instruction does not make 
 sense, e.g. if the variable does not exist in the databases. 
    
@@ -648,7 +648,7 @@ the file from which instructions are read.
 <br/><code>argument</code><strong> inStream </strong>  :  
 an istream from which instructions are read. 
    
-<br/><code>argument</code><strong> warn </strong> (<code>default = <strong>true</strong></code>) :  
+<br/><code>argument</code><strong> warn </strong> (<code>default = <strong>on</strong></code>) :  
 write a warning message or not whenever the instruction does not make 
 sense, e.g. if the variable does not exist in the databases. In the 
 command forms where <code>warn</code> is omitted it is true. 
@@ -953,7 +953,7 @@ interactions, beam remnants, colour flow, and so on - but not
 hadronization. Further details are found 
 <?php $filepath = $_GET["filepath"];
 echo "<a href='HadronLevelStandalone.php?filepath=".$filepath."' target='page'>";?>here</a>. 
-<br/><code>argument</code><strong> findJunctions </strong> (<code>default = <strong>true</strong></code>) :  
+<br/><code>argument</code><strong> findJunctions </strong> (<code>default = <strong>on</strong></code>) :  
 normally this routine will search through the event record and try to 
 figure out if any colour junctions are present. If so, the colour 
 topology of such junctions must be sorted out. In tricky cases this 

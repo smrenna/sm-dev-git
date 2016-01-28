@@ -310,7 +310,7 @@ for IDX in ${!PKG_LIST[@]}; do
     if [ "$PKG_USE" = true ]; then echo "* $PKG"
 	eval PKG_BIN=\${${PKG}_CFG[1]}; eval PKG_INC=\${${PKG}_CFG[2]};
 	eval PKG_LIB=\${${PKG}_CFG[3]};
-    else PKG_BIN=""; PKG_INC=""; PKG_LIB=""; fi
+    else PKG_BIN=""; PKG_INC="./"; PKG_LIB="./"; fi
     cat >> $CFG_FILE << BLOCKTEXT
 
 # $PKG configuration.

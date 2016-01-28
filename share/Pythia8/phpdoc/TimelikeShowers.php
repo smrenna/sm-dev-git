@@ -176,10 +176,10 @@ can be applied to the <i>alpha_strong</i> values used for
 timelike showers. Note that tunes using this option need lower values of 
 <i>alpha_strong(m_Z^2)</i> than tunes that do not. 
 <br/><br/><strong>TimeShower:alphaSuseCMW</strong>  <input type="radio" name="8" value="on"><strong>On</strong>
-<input type="radio" name="8" value="off"><strong>Off</strong>
- &nbsp;&nbsp;(<code>default = <strong>false</strong></code>)<br/>
-<br/><code>option </code><strong> false</strong> : Do not apply the CMW rescaling.    
-<br/><code>option </code><strong> true</strong> : Apply the CMW rescaling, increasing 
+<input type="radio" name="8" value="off" checked="checked"><strong>Off</strong>
+ &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
+<br/><code>option </code><strong> off</strong> : Do not apply the CMW rescaling.    
+<br/><code>option </code><strong> on</strong> : Apply the CMW rescaling, increasing 
  <i>Lambda_QCD</i> for timelike showers by a factor roughly 1.6. 
    
    
@@ -665,49 +665,68 @@ Extra scale parameter <i>k</i> for
 alike. 
    
  
-<br/><br/><strong>TimeShower:QEDshowerByQ</strong>  <input type="radio" name="35" value="on" checked="checked"><strong>On</strong>
+<br/><br/><strong>TimeShower:recoilDeadCone</strong>  <input type="radio" name="35" value="on" checked="checked"><strong>On</strong>
 <input type="radio" name="35" value="off"><strong>Off</strong>
+ &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
+For topologies where a gluon recoils against a massive quark (or another 
+massive coloured particle) there are no suitable ME corrections implemented 
+into PYTHIA. When the dipole radiation pattern is split into two ends, 
+with a smooth transition between the two, this means that the  gluon end 
+can radiate into the quark hemisphere as if the quark were massless. The 
+"dead cone" effect, that radiation collinear with a massive quark is 
+strongly suppressed, thereby is not fully respected. (Unlike  radiation 
+from the quark end itself, where mass effects are included.) With this 
+switch on, a further suppression is therefore introduced for 
+<i>g &rarr; g g</i> branchings, derived as the massive/massless ratio 
+of the eikonal expression for dipole radiation, which kills radiation 
+collinear with the quark. The <i>g &rarr; q qbar</i> branchings currently 
+are not affected; the absence of a soft singularity implies that there 
+is hardly any radiation into the recoiler hemisphere anyway. 
+   
+ 
+<br/><br/><strong>TimeShower:QEDshowerByQ</strong>  <input type="radio" name="36" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="36" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 Allow quarks to radiate photons, i.e. branchings <i>q &rarr; q gamma</i>; 
 on/off = true/false. 
    
  
-<br/><br/><strong>TimeShower:QEDshowerByL</strong>  <input type="radio" name="36" value="on" checked="checked"><strong>On</strong>
-<input type="radio" name="36" value="off"><strong>Off</strong>
+<br/><br/><strong>TimeShower:QEDshowerByL</strong>  <input type="radio" name="37" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="37" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 Allow leptons to radiate photons, i.e. branchings <i>l &rarr; l gamma</i>; 
 on/off = true/false. 
    
  
-<br/><br/><strong>TimeShower:QEDshowerByGamma</strong>  <input type="radio" name="37" value="on" checked="checked"><strong>On</strong>
-<input type="radio" name="37" value="off"><strong>Off</strong>
+<br/><br/><strong>TimeShower:QEDshowerByGamma</strong>  <input type="radio" name="38" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="38" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 Allow photons to branch into lepton or quark pairs, i.e. branchings 
 <i>gamma &rarr; l+ l-</i> and <i>gamma &rarr; q qbar</i>; 
 on/off = true/false. 
    
  
-<br/><br/><table><tr><td><strong>TimeShower:nGammaToQuark  </td><td></td><td> <input type="text" name="38" value="5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>5</strong></code>; <code>minimum = 0</code>; <code>maximum = 5</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>TimeShower:nGammaToQuark  </td><td></td><td> <input type="text" name="39" value="5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>5</strong></code>; <code>minimum = 0</code>; <code>maximum = 5</code>)</td></tr></table>
 Number of allowed quark flavours in <i>gamma &rarr; q qbar</i> branchings 
 (phase space permitting). A change to 4 would exclude 
 <i>g &rarr; b bbar</i>, etc. 
    
  
-<br/><br/><table><tr><td><strong>TimeShower:nGammaToLepton  </td><td></td><td> <input type="text" name="39" value="3" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>3</strong></code>; <code>minimum = 0</code>; <code>maximum = 3</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>TimeShower:nGammaToLepton  </td><td></td><td> <input type="text" name="40" value="3" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>3</strong></code>; <code>minimum = 0</code>; <code>maximum = 3</code>)</td></tr></table>
 Number of allowed lepton flavours in <i>gamma &rarr; l+ l-</i> branchings 
 (phase space permitting). A change to 2 would exclude 
 <i>gamma &rarr; tau+ tau-</i>, and a change to 1 also 
 <i>gamma &rarr; mu+ mu-</i>. 
    
  
-<br/><br/><strong>TimeShower:MEcorrections</strong>  <input type="radio" name="40" value="on" checked="checked"><strong>On</strong>
-<input type="radio" name="40" value="off"><strong>Off</strong>
+<br/><br/><strong>TimeShower:MEcorrections</strong>  <input type="radio" name="41" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="41" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 Use of matrix element corrections where available; on/off = true/false. 
    
  
-<br/><br/><strong>TimeShower:MEafterFirst</strong>  <input type="radio" name="41" value="on" checked="checked"><strong>On</strong>
-<input type="radio" name="41" value="off"><strong>Off</strong>
+<br/><br/><strong>TimeShower:MEafterFirst</strong>  <input type="radio" name="42" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="42" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 Use of matrix element corrections also after the first emission, 
 for dipole ends of the same system that did not yet radiate. 
@@ -715,21 +734,21 @@ Only has a meaning if <code>MEcorrections</code> above is
 switched on. 
    
  
-<br/><br/><strong>TimeShower:phiPolAsym</strong>  <input type="radio" name="42" value="on" checked="checked"><strong>On</strong>
-<input type="radio" name="42" value="off"><strong>Off</strong>
+<br/><br/><strong>TimeShower:phiPolAsym</strong>  <input type="radio" name="43" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="43" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 Azimuthal asymmetry induced by gluon polarization; on/off = true/false. 
    
  
-<br/><br/><strong>TimeShower:phiPolAsymHard</strong>  <input type="radio" name="43" value="on" checked="checked"><strong>On</strong>
-<input type="radio" name="43" value="off"><strong>Off</strong>
+<br/><br/><strong>TimeShower:phiPolAsymHard</strong>  <input type="radio" name="44" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="44" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 Extend the above azimuthal asymmetry (if on) also back to gluons produced 
 in the hard process itself, where feasible; on/off = true/false. 
    
  
-<br/><br/><strong>TimeShower:recoilToColoured</strong>  <input type="radio" name="44" value="on" checked="checked"><strong>On</strong>
-<input type="radio" name="44" value="off"><strong>Off</strong>
+<br/><br/><strong>TimeShower:recoilToColoured</strong>  <input type="radio" name="45" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="45" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 In the decays of coloured resonances, say <i>t &rarr; b W</i>, it is not 
 possible to set up dipoles with matched colours. Originally the 
@@ -748,15 +767,15 @@ would remain recoiler, while in the new (<code>on</code>) instead
 each newly emitted photon becomes the new recoiler. 
    
  
-<br/><br/><strong>TimeShower:useFixedFacScale</strong>  <input type="radio" name="45" value="on"><strong>On</strong>
-<input type="radio" name="45" value="off" checked="checked"><strong>Off</strong>
+<br/><br/><strong>TimeShower:useFixedFacScale</strong>  <input type="radio" name="46" value="on"><strong>On</strong>
+<input type="radio" name="46" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
 Allow the possibility to use a fixed factorization scale, set by 
 the <code>parm</code> below. This option is unphysical and only 
 intended for toy-model and debug studies. 
    
  
-<br/><br/><table><tr><td><strong>TimeShower:fixedFacScale </td><td></td><td> <input type="text" name="46" value="100." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>100.</strong></code>; <code>minimum = 1.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>TimeShower:fixedFacScale </td><td></td><td> <input type="text" name="47" value="100." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>100.</strong></code>; <code>minimum = 1.</code>)</td></tr></table>
 The fixed factorization scale, in GeV, that would be used in the 
 evaluation of parton densities if the <code>flag</code> above is on. 
    
@@ -811,7 +830,7 @@ if($_POST["7"] != "1")
 $data = "TimeShower:alphaSorder = ".$_POST["7"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["8"] != "false")
+if($_POST["8"] != "off")
 {
 $data = "TimeShower:alphaSuseCMW = ".$_POST["8"]."\n";
 fwrite($handle,$data);
@@ -948,62 +967,67 @@ fwrite($handle,$data);
 }
 if($_POST["35"] != "on")
 {
-$data = "TimeShower:QEDshowerByQ = ".$_POST["35"]."\n";
+$data = "TimeShower:recoilDeadCone = ".$_POST["35"]."\n";
 fwrite($handle,$data);
 }
 if($_POST["36"] != "on")
 {
-$data = "TimeShower:QEDshowerByL = ".$_POST["36"]."\n";
+$data = "TimeShower:QEDshowerByQ = ".$_POST["36"]."\n";
 fwrite($handle,$data);
 }
 if($_POST["37"] != "on")
 {
-$data = "TimeShower:QEDshowerByGamma = ".$_POST["37"]."\n";
+$data = "TimeShower:QEDshowerByL = ".$_POST["37"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["38"] != "5")
+if($_POST["38"] != "on")
 {
-$data = "TimeShower:nGammaToQuark = ".$_POST["38"]."\n";
+$data = "TimeShower:QEDshowerByGamma = ".$_POST["38"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["39"] != "3")
+if($_POST["39"] != "5")
 {
-$data = "TimeShower:nGammaToLepton = ".$_POST["39"]."\n";
+$data = "TimeShower:nGammaToQuark = ".$_POST["39"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["40"] != "on")
+if($_POST["40"] != "3")
 {
-$data = "TimeShower:MEcorrections = ".$_POST["40"]."\n";
+$data = "TimeShower:nGammaToLepton = ".$_POST["40"]."\n";
 fwrite($handle,$data);
 }
 if($_POST["41"] != "on")
 {
-$data = "TimeShower:MEafterFirst = ".$_POST["41"]."\n";
+$data = "TimeShower:MEcorrections = ".$_POST["41"]."\n";
 fwrite($handle,$data);
 }
 if($_POST["42"] != "on")
 {
-$data = "TimeShower:phiPolAsym = ".$_POST["42"]."\n";
+$data = "TimeShower:MEafterFirst = ".$_POST["42"]."\n";
 fwrite($handle,$data);
 }
 if($_POST["43"] != "on")
 {
-$data = "TimeShower:phiPolAsymHard = ".$_POST["43"]."\n";
+$data = "TimeShower:phiPolAsym = ".$_POST["43"]."\n";
 fwrite($handle,$data);
 }
 if($_POST["44"] != "on")
 {
-$data = "TimeShower:recoilToColoured = ".$_POST["44"]."\n";
+$data = "TimeShower:phiPolAsymHard = ".$_POST["44"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["45"] != "off")
+if($_POST["45"] != "on")
 {
-$data = "TimeShower:useFixedFacScale = ".$_POST["45"]."\n";
+$data = "TimeShower:recoilToColoured = ".$_POST["45"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["46"] != "100.")
+if($_POST["46"] != "off")
 {
-$data = "TimeShower:fixedFacScale = ".$_POST["46"]."\n";
+$data = "TimeShower:useFixedFacScale = ".$_POST["46"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["47"] != "100.")
+{
+$data = "TimeShower:fixedFacScale = ".$_POST["47"]."\n";
 fwrite($handle,$data);
 }
 fclose($handle);

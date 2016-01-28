@@ -354,7 +354,7 @@ read in the settings database.
 read in the settings from all the files listed in this file, and 
 assumed to be located in the same subdirectory. 
    
-<br/><code>argument</code><strong> append </strong> (<code>default = <strong>false</strong></code>) :  
+<br/><code>argument</code><strong> append </strong> (<code>default = <strong>off</strong></code>) :  
 By default nothing is done if the method has already been called once. 
 If true the further settings read in are added to the current database. 
    
@@ -386,7 +386,7 @@ It is normally used indirectly, via
 <br/><code>argument</code><strong> line </strong>  :  
 the string to be interpreted as an instruction. 
    
-<br/><code>argument</code><strong> warn </strong> (<code>default = <strong>true</strong></code>) :  
+<br/><code>argument</code><strong> warn </strong> (<code>default = <strong>on</strong></code>) :  
 write a warning message or not whenever the instruction does not make 
 sense, e.g. if the variable does not exist in the databases. 
    
@@ -405,7 +405,7 @@ write current settings to a file or to an <code>ostream</code>.
 <br/><code>argument</code><strong> toFile, os </strong>  :  
 file or stream on which settings are written. 
    
-<br/><code>argument</code><strong> writeAll </strong> (<code>default = <strong>false</strong></code>) :  
+<br/><code>argument</code><strong> writeAll </strong> (<code>default = <strong>off</strong></code>) :  
 normally only settings that have been changed are written, 
 but if true then all settings are output. 
    
@@ -435,7 +435,7 @@ If the variable does not exist then <code>unknown</code> is returned.
 <br/><code>argument</code><strong> key </strong>  :  
 the name of the settings variable. 
    
-<br/><code>argument</code><strong> fullLine </strong> (<code>default = <strong>true</strong></code>) :  
+<br/><code>argument</code><strong> fullLine </strong> (<code>default = <strong>on</strong></code>) :  
 If true then a whole "line" is returned, " <code>key = value\n</code>", 
 while if false only the  <code>value</code> string. 
    

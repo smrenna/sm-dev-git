@@ -10,7 +10,8 @@
 // -- warn if a line is too long
 //    (but leave reformatting to manual control);
 // -- warn if a line contains tab characters
-//    (can be fixed in emacs by "ctrl-x h" followed by "cmnd-x untabify").
+//    (can be fixed in emacs by "ctrl-x h" followed by "cmnd-x untabify");
+// -- perform some string replacements.
 
 // By default trimfile only works on .h, .cc, .cmnd and .xml files,
 // but command-line option "-f" forces it for any file type.
@@ -45,10 +46,9 @@ using std::istringstream;
 int maxLen = 79;
 
 // Possibility to replace strings inside file.
-// (Could be promoted to vectors for multiple replacements.)
-string replaceOld = "Copyright (C) 2015";
-string replaceNew = "Copyright (C) 2016";
-int    replaceLen  = replaceOld.size();
+string replaceOld[3] = { "Copyright (C) 2015", "\"true\"", "\"false\"" }; 
+string replaceNew[3] = { "Copyright (C) 2016", "\"on\"",   "\"off\""   };
+int    replaceLen[3] = { 18, 6, 7 };
 
 //--------------------------------------------------------------------------
 
@@ -143,6 +143,10 @@ bool trimFile(string fileName, bool doPad) {
   while ( getline(is, line) ) lines.push_back(line);
   is.close();
 
+  // How many kinds of replacements? Warn for long lines?
+  int  kindRep  = doPad ? 3 : 1;
+  bool warnLong = (fileName.find("ParticleData.xml") == string::npos); 
+
   // Counters for number of trims, removals and replacements.
   int nTrim    = 0;
   int nRemove  = lines.size();
@@ -160,14 +164,15 @@ bool trimFile(string fileName, bool doPad) {
     if (line != lines[i]) ++nTrim;
 
     // Do string replacements inside line where required.
-    if (line.find(replaceOld) != string::npos) {
-      line.replace( line.find(replaceOld), replaceLen, replaceNew);
+    for (int j = 0; j < kindRep; ++j)
+    if (line.find(replaceOld[j]) != string::npos) {
+      line.replace( line.find(replaceOld[j]), replaceLen[j], replaceNew[j]);
       ++nReplace;
     }
 
     // Detect long lines or lines with tab characters.
-    if (line.size() > maxLen) cout << "    Warning: line " << i + 1
-      << " is " << line.size() << " characters long" << endl;
+    if (warnLong && line.size() > maxLen) cout << "    Warning: line " 
+      << i + 1 << " is " << line.size() << " characters long" << endl;
     if (line.find("\t") != string::npos) cout << "    Warning: line "
       << i + 1 << " contains a tab character " << endl;
 

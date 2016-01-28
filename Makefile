@@ -56,10 +56,10 @@ endif
 
 # GZIP.
 OBJ_COMMON=-MD $(CXX_COMMON)
-LIB_COMMON=-ldl
+LIB_COMMON=-Wl,-rpath $(PREFIX_LIB) -ldl
 ifeq ($(GZIP_USE),true)
   OBJ_COMMON+= -DGZIPSUPPORT -I$(GZIP_INCLUDE)
-  LIB_COMMON+= -L$(GZIP_LIB) -lz
+  LIB_COMMON+= -L$(GZIP_LIB) -Wl,-rpath $(GZIP_LIB) -lz
 endif
 
 ################################################################################

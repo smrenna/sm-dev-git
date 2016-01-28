@@ -315,7 +315,7 @@ Most experimental parametrizations are NLO, which makes them less
 well suited for Monte Carlo applications. Furthermore note that 
 the momentum sum is arbitrarily normalized to a non-unity value. 
  
-<br/><br/><table><tr><td><strong>PDF:PomSet  </td><td>  &nbsp;&nbsp;(<code>default = <strong>6</strong></code>; <code>minimum = 1</code>; <code>maximum = 6</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>PDF:PomSet  </td><td>  &nbsp;&nbsp;(<code>default = <strong>6</strong></code>; <code>minimum = 1</code>; <code>maximum = 10</code>)</td></tr></table>
 Parton densities that can be used for Pomeron beams. 
 <br/>
 <input type="radio" name="9" value="1"><strong>1 </strong>: <ei>Q^2</ei>-independent parametrizations  <ei>xf(x) = N_ab x^a (1 - x)^b</ei>, where <ei>N_ab</ei> ensures  unit momentum sum. The <ei>a</ei> and <ei>b</ei> parameters can be  set separately for the gluon and the quark distributions. The  momentum fraction of gluons and quarks can be freely mixed, and  production of <ei>s</ei> quarks can be suppressed relative to  that of <ei>d</ei> and <ei>u</ei> ones, with antiquarks as likely  as quarks. See further below how to set the six parameters of this  approach.  <br/>
@@ -324,6 +324,10 @@ Parton densities that can be used for Pomeron beams.
 <input type="radio" name="9" value="4"><strong>4 </strong>: the H1 2006 Fit B NLO <ei>Q^2</ei>-dependent  parametrization, based on a tune to their data <ref>H1P06</ref>,  rescaled by the factor <code>PomRescale</code> below.  <br/>
 <input type="radio" name="9" value="5"><strong>5 </strong>: the H1 2007 Jets NLO <ei>Q^2</ei>-dependent  parametrization, based on a tune to their data <ref>H1P07</ref>,  rescaled by the factor <code>PomRescale</code> below.  <br/>
 <input type="radio" name="9" value="6" checked="checked"><strong>6 </strong>: the H1 2006 Fit B LO <ei>Q^2</ei>-dependent  parametrization, based on a tune to their data <ref>H1P06</ref>,  rescaled by the factor <code>PomRescale</code> below.  <br/>
+<input type="radio" name="9" value="7"><strong>7 </strong>: the ACTW B NLO <ei>Q^2</ei>-dependent  parametrization with <ei>epsilon=0.14</ei>,  based on a tune to HERA and ZEUS data <ref>Alv99</ref>,  rescaled by the factor <code>PomRescale</code> below.  <br/>
+<input type="radio" name="9" value="8"><strong>8 </strong>: the ACTW D NLO <ei>Q^2</ei>-dependent  parametrization with <ei>epsilon=0.14</ei>,  based on a tune to HERA and ZEUS data <ref>Alv99</ref>,  rescaled by the factor <code>PomRescale</code> below.  <br/>
+<input type="radio" name="9" value="9"><strong>9 </strong>: the ACTW SG NLO <ei>Q^2</ei>-dependent  parametrization with <ei>epsilon=0.14</ei>,  based on a tune to HERA and ZEUS data <ref>Alv99</ref>,  rescaled by the factor <code>PomRescale</code> below.  <br/>
+<input type="radio" name="9" value="10"><strong>10 </strong>: the ACTW D NLO <ei>Q^2</ei>-dependent  parametrization with <ei>epsilon=0.19</ei>,  based on a tune to HERA and ZEUS data <ref>Alv99</ref>,  rescaled by the factor <code>PomRescale</code> below.  <br/>
  
 <br/><br/><table><tr><td><strong>PDF:PomGluonA </td><td></td><td> <input type="text" name="10" value="0." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.</strong></code>; <code>minimum = -0.5</code>; <code>maximum = 2.</code>)</td></tr></table>
 the parameter <i>a</i> in the ansatz <i>xg(x) = N_ab x^a (1 - x)^b</i> 

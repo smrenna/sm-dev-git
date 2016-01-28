@@ -209,22 +209,27 @@ private:
 //==========================================================================
 
 // The CTEQ6pdf class.
-// Sets available:
+// Proton sets available:
 // iFit = 1 : CTEQ6L
 // iFit = 2 : CTEQ6L1
 // iFit = 3 : CTEQ66.00 (NLO, central member)
 // iFit = 4 : CT09MC1
 // iFit = 5 : CT09MC2
-// iFit = 6 : CT09MCS (not yet implemented)
+// iFit = 6 : CT09MCS
+// Pomeron sets available (uses same .pds file format as CTEQ6pdf) :
+// iFit = 11: ACTWB14
+// iFit = 12: ACTWD14
+// iFit = 13: ACTWSG14
+// iFit = 14: ACTWD19
 
 class CTEQ6pdf : public PDF {
 
 public:
 
   // Constructor.
-  CTEQ6pdf(int idBeamIn = 2212, int iFitIn = 1,
+  CTEQ6pdf(int idBeamIn = 2212, int iFitIn = 1, double rescaleIn = 1.,
     string xmlPath = "../share/Pythia8/xmldoc/", Info* infoPtr = 0)
-    : PDF(idBeamIn) {init( iFitIn, xmlPath, infoPtr);}
+    : PDF(idBeamIn) {rescale = rescaleIn, init( iFitIn, xmlPath, infoPtr);}
 
 private:
 
@@ -234,7 +239,7 @@ private:
   // Data read in from grid file or set at initialization.
   int    iFit, order, nQuark, nfMx, mxVal, nX, nT, nG,
          iGridX, iGridQ, iGridLX, iGridLQ;
-  double lambda, mQ[7], qIni, qMax, tv[26], xMin, xv[202], upd[57773],
+  double rescale, lambda, mQ[7], qIni, qMax, tv[26], xMin, xv[202], upd[57773],
          xvpow[202], xMinEps, xMaxEps, qMinEps, qMaxEps, fVec[5],
          tConst[9], xConst[9], xLast, qLast;
 
