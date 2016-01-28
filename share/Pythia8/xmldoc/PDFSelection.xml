@@ -276,7 +276,7 @@ Most experimental parametrizations are NLO, which makes them less
 well suited for Monte Carlo applications. Furthermore note that 
 the momentum sum is arbitrarily normalized to a non-unity value. 
  
-<modepick name="PDF:PomSet" default="6" min="1" max="6"> 
+<modepick name="PDF:PomSet" default="6" min="1" max="10"> 
 Parton densities that can be used for Pomeron beams. 
 <option value="1"><ei>Q^2</ei>-independent parametrizations 
 <ei>xf(x) = N_ab x^a (1 - x)^b</ei>, where <ei>N_ab</ei> ensures 
@@ -305,6 +305,26 @@ rescaled by the factor <code>PomRescale</code> below.
 </option> 
 <option value="6">the H1 2006 Fit B LO <ei>Q^2</ei>-dependent 
 parametrization, based on a tune to their data <ref>H1P06</ref>, 
+rescaled by the factor <code>PomRescale</code> below. 
+</option> 
+<option value="7">the ACTW B NLO <ei>Q^2</ei>-dependent 
+parametrization with <ei>epsilon=0.14</ei>, 
+based on a tune to HERA and ZEUS data <ref>Alv99</ref>, 
+rescaled by the factor <code>PomRescale</code> below. 
+</option> 
+<option value="8">the ACTW D NLO <ei>Q^2</ei>-dependent 
+parametrization with <ei>epsilon=0.14</ei>, 
+based on a tune to HERA and ZEUS data <ref>Alv99</ref>, 
+rescaled by the factor <code>PomRescale</code> below. 
+</option> 
+<option value="9">the ACTW SG NLO <ei>Q^2</ei>-dependent 
+parametrization with <ei>epsilon=0.14</ei>, 
+based on a tune to HERA and ZEUS data <ref>Alv99</ref>, 
+rescaled by the factor <code>PomRescale</code> below. 
+</option> 
+<option value="10">the ACTW D NLO <ei>Q^2</ei>-dependent 
+parametrization with <ei>epsilon=0.19</ei>, 
+based on a tune to HERA and ZEUS data <ref>Alv99</ref>, 
 rescaled by the factor <code>PomRescale</code> below. 
 </option> 
 </modepick> 

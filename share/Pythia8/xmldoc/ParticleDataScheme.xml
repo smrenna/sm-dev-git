@@ -631,7 +631,7 @@ used indirectly, via <code>Pythia::readString(...)</code> and
 <argument name="line"> 
 the string to be interpreted as an instruction. 
 </argument> 
-<argument name="warn" default="true"> 
+<argument name="warn" default="on"> 
 write a warning message or not whenever the instruction does not make 
 sense, e.g. if the particle does not exist in the database. 
 </argument> 

@@ -185,9 +185,9 @@ The CMW rescaling of <ei>Lambda_QCD</ei> (see the section on
 can be applied to the <ei>alpha_strong</ei> values used for spacelike showers. 
 Note that tunes using this option need lower values of 
 <ei>alpha_strong(m_Z^2)</ei> than tunes that do not. 
-<flag name="SpaceShower:alphaSuseCMW" default="false"> 
-<option value="false">Do not apply the CMW rescaling. </option> 
-<option value="true">Apply the CMW rescaling, increasing 
+<flag name="SpaceShower:alphaSuseCMW" default="off"> 
+<option value="off">Do not apply the CMW rescaling. </option> 
+<option value="on">Apply the CMW rescaling, increasing 
 <ei>Lambda_QCD</ei> for spacelike showers by a factor roughly 1.6. 
 </option> 
 </flag> 

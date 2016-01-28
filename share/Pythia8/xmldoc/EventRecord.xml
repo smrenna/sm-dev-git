@@ -84,12 +84,12 @@ non-inlined so they can be used in a debugger. The basic identity
 code, status, mother, daughter, colour, four-momentum and mass data 
 are always given, but the methods can also be called with a few 
 optional arguments for further information: 
-<argument name="showScaleAndVertex" default="false"> optionally give a 
+<argument name="showScaleAndVertex" default="off"> optionally give a 
 second line for each particle, with the production scale (in GeV), 
 the particle polarization (dimensionless), the production vertex 
 (in mm or mm/c) and the invariant lifetime (also in mm/c). 
 </argument> 
-<argument name="showMothersAndDaughters" default="false"> 
+<argument name="showMothersAndDaughters" default="off"> 
 gives a list of all daughters and mothers of a particle, as defined by 
 the <code>motherList(i)</code> and <code>daughterList(i)</code> methods 
 described below. It is mainly intended for debug purposes. 

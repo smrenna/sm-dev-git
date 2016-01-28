@@ -190,9 +190,9 @@ The CMW rescaling of <ei>Lambda_QCD</ei> (see the section on
 can be applied to the <ei>alpha_strong</ei> values used for 
 timelike showers. Note that tunes using this option need lower values of 
 <ei>alpha_strong(m_Z^2)</ei> than tunes that do not. 
-<flag name="TimeShower:alphaSuseCMW" default="false"> 
-<option value="false">Do not apply the CMW rescaling. </option> 
-<option value="true">Apply the CMW rescaling, increasing 
+<flag name="TimeShower:alphaSuseCMW" default="off"> 
+<option value="off">Do not apply the CMW rescaling. </option> 
+<option value="on">Apply the CMW rescaling, increasing 
  <ei>Lambda_QCD</ei> for timelike showers by a factor roughly 1.6. 
 </option> 
 </flag> 
@@ -687,6 +687,23 @@ Extra scale parameter <ei>k</ei> for
 <code>TimeShower:renormMultFac</code>, which affects <ei>alpha_s(pT^2)</ei> 
 alike. 
 </parm> 
+ 
+<flag name="TimeShower:recoilDeadCone" default="on"> 
+For topologies where a gluon recoils against a massive quark (or another 
+massive coloured particle) there are no suitable ME corrections implemented 
+into PYTHIA. When the dipole radiation pattern is split into two ends, 
+with a smooth transition between the two, this means that the  gluon end 
+can radiate into the quark hemisphere as if the quark were massless. The 
+"dead cone" effect, that radiation collinear with a massive quark is 
+strongly suppressed, thereby is not fully respected. (Unlike  radiation 
+from the quark end itself, where mass effects are included.) With this 
+switch on, a further suppression is therefore introduced for 
+<ei>g &rarr; g g</ei> branchings, derived as the massive/massless ratio 
+of the eikonal expression for dipole radiation, which kills radiation 
+collinear with the quark. The <ei>g &rarr; q qbar</ei> branchings currently 
+are not affected; the absence of a soft singularity implies that there 
+is hardly any radiation into the recoiler hemisphere anyway. 
+</flag> 
  
 <flag name="TimeShower:QEDshowerByQ" default="on"> 
 Allow quarks to radiate photons, i.e. branchings <ei>q &rarr; q gamma</ei>; 

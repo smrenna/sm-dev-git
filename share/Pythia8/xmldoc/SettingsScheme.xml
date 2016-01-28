@@ -322,7 +322,7 @@ read in the settings database.
 read in the settings from all the files listed in this file, and 
 assumed to be located in the same subdirectory. 
 </argument> 
-<argument name="append" default="false"> 
+<argument name="append" default="off"> 
 By default nothing is done if the method has already been called once. 
 If true the further settings read in are added to the current database. 
 </argument> 
@@ -354,7 +354,7 @@ It is normally used indirectly, via
 <argument name="line"> 
 the string to be interpreted as an instruction. 
 </argument> 
-<argument name="warn" default="true"> 
+<argument name="warn" default="on"> 
 write a warning message or not whenever the instruction does not make 
 sense, e.g. if the variable does not exist in the databases. 
 </argument> 
@@ -374,7 +374,7 @@ write current settings to a file or to an <code>ostream</code>.
 <argument name="toFile, os"> 
 file or stream on which settings are written. 
 </argument> 
-<argument name="writeAll" default="false"> 
+<argument name="writeAll" default="off"> 
 normally only settings that have been changed are written, 
 but if true then all settings are output. 
 </argument> 
@@ -403,7 +403,7 @@ If the variable does not exist then <code>unknown</code> is returned.
 <argument name="key"> 
 the name of the settings variable. 
 </argument> 
-<argument name="fullLine" default="true"> 
+<argument name="fullLine" default="on"> 
 If true then a whole "line" is returned, " <code>key = value\n</code>", 
 while if false only the  <code>value</code> string. 
 </argument> 

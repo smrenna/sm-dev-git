@@ -520,7 +520,7 @@ that it is only the directory location you can change, its contents
 must be the ones of the <code>xmldoc</code> directory in the 
 standard distribution. 
 </argument> 
-<argument name="printBanner" default="true"> can be set 
+<argument name="printBanner" default="on"> can be set 
 <code>false</code> to stop the program from printing a banner. 
 The banner contains useful information, so this option is only 
 intended for runs with multiple <code>Pythia</code> instances, 
@@ -537,7 +537,7 @@ Pythia instances, where only the first one needs to read the
 <code>xmldoc</code> files, while subsequent ones can "inherit" 
 this information. 
 </argument> 
-<argument name="printBanner" default="true"> can be set 
+<argument name="printBanner" default="on"> can be set 
 <code>false</code> to stop the program from printing a banner. 
 The banner contains useful information, so this option is only 
 intended for runs with multiple <code>Pythia</code> instances, 
@@ -564,7 +564,7 @@ above.
 <argument name="line"> 
 the string to be interpreted as an instruction. 
 </argument> 
-<argument name="warn" default="true"> 
+<argument name="warn" default="on"> 
 write a warning message or not whenever the instruction does not make 
 sense, e.g. if the variable does not exist in the databases. 
 </argument> 
@@ -594,7 +594,7 @@ the file from which instructions are read.
 <argument name="inStream"> 
 an istream from which instructions are read. 
 </argument> 
-<argument name="warn" default="true"> 
+<argument name="warn" default="on"> 
 write a warning message or not whenever the instruction does not make 
 sense, e.g. if the variable does not exist in the databases. In the 
 command forms where <code>warn</code> is omitted it is true. 
@@ -877,7 +877,7 @@ partonic level of the event - hard process, parton showers, multiparton
 interactions, beam remnants, colour flow, and so on - but not 
 hadronization. Further details are found 
 <aloc href="HadronLevelStandalone">here</aloc>. 
-<argument name="findJunctions" default = "true"> 
+<argument name="findJunctions" default = "on"> 
 normally this routine will search through the event record and try to 
 figure out if any colour junctions are present. If so, the colour 
 topology of such junctions must be sorted out. In tricky cases this 
