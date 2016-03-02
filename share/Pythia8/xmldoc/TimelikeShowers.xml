@@ -715,6 +715,12 @@ Allow leptons to radiate photons, i.e. branchings <ei>l &rarr; l gamma</ei>;
 on/off = true/false. 
 </flag> 
  
+<flag name="TimeShower:QEDshowerByOther" default="on"> 
+Allow charged resonances to radiate photons, i.e. branchings 
+<ei>q&sim; &rarr; q&sim; gamma</ei>; on/off = true/false. This will 
+also allow the W boson to radiate. 
+</flag> 
+ 
 <flag name="TimeShower:QEDshowerByGamma" default="on"> 
 Allow photons to branch into lepton or quark pairs, i.e. branchings 
 <ei>gamma &rarr; l+ l-</ei> and <ei>gamma &rarr; q qbar</ei>; 
@@ -736,6 +742,15 @@ Number of allowed lepton flavours in <ei>gamma &rarr; l+ l-</ei> branchings
  
 <flag name="TimeShower:MEcorrections" default="on"> 
 Use of matrix element corrections where available; on/off = true/false. 
+</flag> 
+ 
+<flag name="TimeShower:MEextended" default="on"> 
+Use matrix element corrections also for <ei>1 &rarr; n</ei> and 
+<ei>2 &rarr; n</ei> processes where no matrix elements are encoded, 
+by an attempt to match on to one of the <ei>1 &rarr; 2</ei> processes 
+that are implemented. This should at least provide relevant mass dampening 
+for massive radiators and recoilers. Only has a meaning if 
+<code>MEcorrections</code> above is switched on. 
 </flag> 
  
 <flag name="TimeShower:MEafterFirst" default="on"> 

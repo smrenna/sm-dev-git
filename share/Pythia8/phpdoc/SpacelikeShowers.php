@@ -153,7 +153,6 @@ away from this value could do better in some processes.
 The amount of QCD radiation in the shower is determined by 
 <br/><br/><table><tr><td><strong>SpaceShower:alphaSvalue </td><td></td><td> <input type="text" name="6" value="0.1365" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.1365</strong></code>; <code>minimum = 0.06</code>; <code>maximum = 0.25</code>)</td></tr></table>
 The <i>alpha_strong</i> value at scale <code>M_Z^2</code>. 
-Default value is picked equal to the one used in CTEQ 5L. 
    
  
 <p/> 

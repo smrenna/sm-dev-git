@@ -397,7 +397,7 @@ public:
   bool setNewEventLHEF();
 
   // Update cross-section information at the end of the run.
-  bool updateSigma();
+  bool updateSigma() {return true;}
 
 protected:
 

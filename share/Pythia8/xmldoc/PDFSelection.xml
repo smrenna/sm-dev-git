@@ -14,16 +14,22 @@ The sixth gives the possibility to switch off the lepton
 <aloc href="PartonDistributions">here</aloc>. 
  
 <flag name="PDF:extrapolate" default="off"> 
-Allow PDF sets to be extrapolated. This is a global flag that affects 
-all PDF sets used. However, only LHAPDF5 PDF sets can currently be 
-extrapolated so this does not affect internal or LHAPDF6 sets. Parton 
-densities have a guaranteed range of validity in <ei>x</ei> 
-and <ei>Q^2</ei>, and what should be done beyond that range usually is 
-not explained by the authors of PDF sets. Nevertheless these 
-boundaries very often are exceeded, e.g. minimum-bias studies at LHC 
-may sample <ei>x</ei> values down to <ei>10^-8</ei>, while many PDF 
-sets stop already at <ei>10^-5</ei>. The default behaviour is then 
-that the PDF's are frozen at the boundary, i.e. <ei>xf(x,Q^2)</ei> is 
+Allow PDF sets to be extrapolated, notably to small <ei>x</ei> values. 
+This is a global flag that affects all PDF sets used, whenever 
+extrapolation has been implemented. Currently the main use is for LHAPDF5, 
+while LHAPDF6 sets are not affected. Among internal PDFs, all Pomeron sets 
+are affected by this flag, as are the CTEQ6/CT09 proton ones. For the rest 
+some by default extrapolate to small <ei>x</ei> (GRV 94 L, MRST/MSTW) while 
+others are frozen at the border (CTEQ 5 L, NNPDF). When in doubt, check 
+whether and how the behaviour depends on the choice made for your region 
+of interest. 
+<br/>To put the issue in context, parton densities have a guaranteed 
+range of validity in <ei>x</ei> and <ei>Q^2</ei>, and what should be done 
+beyond that range usually is not explained by the authors of PDF sets. 
+Nevertheless these boundaries very often are exceeded, e.g. minimum-bias 
+studies at LHC may sample <ei>x</ei> values down to <ei>10^-8</ei>, while 
+many PDF sets stop already at <ei>10^-5</ei>. The default behaviour is 
+then that the PDF's are frozen at the boundary, i.e. <ei>xf(x,Q^2)</ei> is 
 fixed at its value at <ei>x_min</ei> for all values <ei>x &lt; 
 x_min</ei>, and so on. This is a conservative approach. Alternatively, 
 if you switch on extrapolation, then parametrizations will be extended 

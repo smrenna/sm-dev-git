@@ -229,7 +229,11 @@ public:
   // Constructor.
   CTEQ6pdf(int idBeamIn = 2212, int iFitIn = 1, double rescaleIn = 1.,
     string xmlPath = "../share/Pythia8/xmldoc/", Info* infoPtr = 0)
-    : PDF(idBeamIn) {rescale = rescaleIn, init( iFitIn, xmlPath, infoPtr);}
+    : PDF(idBeamIn), doExtraPol(false) {rescale = rescaleIn,
+    init( iFitIn, xmlPath, infoPtr);}
+
+  // Allow extrapolation beyond boundaries. This is optional.
+  void setExtrapolate(bool doExtraPolIn) {doExtraPol = doExtraPolIn;}
 
 private:
 
@@ -237,11 +241,12 @@ private:
   static const double EPSILON, XPOWER;
 
   // Data read in from grid file or set at initialization.
+  bool   doExtraPol;
   int    iFit, order, nQuark, nfMx, mxVal, nX, nT, nG,
          iGridX, iGridQ, iGridLX, iGridLQ;
   double rescale, lambda, mQ[7], qIni, qMax, tv[26], xMin, xv[202], upd[57773],
          xvpow[202], xMinEps, xMaxEps, qMinEps, qMaxEps, fVec[5],
-         tConst[9], xConst[9], xLast, qLast;
+         tConst[9], xConst[9], dlx, xLast, qLast;
 
   // Initialization of data array.
   void init( int iFitIn, string xmlPath, Info* infoPtr);
@@ -352,11 +357,16 @@ public:
   // Constructor.
  PomH1FitAB(int idBeamIn = 990, int iFit = 1, double rescaleIn = 1.,
    string xmlPath = "../share/Pythia8/xmldoc/", Info* infoPtr = 0)
-   : PDF(idBeamIn) {rescale = rescaleIn; init( iFit, xmlPath, infoPtr);}
+   : PDF(idBeamIn), doExtraPol(false)  {rescale = rescaleIn;
+   init( iFit, xmlPath, infoPtr);}
+
+  // Allow extrapolation beyond boundaries. This is optional.
+  void setExtrapolate(bool doExtraPolIn) {doExtraPol = doExtraPolIn;}
 
 private:
 
   // Limits for grid in x, in Q2, and data in (x, Q2).
+  bool   doExtraPol;
   int    nx, nQ2;
   double rescale, xlow, xupp, dx, Q2low, Q2upp, dQ2;
   double gluonGrid[100][30];
@@ -383,12 +393,17 @@ public:
 
   // Constructor.
   PomH1Jets(int idBeamIn = 990,  double rescaleIn = 1.,
-   string xmlPath = "../share/Pythia8/xmldoc/", Info* infoPtr = 0)
-   : PDF(idBeamIn) {rescale = rescaleIn; init( xmlPath, infoPtr);}
+    string xmlPath = "../share/Pythia8/xmldoc/", Info* infoPtr = 0)
+    : PDF(idBeamIn), doExtraPol(false) {rescale = rescaleIn;
+    init( xmlPath, infoPtr);}
+
+  // Allow extrapolation beyond boundaries. This is optional.
+  void setExtrapolate(bool doExtraPolIn) {doExtraPol = doExtraPolIn;}
 
 private:
 
   // Arrays for grid in x, in Q2, and data in (x, Q2).
+  bool   doExtraPol;
   double rescale;
   double xGrid[100];
   double Q2Grid[88];

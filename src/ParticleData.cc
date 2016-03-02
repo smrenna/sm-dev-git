@@ -675,8 +675,10 @@ void ParticleData::initWidths( vector<ResonanceWidths*> resonancePtrs) {
   setResonancePtr( 1000037, resonancePtr);
 
   // - Neutralinos
-  resonancePtr = new ResonanceNeut(1000022);
-  setResonancePtr( 1000022, resonancePtr);
+  if (isResonance(1000022)) {
+    resonancePtr = new ResonanceNeut(1000022);
+    setResonancePtr( 1000022, resonancePtr);
+  }
   resonancePtr = new ResonanceNeut(1000023);
   setResonancePtr( 1000023, resonancePtr);
   resonancePtr = new ResonanceNeut(1000025);

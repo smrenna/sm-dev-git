@@ -44,16 +44,22 @@ echo "<a href='PartonDistributions.php?filepath=".$filepath."' target='page'>";?
 <br/><br/><strong>PDF:extrapolate</strong>  <input type="radio" name="1" value="on"><strong>On</strong>
 <input type="radio" name="1" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
-Allow PDF sets to be extrapolated. This is a global flag that affects 
-all PDF sets used. However, only LHAPDF5 PDF sets can currently be 
-extrapolated so this does not affect internal or LHAPDF6 sets. Parton 
-densities have a guaranteed range of validity in <i>x</i> 
-and <i>Q^2</i>, and what should be done beyond that range usually is 
-not explained by the authors of PDF sets. Nevertheless these 
-boundaries very often are exceeded, e.g. minimum-bias studies at LHC 
-may sample <i>x</i> values down to <i>10^-8</i>, while many PDF 
-sets stop already at <i>10^-5</i>. The default behaviour is then 
-that the PDF's are frozen at the boundary, i.e. <i>xf(x,Q^2)</i> is 
+Allow PDF sets to be extrapolated, notably to small <i>x</i> values. 
+This is a global flag that affects all PDF sets used, whenever 
+extrapolation has been implemented. Currently the main use is for LHAPDF5, 
+while LHAPDF6 sets are not affected. Among internal PDFs, all Pomeron sets 
+are affected by this flag, as are the CTEQ6/CT09 proton ones. For the rest 
+some by default extrapolate to small <i>x</i> (GRV 94 L, MRST/MSTW) while 
+others are frozen at the border (CTEQ 5 L, NNPDF). When in doubt, check 
+whether and how the behaviour depends on the choice made for your region 
+of interest. 
+<br/>To put the issue in context, parton densities have a guaranteed 
+range of validity in <i>x</i> and <i>Q^2</i>, and what should be done 
+beyond that range usually is not explained by the authors of PDF sets. 
+Nevertheless these boundaries very often are exceeded, e.g. minimum-bias 
+studies at LHC may sample <i>x</i> values down to <i>10^-8</i>, while 
+many PDF sets stop already at <i>10^-5</i>. The default behaviour is 
+then that the PDF's are frozen at the boundary, i.e. <i>xf(x,Q^2)</i> is 
 fixed at its value at <i>x_min</i> for all values <i>x &lt; 
 x_min</i>, and so on. This is a conservative approach. Alternatively, 
 if you switch on extrapolation, then parametrizations will be extended 

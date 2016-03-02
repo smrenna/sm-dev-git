@@ -39,26 +39,44 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.216: 28 January 2016 
+<li>8.216: 2 March 2016 
 <ul> 
- 
-<li>Four Pomeron PDF sets from the ACTW study [<a href="Bibliography.php" target="page">Alv99</a>] now 
-implemented.</li> 
  
 <li>When a final-state <i>g &rarr; g g</i> branching happens with 
 a massive recoiler, radiation in the recoiler direction is now 
 by default further suppressed to respect the "dead cone" effect, 
-see new switch <code>TimeShower:recoilDeadCone</code>. Thanks to 
+see new switch <code>TimeShower:recoilDeadCone</code>. Furthermore 
+a new switch, <code>TimeShower:MEextended</code>, on by defaults, 
+attempts to guess the most relevant ME correction when the 
+correct choice is not known or implemented. Thanks to 
 Jesse Thaler, Michele Selvaggi and Fabio Maltoni.</li> 
+ 
+<li>Four Pomeron PDF sets from the ACTW study [<a href="Bibliography.php" target="page">Alv99</a>] now 
+implemented.</li> 
+ 
+<li>Increased possibilities to set the <i>epsilon</i> and 
+<i>alpha'</i> parameters of the Pomeron trajectory for 
+hard-diffraction Pomeron fluxes.</li> 
+ 
+<li>Extrapolation of PDFs to small <i>x</i> values when 
+<code>PDF:extrapolate = on</code> now extended to more cases.</li> 
+ 
+<li>New flag <code>TimeShower:QEDshowerByOther</code> allows charged 
+resonances, like the <i>W^+-</i>, to radiate photons.</li> 
  
 <li>Minor <code>configure</code> and <code>Makefile</code> updates, 
 to address potential linking problems on some platforms for boost, gzip 
 and promc. Thanks to Dmitri Konstantinov.</li> 
  
+<li>The description of <code>POWHEG:vetoCount = 0</code> has been 
+corrected. Thanks to Florian Koenig.</li> 
+ 
+<li>Allow for lightest neutralino not to decay as a resonance.</li> 
+ 
 <li>Change a few true/false to on/off in the documentation to make the 
 php version of the manual recognize them.</li> 
  
-<li>Some bibliography updates.</li> 
+<li>Some manual and bibliography updates.</li> 
  
 </ul> 
 </li> 

@@ -235,13 +235,14 @@ private:
   static const double MAXVIRTUALITYFRACTION, MAXNEGENERGYFRACTION;
 
   // Initialization data, normally only set once.
-  bool   doQCDshower, doQEDshowerByQ, doQEDshowerByL, doQEDshowerByGamma,
-         doWeakShower, doMEcorrections, doMEafterFirst, doPhiPolAsym,
-         doPhiPolAsymHard, doInterleave, allowBeamRecoil, dampenBeamRecoil,
-         recoilToColoured, useFixedFacScale, allowRescatter, canVetoEmission,
-         doHVshower, brokenHVsym, globalRecoil, useLocalRecoilNow,
-         doSecondHard, hasUserHooks, singleWeakEmission, alphaSuseCMW,
-         vetoWeakJets, allowMPIdipole, weakExternal, recoilDeadCone;
+  bool   doQCDshower, doQEDshowerByQ, doQEDshowerByL, doQEDshowerByOther,
+         doQEDshowerByGamma, doWeakShower, doMEcorrections, doMEextended,
+         doMEafterFirst, doPhiPolAsym, doPhiPolAsymHard, doInterleave,
+         allowBeamRecoil, dampenBeamRecoil, recoilToColoured, useFixedFacScale,
+         allowRescatter, canVetoEmission, doHVshower, brokenHVsym,
+         globalRecoil, useLocalRecoilNow, doSecondHard, hasUserHooks,
+         singleWeakEmission, alphaSuseCMW, vetoWeakJets, allowMPIdipole,
+         weakExternal, recoilDeadCone;
   int    pTmaxMatch, pTdampMatch, alphaSorder, alphaSnfmax, nGluonToQuark,
          weightGluonToQuark, alphaEMorder, nGammaToQuark, nGammaToLepton,
          nCHV, idHV, nMaxGlobalRecoil, weakMode;

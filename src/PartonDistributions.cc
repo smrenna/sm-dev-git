@@ -1390,7 +1390,7 @@ void CTEQ6pdf::init(int iFitIn, string xmlPath, Info* infoPtr) {
 void CTEQ6pdf::xfUpdate(int , double x, double Q2) {
 
   // Update using CTEQ6 routine, within allowed (x, q) range.
-  double xEps = max( xMinEps, x);
+  double xEps = doExtraPol ? x : max( xMinEps, x);
   double qEps = max( qMinEps, min( qMaxEps, sqrtpos(Q2) ) );
 
   // Gluon:
@@ -1489,6 +1489,10 @@ double CTEQ6pdf::parton6(int iParton, double x, double q) {
       xConst[5]    = (s1213 * xConst[6] - s12 * xConst[7]) * tmp / s34;
     }
 
+    // Expression for extrapolation in x Grid.
+    dlx = (iGridLX == 0 && doExtraPol)
+        ? log(x / xv[1]) / log(xv[2] / xv[1]) : 1.;
+
     // Binary search in Q grid.
     iGridQ  = 0;
     iGridLQ = -1;
@@ -1538,9 +1542,12 @@ double CTEQ6pdf::parton6(int iParton, double x, double q) {
   int jtmp = ( (iP + nfMx) * (nT + 1) + (iGridQ - 1) ) * (nX + 1) + iGridX + 1;
 
   // Interpolate in x space for four different q values.
+  // Also option for extrapolation to small x values.
   for(int it = 1; it <= 4; ++it) {
     int j1 = jtmp + it * (nX + 1);
-    if (iGridX == 0) {
+    if (iGridLX == 0 && doExtraPol) {
+      fVec[it] = upd[j1+1] * pow( upd[j1+2] / upd[j1+1], dlx );
+    } else if (iGridX == 0) {
       double fij[5];
       fij[1] = 0.;
       fij[2] = upd[j1+1] * pow2(xv[1]);
@@ -1903,17 +1910,32 @@ void PomH1FitAB::xfUpdate(int , double x, double Q2) {
   int j       = min( nQ2 - 2, int(dlQ2) );
   dlQ2       -= j;
 
-  // Interpolate to derive quark PDF.
-  double qu = (1. - dlx) * (1. - dlQ2) * quarkGrid[i][j]
-            +       dlx  * (1. - dlQ2) * quarkGrid[i + 1][j]
-            + (1. - dlx) *       dlQ2  * quarkGrid[i][j + 1]
-            +       dlx  *       dlQ2  * quarkGrid[i + 1][j + 1];
+  // Extrapolate to small x values for quark and gluon PDF.
+  double qu, gl;
+  if (x < xlow && doExtraPol) {
+    dlx = log( x / xlow) / dx;
+    qu = (1. - dlQ2) * quarkGrid[0][j]
+       * pow( quarkGrid[1][j] / quarkGrid[0][j], dlx)
+       +        dlQ2 * quarkGrid[0][j + 1]
+       * pow( quarkGrid[1][j + 1] / quarkGrid[0][j + 1], dlx);
+    gl = (1. - dlQ2) * gluonGrid[0][j]
+       * pow( gluonGrid[1][j] / gluonGrid[0][j], dlx)
+       +        dlQ2 * gluonGrid[0][j + 1]
+       * pow( gluonGrid[1][j + 1] / gluonGrid[0][j + 1], dlx);
 
-  // Interpolate to derive gluon PDF.
-  double gl = (1. - dlx) * (1. - dlQ2) * gluonGrid[i][j]
-            +       dlx  * (1. - dlQ2) * gluonGrid[i + 1][j]
-            + (1. - dlx) *       dlQ2  * gluonGrid[i][j + 1]
-            +       dlx  *       dlQ2  * gluonGrid[i + 1][j + 1];
+  } else {
+    // Interpolate to derive quark PDF.
+    qu = (1. - dlx) * (1. - dlQ2) * quarkGrid[i][j]
+       +       dlx  * (1. - dlQ2) * quarkGrid[i + 1][j]
+       + (1. - dlx) *       dlQ2  * quarkGrid[i][j + 1]
+       +       dlx  *       dlQ2  * quarkGrid[i + 1][j + 1];
+
+    // Interpolate to derive gluon PDF.
+    gl = (1. - dlx) * (1. - dlQ2) * gluonGrid[i][j]
+       +       dlx  * (1. - dlQ2) * gluonGrid[i + 1][j]
+       + (1. - dlx) *       dlQ2  * gluonGrid[i][j + 1]
+       +       dlx  *       dlQ2  * gluonGrid[i + 1][j + 1];
+  }
 
   // Update values.
   xg    = rescale * gl;
@@ -2043,23 +2065,42 @@ void PomH1Jets::xfUpdate(int , double x, double Q2) {
     dQ2 = (Q2Log - Q2Grid[j]) / (Q2Grid[j + 1] - Q2Grid[j]);
   }
 
-  // Interpolate to derive gluon PDF.
-  double gl = (1. - dx) * (1. - dQ2) * gluonGrid[i][j]
-            +       dx  * (1. - dQ2) * gluonGrid[i + 1][j]
-            + (1. - dx) *       dQ2  * gluonGrid[i][j + 1]
-            +       dx  *       dQ2  * gluonGrid[i + 1][j + 1];
+  // Extrapolate to small x values for gluon, singlet and charm PDF.
+  double gl, sn, ch;
+  if (xLog < xGrid[0] && doExtraPol) {
+    double dlx = (xLog - xGrid[0]) / (xGrid[1] - xGrid[0]) ;
+    gl = (1. - dQ2) * gluonGrid[0][j]
+       * pow( gluonGrid[1][j] / gluonGrid[0][j], dlx)
+       +        dQ2 * gluonGrid[0][j + 1]
+       * pow( gluonGrid[1][j + 1] / gluonGrid[0][j + 1], dlx);
+    sn = (1. - dQ2) * singletGrid[0][j]
+       * pow( singletGrid[1][j] / singletGrid[0][j], dlx)
+       +        dQ2 * singletGrid[0][j + 1]
+       * pow( singletGrid[1][j + 1] / singletGrid[0][j + 1], dlx);
+    ch = (1. - dQ2) * charmGrid[0][j]
+       * pow( charmGrid[1][j] / charmGrid[0][j], dlx)
+       +        dQ2 * charmGrid[0][j + 1]
+       * pow( charmGrid[1][j + 1] / charmGrid[0][j + 1], dlx);
 
-  // Interpolate to derive singlet PDF. (Sum of u, d, s, ubar, dbar, sbar.)
-  double sn = (1. - dx) * (1. - dQ2) * singletGrid[i][j]
-            +       dx  * (1. - dQ2) * singletGrid[i + 1][j]
-            + (1. - dx) *       dQ2  * singletGrid[i][j + 1]
-            +       dx  *       dQ2  * singletGrid[i + 1][j + 1];
+  } else {
+    // Interpolate to derive gluon PDF.
+    gl = (1. - dx) * (1. - dQ2) * gluonGrid[i][j]
+       +       dx  * (1. - dQ2) * gluonGrid[i + 1][j]
+       + (1. - dx) *       dQ2  * gluonGrid[i][j + 1]
+       +       dx  *       dQ2  * gluonGrid[i + 1][j + 1];
 
-  // Interpolate to derive charm PDF. (Charge-square times c and cbar.)
-  double ch = (1. - dx) * (1. - dQ2) * charmGrid[i][j]
-            +       dx  * (1. - dQ2) * charmGrid[i + 1][j]
-            + (1. - dx) *       dQ2  * charmGrid[i][j + 1]
-            +       dx  *       dQ2  * charmGrid[i + 1][j + 1];
+    // Interpolate to derive singlet PDF. (Sum of u, d, s, ubar, dbar, sbar.)
+    sn = (1. - dx) * (1. - dQ2) * singletGrid[i][j]
+       +       dx  * (1. - dQ2) * singletGrid[i + 1][j]
+       + (1. - dx) *       dQ2  * singletGrid[i][j + 1]
+       +       dx  *       dQ2  * singletGrid[i + 1][j + 1];
+
+    // Interpolate to derive charm PDF. (Charge-square times c and cbar.)
+    ch = (1. - dx) * (1. - dQ2) * charmGrid[i][j]
+       +       dx  * (1. - dQ2) * charmGrid[i + 1][j]
+       + (1. - dx) *       dQ2  * charmGrid[i][j + 1]
+       +       dx  *       dQ2  * charmGrid[i + 1][j + 1];
+  }
 
   // Update values.
   xg    = rescale * gl;

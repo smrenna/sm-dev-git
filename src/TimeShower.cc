@@ -75,9 +75,11 @@ void TimeShower::init( BeamParticle* beamAPtrIn,
   doQCDshower        = settingsPtr->flag("TimeShower:QCDshower");
   doQEDshowerByQ     = settingsPtr->flag("TimeShower:QEDshowerByQ");
   doQEDshowerByL     = settingsPtr->flag("TimeShower:QEDshowerByL");
+  doQEDshowerByOther = settingsPtr->flag("TimeShower:QEDshowerByOther");
   doQEDshowerByGamma = settingsPtr->flag("TimeShower:QEDshowerByGamma");
   doWeakShower       = settingsPtr->flag("TimeShower:weakShower");
   doMEcorrections    = settingsPtr->flag("TimeShower:MEcorrections");
+  doMEextended       = settingsPtr->flag("TimeShower:MEextended");
   doMEafterFirst     = settingsPtr->flag("TimeShower:MEafterFirst");
   doPhiPolAsym       = settingsPtr->flag("TimeShower:phiPolAsym");
   doPhiPolAsymHard   = settingsPtr->flag("TimeShower:phiPolAsymHard");
@@ -634,8 +636,9 @@ void TimeShower::prepare( int iSys, Event& event, bool limitPTmaxIn) {
       // Find "charge-dipole" and "photon-dipole" ends.
       int  chgType  = event[iRad].chargeType();
       bool doChgDip = (chgType != 0)
-                       && ( ( doQEDshowerByQ && event[iRad].isQuark()  )
-                         || ( doQEDshowerByL && event[iRad].isLepton() ) );
+                   && ( ( doQEDshowerByQ && event[iRad].isQuark() )
+                     || ( doQEDshowerByL && event[iRad].isLepton() )
+                     || ( doQEDshowerByOther && event[iRad].isResonance() ) );
       int  gamType  = (idRad == 22) ? 1 : 0;
       bool doGamDip = (gamType == 1) && doQEDshowerByGamma;
       if (doChgDip || doGamDip) setupQEDdip( iSys, i, chgType, gamType,
@@ -3981,14 +3984,11 @@ bool TimeShower::rescatterPropagateRecoil( Event& event, Vec4& pNew) {
 // Find class of QCD ME correction.
 // MEtype classification follow codes in Norrbin article,
 // additionally -1 = try to find type, 0 = no ME corrections.
-// Warning: not yet tried out to do a correct assignment in
-// arbitrary multiparton configurations! ??
 
 void TimeShower::findMEtype( Event& event, TimeDipoleEnd& dip) {
 
   // Initial value. Mark if no ME corrections to be applied.
-  bool setME = true;
-  if (!doMEcorrections) setME = false;
+  bool setME = doMEcorrections;
   int iMother  = event[dip.iRadiator].mother1();
   int iMother2 = event[dip.iRadiator].mother2();
 
@@ -3999,15 +3999,15 @@ void TimeShower::findMEtype( Event& event, TimeDipoleEnd& dip) {
   // Allow ME corrections for all weak branchings.
   else if (dip.weakType != 0);
 
-  // Else no ME corrections in 2 -> n processes.
-  else {
+  // Else optionally no ME corrections in 2 -> n processes.
+  else if (!doMEextended) {
     if (iMother2 != iMother && iMother2 != 0) setME = false;
     if (event[dip.iRecoiler].mother1() != iMother)  setME = false;
     if (event[dip.iRecoiler].mother2() != iMother2) setME = false;
   }
 
-  // No ME corrections for recoiler in initial state.
-  if (event[dip.iRecoiler].status() < 0) setME = false;
+  // Optionally no ME corrections for recoiler in initial state.
+  if (event[dip.iRecoiler].status() < 0) setME = doMEextended;
 
   // No ME corrections for recoiler not in same system
   if (dip.system != dip.systemRec) setME = false;
@@ -4016,6 +4016,27 @@ void TimeShower::findMEtype( Event& event, TimeDipoleEnd& dip) {
   if (!setME) {
     dip.MEtype = 0;
     return;
+  }
+
+  // Pair "rare" particles, if possible.
+  if (dip.iMEpartner < 0) {
+    int idAbs1   = event[dip.iRadiator].idAbs();
+    int idAbs2   = event[dip.iRecoiler].idAbs();
+    bool isRare1 = (idAbs1 > 5 && idAbs1 < 11) || (idAbs1 > 16 && idAbs1 < 21)
+                 || idAbs1 > 22;
+    bool isRare2 = (idAbs2 > 5 && idAbs2 < 11) || (idAbs2 > 16 && idAbs2 < 21)
+                 || idAbs2 > 22;
+    if (isRare1 && !isRare2) {
+      vector<int> iSis = event[dip.iRadiator].sisterList();
+      // Prio on particle-(anti)particle pairs, else other rare.
+      for (int iS = 0; iS < int(iSis.size()); ++iS) {
+        idAbs2   = event[iSis[iS]].idAbs();
+        isRare2 = (idAbs2 > 5 && idAbs2 < 11) || (idAbs2 > 16 && idAbs2 < 21)
+                || idAbs2 > 22;
+        if (idAbs2 == idAbs1) dip.iMEpartner = iSis[iS];
+        if (isRare2 && dip.iMEpartner < 0) dip.iMEpartner = iSis[iS];
+      }
+    }
   }
 
   // If no ME partner set, assume it is the recoiler.
@@ -4051,12 +4072,13 @@ void TimeShower::findMEtype( Event& event, TimeDipoleEnd& dip) {
 
     // Find mother type.
     int idMother = 0;
-    if ( event[dip.iRecoiler].mother1() == iMother && iMother >= 0)
+    if ( event[dip.iRecoiler].mother1() == iMother && iMother >= 0
+      && (iMother2 == 0 || iMother2 == iMother) )
       idMother = event[iMother].id();
     int motherType = (idMother != 0)
       ? findMEparticle(idMother, isHiddenColour) : 0;
 
-    // When a mother if not known then use colour and spin content to guess.
+    // When a mother is not known then use colour and spin content to guess.
     if (motherType == 0) {
       int col1  = event[dip.iRadiator].col();
       int acol1 = event[dip.iRadiator].acol();
@@ -4101,7 +4123,7 @@ void TimeShower::findMEtype( Event& event, TimeDipoleEnd& dip) {
     if (minDauType == 1 && maxDauType == 1 &&
       (motherType == 4 || motherType == 7) ) {
       MEkind = 2;
-      if (idMother == 21 || idMother == 22) MEcombi = 1;
+      if (idMother == 21 || idMother == 22 || motherType == 4) MEcombi = 1;
       else if (idMother == 23 || idDau1 + idDau2 == 0) {
         MEcombi = 3;
         dip.MEmix = gammaZmix( event, iMother, dip.iRadiator, dip.iRecoiler );
@@ -4260,8 +4282,10 @@ double TimeShower::gammaZmix( Event& event, int iRes, int iDau1, int iDau2) {
   int idIn2 = 11;
   int iIn1  = (iRes >= 0) ? event[iRes].mother1() : -1;
   int iIn2  = (iRes >= 0) ? event[iRes].mother2() : -1;
+  if (iIn1 > 0 && iIn2 <= 0 && event[iDau1].mother2() > 0)
+    iIn2 = event[event[iDau1].mother2()].mother1();
   if (iIn1 >=0) idIn1 = event[iIn1].id();
-  if (iIn2 >=0) idIn2 = event[iIn1].id();
+  if (iIn2 >=0) idIn2 = event[iIn2].id();
 
   // In processes f + g/gamma -> f + Z only need find one fermion.
   if (idIn1 == 21 || idIn1 == 22) idIn1 = -idIn2;
