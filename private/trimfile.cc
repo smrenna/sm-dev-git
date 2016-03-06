@@ -110,8 +110,10 @@ int main(int argc, char* argv[]) {
                || (nameLen > 5 && fileName.substr(nameLen - 5, 5) == ".cmnd");
     bool isXML  = (nameLen > 4 && fileName.substr(nameLen - 4, 4) == ".xml");
 
-    // Skip FJcore files; they give plenty of warnings not to be addressed.
+    // Skip FJcore and PythonWrapper files; they give plenty of warnings 
+    // not to be addressed.
     if (fileName.find("FJcore") != string::npos) isCode = false;
+    if (fileName.find("PythonWrapper") != string::npos) isCode = false;
 
     // Process code and xml files; also others with -f option.
     if (isCode || isXML || doForce) {

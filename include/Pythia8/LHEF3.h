@@ -30,7 +30,7 @@ struct XMLTag {
   typedef string::size_type pos_t;
 
   // Convenient alias for npos.
-  static const pos_t end = string::npos;
+  static const pos_t end;
 
   // The destructor also destroys any sub-tags.
   ~XMLTag() {

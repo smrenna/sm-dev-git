@@ -17,6 +17,11 @@ namespace Pythia8 {
 // It contains the attributes as a map, any sub-tags as a vector of pointers
 // to other XMLTag objects, and any other information as a single string.
 
+//--------------------------------------------------------------------------
+
+// Constants.
+const XMLTag::pos_t XMLTag::end = string::npos;
+
 //==========================================================================
 
 // The LHAweights struct.
