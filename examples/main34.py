@@ -97,6 +97,6 @@ pythia.setLHAupPtr(amcatnlo);
 run(pythia, amPtZ, 1000)
 
 # Print the histograms.
-print pyPtZ
-print mgPtZ
-print amPtZ
+print(pyPtZ)
+print(mgPtZ)
+print(amPtZ)

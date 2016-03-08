@@ -33,4 +33,4 @@ for iEvent in range(0, 100):
     mult.fill(nCharged)
 # End of event loop. Statistics. Histogram. Done.
 pythia.stat();
-print mult
+print(mult)

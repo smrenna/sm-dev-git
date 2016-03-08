@@ -42,10 +42,10 @@ but this should only affect a small part of the user code.
 <li>8.217: 6 March 2016 
 <ul> 
  
-<li>An interface to the Python programming language has been introduced,
+<li>An interface to the Python programming language has been introduced, 
 see <?php $filepath = $_GET["filepath"];
-echo "<a href='APythonInterface.php?filepath=".$filepath."' target='page'>";?>A Python Interface</a> for details.
-Minor changes in the C++ code have been done in order to permit the
+echo "<a href='APythonInterface.php?filepath=".$filepath."' target='page'>";?>A Python Interface</a> for details. 
+Minor changes in the C++ code have been done in order to permit the 
 automatic generation of the interface.</li> 
  
 <li>When a final-state <i>g &rarr; g g</i> branching happens with 

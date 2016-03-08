@@ -7,7 +7,7 @@
 # This is a script to create a Python interface for Pythia using SWIG.
 # It should be run from the main directory, but is located in private/.
 
-# Check SWIG and SED exist.
+# Check SWIG (works with version 3.0.8) and SED exist.
 if ! type "sed" &> /dev/null; then 
     echo "Error: SED not found."; exit; fi
 if ! type "swig" &> /dev/null; then 
@@ -16,6 +16,7 @@ if ! type "swig" &> /dev/null; then
 # Set the SWIG configuration file and the Python interface file.
 CFG_FILE="python.cfg"
 CXX_FILE=`basename $CFG_FILE .cfg`"_wrap.cxx"
+INC_FILE=`basename $CFG_FILE .cfg`"_wrap.h"
 PYTHON_FILE="pythia8.py"
 HEADER_FILE="include/Pythia8Plugins/PythonWrapper.h"
 
@@ -49,7 +50,7 @@ cp include/Pythia8/PythiaComplex.h python/include/Pythia8/PythiaComplex.h
 # Write the SWIG configuration header.
 cat > $CFG_FILE << BLOCKTEXT
 // Set the module name.
-%module pythia8
+%module(directors="1", allprotected="1") pythia8
 
 // Include the STL type maps.
 %{
@@ -91,11 +92,12 @@ cat > $CFG_FILE << BLOCKTEXT
 
 // Methods that should be renamed.
 %rename(list) print;
+%rename(getOrderHistories) orderHistories();
+%rename(getAllowCutOnRecState) allowCutOnRecState();
+%rename(getDoWeakClustering) doWeakClustering();
 
 // Members that must be ignored because that cannot be handled by SWIG.
-%ignore Pythia8::Writer::headerStream;
-%ignore Pythia8::Writer::initStream;
-%ignore Pythia8::Writer::eventStream;
+%ignore Pythia8::LHAup::osLHEF;
 %ignore Pythia8::CoupSUSY::LsddX;
 %ignore Pythia8::CoupSUSY::LsuuX;
 %ignore Pythia8::CoupSUSY::LsduX;
@@ -115,6 +117,23 @@ cat > $CFG_FILE << BLOCKTEXT
 %ignore Pythia8::CoupSUSY::rvLLE;
 %ignore Pythia8::CoupSUSY::rvLQD;
 %ignore Pythia8::CoupSUSY::rvUDD;
+%ignore Pythia8::Writer::headerStream;
+%ignore Pythia8::Writer::initStream;
+%ignore Pythia8::Writer::eventStream;
+
+// Allow inheritance in Python for certain classes.
+%feature("director") BeamShape;
+%feature("director") DecayHandler;
+%feature("director") LHAup;
+%feature("director") MergingHooks;
+%feature("director") PDF;
+%feature("director") PhaseSpace;
+%feature("director") ResonanceWidths;
+%feature("director") RndmEngine;
+%feature("director") SigmaProcess;
+%feature("director") SpaceShower;
+%feature("director") TimeShower;
+%feature("director") UserHooks;
 
 // Error flags to allow iterable objects.
 %{
@@ -326,7 +345,10 @@ cat > $HEADER_FILE << BLOCKTEXT
 // This file contains a Python interface to Pythia 8 generated with SWIG.
 
 BLOCKTEXT
-cat $CXX_FILE >> $HEADER_FILE
+SPLIT=`grep -n "#include \"python_wrap.h\"" $CXX_FILE | cut -d : -f 1`
+SPLIT=$[$SPLIT-1]; head -n $SPLIT $CXX_FILE >> $HEADER_FILE
+cat $INC_FILE >> $HEADER_FILE;
+SPLIT=$[$SPLIT+2]; tail -n +$SPLIT $CXX_FILE >> $HEADER_FILE
 echo "// PYTHON SOURCE" >> $HEADER_FILE
 cat >> $HEADER_FILE << BLOCKTEXT
 //# Copyright (C) 2016 Torbjorn Sjostrand.
@@ -370,7 +392,7 @@ for l in i:
     elif l.startswith('def'):
         level = 'Pythia8'; o.write('//' + l)
         if level in methods and name in methods[level]:
-            o.write('//  ' + methods[level][name])
+            o.write('//    ' + methods[level][name])
     elif l.startswith('    def') and ':' in l:
         if level in methods and name in methods[level]:
             l = l.split(':')
