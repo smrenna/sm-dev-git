@@ -39,14 +39,14 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.217: 6 March 2016 
+<li>8.217: 13 March 2016 
 <ul> 
  
 <li>An interface to the Python programming language has been introduced, 
 see <?php $filepath = $_GET["filepath"];
 echo "<a href='APythonInterface.php?filepath=".$filepath."' target='page'>";?>A Python Interface</a> for details. 
-Minor changes in the C++ code have been done in order to permit the 
-automatic generation of the interface.</li> 
+Various minor changes in the C++ code have been done in order to permit 
+the automatic generation of the interface.</li> 
  
 <li>When a final-state <i>g &rarr; g g</i> branching happens with 
 a massive recoiler, radiation in the recoiler direction is now 
@@ -57,8 +57,22 @@ attempts to guess the most relevant ME correction when the
 correct choice is not known or implemented. Thanks to 
 Jesse Thaler, Michele Selvaggi and Fabio Maltoni.</li> 
  
+<li>New constructors that take streams rather than files as input. 
+(Steve:a few more lines of text.)</li> 
+ 
+<li>Small additions and fixes to the LHEF3 framework. (Steve:a few more 
+lines of text?)</li> 
+ 
+<li>A new class allows PDF data files in the lhagrid1 format, 
+with some restrictions, to be read and used. This does not replace 
+all that you can do with a complete LHAPDF6 installation, but at 
+least permits some simple studies without LHAPDF6 + Boost.</li> 
+ 
 <li>Four Pomeron PDF sets from the ACTW study [<a href="Bibliography.php" target="page">Alv99</a>] now 
 implemented.</li> 
+ 
+<li>The three Pomeron H1 Jets PDF data files have been joined to one. 
+</li> 
  
 <li>Increased possibilities to set the <i>epsilon</i> and 
 <i>alpha'</i> parameters of the Pomeron trajectory for 
@@ -70,6 +84,11 @@ hard-diffraction Pomeron fluxes.</li>
 <li>New flag <code>TimeShower:QEDshowerByOther</code> allows charged 
 resonances, like the <i>W^+-</i>, to radiate photons.</li> 
  
+<li>The jet matching algorithm in <code>JetMatching.h</code> has been 
+extended to better handle heavy quarks, heavy colored particles (such 
+as squarks) and "other" partons (coloured but produced from an 
+Electroweak vertex).</li> 
+ 
 <li>Minor <code>configure</code> and <code>Makefile</code> updates, 
 to address potential linking problems on some platforms for boost, gzip 
 and promc. Thanks to Dmitri Konstantinov.</li> 
@@ -78,6 +97,11 @@ and promc. Thanks to Dmitri Konstantinov.</li>
 corrected. Thanks to Florian Koenig.</li> 
  
 <li>Allow for lightest neutralino not to decay as a resonance.</li> 
+ 
+<li>Fixed problem with the SLHAinterface not being zeroed-out when 
+using repeated subruns.</li> 
+ 
+<li>Cleaned up error printout for the PDF classes.</li> 
  
 <li>Change a few true/false to on/off in the documentation to make the 
 php version of the manual recognize them.</li> 

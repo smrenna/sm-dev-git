@@ -778,110 +778,193 @@ void ParticleData::initWidths( vector<ResonanceWidths*> resonancePtrs) {
 
 bool ParticleData::readXML(string inFile, bool reset) {
 
+  // Load XML file into memory
+  if (!loadXML(inFile,reset)) return false;
+
+  // Process XML file (now stored in memory)
+  if (!processXML(reset)) return false;
+
+  // Done.
+  return true;
+}
+
+//--------------------------------------------------------------------------
+
+// Read in database from specific XML stream (which may refer to others).
+
+bool ParticleData::readXML(istream &inStr, bool reset) {
+
+  // Load XML file into memory
+  if (!loadXML(inStr,reset)) return false;
+
+  // Process XML file (now stored in memory)
+  if (!processXML(reset)) return false;
+
+  // Done.
+  return true;
+}
+
+//--------------------------------------------------------------------------
+
+// Read in database from pre-initialised particleData object.
+
+bool ParticleData::copyXML(const ParticleData &particleDataIn) {
+
+  // First Reset everything.
+  pdt.clear();
+  xmlFileSav.clear();
+  isInit = false;
+  xmlFileSav=particleDataIn.xmlFileSav;
+
+  // Process XML file (now stored in memory)
+  if (!processXML(true)) return false;
+
+  // Done.
+  return true;
+}
+//--------------------------------------------------------------------------
+
+// Load a specific XML file into memory (which may refer to others).
+
+bool ParticleData::loadXML(istream& is, bool reset) {
+
   // Normally reset whole database before beginning.
-  if (reset) {pdt.clear(); isInit = false;}
+  if (reset) {pdt.clear(); xmlFileSav.clear(); isInit = false;}
 
-  // List of files to be checked.
-  vector<string> files;
-  files.push_back(inFile);
+  // Check that instream is OK.
+  if (!is.good()) {
+    infoPtr->errorMsg("Error in ParticleData::readXML:"
+      " did not find data");
+    return false;
+  }
 
-  // Loop over files. Open them for read.
-  for (int i = 0; i < int(files.size()); ++i) {
-    const char* cstring = files[i].c_str();
-    ifstream is(cstring);
+  // Read in one line at a time.
+  particlePtr = 0;
+  string line;
+  while ( getline(is, line) ) {
 
-    // Check that instream is OK.
-    if (!is.good()) {
-      infoPtr->errorMsg("Error in ParticleData::readXML:"
-        " did not find file", files[i]);
-      return false;
+    // Get first word of a line.
+    istringstream getfirst(line);
+    string word1;
+    getfirst >> word1;
+
+    // Check for occurence of a file also to be read.
+    if (word1 == "<file") {
+      string file = attributeValue(line, "name");
     }
 
-    // Read in one line at a time.
-    particlePtr = 0;
-    string line;
-    while ( getline(is, line) ) {
+    // Else save line to memory.
+    else {
+      xmlFileSav.push_back(line);
+    }
+  }
 
-      // Get first word of a line.
-      istringstream getfirst(line);
-      string word1;
-      getfirst >> word1;
+  //Done.
+  return true;
 
-      // Check for occurence of a particle. Add any continuation lines.
-      if (word1 == "<particle") {
-        while (line.find(">") == string::npos) {
-          string addLine;
-          getline(is, addLine);
-          line += addLine;
-        }
+}
 
-        // Read in particle properties.
-        int idTmp          = intAttributeValue( line, "id");
-        string nameTmp     = attributeValue( line, "name");
-        string antiNameTmp = attributeValue( line, "antiName");
-        if (antiNameTmp == "") antiNameTmp = "void";
-        int spinTypeTmp    = intAttributeValue( line, "spinType");
-        int chargeTypeTmp  = intAttributeValue( line, "chargeType");
-        int colTypeTmp     = intAttributeValue( line, "colType");
-        double m0Tmp       = doubleAttributeValue( line, "m0");
-        double mWidthTmp   = doubleAttributeValue( line, "mWidth");
-        double mMinTmp     = doubleAttributeValue( line, "mMin");
-        double mMaxTmp     = doubleAttributeValue( line, "mMax");
-        double tau0Tmp     = doubleAttributeValue( line, "tau0");
 
-        // Erase if particle already exists.
-        if (isParticle(idTmp)) pdt.erase(idTmp);
+//--------------------------------------------------------------------------
 
-        // Store new particle. Save pointer, to be used for decay channels.
-        addParticle( idTmp, nameTmp, antiNameTmp, spinTypeTmp, chargeTypeTmp,
-          colTypeTmp, m0Tmp, mWidthTmp, mMinTmp, mMaxTmp, tau0Tmp);
-        particlePtr = particleDataEntryPtr(idTmp);
+// Load a specific XML file into memory (which may refer to others).
 
-      // Check for occurence of a decay channel. Add any continuation lines.
-      } else if (word1 == "<channel") {
-        while (line.find(">") == string::npos) {
-          string addLine;
-          getline(is, addLine);
-          line += addLine;
-        }
+bool ParticleData::loadXML(string inFile, bool reset) {
 
-        // Read in channel properties - products so far only as a string.
-        int onMode      = intAttributeValue( line, "onMode");
-        double bRatio   = doubleAttributeValue( line, "bRatio");
-        int meMode      = intAttributeValue( line, "meMode");
-        string products = attributeValue( line, "products");
+  const char* cstring = inFile.c_str();
+  ifstream is(cstring);
 
-        // Read in decay products from stream. Must have at least one.
-        istringstream prodStream(products);
-        int prod0 = 0; int prod1 = 0; int prod2 = 0; int prod3 = 0;
-        int prod4 = 0; int prod5 = 0; int prod6 = 0; int prod7 = 0;
-        prodStream >> prod0 >> prod1 >> prod2 >> prod3 >> prod4 >> prod5
-                   >> prod6 >> prod7;
-        if (prod0 == 0) {
-          infoPtr->errorMsg("Error in ParticleData::readXML:"
-            " incomplete decay channel", line);
-          return false;
-        }
+  return loadXML(is, reset);
+}
 
-        // Store new channel (if particle already known).
-        if (particlePtr == 0) {
-          infoPtr->errorMsg("Error in ParticleData::readXML:"
-            " orphan decay channel", line);
-          return false;
-        }
-        particlePtr->addChannel(onMode, bRatio, meMode, prod0, prod1,
-          prod2, prod3, prod4, prod5, prod6, prod7);
+//--------------------------------------------------------------------------
 
-      // Check for occurence of a file also to be read.
-      } else if (word1 == "<file") {
-        string file = attributeValue(line, "name");
-        if (file == "") {
-          infoPtr->errorMsg("Error in ParticleData::readXML:"
-            " skip unrecognized file name", line);
-        } else files.push_back(file);
+// Process XML contents stored in memory.
+
+bool ParticleData::processXML(bool reset) {
+
+  // Number of lines saved.
+  int nLines = xmlFileSav.size();
+
+  // Process each line sequentially.
+  particlePtr = 0;
+  int i=-1;
+  while (++i < nLines) {
+
+    // Retrieve line.
+    string line = xmlFileSav[i];
+
+    // Get first word of a line.
+    istringstream getfirst(line);
+    string word1;
+    getfirst >> word1;
+
+    // Check for occurence of a particle. Add any continuation lines.
+    if (word1 == "<particle") {
+      while (line.find(">") == string::npos) {
+        if (++i >= nLines) break;
+        string addLine = xmlFileSav[i];
+        line += addLine;
       }
 
-    // End of loop over lines in input file and loop over files.
+      // Read in particle properties.
+      int idTmp          = intAttributeValue( line, "id");
+      string nameTmp     = attributeValue( line, "name");
+      string antiNameTmp = attributeValue( line, "antiName");
+      if (antiNameTmp == "") antiNameTmp = "void";
+      int spinTypeTmp    = intAttributeValue( line, "spinType");
+      int chargeTypeTmp  = intAttributeValue( line, "chargeType");
+      int colTypeTmp     = intAttributeValue( line, "colType");
+      double m0Tmp       = doubleAttributeValue( line, "m0");
+      double mWidthTmp   = doubleAttributeValue( line, "mWidth");
+      double mMinTmp     = doubleAttributeValue( line, "mMin");
+      double mMaxTmp     = doubleAttributeValue( line, "mMax");
+      double tau0Tmp     = doubleAttributeValue( line, "tau0");
+
+      // Erase if particle already exists.
+      if (isParticle(idTmp)) pdt.erase(idTmp);
+
+      // Store new particle. Save pointer, to be used for decay channels.
+      addParticle( idTmp, nameTmp, antiNameTmp, spinTypeTmp, chargeTypeTmp,
+                   colTypeTmp, m0Tmp, mWidthTmp, mMinTmp, mMaxTmp, tau0Tmp);
+      particlePtr = particleDataEntryPtr(idTmp);
+
+      // Check for occurence of a decay channel. Add any continuation lines.
+    } else if (word1 == "<channel") {
+      while (line.find(">") == string::npos) {
+        if (++i >= nLines) break;
+        string addLine = xmlFileSav[i];
+        line += addLine;
+      }
+
+      // Read in channel properties - products so far only as a string.
+      int onMode      = intAttributeValue( line, "onMode");
+      double bRatio   = doubleAttributeValue( line, "bRatio");
+      int meMode      = intAttributeValue( line, "meMode");
+      string products = attributeValue( line, "products");
+
+      // Read in decay products from stream. Must have at least one.
+      istringstream prodStream(products);
+      int prod0 = 0; int prod1 = 0; int prod2 = 0; int prod3 = 0;
+      int prod4 = 0; int prod5 = 0; int prod6 = 0; int prod7 = 0;
+      prodStream >> prod0 >> prod1 >> prod2 >> prod3 >> prod4 >> prod5
+                 >> prod6 >> prod7;
+      if (prod0 == 0) {
+        infoPtr->errorMsg("Error in ParticleData::readXML:"
+                          " incomplete decay channel", line);
+        return false;
+      }
+
+      // Store new channel (if particle already known).
+      if (particlePtr == 0) {
+        infoPtr->errorMsg("Error in ParticleData::readXML:"
+                          " orphan decay channel", line);
+        return false;
+      }
+      particlePtr->addChannel(onMode, bRatio, meMode, prod0, prod1,
+                              prod2, prod3, prod4, prod5, prod6, prod7);
+
+      // End of loop over lines in input file and loop over files.
     };
   };
 
@@ -969,17 +1052,14 @@ void ParticleData::listXML(string outFile) {
 
 // Read in database from specific free format file.
 
-bool ParticleData::readFF(string inFile, bool reset) {
+bool ParticleData::readFF(istream& is, bool reset) {
 
   // Normally reset whole database before beginning.
   if (reset) {pdt.clear(); isInit = false;}
 
-  // Open file for read and check that instream is OK.
-  const char* cstring = inFile.c_str();
-  ifstream is(cstring);
   if (!is.good()) {
     infoPtr->errorMsg("Error in ParticleData::readFF:"
-      " did not find file", inFile);
+      " did not find stream");
     return false;
   }
 
@@ -1068,6 +1148,19 @@ bool ParticleData::readFF(string inFile, bool reset) {
   isInit = true;
   return true;
 
+}
+
+
+//--------------------------------------------------------------------------
+
+// Read in database from specific free format file.
+
+bool ParticleData::readFF(string inFile, bool reset) {
+
+  const char* cstring = inFile.c_str();
+  ifstream is(cstring);
+
+  return readFF(is,reset);
 }
 
 //--------------------------------------------------------------------------

@@ -626,12 +626,49 @@ const double MSTWpdf::qqInit[49] = {0., 1.0, 1.25, 1.5, 0., 0., 2.5, 3.2,
 
 //--------------------------------------------------------------------------
 
-// Initialize PDF: read in data grid from file and set up interpolation.
+// Initialize PDF: select data file and open stream.
 
 void MSTWpdf::init(int iFitIn, string xmlPath, Info* infoPtr) {
 
-  // Choice of fit among possibilities. Counters and temporary variables.
+  // Choice of fit among possibilities.
   iFit = iFitIn;
+
+  // Select which data file to read for current fit.
+  if (xmlPath[ xmlPath.length() - 1 ] != '/') xmlPath += "/";
+  string fileName = "  ";
+  if (iFit == 1) fileName = "mrstlostar.00.dat";
+  if (iFit == 2) fileName = "mrstlostarstar.00.dat";
+  if (iFit == 3) fileName = "mstw2008lo.00.dat";
+  if (iFit == 4) fileName = "mstw2008nlo.00.dat";
+
+  // Open data file.
+  ifstream data_file( (xmlPath + fileName).c_str() );
+  if (!data_file.good()) {
+    printErr("Error in MSTWpdf::init: did not find data file ", infoPtr);
+    isSet = false;
+    return;
+  }
+
+  // Initialization with a stream.
+  init(data_file, infoPtr);
+  data_file.close();
+
+}
+
+//--------------------------------------------------------------------------
+
+// Initialize PDF: read in data grid from stream and set up interpolation.
+
+void MSTWpdf::init(istream& data_file, Info* infoPtr) {
+
+  // Check that data stream is available.
+  if (!data_file.good()) {
+    printErr("Error in MSTWpdf::init: cannot read from stream", infoPtr);
+    isSet = false;
+    return;
+  }
+
+  // Counters and temporary variables.
   int i,n,m,k,l,j;
   double dtemp;
 
@@ -659,25 +696,6 @@ void MSTWpdf::init(int iFitIn, string xmlPath, Info* infoPtr) {
                   {4,-4,4,-4,2,2,-2,-2,2,-2,-2,2,1,1,1,1}};
   double xxd,d1d2,cl[16],x[16],d1,d2,y[5],y1[5],y2[5],y12[5];
   double mc2,mb2,eps=1e-6; // q^2 grid points at mc2+eps, mb2+eps
-
-    // Select which data file to read for current fit.
-  if (xmlPath[ xmlPath.length() - 1 ] != '/') xmlPath += "/";
-  string fileName = "  ";
-  if (iFit == 1) fileName = "mrstlostar.00.dat";
-  if (iFit == 2) fileName = "mrstlostarstar.00.dat";
-  if (iFit == 3) fileName = "mstw2008lo.00.dat";
-  if (iFit == 4) fileName = "mstw2008nlo.00.dat";
-
-  // Open data file.
-  ifstream data_file( (xmlPath + fileName).c_str() );
-  if (!data_file.good()) {
-    if (infoPtr != 0) infoPtr->errorMsg("Error from MSTWpdf::init: "
-      "did not find parametrization file ", fileName);
-    else cout << " Error from MSTWpdf::init: "
-      << "did not find parametrization file " << fileName << endl;
-    isSet = false;
-    return;
-  }
 
   // Read distance, tolerance, heavy quark masses
   // and alphaS values from file.
@@ -707,16 +725,12 @@ void MSTWpdf::init(int iFitIn, string xmlPath, Info* infoPtr) {
 
   // Check that the heavy quark masses are sensible.
   if (mc2 < qq[3] || mc2 > qq[6]) {
-    if (infoPtr != 0) infoPtr->errorMsg("Error from MSTWpdf::init: "
-      "invalid mCharm");
-    else cout << " Error from MSTWpdf::init: invalid mCharm" << endl;
+    printErr("Error in MSTWpdf::init: invalid mCharm", infoPtr);
     isSet = false;
     return;
   }
   if (mb2 < qq[13] || mb2 > qq[16]) {
-    if (infoPtr != 0) infoPtr->errorMsg("Error from MSTWpdf::init: "
-      "invalid mBottom");
-    else cout << " Error from MSTWpdf::init: invalid mBottom" << endl;
+    printErr("Error in MSTWpdf::init: invalid mBottom", infoPtr);
     isSet = false;
     return;
   }
@@ -725,9 +739,7 @@ void MSTWpdf::init(int iFitIn, string xmlPath, Info* infoPtr) {
   // with future grids where, for example, a photon distribution
   // might be provided (cf. the MRST2004QED PDFs).
   if (nExtraFlavours < 0 || nExtraFlavours > 1) {
-    if (infoPtr != 0) infoPtr->errorMsg("Error from MSTWpdf::init: "
-      "invalid nExtraFlavours");
-    else cout << " Error from MSTWpdf::init: invalid nExtraFlavours" << endl;
+    printErr("Error in MSTWpdf::init: invalid nExtraFlavours", infoPtr);
     isSet = false;
     return;
   }
@@ -750,10 +762,8 @@ void MSTWpdf::init(int iFitIn, string xmlPath, Info* infoPtr) {
       else
         f[12][n][m] = 0.; // photon
       if (data_file.eof()) {
-        if (infoPtr != 0) infoPtr->errorMsg("Error from MSTWpdf::init: "
-          "failed to read in data file");
-        else cout << " Error from MSTWpdf::init: failed to read in data file"
-          << endl;
+        printErr("Error in MSTWpdf::init: could not read data stream",
+          infoPtr);
         isSet = false;
         return;
       }
@@ -762,16 +772,10 @@ void MSTWpdf::init(int iFitIn, string xmlPath, Info* infoPtr) {
   // Check that ALL the file contents have been read in.
   data_file >> dtemp;
   if (!data_file.eof()) {
-    if (infoPtr != 0) infoPtr->errorMsg("Error from MSTWpdf::init: "
-      "failed to read in data file");
-    else cout << " Error from MSTWpdf::init: failed to read in data file"
-      << endl;
+    printErr("Error in MSTWpdf::init: could not read data stream", infoPtr);
     isSet = false;
     return;
   }
-
-  // Close the datafile.
-  data_file.close();
 
   // PDFs are identically zero at x = 1.
   for (i=1;i<=np;i++)
@@ -1240,7 +1244,7 @@ const double CTEQ6pdf::XPOWER = 0.3;
 
 //--------------------------------------------------------------------------
 
-// Initialize PDF: read in data grid from file.
+// Initialize PDF: select data file and open stream.
 
 void CTEQ6pdf::init(int iFitIn, string xmlPath, Info* infoPtr) {
 
@@ -1266,10 +1270,26 @@ void CTEQ6pdf::init(int iFitIn, string xmlPath, Info* infoPtr) {
   // Open data file.
   ifstream pdfgrid( (xmlPath + fileName).c_str() );
   if (!pdfgrid.good()) {
-    if (infoPtr != 0) infoPtr->errorMsg("Error from CTEQ6pdf::init: "
-      "did not find parametrization file ", fileName);
-    else cout << " Error from CTEQ6pdf::init: "
-      << "did not find parametrization file " << fileName << endl;
+    printErr("Error in CTEQ6pdf::init: did not find data file", infoPtr);
+    isSet = false;
+    return;
+  }
+
+  // Initialization with a stream.
+  init( pdfgrid, isPdsGrid, infoPtr);
+  pdfgrid.close();
+
+}
+
+//--------------------------------------------------------------------------
+
+// Initialize PDF: read in data grid from stream and set up interpolation.
+
+void CTEQ6pdf::init(istream& pdfgrid, bool isPdsGrid, Info* infoPtr) {
+
+  // Check that data stream is available.
+  if (!pdfgrid.good()) {
+    printErr("Error in CTEQ6pdf::init: cannot read from stream", infoPtr);
     isSet = false;
     return;
   }
@@ -1666,10 +1686,9 @@ void ProtonPoint::xfUpdate(int , double x, double /*Q2*/ ) {
   double phiMax = phiFunc(x, Q2MAX / Q20);
   double phiMin = phiFunc(x, tmpQ2Min / Q20);
 
-  double fgm = 0;
-  if (phiMax < phiMin && m_infoPtr != 0) {
-    m_infoPtr->errorMsg("Error from ProtonPoint::xfUpdate: "
-      "phiMax - phiMin < 0!");
+  double fgm = 0.;
+  if (phiMax < phiMin) {
+    printErr("Error in ProtonPoint::xfUpdate: phiMax - phiMin < 0!", infoPtr);
   } else {
     // Corresponds to: x*f(x)
     fgm = (ALPHAEM / M_PI) * (1 - x) * (phiMax - phiMin);
@@ -1842,6 +1861,8 @@ void PomFix::xfUpdate(int , double x, double) {
 
 //--------------------------------------------------------------------------
 
+// Initialize PDF: select data file and open stream.
+
 void PomH1FitAB::init( int iFit, string xmlPath, Info* infoPtr) {
 
   // Open files from which grids should be read in.
@@ -1851,10 +1872,26 @@ void PomH1FitAB::init( int iFit, string xmlPath, Info* infoPtr) {
   if (iFit == 2) dataFile = "pomH1FitB.data";
   ifstream is( (xmlPath + dataFile).c_str() );
   if (!is.good()) {
-    if (infoPtr != 0) infoPtr->errorMsg("Error from PomH1FitAB::init: "
-      "the H1 Pomeron parametrization file was not found");
-    else cout << " Error from PomH1FitAB::init: "
-      << "the H1 Pomeron parametrization file was not found" << endl;
+    printErr("Error in PomH1FitAB::init: did not find data file", infoPtr);
+    isSet = false;
+    return;
+  }
+
+  // Initialization with a stream.
+  init( is, infoPtr );
+  is.close();
+
+}
+
+//--------------------------------------------------------------------------
+
+// Initialize PDF: read in data grid from stream and set up interpolation.
+
+void PomH1FitAB::init( istream& is, Info* infoPtr) {
+
+  // Check that data stream is available.
+  if (!is.good()) {
+    printErr("Error in PomH1FitAB::init: cannot read from stream", infoPtr);
     isSet = false;
     return;
   }
@@ -1881,10 +1918,7 @@ void PomH1FitAB::init( int iFit, string xmlPath, Info* infoPtr) {
 
   // Check for errors during read-in of file.
   if (!is) {
-    if (infoPtr != 0) infoPtr->errorMsg("Error from PomH1FitAB::init: "
-      "the H1 Pomeron parametrization files could not be read");
-    else cout << " Error from PomH1FitAB::init: "
-      << "the H1 Pomeron parametrization files could not be read" << endl;
+    printErr("Error in PomH1FitAB::init: could not read data stream", infoPtr);
     isSet = false;
     return;
   }
@@ -1892,6 +1926,7 @@ void PomH1FitAB::init( int iFit, string xmlPath, Info* infoPtr) {
   // Done.
   isSet = true;
   return;
+
 }
 
 //--------------------------------------------------------------------------
@@ -1965,72 +2000,78 @@ void PomH1FitAB::xfUpdate(int , double x, double Q2) {
 
 //--------------------------------------------------------------------------
 
-void PomH1Jets::init( string xmlPath, Info* infoPtr) {
+// Initialize PDF: select data file and open stream.
+
+void PomH1Jets::init( int , string xmlPath, Info* infoPtr) {
 
   // Open files from which grids should be read in.
   if (xmlPath[ xmlPath.length() - 1 ] != '/') xmlPath += "/";
-  ifstream isg( (xmlPath + "pomH1JetsGluon.data").c_str() );
-  ifstream isq( (xmlPath + "pomH1JetsSinglet.data").c_str() );
-  ifstream isc( (xmlPath + "pomH1JetsCharm.data").c_str() );
-  if (!isg.good() || !isq.good() || !isc.good()) {
-    if (infoPtr != 0) infoPtr->errorMsg("Error from PomH1Jets::init: "
-      "the H1 Pomeron parametrization files were not found");
-    else cout << " Error from PomH1Jets::init: "
-      << "the H1 Pomeron parametrization files were not found" << endl;
+  ifstream is( (xmlPath + "pomH1Jets.data").c_str() );
+  if (!is.good()) {
+    printErr("Error in PomH1Jets::init: did not find data file", infoPtr);
+    isSet = false;
+    return;
+  }
+
+  // Initialization with a stream.
+  init( is, infoPtr);
+  is.close();
+
+}
+
+//--------------------------------------------------------------------------
+
+// Initialize PDF: read in data grid from stream and set up interpolation.
+
+void PomH1Jets::init( istream& is, Info* infoPtr) {
+
+  // Check that data stream is available.
+  if (!is.good()) {
+    printErr("Error in PomH1Jets::init: cannot read from stream", infoPtr);
     isSet = false;
     return;
   }
 
   // Read in x and Q grids. Do interpolation logarithmically in Q2.
   for (int i = 0; i < 100; ++i) {
-    isg >> setw(13) >> xGrid[i];
+    is >> setw(13) >> xGrid[i];
   }
   for (int j = 0; j < 88; ++j) {
-    isg >> setw(13) >> Q2Grid[j];
+    is >> setw(13) >> Q2Grid[j];
     Q2Grid[j] = log( Q2Grid[j] );
   }
 
   // Read in  gluon data grid.
   for (int j = 0; j < 88; ++j) {
     for (int i = 0; i < 100; ++i) {
-      isg >> setw(13) >> gluonGrid[i][j];
+      is >> setw(13) >> gluonGrid[i][j];
     }
   }
-
-  // Identical x and Q2 grid for singlet, so skip ahead.
-  double dummy;
-  for (int i = 0; i < 188; ++i) isq >> setw(13) >> dummy;
 
   // Read in singlet data grid.
   for (int j = 0; j < 88; ++j) {
     for (int i = 0; i < 100; ++i) {
-      isq >> setw(13) >> singletGrid[i][j];
+      is >> setw(13) >> singletGrid[i][j];
     }
   }
-
-  // Identical x and Q2 grid for charm, so skip ahead.
-  for (int i = 0; i < 188; ++i) isc >> setw(13) >> dummy;
 
   // Read in charm data grid.
   for (int j = 0; j < 88; ++j) {
     for (int i = 0; i < 100; ++i) {
-      isc >> setw(13) >> charmGrid[i][j];
+      is >> setw(13) >> charmGrid[i][j];
     }
   }
 
   // Check for errors during read-in of files.
-  if (!isg || !isq || !isc) {
-    if (infoPtr != 0) infoPtr->errorMsg("Error from PomH1Jets::init: "
-      "the H1 Pomeron parametrization files could not be read");
-    else cout << " Error from PomH1Jets::init: "
-      << "the H1 Pomeron parametrization files could not be read" << endl;
+  if (!is) {
+    printErr("Error in PomH1Jets::init: could not read data file", infoPtr);
     isSet = false;
     return;
   }
 
   // Done.
   isSet = true;
-  return;
+
 }
 
 //--------------------------------------------------------------------------
@@ -2184,7 +2225,7 @@ const double NNPDF::fXMINGRID = 1e-9;
 
 //--------------------------------------------------------------------------
 
-// Initialize PDF: read in data grid from file.
+// Initialize PDF: select data file and open stream.
 
 void NNPDF::init(int iFitIn, string xmlPath, Info* infoPtr) {
 
@@ -2206,9 +2247,26 @@ void NNPDF::init(int iFitIn, string xmlPath, Info* infoPtr) {
   fstream f;
   f.open( (xmlPath + fileName).c_str(),ios::in);
   if (f.fail()) {
-    if (infoPtr != 0) infoPtr->errorMsg("Error from NNPDF::init: "
-      "did not find data file ", fileName);
-    else cout << "Error: cannot open file " << (xmlPath + fileName) << endl;
+    printErr("Error in NNPDF::init: did not find data file ", infoPtr);
+    isSet = false;
+    return;
+  }
+
+  // Initialization with a stream.
+  init(f, infoPtr);
+  f.close();
+
+}
+
+//--------------------------------------------------------------------------
+
+// Initialize PDF: read in data grid from stream and set up interpolation.
+
+void NNPDF::init(istream& f, Info* infoPtr) {
+
+  // Check that data stream is available.
+  if (!f.good()) {
+    printErr("Error in NNPDF::init: cannot read from stream", infoPtr);
     isSet = false;
     return;
   }
@@ -2263,7 +2321,6 @@ void NNPDF::init(int iFitIn, string xmlPath, Info* infoPtr) {
     for (int iq = 0; iq < fNQ2; iq++)
       for (int fl = 0; fl < fNFL; fl++)
         f >> fPDFGrid[fl][ix][iq];
-  f.close();
 
   // Other vectors.
   fRes = new double[fNFL];
@@ -2464,12 +2521,12 @@ LHAPDF::LHAPDF(int idIn, string pSet, Info* infoPtrIn) :
 
   // Determine the plugin library name.
   if (pSet.size() < 8) {
-    infoPtr->errorMsg("Error from LHAPDF::LHAPDF: invalid pSet " + pSet);
+    printErr("Error in LHAPDF::LHAPDF: invalid pSet " + pSet, infoPtr);
     return;
   }
   libName = pSet.substr(0, 7);
   if (libName != "LHAPDF5" && libName != "LHAPDF6") {
-    infoPtr->errorMsg("Error from LHAPDF::LHAPDF: invalid pSet " + pSet);
+    printErr("Error in LHAPDF::LHAPDF: invalid pSet " + pSet, infoPtr);
     return;
   }
   libName = "libpythia8lhapdf" + libName.substr(6) + ".so";
@@ -2535,7 +2592,7 @@ LHAPDF::Symbol LHAPDF::symbol(string symName) {
     error = dlerror();
   }
   if (error) {
-    infoPtr->errorMsg("Error from LHAPDF::symbol: " + string(error));
+    printErr("Error in LHAPDF::symbol: " + string(error), infoPtr);
     return sym;
   }
   if (plugin == infoPtr->plugins.end())
@@ -2549,7 +2606,7 @@ LHAPDF::Symbol LHAPDF::symbol(string symName) {
   // Load the symbol.
   sym = (Symbol)dlsym(lib, symName.c_str());
   error = dlerror();
-  if (error) infoPtr->errorMsg("Error from LHAPDF::symbol: " + string(error));
+  if (error) printErr("Error in LHAPDF::symbol: " + string(error), infoPtr);
   dlerror();
   return sym;
 
@@ -3088,6 +3145,291 @@ double CJKL::hadronlikeB(double x, double s, double Q2) {
   // Hadron-like b-quark parametrization. Note typo in the CJKL paper.
   return max( 0.0, pow(1-y,d)*pow(s,alpha)*( 1 + a*sqrt(y) + b*y )
     * exp( -e + f*sqrt( pow(s,beta)*logx ) )*pow(logx,-aa) );
+}
+
+//==========================================================================
+
+// The LHAGrid1 class.
+// Codes to read files i the LHAPDF6 lhagrid1 format,
+// assuming that the same x grid is used for all Q subgrids.
+// Results are not identical with LHAPDF6, owing do different interpolation.
+
+//--------------------------------------------------------------------------
+
+// Initialize PDF: select data file and open stream.
+
+void LHAGrid1::init(int iFitIn, string xmlPath, Info* infoPtr) {
+
+  // Choice of fit among possibilities.
+  iFit = iFitIn;
+
+  // Open files from which grids should be read in.
+  if ( xmlPath[ xmlPath.length() - 1 ] != '/' && iFit != 0) xmlPath += "/";
+  string         dataFile = "";
+  if (iFit == 1) dataFile = "hf_pdf_0000.dat";
+  if (iFit == 2) dataFile = "NNPDF23_lo_as_0119_qed_0000.dat";
+  ifstream is( (xmlPath + dataFile).c_str() );
+  if (!is.good()) {
+    printErr("Error in LHAGrid1::init: did not find data file", infoPtr);
+    isSet = false;
+    return;
+  }
+
+  // Initialization with a stream.
+  init( is, infoPtr);
+  is.close();
+
+}
+
+//--------------------------------------------------------------------------
+
+// Initialize PDF: read in data grid from stream and set up interpolation.
+
+void LHAGrid1::init(istream& is, Info* infoPtr) {
+
+  // Check that data stream is available.
+  if (!is.good()) {
+    printErr("Error in LHAGrid1::init: cannot read from stream", infoPtr);
+    isSet = false;
+    return;
+  }
+
+  // Some local variables.
+  string line;
+  vector<string> idlines, pdflines;
+  int nqNow, idNow, idNowMap;
+  double xNow, qNow, pdfNow;
+
+  // Skip 3 lines of header. Probe for next subgrid in Q space.
+  nqSub = 0;
+  for (int i = 0; i < 3; ++i) getline( is, line);
+  if (!is.good()) {
+    printErr("Error in LHAGrid1::init: could not read data file", infoPtr);
+    isSet = false;
+    return;
+  }
+  while (getline( is, line)) {
+    ++nqSub;
+
+    // Read in x grid; save for first, check it matches for later ones.
+    istringstream isx(line);
+    if (nqSub == 1) {
+      while (isx >> xNow) {
+        xGrid.push_back( xNow);
+        lnxGrid.push_back( log(xNow));
+      }
+      nx   = xGrid.size();
+      xMin = xGrid.front();
+      xMax = xGrid.back();
+    } else {
+      int ixc = -1;
+      while (isx >> xNow)
+      if ( abs(log(xNow) - lnxGrid[++ixc]) > 1e-5) {
+        printErr("Error in LHAGrid1::init: mismatched subgrid x spacing",
+          infoPtr);
+        isSet = false;
+        return;
+      }
+    }
+
+    // Read in Q grid; append as needed. Check that subgrids match.
+    getline( is, line);
+    istringstream isq(line);
+    nqNow = 0;
+    while (isq >> qNow) {
+      ++nqNow;
+      qGrid.push_back( qNow);
+      lnqGrid.push_back( log(qNow));
+    }
+    if (nqSub > 1) {
+      if (abs(qGrid[nq] / qGrid[nq-1] - 1.) > 1e-5) {
+        printErr("Error in LHAGrid1::init: mismatched subgrid Q borders",
+          infoPtr);
+        isSet = false;
+        return;
+      }
+      qGrid[nq-1] = 0.5 * (qGrid[nq-1] + qGrid[nq]);
+      qGrid[nq]   = qGrid[nq-1];
+    }
+    nq   = qGrid.size();
+    qMin = qGrid.front();
+    qMax = qGrid.back();
+    nqSum.push_back(nq);
+    qDiv.push_back(qMax);
+
+    // Read in and store flavour mapping and pdf data. Separator line.
+    getline( is, line);
+    idlines.push_back( line);
+    for (int ixq = 0; ixq < nx * nqNow; ++ixq) {
+      getline( is, line);
+      pdflines.push_back( line);
+    }
+    getline( is, line);
+  }
+
+  // Create array big enough to hold (flavour, x, Q) grid.
+  pdfGrid = new double**[12];
+  for (int iid = 0; iid < 12; ++iid) {
+    pdfGrid[iid] = new double*[nx];
+    for (int ix = 0; ix < nx; ++ix) {
+      pdfGrid[iid][ix] = new double[nq];
+      for (int iq = 0; iq < nq; ++iq) pdfGrid[iid][ix][iq] = 0.;
+    }
+  }
+
+  // Second pass through the Q subranges.
+  int iln = -1;
+  for (int iqSub = 0; iqSub < nqSub; ++iqSub) {
+    vector<int> idGridMap;
+
+    // Study flavour grid and decide flavour mapping.
+    istringstream isid( idlines[iqSub] );
+    while (isid >> idNow) {
+      idNowMap = -1;
+      if (idNow == 21 || idNow == 0) idNowMap = 0;
+      if (idNow > 0 && idNow < 6) idNowMap = idNow;
+      if (idNow < 0 && idNow > -6) idNowMap = 5 - idNow;
+      if (idNow == 22) idNowMap = 11;
+      idGridMap.push_back( idNowMap);
+    }
+    int nid = idGridMap.size();
+
+    // Read in data grid, line by line.
+    int iq0 = (iqSub == 0) ? 0 : nqSum[iqSub - 1];
+    for (int ix = 0; ix < nx; ++ix)
+    for (int iq = iq0; iq < nqSum[iqSub]; ++iq) {
+      istringstream ispdf( pdflines[++iln] );
+      for (int iid = 0; iid < nid; ++iid) {
+        ispdf >> pdfNow;
+        if (idGridMap[iid] >= 0) pdfGrid[idGridMap[iid]][ix][iq] = pdfNow;
+      }
+    }
+  }
+
+  // For extrapolation to small x: create array for b values of x^b shape.
+  pdfSlope = new double*[12];
+  for (int iid = 0; iid < 12; ++iid) {
+    pdfSlope[iid] = new double[nq];
+    for (int iq = 0; iq < nq; ++iq) { pdfSlope[iid][iq] =
+      ( min( pdfGrid[iid][0][iq], pdfGrid[iid][1][iq]) > 1e-5)
+      ? ( log(pdfGrid[iid][1][iq]) - log(pdfGrid[iid][0][iq]) )
+      / (lnxGrid[1] - lnxGrid[0]) : 0.;
+    }
+  }
+
+}
+
+//--------------------------------------------------------------------------
+
+void LHAGrid1::xfUpdate(int , double x, double Q2) {
+
+  // No PDF values if not properly set up.
+  if (!isSet) {
+    xg = xu = xd = xubar = xdbar = xs = xsbar = xc = xb = xgamma
+    = xuVal = xuSea = xdVal = xdSea = 0.;
+    return;
+  }
+
+  // Update within allowed (x, q) range.
+  xfxevolve( x, Q2);
+
+  // Then transfer to Pythia8 notation.
+  xg     = pdfVal[0];
+  xu     = pdfVal[2];
+  xd     = pdfVal[1];
+  xubar  = pdfVal[7];
+  xdbar  = pdfVal[6];
+  xs     = pdfVal[3];
+  xsbar  = pdfVal[8];
+  xc     = 0.5 * (pdfVal[4] + pdfVal[9]);
+  xb     = 0.5 * (pdfVal[5] + pdfVal[10]);
+  xgamma = pdfVal[11];
+
+  // Subdivision of valence and sea.
+  xuVal  = xu - xubar;
+  xuSea  = xubar;
+  xdVal  = xd - xdbar;
+  xdSea  = xdbar;
+
+  // idSav = 9 to indicate that all flavours reset.
+  idSav  = 9;
+
+}
+
+//--------------------------------------------------------------------------
+
+void LHAGrid1::xfxevolve(double x, double Q2) {
+
+  // Find if (x, Q) inside our outside grid.
+  double q = sqrt(Q2);
+  int inx  = (x <= xMin) ? -1 : ((x >= xMax) ? 1 : 0);
+  int inq  = (q <= qMin) ? -1 : ((q >= qMax) ? 1 : 0);
+
+  // Find grid value on either side of x.
+  int    minx = 0;
+  int    maxx = nx - 1;
+  double dlnx = 0.5;
+  int    m3   = 0;
+  double wLoc[4] = {1., 1., 1., 1.};
+  if (inx == 0) {
+    int midx;
+    while (maxx - minx > 1) {
+      midx = (minx + maxx) / 2;
+      if (x < xGrid[midx]) maxx = midx;
+      else                 minx = midx;
+    }
+    double lnx = log(x);
+    dlnx = (lnx - lnxGrid[minx]) / (lnxGrid[maxx] - lnxGrid[minx]);
+
+    // Weights for cubic interpolation in ln(x).
+    if      (minx == 0)      m3 = 0;
+    else if (maxx == nx - 1) m3 = nx - 4;
+    else                     m3 = minx - 1;
+    for (int i3 = 0; i3 < 4; ++i3)
+    for (int j = 0; j < 4; ++j) if (j != i3)
+      wLoc[i3] *= (lnx - lnxGrid[m3+j]) / (lnxGrid[m3+i3] - lnxGrid[m3+j]);
+
+  // Freeze at border of x range.
+  } else if (inx == -1) maxx = minx;
+    else if (inx ==  1) minx = maxx;
+
+  // Find q subgrid and grid value on either side of q.
+  int    iqDiv = 0;
+  for (int iqSub = 1; iqSub < nqSub; ++iqSub)
+    if (q > qDiv[iqSub - 1]) iqDiv = iqSub;
+  int    minq = (iqDiv == 0) ? 0 : nqSum[iqDiv - 1];
+  int    maxq = nqSum[iqDiv] - 1;
+  double dlnq = 0.5;
+  if (inq == 0) {
+    int midq;
+    while (maxq - minq > 1) {
+      midq = (minq + maxq) / 2;
+      if (q < qGrid[midq]) maxq = midq;
+      else                 minq = midq;
+    }
+    dlnq = (log(q) - lnqGrid[minq]) / (lnqGrid[maxq] - lnqGrid[minq]);
+
+  // Freeze at border of q range.
+  } else if (inq == -1) maxq = minq;
+    else if (inq ==  1) minq = maxq;
+
+  // Interpolate between grid elements, cubic in ln(x), linear in ln(q).
+  for (int iid = 0; iid < 12; ++iid) pdfVal[iid] = 0.;
+  if (inx == 0) {
+    for (int iid = 0; iid < 12; ++iid)
+    for (int i3 = 0; i3 < 4; ++i3)
+      pdfVal[iid] += wLoc[i3] * ( (1. - dlnq) * pdfGrid[iid][m3+i3][minq]
+        + dlnq * pdfGrid[iid][m3+i3][maxq] );
+
+  // Special: extrapolate to small x. (Let vanish at large x.)
+  } else if (inx == -1) {
+    for (int iid = 0; iid < 12; ++iid)
+      pdfVal[iid] = (1. - dlnq) * pdfGrid[iid][0][minq]
+        * (doExtraPol ? pow( x / xMin, pdfSlope[iid][minq]) : 1.)
+        + dlnq * pdfGrid[iid][0][maxq]
+        * (doExtraPol ? pow( x / xMin, pdfSlope[iid][maxq]) : 1.);
+  }
+
 }
 
 //==========================================================================

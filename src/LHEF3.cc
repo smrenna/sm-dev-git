@@ -213,6 +213,12 @@ LHAweightgroup::LHAweightgroup(const XMLTag & tag) {
     if ( it->first == "name" ) name = it->second;
     else attributes.insert(make_pair(it->first,it->second));
   }
+  if ( name=="" ) {
+    string key("type");
+    if( attributes.find(key) != attributes.end() ) {
+      name = attributes[key];
+    }
+  }
 
   contents = tag.contents;
 
@@ -223,11 +229,13 @@ LHAweightgroup::LHAweightgroup(const XMLTag & tag) {
     const XMLTag & tagnow = *tags[i];
     LHAweight wt(tagnow);
     weights.insert(make_pair(wt.id, wt));
+    weightsKeys.push_back(wt.id);
   }
   for ( int i = 0, N = tag.tags.size(); i < N; ++i ) {
     const XMLTag & tagnow = *tag.tags[i];
     const LHAweight & wt(tagnow);
     weights.insert(make_pair(wt.id, wt));
+    weightsKeys.push_back(wt.id);
   }
 
   for ( int i = 0, N = tags.size(); i < N; ++i ) if (tags[i]) delete tags[i];
@@ -275,11 +283,13 @@ LHArwgt::LHArwgt(const XMLTag & tag) {
     const XMLTag & tagnow = *tags[i];
     LHAwgt wt(tagnow);
     wgts.insert(make_pair(wt.id, wt));
+    wgtsKeys.push_back(wt.id);
   }
   for ( int i = 0, N = tag.tags.size(); i < N; ++i ) {
     const XMLTag & tagnow = *tag.tags[i];
     LHAwgt wt(tagnow);
     wgts.insert(make_pair(wt.id, wt));
+    wgtsKeys.push_back(wt.id);
   }
 
   for ( int i = 0, N = tags.size(); i < N; ++i ) if (tags[i]) delete tags[i];
@@ -326,7 +336,14 @@ LHAinitrwgt::LHAinitrwgt(const XMLTag & tag) {
     if ( tagnow.name == "weightgroup" ) {
       LHAweightgroup wgroup(tagnow);
       string wgname = wgroup.name;
+      // if still no name, use integer as a key
+      if (wgname=="") {
+        stringstream iss;
+        iss << i;
+        wgname=iss.str();
+      }
       weightgroups.insert(make_pair(wgname, wgroup));
+      weightgroupsKeys.push_back(wgname);
       string ss;
       vector<XMLTag*> tags2 = XMLTag::findXMLTags(tagnow.contents, &ss);
       for ( int k = 0, M = tags2.size(); k < M; ++k ) {
@@ -335,6 +352,7 @@ LHAinitrwgt::LHAinitrwgt(const XMLTag & tag) {
           LHAweight wt(tagnow2);
           string wtname = wt.id;
           weights.insert(make_pair(wtname, wt));
+          weightsKeys.push_back(wtname);
         }
       }
       for ( int j = 0, M = tags2.size(); j < M; ++j )
@@ -343,6 +361,7 @@ LHAinitrwgt::LHAinitrwgt(const XMLTag & tag) {
       LHAweight wt(tagnow);
       string wtname = wt.id;
       weights.insert(make_pair(wtname, wt));
+      weightsKeys.push_back(wtname);
     }
   }
 
@@ -353,6 +372,7 @@ LHAinitrwgt::LHAinitrwgt(const XMLTag & tag) {
       LHAweightgroup wgroup(tagnow);
       string wgname = wgroup.name;
       weightgroups.insert(make_pair(wgname, wgroup));
+      weightgroupsKeys.push_back(wgname);
       string ss;
       vector<XMLTag*> tags2 = XMLTag::findXMLTags(tagnow.contents, &ss);
       for ( int k = 0, M = tags2.size(); k < M; ++k ) {
@@ -361,6 +381,7 @@ LHAinitrwgt::LHAinitrwgt(const XMLTag & tag) {
           LHAweight wt(tagnow2);
           string wtname = wt.id;
           weights.insert(make_pair(wtname, wt));
+          weightsKeys.push_back(wtname);
         }
       }
       for ( int k = 0, M = tagnow.tags.size(); k < M; ++k ) {
@@ -369,6 +390,7 @@ LHAinitrwgt::LHAinitrwgt(const XMLTag & tag) {
           LHAweight wt(tagnow2);
           string wtname = wt.id;
           weights.insert(make_pair(wtname, wt));
+          weightsKeys.push_back(wtname);
         }
       }
       for ( int j = 0, M = tags2.size(); j < M; ++j )
@@ -377,6 +399,7 @@ LHAinitrwgt::LHAinitrwgt(const XMLTag & tag) {
       LHAweight wt(tagnow);
       string wtname = wt.id;
       weights.insert(make_pair(wtname, wt));
+      weightsKeys.push_back(wtname);
     }
   }
 

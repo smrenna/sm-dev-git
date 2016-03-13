@@ -61,6 +61,10 @@ public:
   Pythia(Settings& settingsIn, ParticleData& particleDataIn,
     bool printBanner = true);
 
+  // Constructor taking input from streams instead of files.
+  Pythia( istream& settingsStrings, istream& particleDataStrings,
+    bool printBanner = true);
+
   // Destructor. (See Pythia.cc file.)
   ~Pythia();
 

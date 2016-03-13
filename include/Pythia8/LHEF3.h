@@ -433,6 +433,7 @@ struct LHAweightgroup {
 
   // The vector of weights.
   map<string, LHAweight> weights;
+  vector<string> weightsKeys;
 
   // Any other attributes.
   map<string,string> attributes;
@@ -467,6 +468,7 @@ struct LHArwgt {
 
   // The map of weights.
   map<string, LHAwgt> wgts;
+  vector<string> wgtsKeys;
 
   // Any other attributes.
   map<string,string> attributes;
@@ -502,9 +504,11 @@ struct LHAinitrwgt {
 
   // The vector of weight's.
   map<string, LHAweight> weights;
+  vector<string> weightsKeys;
 
   // The vector of weightgroup's.
   map<string, LHAweightgroup> weightgroups;
+  vector<string> weightgroupsKeys;
 
   // Any other attributes.
   map<string,string> attributes;
@@ -793,6 +797,13 @@ public:
     file = intstream;
     isGood = init();
   }
+
+  // Clean up
+  ~Reader() {
+    if (intstream) delete intstream;
+  }
+
+
 
   // (Re)initialize the Reader with a filename from which to read an event
   // file. After this, all information from the header and init block is

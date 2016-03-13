@@ -104,6 +104,12 @@ protected:
   // Update parton densities.
   virtual void xfUpdate(int id, double x, double Q2) = 0;
 
+  // Small routine for error printout, depending on infoPtr existing or not.
+  void printErr(string errMsg, Info* infoPtr = 0) {
+    if (infoPtr !=0) infoPtr->errorMsg(errMsg);
+    else cout << errMsg << endl;
+  }
+
 };
 
 //==========================================================================
@@ -173,6 +179,10 @@ public:
     string xmlPath = "../share/Pythia8/xmldoc/", Info* infoPtr = 0)
     : PDF(idBeamIn) {init( iFitIn,  xmlPath, infoPtr);}
 
+  // Constructor with a stream.
+  MSTWpdf(int idBeamIn = 2212, istream& is = std::cin, Info* infoPtr = 0)
+    : PDF(idBeamIn) {init( is, infoPtr);}
+
 private:
 
   // Constants: could only be changed in the code itself.
@@ -186,6 +196,9 @@ private:
 
   // Initialization of data array.
   void init( int iFitIn, string xmlPath, Info* infoPtr);
+
+  // Initialization through a stream.
+  void init( istream& is, Info* infoPtr);
 
   // Update PDF values.
   void xfUpdate(int , double x, double Q2);
@@ -232,6 +245,11 @@ public:
     : PDF(idBeamIn), doExtraPol(false) {rescale = rescaleIn,
     init( iFitIn, xmlPath, infoPtr);}
 
+  // Constructor with a stream.
+  CTEQ6pdf(int idBeamIn = 2212, istream& is = std::cin, bool isPdsGrid = false,
+    Info* infoPtr = 0) : PDF(idBeamIn), doExtraPol(false) {
+    init( is, isPdsGrid, infoPtr);}
+
   // Allow extrapolation beyond boundaries. This is optional.
   void setExtrapolate(bool doExtraPolIn) {doExtraPol = doExtraPolIn;}
 
@@ -250,6 +268,9 @@ private:
 
   // Initialization of data array.
   void init( int iFitIn, string xmlPath, Info* infoPtr);
+
+  // Initialization through a stream.
+  void init( istream& is, bool isPdsGrid, Info* infoPtr);
 
   // Update PDF values.
   void xfUpdate(int id, double x, double Q2);
@@ -273,8 +294,8 @@ class ProtonPoint : public PDF {
 public:
 
   // Constructor.
-  ProtonPoint(int idBeamIn = 2212, Info* infoPtrIn = 0) :
-              PDF(idBeamIn), m_infoPtr(infoPtrIn) {}
+  ProtonPoint(int idBeamIn = 2212, Info* infoPtrIn = 0)
+    : PDF(idBeamIn), infoPtr(infoPtrIn) {}
 
 private:
 
@@ -288,7 +309,7 @@ private:
   double phiFunc(double x, double Q);
 
   // Info and errors
-  Info* m_infoPtr;
+  Info* infoPtr;
 
 };
 
@@ -360,6 +381,11 @@ public:
    : PDF(idBeamIn), doExtraPol(false)  {rescale = rescaleIn;
    init( iFit, xmlPath, infoPtr);}
 
+  // Constructor with a stream.
+ PomH1FitAB(int idBeamIn = 990, double rescaleIn = 1., istream& is = std::cin,
+   Info* infoPtr = 0) : PDF(idBeamIn), doExtraPol(false) {
+   rescale = rescaleIn; init( is, infoPtr);}
+
   // Allow extrapolation beyond boundaries. This is optional.
   void setExtrapolate(bool doExtraPolIn) {doExtraPol = doExtraPolIn;}
 
@@ -374,6 +400,9 @@ private:
 
   // Initialization of data array.
   void init( int iFit, string xmlPath, Info* infoPtr);
+
+  // Initialization through a stream.
+  void init( istream& is, Info* infoPtr);
 
   // Update PDF values.
   void xfUpdate(int , double x, double );
@@ -392,10 +421,15 @@ class PomH1Jets : public PDF {
 public:
 
   // Constructor.
-  PomH1Jets(int idBeamIn = 990,  double rescaleIn = 1.,
+  PomH1Jets(int idBeamIn = 990, int iFit = 1, double rescaleIn = 1.,
     string xmlPath = "../share/Pythia8/xmldoc/", Info* infoPtr = 0)
     : PDF(idBeamIn), doExtraPol(false) {rescale = rescaleIn;
-    init( xmlPath, infoPtr);}
+    init( iFit, xmlPath, infoPtr);}
+
+  // Constructor with a stream.
+  PomH1Jets(int idBeamIn = 990,  double rescaleIn = 1., istream& is = std::cin,
+    Info* infoPtr = 0) : PDF(idBeamIn), doExtraPol(false) {rescale = rescaleIn;
+    init( is, infoPtr);}
 
   // Allow extrapolation beyond boundaries. This is optional.
   void setExtrapolate(bool doExtraPolIn) {doExtraPol = doExtraPolIn;}
@@ -412,7 +446,10 @@ private:
   double charmGrid[100][88];
 
   // Initialization of data array.
-  void init( string xmlPath, Info* infoPtr);
+  void init( int iFit, string xmlPath, Info* infoPtr);
+
+  // Initialization through a stream.
+  void init( istream& is, Info* infoPtr);
 
   // Update PDF values.
   void xfUpdate(int id, double x, double );
@@ -503,6 +540,11 @@ public:
     fQ2Grid(NULL), fLogQ2Grid(NULL), fRes(NULL) {
     init( iFitIn, xmlPath, infoPtr); };
 
+  // Constructor with a stream.
+  NNPDF(int idBeamIn = 2212, istream& is = std::cin, Info* infoPtr = 0)
+    : PDF(idBeamIn), fPDFGrid(NULL), fXGrid(NULL), fLogXGrid(NULL),
+    fQ2Grid(NULL), fLogQ2Grid(NULL), fRes(NULL) { init( is, infoPtr); };
+
   // Destructor.
   ~NNPDF() {
     if (fPDFGrid) {
@@ -541,6 +583,9 @@ private:
 
   // Initialization of data array.
   void init( int iFitIn, string xmlPath, Info* infoPtr);
+
+  // Initialization through a stream.
+  void init( istream& is, Info* infoPtr);
 
   // Update PDF values.
   void xfUpdate(int id, double x, double Q2);
@@ -670,6 +715,62 @@ private:
   double hadronlikeVal(double x, double s);
   double hadronlikeC(double x, double s, double Q2);
   double hadronlikeB(double x, double s, double Q2);
+
+};
+
+//==========================================================================
+
+// The LHAGrid1 can be used to read files in the LHAPDF6 lhagrid1 format,
+// assuming that the same x grid is used for all Q subgrids.
+// Results are not identical with LHAPDF6, owing do different interpolation.
+
+class LHAGrid1 : public PDF {
+
+public:
+
+  // Constructor.
+  LHAGrid1(int idBeamIn = 2212, int iFitIn = 1,
+    string xmlPath = "../share/Pythia8/xmldoc/", Info* infoPtr = 0)
+    : PDF(idBeamIn), doExtraPol(false), pdfGrid(NULL), pdfSlope(NULL) {
+    init( iFitIn, xmlPath, infoPtr); };
+
+  // Constructor with a stream.
+  LHAGrid1(int idBeamIn = 2212, istream& is = std::cin, Info* infoPtr = 0)
+    : PDF(idBeamIn), doExtraPol(false), pdfGrid(NULL), pdfSlope(NULL) {
+    init( is, infoPtr); };
+
+  // Destructor.
+  ~LHAGrid1() { if (pdfGrid) { for (int iid = 0; iid < 12; ++iid) {
+    for (int ix = 0; ix < nx; ++ix) delete[] pdfGrid[iid][ix];
+    delete[] pdfGrid[iid]; } delete[] pdfGrid; }
+    if (pdfSlope) { for (int iid = 0; iid < 12; ++iid) delete[] pdfSlope[iid];
+    delete[] pdfSlope;} };
+
+  // Allow extrapolation beyond boundaries. This is optional.
+  void setExtrapolate(bool doExtraPolIn) {doExtraPol = doExtraPolIn;}
+
+private:
+
+  // Variables to be set during code initialization.
+  bool   doExtraPol;
+  int    iFit, nx, nq, nqSub;
+  vector<int> nqSum;
+  double xMin, xMax, qMin, qMax, pdfVal[12];
+  vector<double> xGrid, lnxGrid, qGrid, lnqGrid, qDiv;
+  double*** pdfGrid;
+  double** pdfSlope;
+
+  // Initialization of data array.
+  void init( int iFitIn, string xmlPath, Info* infoPtr);
+
+  // Initialization through a stream.
+  void init( istream& is, Info* infoPtr);
+
+  // Update PDF values.
+  void xfUpdate(int id, double x, double Q2);
+
+  // Interpolation in the grid for a given PDF flavour.
+  void xfxevolve(double x, double Q2);
 
 };
 

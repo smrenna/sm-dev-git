@@ -714,8 +714,13 @@ bool LHAupLHEF::setInitLHEF( istream & isIn, bool readHead ) {
 
       // Tell XML parser to ignore comment and CDATA blocks
       // If we are currently inside a comment block, check for block end
-      if (commentDepth >= 1 && line.find("-->") != string::npos)
+      if (commentDepth >= 1 && line.find("-->") != string::npos) {
         commentDepth--;
+        size_t comBeg = line.find("-->")+2;
+        size_t comEnd = line.find_last_not_of("\n\t\v\b\r\f\a ");
+        if( comEnd == comBeg ) continue;
+        line = line.substr(comBeg,comEnd-comBeg+1);
+      }
       if (commentDepth >= 1 && line.find("]]>") != string::npos)
         commentDepth--;
       // If the comment block did not end on this line, skip to next line
@@ -762,6 +767,7 @@ bool LHAupLHEF::setInitLHEF( istream & isIn, bool readHead ) {
           lineClean = line.substr(posBeg, posEnd - posBeg + 1);
           posBeg = 0;
           posEnd = lineClean.size();
+          line = lineClean;
         }
 
         // Check for empty line

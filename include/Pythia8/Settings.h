@@ -186,6 +186,9 @@ public:
   bool init(string startFile = "../xmldoc/Index.xml", bool append = false,
     ostream& os = cout) ;
 
+  // Read in database from stream.
+  bool init(istream& is, bool append = false, ostream& os = cout) ;
+
   // Overwrite existing database by reading from specific file.
   bool reInit(string startFile = "../xmldoc/Index.xml", ostream& os = cout) ;
 
@@ -195,9 +198,10 @@ public:
   // Keep track whether any readings have failed, invalidating run setup.
   bool readingFailed() {return readingFailedSave;}
 
-  // Write updates or everything to user-defined file.
+  // Write updates or everything to user-defined file or to stream.
   bool writeFile(string toFile, bool writeAll = false) ;
   bool writeFile(ostream& os = cout, bool writeAll = false) ;
+  bool writeFileXML(ostream& os = cout) ;
 
   // Print out table of database, either all or only changed ones,
   // or ones containing a given string.

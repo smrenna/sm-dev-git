@@ -141,6 +141,47 @@ Pythia::Pythia(Settings& settingsIn,ParticleData& particleDataIn,
 
 //--------------------------------------------------------------------------
 
+// Constructor from string streams.
+
+Pythia::Pythia( istream& settingsStrings, istream& particleDataStrings,
+  bool printBanner) {
+
+  // Initialise / reset pointers and global variables.
+  initPtrs();
+
+  // Copy settings database
+  settings.init( settingsStrings );
+
+  // Reset pointers to pertain to this PYTHIA object.
+  settings.initPtr( &info);
+  isConstructed = settings.getIsInit();
+  if (!isConstructed) {
+    info.errorMsg("Abort from Pythia::Pythia: settings unavailable");
+    return;
+  }
+
+  // Check XML and header version numbers match code version number.
+  if (!checkVersion()) return;
+
+  // Read in files with all particle data.
+  particleData.initPtr( &info, &settings, &rndm, couplingsPtr);
+  isConstructed = particleData.init( particleDataStrings );
+  if (!isConstructed) {
+    info.errorMsg("Abort from Pythia::Pythia: particle data unavailable");
+    return;
+  }
+
+  // Write the Pythia banner to output.
+  if (printBanner) banner();
+
+  // Not initialized until at the end of the init() call.
+  isInit = false;
+  info.addCounter(0);
+
+}
+
+//--------------------------------------------------------------------------
+
 // Destructor.
 
 Pythia::~Pythia() {
@@ -650,8 +691,8 @@ bool Pythia::init() {
 
   // Initialize SLHA interface (including SLHA/BSM couplings).
   bool useSLHAcouplings = false;
+  slhaInterface = SLHAinterface();
   slhaInterface.setPtr( &info );
-
   slhaInterface.init( settings, &rndm, couplingsPtr, &particleData,
     useSLHAcouplings, particleDataBuffer );
   if (useSLHAcouplings) couplingsPtr = slhaInterface.couplingsPtr;
@@ -1446,7 +1487,7 @@ bool Pythia::forceHadronLevel(bool findJunctions) {
       partonSystems.addSys();
       for (int i = 5;i < event.size();++i) {
         if (event[i].mother1() - 3 < 0 || event[i].mother1() - 3 > 1) {
-          info.errorMsg("Error from Pythia::forceHadronLevel: "
+          info.errorMsg("Error in Pythia::forceHadronLevel: "
             " Event is not setup correctly for SK-I or SK-II CR");
           return false;
         }
@@ -2245,7 +2286,7 @@ PDF* Pythia::getPDFPtr(int idIn, int sequence, string beam) {
     else if (pomSet == 3 || pomSet == 4)
       tempPDFPtr = new PomH1FitAB( 990, pomSet - 2, rescale, xmlPath, &info);
     else if (pomSet == 5)
-      tempPDFPtr = new PomH1Jets( 990, rescale, xmlPath, &info);
+      tempPDFPtr = new PomH1Jets( 990, 1, rescale, xmlPath, &info);
     else if (pomSet == 6)
       tempPDFPtr = new PomH1FitAB( 990, 3, rescale, xmlPath, &info);
     // The parametrizations of Alvero, Collins, Terron and Whitmore.

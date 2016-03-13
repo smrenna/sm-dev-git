@@ -179,6 +179,141 @@ bool Settings::init(string startFile, bool append, ostream& os) {
 
 }
 
+
+//--------------------------------------------------------------------------
+
+// Read in database from specific stream.
+
+bool Settings::init(istream& is, bool append, ostream& os) {
+
+  // Don't initialize if it has already been done and not in append mode.
+  if (isInit && !append) return true;
+  int nError = 0;
+
+  // Check that instream is OK.
+  if (!is.good()) {
+    os << "\n PYTHIA Error: settings stream not found " << endl;
+    return false;
+  }
+
+  // Read in one line at a time.
+  string line;
+  while ( getline(is, line) ) {
+
+    // Get first word of a line, to interpret it as tag.
+    istringstream getfirst(line);
+    string tag;
+    getfirst >> tag;
+
+    // Skip ahead if not interesting. Only look for new files in startfile.
+    if (tag != "<flag" && tag != "<flagfix" && tag != "<mode"
+       && tag != "<modeopen" && tag != "<modepick" && tag != "<modefix"
+       && tag != "<parm" && tag != "<parmfix" && tag != "<word"
+       && tag != "<wordfix" && tag != "<fvec" && tag != "<fvecfix"
+       && tag != "<mvec" && tag != "<mvecfix"
+       && tag != "<pvec" && tag != "<pvecfix" && tag != "<aidx") continue;
+
+    // Read and append continuation line(s) if line does not contain >.
+    while (line.find(">") == string::npos) {
+      string addLine;
+      getline(is, addLine);
+      line += " " + addLine;
+    }
+
+    // Remove extra blanks before an = sign.
+    while (line.find(" =") != string::npos) line.erase( line.find(" ="), 1);
+
+    // Find name attribute.
+    string name = attributeValue( line, "name=");
+    if (name == "") {
+      os << " PYTHIA Error: failed to find name attribute in line "
+         << line << endl;
+      ++nError;
+      continue;
+    }
+
+    // Check that default value attribute present, and whether max and min.
+    if (line.find("default=") == string::npos) {
+      os << " PYTHIA Error: failed to find default value token in line "
+         << line << endl;
+      ++nError;
+      continue;
+    }
+    bool hasMin = (line.find("min=") != string::npos);
+    bool hasMax = (line.find("max=") != string::npos);
+
+    // Check for occurence of a bool and add to flag map.
+    if (tag == "<flag" || tag == "<flagfix") {
+      bool value = boolAttributeValue( line, "default=");
+      addFlag( name, value);
+
+    // Check for occurence of an int and add to mode map.
+    } else if (tag == "<mode" || tag == "<modeopen"
+      || tag == "<modepick" || tag == "<modefix") {
+      int value    = intAttributeValue( line, "default=");
+      int minVal   = intAttributeValue( line, "min=");
+      int maxVal   = intAttributeValue( line, "max=");
+
+      // Enforce check that only allowed options are accepted.
+      bool optOnly = false;
+      if (tag == "<modepick" && hasMin && hasMax) optOnly = true;
+      if (tag == "<modefix") {
+        hasMin  = true;
+        hasMax  = true;
+        minVal  = value;
+        maxVal  = value;
+        optOnly = true;
+      }
+      addMode( name, value, hasMin, hasMax, minVal, maxVal, optOnly);
+
+    // Check for occurence of a double and add to parm map.
+    } else if (tag == "<parm" || tag == "<parmfix") {
+      double value  = doubleAttributeValue( line, "default=");
+      double minVal = doubleAttributeValue( line, "min=");
+      double maxVal = doubleAttributeValue( line, "max=");
+      addParm( name, value, hasMin, hasMax, minVal, maxVal);
+
+    // Check for occurence of a string and add to word map.
+    } else if (tag == "<word" || tag == "<wordfix") {
+      string value = attributeValue( line, "default=");
+      addWord( name, value);
+
+    // Check for occurence of a bool vector and add to fvec map.
+    } else if (tag == "<fvec" || tag == "<fvecfix") {
+      vector<bool> value = boolVectorAttributeValue( line, "default=");
+      addFVec( name, value);
+
+    // Check for occurence of an int vector and add to mvec map.
+    } else if (tag == "<mvec" || tag == "<mvecfix") {
+      vector<int> value = intVectorAttributeValue( line, "default=");
+      int minVal = intAttributeValue( line, "min=");
+      int maxVal = intAttributeValue( line, "max=");
+      addMVec( name, value, hasMin, hasMax, minVal, maxVal);
+
+    // Check for occurence of a double vector and add to pvec map.
+    } else if (tag == "<pvec" || tag == "<pvecfix") {
+      vector<double> value = doubleVectorAttributeValue( line, "default=");
+      double minVal = doubleAttributeValue( line, "min=");
+      double maxVal = doubleAttributeValue( line, "max=");
+      addPVec( name, value, hasMin, hasMax, minVal, maxVal);
+    }
+
+  // End of loop over lines in input file and loop over files.
+  };
+
+  // Set up default e+e- and pp tunes, if positive.
+  int eeTune = mode("Tune:ee");
+  if (eeTune > 0) initTuneEE( eeTune);
+  int ppTune = mode("Tune:pp");
+  if (ppTune > 0) initTunePP( ppTune);
+
+  // Done.
+  if (nError > 0) return false;
+  isInit = true;
+  return true;
+
+}
+
 //--------------------------------------------------------------------------
 
 // Overwrite existing database by reading from specific file.
@@ -532,6 +667,188 @@ bool Settings::writeFile(ostream& os, bool writeAll) {
           os << *val << ",";
         } os << *(--valNow.end()) << "\n";
       }
+      ++pvecEntry;
+    }
+  } ;
+
+  // Done.
+  return true;
+}
+
+//--------------------------------------------------------------------------
+
+  // Write updates or everything to user-defined stream (or file).
+
+bool Settings::writeFileXML(ostream& os) {
+
+  // Iterators for the flag, mode and parm tables.
+  map<string, Flag>::iterator flagEntry = flags.begin();
+  map<string, Mode>::iterator modeEntry = modes.begin();
+  map<string, Parm>::iterator parmEntry = parms.begin();
+  map<string, Word>::iterator wordEntry = words.begin();
+  map<string, FVec>::iterator fvecEntry = fvecs.begin();
+  map<string, MVec>::iterator mvecEntry = mvecs.begin();
+  map<string, PVec>::iterator pvecEntry = pvecs.begin();
+
+  // Loop while there is something left to do.
+  while (flagEntry != flags.end() || modeEntry != modes.end()
+      || parmEntry != parms.end() || wordEntry != words.end()
+      || fvecEntry != fvecs.end() || mvecEntry != mvecs.end()
+      || pvecEntry != pvecs.end() ) {
+
+    // Check if a flag is next in lexigraphical order; if so print it.
+    if ( flagEntry != flags.end()
+      && ( modeEntry == modes.end() || flagEntry->first < modeEntry->first )
+      && ( parmEntry == parms.end() || flagEntry->first < parmEntry->first )
+      && ( wordEntry == words.end() || flagEntry->first < wordEntry->first )
+      && ( fvecEntry == fvecs.end() || flagEntry->first < fvecEntry->first )
+      && ( mvecEntry == mvecs.end() || flagEntry->first < mvecEntry->first )
+      && ( pvecEntry == pvecs.end() || flagEntry->first < pvecEntry->first )
+      ) {
+      string state[2] = {"off", "on"};
+      bool valDefault = flagEntry->second.valDefault;
+      os << "<flag name=\"" << flagEntry->second.name << "\" default=\""
+         << state[valDefault] << "\"></flag>" << endl;
+      ++flagEntry;
+
+    // Else check if mode is next, and if so print it.
+    } else if ( modeEntry != modes.end()
+      && ( parmEntry == parms.end() || modeEntry->first < parmEntry->first )
+      && ( wordEntry == words.end() || modeEntry->first < wordEntry->first )
+      && ( fvecEntry == fvecs.end() || modeEntry->first < fvecEntry->first )
+      && ( mvecEntry == mvecs.end() || modeEntry->first < mvecEntry->first )
+      && ( pvecEntry == pvecs.end() || modeEntry->first < pvecEntry->first )
+      ) {
+      int valDefault = modeEntry->second.valDefault;
+      os << "<mode name=\"" << modeEntry->second.name << "\" default=\""
+         << valDefault << "\">";
+      if (modeEntry->second.hasMin ) os << " min=\""
+        << modeEntry->second.valMin << "\"";
+      if (modeEntry->second.hasMax ) os << " max=\""
+        << modeEntry->second.valMax << "\"";
+      os << "</mode>" << endl;
+      ++modeEntry;
+
+    // Else check if parm is next, and if so print it;
+    // fixed or scientific depending on value.
+    } else if ( parmEntry != parms.end()
+      && ( wordEntry == words.end() || parmEntry->first < wordEntry->first )
+      && ( fvecEntry == fvecs.end() || parmEntry->first < fvecEntry->first )
+      && ( mvecEntry == mvecs.end() || parmEntry->first < mvecEntry->first )
+      && ( pvecEntry == pvecs.end() || parmEntry->first < pvecEntry->first )
+      ) {
+      double valDefault = parmEntry->second.valDefault;
+      os << "<parm name=\"" << parmEntry->second.name << "\" default=\"";
+      if ( valDefault == 0. ) os << fixed << setprecision(1);
+      else if ( abs(valDefault) < 0.001 ) os << scientific << setprecision(4);
+      else if ( abs(valDefault) < 0.1 ) os << fixed << setprecision(7);
+      else if ( abs(valDefault) < 1000. ) os << fixed << setprecision(5);
+      else if ( abs(valDefault) < 1000000. ) os << fixed << setprecision(3);
+      else os << scientific << setprecision(4);
+      os << valDefault << "\">";
+      if (parmEntry->second.hasMin) {
+        os << " min=\"";
+        valDefault = parmEntry->second.valMin;
+        if ( valDefault == 0. ) os << fixed << setprecision(1);
+        else if ( abs(valDefault) < 0.001) os << scientific << setprecision(4);
+        else if ( abs(valDefault) < 0.1 ) os << fixed << setprecision(7);
+        else if ( abs(valDefault) < 1000. ) os << fixed << setprecision(5);
+        else if ( abs(valDefault) < 1000000. ) os << fixed << setprecision(3);
+        else os << scientific << setprecision(4);
+        os << valDefault << "\">";
+      }
+      if (parmEntry->second.hasMax) {
+        os << " max=\"";
+        valDefault = parmEntry->second.valMax;
+        if ( valDefault == 0. ) os << fixed << setprecision(1);
+        else if ( abs(valDefault) < 0.001) os << scientific << setprecision(4);
+        else if ( abs(valDefault) < 0.1 ) os << fixed << setprecision(7);
+        else if ( abs(valDefault) < 1000. ) os << fixed << setprecision(5);
+        else if ( abs(valDefault) < 1000000. ) os << fixed << setprecision(3);
+        else os << scientific << setprecision(4);
+        os << valDefault << "\">";
+      }
+      os << "</parm>" << endl;
+      ++parmEntry;
+
+    // Else check if word is next, and if so print it.
+    } else  if ( wordEntry != words.end()
+      && ( fvecEntry == fvecs.end() || wordEntry->first < fvecEntry->first )
+      && ( mvecEntry == mvecs.end() || wordEntry->first < mvecEntry->first )
+      && ( pvecEntry == pvecs.end() || wordEntry->first < pvecEntry->first )
+      ) {
+      string valDefault = wordEntry->second.valDefault;
+      os << "<word name=\"" << wordEntry->second.name << "\" default=\""
+         << valDefault << "\"></word>" << endl;
+      ++wordEntry;
+
+    // Else check if fvec is next, and if so print it.
+    } else if ( fvecEntry != fvecs.end()
+      && ( mvecEntry == mvecs.end() || fvecEntry->first < mvecEntry->first )
+      && ( pvecEntry == pvecs.end() || fvecEntry->first < pvecEntry->first )
+      ) {
+      string state[2] = {"off", "on"};
+      vector<bool> valDefault = fvecEntry->second.valDefault;
+      os << "<fvec name=\"" << fvecEntry->second.name << "\" default=\"";
+      for (vector<bool>::iterator val = valDefault.begin();
+           val != --valDefault.end(); ++val) os << state[*val] << ",";
+      os << state[*(--valDefault.end())] << "\"></fvec>" << endl;
+      ++fvecEntry;
+
+    // Else check if mvec is next, and if so print it.
+    } else if ( mvecEntry != mvecs.end()
+      && ( pvecEntry == pvecs.end() || mvecEntry->first < pvecEntry->first )
+      ) {
+      vector<int> valDefault = mvecEntry->second.valDefault;
+      os << "<mvec name=\"" << mvecEntry->second.name << "\" default=\"";
+      for (vector<int>::iterator val = valDefault.begin();
+           val != --valDefault.end(); ++val) os << *val << ",";
+      os << *(--valDefault.end())        << "\">";
+      if (mvecEntry->second.hasMin ) os << " min=\""
+        << mvecEntry->second.valMin << "\"";
+      if (mvecEntry->second.hasMax ) os << " max=\""
+        << mvecEntry->second.valMax << "\"";
+      os << "</mvec>" << endl;
+      ++mvecEntry;
+
+    // Else print pvec; fixed or scientific depending on value.
+    } else {
+      vector<double> valDefault = pvecEntry->second.valDefault;
+      os << "<pvec name=\"" << pvecEntry->second.name << "\" default=\"";
+      for (vector<double>::iterator val = valDefault.begin();
+           val != --valDefault.end(); ++val) {
+          if ( *val == 0. ) os << fixed << setprecision(1);
+          else if ( abs(*val) < 0.001 ) os << scientific << setprecision(4);
+          else if ( abs(*val) < 0.1 ) os << fixed << setprecision(7);
+          else if ( abs(*val) < 1000. ) os << fixed << setprecision(5);
+          else if ( abs(*val) < 1000000. ) os << fixed << setprecision(3);
+          else os << scientific << setprecision(4);
+          os << *val << ",";
+      }
+      os << *(--valDefault.end())        << "\">";
+      if (pvecEntry->second.hasMin ) {
+        double valLocal = pvecEntry->second.valMin;
+        os << " min=\"";
+        if ( valLocal == 0. ) os << fixed << setprecision(1);
+        else if ( abs(valLocal) < 0.001 ) os << scientific << setprecision(4);
+        else if ( abs(valLocal) < 0.1 ) os << fixed << setprecision(7);
+        else if ( abs(valLocal) < 1000. ) os << fixed << setprecision(5);
+        else if ( abs(valLocal) < 1000000. ) os << fixed << setprecision(3);
+        else os << scientific << setprecision(4);
+        os << valLocal << "\">";
+      }
+      if (pvecEntry->second.hasMax ) {
+        double valLocal = pvecEntry->second.valMax;
+        os << " max=\"";
+        if ( valLocal == 0. ) os << fixed << setprecision(1);
+        else if ( abs(valLocal) < 0.001 ) os << scientific << setprecision(4);
+        else if ( abs(valLocal) < 0.1 ) os << fixed << setprecision(7);
+        else if ( abs(valLocal) < 1000. ) os << fixed << setprecision(5);
+        else if ( abs(valLocal) < 1000000. ) os << fixed << setprecision(3);
+        else os << scientific << setprecision(4);
+        os << valLocal << "\">";
+      }
+      os << "</pvec>" <<       endl;
       ++pvecEntry;
     }
   } ;

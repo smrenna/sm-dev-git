@@ -1785,7 +1785,7 @@ bool PartonLevel::resonanceShowers( Event& process, Event& event,
     // of coloured particles so abort event.
     if ( (colBef != 0 || acolBef != 0) && doReconnect && reconnectMode == 1
       && forceResonanceCR && !earlyResDec) {
-      infoPtr->errorMsg("Abort in PartonLevel::resonanceShower: "
+      infoPtr->errorMsg("Abort from PartonLevel::resonanceShower: "
         "new CR can't handle separate CR for coloured resonance decays");
       infoPtr->setAbortPartonLevel(true);
       return false;
