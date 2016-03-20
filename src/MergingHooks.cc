@@ -2030,8 +2030,7 @@ void HardProcess::clear() {
 // Initialise MergingHooks class
 
 void MergingHooks::init( Settings settings, Info* infoPtrIn,
-  ParticleData* particleDataPtrIn, PartonSystems* partonSystemsPtrIn,
-  ostream& os){
+  ParticleData* particleDataPtrIn, PartonSystems* partonSystemsPtrIn){
 
   // Save pointers
   infoPtr               = infoPtrIn;
@@ -2226,114 +2225,114 @@ void MergingHooks::init( Settings settings, Info* infoPtrIn,
 
   if (!writeBanner) return;
 
-  // Write banner
-  os << "\n *------------------ MEPS Merging Initialization  ---------------"
-     << "---*";
-  os << "\n |                                                               "
-     << "   |\n";
+  // Write banner.
+  cout << "\n *------------------ MEPS Merging Initialization  ---------------"
+       << "---*";
+  cout << "\n |                                                               "
+       << "   |\n";
   if ( doKTMergingSave || doMGMergingSave || doUserMergingSave
     || doPTLundMergingSave || doCutBasedMergingSave )
-    os << " | CKKW-L merge                                                  "
-       << "   |\n"
-       << " |"<< setw(34) << processSave << "  with up to"
-       << setw(3) << nJetMaxSave << " additional jets |\n";
+    cout << " | CKKW-L merge                                                  "
+         << "   |\n"
+         << " |"<< setw(34) << processSave << "  with up to"
+         << setw(3) << nJetMaxSave << " additional jets |\n";
   else if ( doNL3 )
-    os << " | NL3 merge                                                     "
-       << "   |\n"
-       << " |" << setw(31) << processSave << " with jets up to"
-       << setw(3) << nJetMaxNLOSave << " correct to NLO |\n"
-       << " | and up to" << setw(3) << nJetMaxSave
-       << " additional jets included by CKKW-L merging at LO    |\n";
+    cout << " | NL3 merge                                                     "
+         << "   |\n"
+         << " |" << setw(31) << processSave << " with jets up to"
+         << setw(3) << nJetMaxNLOSave << " correct to NLO |\n"
+         << " | and up to" << setw(3) << nJetMaxSave
+         << " additional jets included by CKKW-L merging at LO    |\n";
   else if ( doUNLOPS )
-    os << " | UNLOPS merge                                                  "
-       << "   |\n"
-       << " |" << setw(31) << processSave << " with jets up to"
-       << setw(3)<< nJetMaxNLOSave << " correct to NLO |\n"
-       << " | and up to" << setw(3) << nJetMaxSave
-       << " additional jets included by UMEPS merging at LO     |\n";
+    cout << " | UNLOPS merge                                                  "
+         << "   |\n"
+         << " |" << setw(31) << processSave << " with jets up to"
+         << setw(3)<< nJetMaxNLOSave << " correct to NLO |\n"
+         << " | and up to" << setw(3) << nJetMaxSave
+         << " additional jets included by UMEPS merging at LO     |\n";
   else if ( doUMEPS )
-    os << " | UMEPS merge                                                   "
-       << "   |\n"
-       << " |" << setw(34) << processSave << "  with up to"
-       << setw(3) << nJetMaxSave << " additional jets |\n";
+    cout << " | UMEPS merge                                                   "
+         << "   |\n"
+         << " |" << setw(34) << processSave << "  with up to"
+         << setw(3) << nJetMaxSave << " additional jets |\n";
 
   if ( doKTMergingSave )
-    os << " | Merging scale is defined in kT, with value ktMS = "
-       << tmsValueSave << " GeV";
+    cout << " | Merging scale is defined in kT, with value ktMS = "
+         << tmsValueSave << " GeV";
   else if ( doMGMergingSave )
-    os << " | Perform automanted MG/ME merging \n"
-       << " | Merging scale is defined in kT, with value ktMS = "
+    cout << " | Perform automanted MG/ME merging \n"
+         << " | Merging scale is defined in kT, with value ktMS = "
        << setw(6) << fixed << setprecision(1) << tmsValueSave << " GeV |";
   else if ( doUserMergingSave )
-    os << " | Merging scale is defined by the user, with value tMS = "
-       << setw(6) << fixed << setprecision(1) << tmsValueSave << "     |";
+    cout << " | Merging scale is defined by the user, with value tMS = "
+         << setw(6) << fixed << setprecision(1) << tmsValueSave << "     |";
   else if ( doPTLundMergingSave )
-    os << " | Merging scale is defined by Lund pT, with value tMS = "
-       << setw(6) << fixed << setprecision(1) << tmsValueSave << " GeV |";
+    cout << " | Merging scale is defined by Lund pT, with value tMS = "
+         << setw(6) << fixed << setprecision(1) << tmsValueSave << " GeV |";
   else if ( doCutBasedMergingSave )
-    os << " | Merging scale is defined by combination of Delta R_{ij}, pT_i "
-       << "   |\n"
-       << " | and Q_{ij} cut, with values                                   "
-       << "   |\n"
-       << " | Delta R_{ij,min} = "
-       << setw(7) << scientific << setprecision(2) << tmsListSave[0]
-       << "                                      |\n"
-       << " | pT_{i,min}       = "
-       << setw(6) << fixed << setprecision(1) << tmsListSave[1]
-       << " GeV                                    |\n"
-       << " | Q_{ij,min}       = "
-       << setw(6) << fixed << setprecision(1) << tmsListSave[2]
-       << " GeV                                    |";
+    cout << " | Merging scale is defined by combination of Delta R_{ij}, pT_i "
+         << "   |\n"
+         << " | and Q_{ij} cut, with values                                   "
+         << "   |\n"
+         << " | Delta R_{ij,min} = "
+         << setw(7) << scientific << setprecision(2) << tmsListSave[0]
+         << "                                      |\n"
+         << " | pT_{i,min}       = "
+         << setw(6) << fixed << setprecision(1) << tmsListSave[1]
+         << " GeV                                    |\n"
+         << " | Q_{ij,min}       = "
+         << setw(6) << fixed << setprecision(1) << tmsListSave[2]
+         << " GeV                                    |";
   else if ( doNL3TreeSave )
-    os << " | Generate tree-level O(alpha_s)-subtracted events              "
-       << "   |\n"
-       << " | Merging scale is defined by Lund pT, with value tMS = "
-       << setw(6) << fixed << setprecision(1) << tmsValueSave << " GeV |";
+    cout << " | Generate tree-level O(alpha_s)-subtracted events              "
+         << "   |\n"
+         << " | Merging scale is defined by Lund pT, with value tMS = "
+         << setw(6) << fixed << setprecision(1) << tmsValueSave << " GeV |";
   else if ( doNL3LoopSave )
-    os << " | Generate virtual correction unit-weight events                "
-       << "   |\n"
-       << " | Merging scale is defined by Lund pT, with value tMS = "
+    cout << " | Generate virtual correction unit-weight events                "
+         << "   |\n"
+         << " | Merging scale is defined by Lund pT, with value tMS = "
        << setw(6) << fixed << setprecision(1) << tmsValueSave << " GeV |";
   else if ( doNL3SubtSave )
-    os << " | Generate reclustered tree-level events                        "
-       << "   |\n"
-       << " | Merging scale is defined by Lund pT, with value tMS = "
-       << setw(6) << fixed << setprecision(1) << tmsValueSave << " GeV |";
+    cout << " | Generate reclustered tree-level events                        "
+         << "   |\n"
+         << " | Merging scale is defined by Lund pT, with value tMS = "
+         << setw(6) << fixed << setprecision(1) << tmsValueSave << " GeV |";
   else if ( doUNLOPSTreeSave )
-    os << " | Generate tree-level O(alpha_s)-subtracted events              "
-       << "   |\n"
-       << " | Merging scale is defined by Lund pT, with value tMS = "
-       << setw(6) << fixed << setprecision(1) << tmsValueSave << " GeV |";
+    cout << " | Generate tree-level O(alpha_s)-subtracted events              "
+         << "   |\n"
+         << " | Merging scale is defined by Lund pT, with value tMS = "
+         << setw(6) << fixed << setprecision(1) << tmsValueSave << " GeV |";
   else if ( doUNLOPSLoopSave )
-    os << " | Generate virtual correction unit-weight events                "
-       << "   |\n"
-       << " | Merging scale is defined by Lund pT, with value tMS = "
-       << setw(6) << fixed << setprecision(1) << tmsValueSave << " GeV |";
+    cout << " | Generate virtual correction unit-weight events                "
+         << "   |\n"
+         << " | Merging scale is defined by Lund pT, with value tMS = "
+         << setw(6) << fixed << setprecision(1) << tmsValueSave << " GeV |";
   else if ( doUNLOPSSubtSave )
-    os << " | Generate reclustered tree-level events                        "
-       << "   |\n"
-       << " | Merging scale is defined by Lund pT, with value tMS = "
-       << setw(6) << fixed << setprecision(1) << tmsValueSave << " GeV |";
+    cout << " | Generate reclustered tree-level events                        "
+         << "   |\n"
+         << " | Merging scale is defined by Lund pT, with value tMS = "
+         << setw(6) << fixed << setprecision(1) << tmsValueSave << " GeV |";
   else if ( doUNLOPSSubtNLOSave )
-    os << " | Generate reclustered loop-level events                        "
-       << "   |\n"
-       << " | Merging scale is defined by Lund pT, with value tMS = "
-       << setw(6) << fixed << setprecision(1) << tmsValueSave << " GeV |";
+    cout << " | Generate reclustered loop-level events                        "
+         << "   |\n"
+         << " | Merging scale is defined by Lund pT, with value tMS = "
+         << setw(6) << fixed << setprecision(1) << tmsValueSave << " GeV |";
   else if ( doUMEPSTreeSave )
-    os << " | Generate tree-level events                                    "
-       << "   |\n"
-       << " | Merging scale is defined by Lund pT, with value tMS = "
-       << setw(6) << fixed << setprecision(1) << tmsValueSave << " GeV |";
+    cout << " | Generate tree-level events                                    "
+         << "   |\n"
+         << " | Merging scale is defined by Lund pT, with value tMS = "
+         << setw(6) << fixed << setprecision(1) << tmsValueSave << " GeV |";
   else if ( doUMEPSSubtSave )
-    os << " | Generate reclustered tree-level events                        "
-       << "   |\n"
-       << " | Merging scale is defined by Lund pT, with value tMS = "
-       << setw(6) << fixed << setprecision(1) << tmsValueSave << " GeV |";
+    cout << " | Generate reclustered tree-level events                        "
+         << "   |\n"
+         << " | Merging scale is defined by Lund pT, with value tMS = "
+         << setw(6) << fixed << setprecision(1) << tmsValueSave << " GeV |";
 
-  os << "\n |                                                               "
-     << "   |";
-  os << "\n *-------------- END MEPS Merging Initialization  ---------------"
-     << "---*\n\n";
+  cout << "\n |                                                               "
+       << "   |";
+  cout << "\n *-------------- END MEPS Merging Initialization  ---------------"
+       << "---*\n\n";
 
 }
 

@@ -148,7 +148,7 @@ public:
   bool getHasWeaklyRadiated() {return hasWeaklyRadiated;}
 
   // Print dipole list; for debug mainly.
-  virtual void list( ostream& os = cout) const;
+  virtual void list() const;
 
   // Functions to allow usage of shower kinematics, evolution variables,
   // and splitting probabilities outside of shower.

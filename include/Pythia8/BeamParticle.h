@@ -212,7 +212,7 @@ public:
     return resolved.size() - 1;}
 
   // Print extracted parton list; for debug mainly.
-  void list(ostream& os = cout) const;
+  void list() const;
 
   // How many different flavours, and how many quarks of given flavour.
   int nValenceKinds() const {return nValKinds;}

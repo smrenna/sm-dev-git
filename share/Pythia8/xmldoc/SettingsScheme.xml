@@ -315,10 +315,11 @@ initialize pointer to error-message database. Internal.
 </method> 
  
 <method name="bool Settings::init(string 
-startFile = &quot;../xmldoc/Index.xml&quot;, bool append = false, 
-ostream& os = cout)"> 
+startFile = &quot;../share/Pythia8/xmldoc/Index.xml&quot;, 
+bool append = false)"> 
 read in the settings database. 
-<argument name="startFile" default="&quot;../xmldoc/Index.xml&quot;"> 
+<argument name="startFile" 
+default="&quot;../share/Pythia8/xmldoc/Index.xml&quot;"> 
 read in the settings from all the files listed in this file, and 
 assumed to be located in the same subdirectory. 
 </argument> 
@@ -326,27 +327,27 @@ assumed to be located in the same subdirectory.
 By default nothing is done if the method has already been called once. 
 If true the further settings read in are added to the current database. 
 </argument> 
-<argument name="os" default="cout"> 
-stream for error printout. 
-</argument> 
 <note>Note:</note> The method returns false if it fails. 
+</method> 
+ 
+<method name="bool init(istream& is, bool append = false)"> 
+read in the settings from an input stream. This allows initialization 
+without reading the xml files directly, which is useful for initialization 
+of multiple copies of Pythia8. 
 </method> 
  
 <method name="bool Settings::reInit(string 
-startFile = &quot;../xmldoc/Index.xml&quot;, ostream& os = cout)"> 
+startFile = &quot;../share/Pythia8/xmldoc/Index.xml&quot;)"> 
 overwrite the existing database. 
-<argument name="startFile" default="&quot;../xmldoc/Index.xml&quot;"> 
+<argument name="startFile" 
+default="&quot;../share/Pythia8/xmldoc/Index.xml&quot;"> 
 read in the settings from all the files listed in this file, and 
 assumed to be located in the same subdirectory. 
-</argument> 
-<argument name="os" default="cout"> 
-stream for error printout. 
 </argument> 
 <note>Note:</note> The method returns false if it fails. 
 </method> 
  
-<method name="bool Settings::readString(string line, 
-bool warn = true, ostream& os = cout)"> 
+<method name="bool Settings::readString(string line, bool warn = true)"> 
 read in a string, and change the relevant quantity in the database. 
 It is normally used indirectly, via 
 <code>Pythia::readString(...)</code> and 
@@ -357,9 +358,6 @@ the string to be interpreted as an instruction.
 <argument name="warn" default="on"> 
 write a warning message or not whenever the instruction does not make 
 sense, e.g. if the variable does not exist in the databases. 
-</argument> 
-<argument name="os" default="cout"> 
-stream for error printout. 
 </argument> 
 <note>Note:</note> the method returns false if it fails to 
 make sense out of the input string. 
@@ -381,19 +379,20 @@ but if true then all settings are output.
 <note>Note:</note> the method returns false if it fails. 
 </methodmore> 
  
-<method name="void Settings::listAll(ostream& os = cout)"> 
+<method name="bool writeFileXML(ostream& os = cout)"> 
+write out the information stored in xmldoc to be used later to 
+initialize Settings through an input stream. 
 </method> 
-<methodmore name="void Settings::listChanged(ostream& os = cout)"> 
+ 
+<method name="void Settings::listAll()"> 
+</method> 
+<methodmore name="void Settings::listChanged()"> 
 </methodmore> 
-<methodmore name="void Settings::list(string match, 
-ostream& os = cout)"> 
+<methodmore name="void Settings::list(string match)"> 
 list all or changed settings, or a group of them. 
 <argument name="match"> 
 list all those settings where the name contains 
 the <code>match</code> (sub)string (case-insensitive). 
-</argument> 
-<argument name="os" default="cout"> 
-output stream for the listing. 
 </argument> 
 </methodmore> 
  

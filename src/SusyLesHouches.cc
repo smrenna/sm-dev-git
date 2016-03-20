@@ -101,7 +101,7 @@ int SusyLesHouches::readFile(istream& is, int verboseIn,
         lhefSlha     = true;
         foundSlhaTag = true;
         //Print header if not already done
-        if (! headerPrinted) printHeader();
+        if (! headerPrinted) listHeader();
       }
       //Stop looking when </header> or <init> tag reached
       if (line.find("</header>") != string::npos ||
@@ -139,7 +139,7 @@ int SusyLesHouches::readFile(istream& is, int verboseIn,
     if (line.find("block") <= 1) {
 
       //Print header if not already done
-      if (! headerPrinted) printHeader();
+      if (! headerPrinted) listHeader();
 
       blockIn=line ;
       decay="";
@@ -290,7 +290,7 @@ int SusyLesHouches::readFile(istream& is, int verboseIn,
     else if (line.find("decay") <= 1) {
 
       // Print header if not already done
-      if (! headerPrinted) printHeader();
+      if (! headerPrinted) listHeader();
 
       // If previous had zero length, print now
       if (decay != "" && ! decayPrinted) {
@@ -628,7 +628,7 @@ int SusyLesHouches::readFile(istream& is, int verboseIn,
   };
 
   //Print footer
-  printFooter();
+  listFooter();
 
   //Return 0 if read-in successful
   if ( lhefRead && !foundSlhaTag) {
@@ -642,7 +642,7 @@ int SusyLesHouches::readFile(istream& is, int verboseIn,
 
 // Print a header with information on version, last date of change, etc.
 
-void SusyLesHouches::printHeader() {
+void SusyLesHouches::listHeader() {
   if (verboseSav == 0) return;
   setprecision(3);
   if (! headerPrinted) {
@@ -661,7 +661,7 @@ void SusyLesHouches::printHeader() {
 
 // Print a footer
 
-void SusyLesHouches::printFooter() {
+void SusyLesHouches::listFooter() {
   if (verboseSav == 0) return;
   if (! footerPrinted) {
     //    cout << " *" << endl;
@@ -677,13 +677,13 @@ void SusyLesHouches::printFooter() {
 // Print the current spectrum on stdout.
 // Not yet fully implemented.
 
-void SusyLesHouches::printSpectrum(int ifail) {
+void SusyLesHouches::listSpectrum(int ifail) {
 
   // Exit if output switched off
   if (verboseSav <= 0) return;
 
   // Print header if not already done
-  if (! headerPrinted) printHeader();
+  if (! headerPrinted) listHeader();
   message(0,"","");
 
   // Print Calculator and File name
@@ -1236,7 +1236,7 @@ void SusyLesHouches::printSpectrum(int ifail) {
   // Print footer
   footerPrinted=false;
   message(0,"","");
-  printFooter();
+  listFooter();
 }
 
 //--------------------------------------------------------------------------
@@ -1245,7 +1245,7 @@ void SusyLesHouches::printSpectrum(int ifail) {
 
 int SusyLesHouches::checkSpectrum() {
 
-  if (! headerPrinted) printHeader();
+  if (! headerPrinted) listHeader();
   int ifail=0;
   bool foundModsel = modsel.exists();
   if (! foundModsel) {
@@ -1828,7 +1828,7 @@ int SusyLesHouches::checkSpectrum() {
     message(0,"checkSpectrum","one or more serious problems were found");
 
   //Print Footer
-  printFooter();
+  listFooter();
 
   //Return
   return ifail;

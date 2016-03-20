@@ -988,8 +988,8 @@ bool ParticleData::processXML(bool reset) {
 void ParticleData::listXML(string outFile) {
 
   // Convert file name to ofstream.
-    const char* cstring = outFile.c_str();
-    ofstream os(cstring);
+  const char* cstring = outFile.c_str();
+  ofstream os(cstring);
 
   // Iterate through the particle data table.
   for (map<int, ParticleDataEntry>::iterator pdtEntry
@@ -1221,7 +1221,7 @@ void ParticleData::listFF(string outFile) {
 // Read in updates from a character string, like a line of a file.
 // Is used by readString (and readFile) in Pythia.
 
-  bool ParticleData::readString(string lineIn, bool warn, ostream& os) {
+  bool ParticleData::readString(string lineIn, bool warn) {
 
   // If empty line then done.
   if (lineIn.find_first_not_of(" \n\t\v\b\r\f\a") == string::npos) return true;
@@ -1247,7 +1247,7 @@ void ParticleData::listFF(string outFile) {
   // Check that valid particle.
   if ( (!isParticle(idTmp) && property  != "all" && property  != "new")
   || idTmp <= 0) {
-    if (warn) os << "\n PYTHIA Error: input particle not found in Particle"
+    if (warn) cout << "\n PYTHIA Error: input particle not found in Particle"
       << " Data Table:\n   " << lineIn << "\n";
     readingFailedSave = true;
     return false;
@@ -1554,7 +1554,7 @@ void ParticleData::listFF(string outFile) {
   }
 
   // Return false if failed to recognize property.
-  if (warn) os << "\n PYTHIA Error: input property not found in Particle"
+  if (warn) cout << "\n PYTHIA Error: input property not found in Particle"
     << " Data Table:\n   " << lineIn << "\n";
   readingFailedSave = true;
   return false;
@@ -1565,22 +1565,22 @@ void ParticleData::listFF(string outFile) {
 
 // Print out complete or changed table of database in numerical order.
 
-void ParticleData::list(bool changedOnly, bool changedRes, ostream& os) {
+void ParticleData::list(bool changedOnly, bool changedRes) {
 
   // Table header; output for bool as off/on.
   if (!changedOnly) {
-    os << "\n --------  PYTHIA Particle Data Table (complete)  --------"
-       << "------------------------------------------------------------"
-       << "--------------\n \n";
+    cout << "\n --------  PYTHIA Particle Data Table (complete)  --------"
+         << "------------------------------------------------------------"
+         << "--------------\n \n";
 
   } else {
-    os << "\n --------  PYTHIA Particle Data Table (changed only)  ----"
-       << "------------------------------------------------------------"
-       << "--------------\n \n";
+    cout << "\n --------  PYTHIA Particle Data Table (changed only)  ----"
+         << "------------------------------------------------------------"
+         << "--------------\n \n";
   }
-  os << "      id   name            antiName         spn chg col      m0"
-     << "        mWidth      mMin       mMax       tau0    res dec ext "
-     << "vis wid\n             no onMode   bRatio   meMode     products \n";
+  cout << "      id   name            antiName         spn chg col      m0"
+       << "        mWidth      mMin       mMax       tau0    res dec ext "
+       << "vis wid\n             no onMode   bRatio   meMode     products \n";
 
   // Iterate through the particle data table. Option to skip unchanged.
   int nList = 0;
@@ -1593,17 +1593,87 @@ void ParticleData::list(bool changedOnly, bool changedRes, ostream& os) {
       // Pick format for mass and width based on mass value.
       double m0Now = particlePtr->m0();
       if (m0Now == 0 || (m0Now > 0.1 && m0Now < 1000.))
-        os << fixed << setprecision(5);
-      else os << scientific << setprecision(3);
+           cout << fixed << setprecision(5);
+      else cout << scientific << setprecision(3);
 
       // Print particle properties.
       ++nList;
-      os << "\n" << setw(8) << particlePtr->id() << "  " << left;
+      cout << "\n" << setw(8) << particlePtr->id() << "  " << left;
       if (particlePtr->name(-1) == "void")
-        os << setw(33) << particlePtr->name() << "  ";
-      else os << setw(16) << particlePtr->name() << " "
-         << setw(16) << particlePtr->name(-1) << "  ";
-      os << right << setw(2) << particlePtr->spinType() << "  "
+           cout << setw(33) << particlePtr->name() << "  ";
+      else cout << setw(16) << particlePtr->name() << " "
+                << setw(16) << particlePtr->name(-1) << "  ";
+      cout << right << setw(2) << particlePtr->spinType() << "  "
+           << setw(2) << particlePtr->chargeType() << "  "
+           << setw(2) << particlePtr->colType() << " "
+           << setw(10) << particlePtr->m0() << " "
+           << setw(10) << particlePtr->mWidth() << " "
+           << setw(10) << particlePtr->mMin() << " "
+           << setw(10) << particlePtr->mMax() << " "
+           << scientific << setprecision(5)
+           << setw(12) << particlePtr->tau0() << "  " << setw(2)
+           << particlePtr->isResonance() << "  " << setw(2)
+           << (particlePtr->mayDecay() && particlePtr->canDecay())
+           << "  " << setw(2) << particlePtr->doExternalDecay() << "  "
+           << setw(2) << particlePtr->isVisible()<< "  "
+           << setw(2) << particlePtr->doForceWidth() << "\n";
+
+      // Loop through the decay channel table for each particle.
+      if (particlePtr->sizeChannels() > 0) {
+        for (int i = 0; i < int(particlePtr->sizeChannels()); ++i) {
+          const DecayChannel& channel = particlePtr->channel(i);
+          cout << "          "  << setprecision(7) << setw(5) << i
+               << setw(6) << channel.onMode() << fixed<< setw(12)
+               << channel.bRatio() << setw(5) << channel.meMode() << " ";
+          for (int j = 0; j < channel.multiplicity(); ++j)
+            cout << setw(8) << channel.product(j) << " ";
+          cout << "\n";
+        }
+      }
+    }
+
+  }
+
+  // End of loop over database contents.
+  if (changedOnly && nList == 0) cout << "\n no particle data has been "
+       << "changed from its default value \n";
+  cout << "\n --------  End PYTHIA Particle Data Table  -----------------"
+       << "--------------------------------------------------------------"
+       << "----------\n" << endl;
+
+}
+
+//--------------------------------------------------------------------------
+
+// Print out partial table of database in input order.
+
+void ParticleData::list(vector<int> idList) {
+
+  // Table header; output for bool as off/on.
+  cout << "\n --------  PYTHIA Particle Data Table (partial)  ---------"
+       << "------------------------------------------------------------"
+       << "--------------\n \n";
+  cout << "      id   name            antiName         spn chg col      m0"
+       << "        mWidth      mMin       mMax       tau0    res dec ext "
+       << "vis wid\n             no onMode   bRatio   meMode     products \n";
+
+  // Iterate through the given list of input particles.
+  for (int i = 0; i < int(idList.size()); ++i) {
+    particlePtr = particleDataEntryPtr(idList[i]);
+
+    // Pick format for mass and width based on mass value.
+    double m0Now = particlePtr->m0();
+    if (m0Now == 0 || (m0Now > 0.1 && m0Now < 1000.))
+         cout << fixed << setprecision(5);
+    else cout << scientific << setprecision(3);
+
+    // Print particle properties.
+    cout << "\n" << setw(8) << particlePtr->id() << "  " << left;
+    if (particlePtr->name(-1) == "void")
+         cout << setw(33) << particlePtr->name() << "  ";
+    else cout << setw(16) << particlePtr->name() << " "
+       << setw(16) << particlePtr->name(-1) << "  ";
+    cout << right << setw(2) << particlePtr->spinType() << "  "
          << setw(2) << particlePtr->chargeType() << "  "
          << setw(2) << particlePtr->colType() << " "
          << setw(10) << particlePtr->m0() << " "
@@ -1615,102 +1685,28 @@ void ParticleData::list(bool changedOnly, bool changedRes, ostream& os) {
          << particlePtr->isResonance() << "  " << setw(2)
          << (particlePtr->mayDecay() && particlePtr->canDecay())
          << "  " << setw(2) << particlePtr->doExternalDecay() << "  "
-         << setw(2) << particlePtr->isVisible()<< "  "
+         << setw(2) << particlePtr->isVisible() << "  "
          << setw(2) << particlePtr->doForceWidth() << "\n";
-
-      // Loop through the decay channel table for each particle.
-      if (particlePtr->sizeChannels() > 0) {
-        for (int i = 0; i < int(particlePtr->sizeChannels()); ++i) {
-          const DecayChannel& channel = particlePtr->channel(i);
-          os << "          "  << setprecision(7)
-             << setw(5) << i
-             << setw(6) << channel.onMode()
-             << fixed<< setw(12) << channel.bRatio()
-             << setw(5) << channel.meMode() << " ";
-          for (int j = 0; j < channel.multiplicity(); ++j)
-            os << setw(8) << channel.product(j) << " ";
-          os << "\n";
-        }
-      }
-    }
-
-  }
-
-  // End of loop over database contents.
-  if (changedOnly && nList == 0) os << "\n no particle data has been "
-    << "changed from its default value \n";
-  os << "\n --------  End PYTHIA Particle Data Table  -----------------"
-     << "--------------------------------------------------------------"
-     << "----------\n" << endl;
-
-}
-
-//--------------------------------------------------------------------------
-
-// Print out partial table of database in input order.
-
-void ParticleData::list(vector<int> idList, ostream& os) {
-
-  // Table header; output for bool as off/on.
-  os << "\n --------  PYTHIA Particle Data Table (partial)  ---------"
-     << "------------------------------------------------------------"
-     << "--------------\n \n";
-  os << "      id   name            antiName         spn chg col      m0"
-     << "        mWidth      mMin       mMax       tau0    res dec ext "
-     << "vis wid\n             no onMode   bRatio   meMode     products \n";
-
-  // Iterate through the given list of input particles.
-  for (int i = 0; i < int(idList.size()); ++i) {
-    particlePtr = particleDataEntryPtr(idList[i]);
-
-    // Pick format for mass and width based on mass value.
-    double m0Now = particlePtr->m0();
-    if (m0Now == 0 || (m0Now > 0.1 && m0Now < 1000.))
-      os << fixed << setprecision(5);
-    else os << scientific << setprecision(3);
-
-    // Print particle properties.
-    os << "\n" << setw(8) << particlePtr->id() << "  " << left;
-    if (particlePtr->name(-1) == "void")
-      os << setw(33) << particlePtr->name() << "  ";
-    else os << setw(16) << particlePtr->name() << " "
-       << setw(16) << particlePtr->name(-1) << "  ";
-    os << right << setw(2) << particlePtr->spinType() << "  "
-       << setw(2) << particlePtr->chargeType() << "  "
-       << setw(2) << particlePtr->colType() << " "
-       << setw(10) << particlePtr->m0() << " "
-       << setw(10) << particlePtr->mWidth() << " "
-       << setw(10) << particlePtr->mMin() << " "
-       << setw(10) << particlePtr->mMax() << " "
-       << scientific << setprecision(5)
-       << setw(12) << particlePtr->tau0() << "  " << setw(2)
-       << particlePtr->isResonance() << "  " << setw(2)
-       << (particlePtr->mayDecay() && particlePtr->canDecay())
-       << "  " << setw(2) << particlePtr->doExternalDecay() << "  "
-       << setw(2) << particlePtr->isVisible() << "  "
-       << setw(2) << particlePtr->doForceWidth() << "\n";
 
     // Loop through the decay channel table for each particle.
     if (particlePtr->sizeChannels() > 0) {
       for (int j = 0; j < int(particlePtr->sizeChannels()); ++j) {
         const DecayChannel& channel = particlePtr->channel(j);
-        os << "          "  << setprecision(7)
-           << setw(5) << j
-           << setw(6) << channel.onMode()
-           << fixed<< setw(12) << channel.bRatio()
-           << setw(5) << channel.meMode() << " ";
+        cout << "          "  << setprecision(7) << setw(5) << j
+             << setw(6) << channel.onMode() << fixed << setw(12)
+             << channel.bRatio() << setw(5) << channel.meMode() << " ";
         for (int k = 0; k < channel.multiplicity(); ++k)
-          os << setw(8) << channel.product(k) << " ";
-        os << "\n";
+          cout << setw(8) << channel.product(k) << " ";
+        cout << "\n";
       }
     }
 
   }
 
   // End of loop over database contents.
-  os << "\n --------  End PYTHIA Particle Data Table  -----------------"
-     << "--------------------------------------------------------------"
-     << "----------\n" << endl;
+  cout << "\n --------  End PYTHIA Particle Data Table  -----------------"
+       << "--------------------------------------------------------------"
+       << "----------\n" << endl;
 
 }
 
@@ -1725,11 +1721,11 @@ void ParticleData::list(vector<int> idList, ostream& os) {
 //           = 2:  also print branching-ratio-averaged threshold mass.
 //      = 11, 12: as 1, 2, but include resonances in detailed checks.
 
-void ParticleData::checkTable(int verbosity, ostream& os) {
+void ParticleData::checkTable(int verbosity) {
 
   // Header.
-  os << "\n --------  PYTHIA Check of Particle Data Table  ------------"
-     <<"------\n\n";
+  cout << "\n --------  PYTHIA Check of Particle Data Table  ------------"
+       <<"------\n\n";
   int nErr = 0;
 
   // Loop through all particles.
@@ -1755,8 +1751,8 @@ void ParticleData::checkTable(int verbosity, ostream& os) {
     // Check that particle name consistent with charge information.
     string particleName = particlePtr->name(1);
     if (particleName.size() > 16) {
-      os << " Warning: particle " << idNow << " has name " << particleName
-         << " of length " << particleName.size() << "\n";
+      cout << " Warning: particle " << idNow << " has name " << particleName
+           << " of length " << particleName.size() << "\n";
       hasPrinted = true;
       ++nErr;
     }
@@ -1768,8 +1764,8 @@ void ParticleData::checkTable(int verbosity, ostream& os) {
     }
     if ( (nPos > 0 && nNeg > 0) || ( nPos + nNeg > 0
       && 3 * (nPos - nNeg) != chargeTypeNow )) {
-      os << " Warning: particle " << idNow << " has name " << particleName
-         << " inconsistent with charge type " << chargeTypeNow << "\n";
+      cout << " Warning: particle " << idNow << " has name " << particleName
+           << " inconsistent with charge type " << chargeTypeNow << "\n";
       hasPrinted = true;
       ++nErr;
     }
@@ -1778,8 +1774,8 @@ void ParticleData::checkTable(int verbosity, ostream& os) {
     if (hasAntiNow) {
       particleName = particlePtr->name(-1);
       if (particleName.size() > 16) {
-        os << " Warning: particle " << idNow << " has name " << particleName
-           << " of length " << particleName.size() << "\n";
+        cout << " Warning: particle " << idNow << " has name " << particleName
+             << " of length " << particleName.size() << "\n";
         hasPrinted = true;
         ++nErr;
       }
@@ -1791,9 +1787,9 @@ void ParticleData::checkTable(int verbosity, ostream& os) {
       }
       if ( (nPos > 0 && nNeg > 0) || ( nPos + nNeg > 0
         && 3 * (nPos - nNeg) != -chargeTypeNow )) {
-        os << " Warning: particle " << -idNow << " has name "
-           << particleName << " inconsistent with charge type "
-           << -chargeTypeNow << "\n";
+        cout << " Warning: particle " << -idNow << " has name "
+             << particleName << " inconsistent with charge type "
+             << -chargeTypeNow << "\n";
         hasPrinted = true;
         ++nErr;
       }
@@ -1802,23 +1798,23 @@ void ParticleData::checkTable(int verbosity, ostream& os) {
     // Check that mass, mass range and width are consistent.
     if (particlePtr->useBreitWigner()) {
       if (mMinNow > m0Now) {
-        os << " Error: particle " << idNow << " has mMin "
-           << fixed << setprecision(5) << mMinNow
-           << " larger than m0 " << m0Now << "\n";
+        cout << " Error: particle " << idNow << " has mMin "
+             << fixed << setprecision(5) << mMinNow
+             << " larger than m0 " << m0Now << "\n";
         hasPrinted = true;
         ++nErr;
       }
       if (mMaxNow > mMinNow && mMaxNow < m0Now) {
-        os << " Error: particle " << idNow << " has mMax "
-           << fixed << setprecision(5) << mMaxNow
-           << " smaller than m0 " << m0Now << "\n";
+        cout << " Error: particle " << idNow << " has mMax "
+             << fixed << setprecision(5) << mMaxNow
+             << " smaller than m0 " << m0Now << "\n";
         hasPrinted = true;
         ++nErr;
       }
       if (mMaxNow > mMinNow && mMaxNow - mMinNow < mWidthNow) {
-        os << " Warning: particle " << idNow << " has mMax - mMin "
-           << fixed << setprecision(5) << mMaxNow - mMinNow
-           << " smaller than mWidth " << mWidthNow << "\n";
+        cout << " Warning: particle " << idNow << " has mMax - mMin "
+             << fixed << setprecision(5) << mMaxNow - mMinNow
+             << " smaller than mWidth " << mWidthNow << "\n";
         hasPrinted = true;
         ++nErr;
       }
@@ -1826,9 +1822,9 @@ void ParticleData::checkTable(int verbosity, ostream& os) {
 
     // Check that particle does not both have width and lifetime.
     if (mWidthNow > 0. && tau0Now > 0.) {
-      os << " Warning: particle " << idNow << " has both nonvanishing width "
-         << scientific << setprecision(5) << mWidthNow << " and lifetime "
-         << tau0Now << "\n";
+      cout << " Warning: particle " << idNow << " has both nonvanishing width "
+           << scientific << setprecision(5) << mWidthNow << " and lifetime "
+           << tau0Now << "\n";
       hasPrinted = true;
       ++nErr;
     }
@@ -1863,8 +1859,8 @@ void ParticleData::checkTable(int verbosity, ostream& os) {
         // Error printout when unknown decay product code.
         for (int j = 0; j < 8; ++j) {
           if ( prod[j] != 0 && !isParticle(prod[j]) ) {
-            os << " Error: unknown decay product for " << idNow
-               << " -> " << prod[j] << "\n";
+            cout << " Error: unknown decay product for " << idNow
+                 << " -> " << prod[j] << "\n";
             hasPrinted = true;
             ++nErr;
             continue;
@@ -1876,10 +1872,10 @@ void ParticleData::checkTable(int verbosity, ostream& os) {
         for (int j = 0; j < 8; ++j)
           if (prod[j] != 0) nLast = j + 1;
         if (mult == 0 || mult != nLast) {
-          os << " Error: corrupted decay product list for "
-             <<  particlePtr->id() << " -> ";
-          for (int j = 0; j < 8; ++j) os << prod[j] << " ";
-          os << "\n";
+          cout << " Error: corrupted decay product list for "
+               <<  particlePtr->id() << " -> ";
+          for (int j = 0; j < 8; ++j) cout << prod[j] << " ";
+          cout << "\n";
           hasPrinted = true;
           ++nErr;
           continue;
@@ -1903,19 +1899,19 @@ void ParticleData::checkTable(int verbosity, ostream& os) {
 
         // Error printout when charge or baryon number not conserved.
         if (chargeTypeSum != 0 && canHandle) {
-          os << " Error: 3*charge changed by " << chargeTypeSum
-             << " in " << idNow << " -> ";
-          for (int j = 0; j < mult; ++j) os << prod[j] << " ";
-          os << "\n";
+          cout << " Error: 3*charge changed by " << chargeTypeSum
+               << " in " << idNow << " -> ";
+          for (int j = 0; j < mult; ++j) cout << prod[j] << " ";
+          cout << "\n";
           hasPrinted = true;
           ++nErr;
           continue;
         }
         if ( baryonTypeSum != 0 && canHandle && particlePtr->isHadron() ) {
-          os << " Error: 3*baryon number changed by " << baryonTypeSum
-             << " in " << idNow << " -> ";
-          for (int j = 0; j < mult; ++j) os << prod[j] << " ";
-          os << "\n";
+          cout << " Error: 3*baryon number changed by " << baryonTypeSum
+               << " in " << idNow << " -> ";
+          for (int j = 0; j < mult; ++j) cout << prod[j] << " ";
+          cout << "\n";
           hasPrinted = true;
           ++nErr;
           continue;
@@ -2023,10 +2019,10 @@ void ParticleData::checkTable(int verbosity, ostream& os) {
 
         // Print if incorrect matrix element mode.
         if ( !correctME ) {
-          os << " Warning: meMode " << meMode << " used for "
-             << idNow << " -> ";
-          for (int j = 0; j < mult; ++j) os << prod[j] << " ";
-          os << "\n";
+          cout << " Warning: meMode " << meMode << " used for "
+               << idNow << " -> ";
+          for (int j = 0; j < mult; ++j) cout << prod[j] << " ";
+          cout << "\n";
           hasPrinted = true;
           ++nErr;
         }
@@ -2035,11 +2031,11 @@ void ParticleData::checkTable(int verbosity, ostream& os) {
         if ( studyCloser && verbosity > 0  && canHandle && onMode > 0
           && particlePtr->m0Min() - minFinalMass < 0. ) {
           if (particlePtr->m0Max() - minFinalMass < 0.)
-            os << " Error: decay never possible for ";
-          else  os << " Warning: decay sometimes not possible for ";
-          os << idNow << " -> ";
-          for (int j = 0; j < mult; ++j) os << prod[j] << " ";
-          os << "\n";
+               cout << " Error: decay never possible for ";
+          else cout << " Warning: decay sometimes not possible for ";
+          cout << idNow << " -> ";
+          for (int j = 0; j < mult; ++j) cout << prod[j] << " ";
+          cout << "\n";
           hasPrinted = true;
           ++nErr;
         }
@@ -2051,16 +2047,16 @@ void ParticleData::checkTable(int verbosity, ostream& os) {
       // Optional printout of threshold.
       if (verbosity%10 > 1 && particlePtr->useBreitWigner()) {
         threshMass /= bRatioSum;
-        os << " Info: particle " << idNow << fixed << setprecision(5)
-           << " has average mass threshold " << threshMass
-           << " while mMin is " << mMinNow << "\n";
+        cout << " Info: particle " << idNow << fixed << setprecision(5)
+             << " has average mass threshold " << threshMass
+             << " while mMin is " << mMinNow << "\n";
         hasPrinted = true;
       }
 
       // Error printout when no acceptable decay channels found.
       if (studyCloser && !openChannel) {
-        os << " Error: no acceptable decay channel found for particle "
-           << idNow << "\n";
+        cout << " Error: no acceptable decay channel found for particle "
+             << idNow << "\n";
         hasPrinted = true;
         ++nErr;
       }
@@ -2068,29 +2064,29 @@ void ParticleData::checkTable(int verbosity, ostream& os) {
       // Warning printout when branching ratios do not sum to unity.
       if (studyCloser && (!hasAntiNow || (!hasPosBR && !hasNegBR))
         && abs(bRatioSum + bRatioPos - 1.) > 1e-8) {
-        os << " Warning: particle " << idNow  << fixed << setprecision(8)
-           << " has branching ratio sum " << bRatioSum << "\n";
+        cout << " Warning: particle " << idNow  << fixed << setprecision(8)
+             << " has branching ratio sum " << bRatioSum << "\n";
         hasPrinted = true;
         ++nErr;
       } else if (studyCloser && hasAntiNow
         && (abs(bRatioSum + bRatioPos - 1.) > 1e-8
         || abs(bRatioSum + bRatioNeg - 1.) > 1e-8)) {
-        os << " Warning: particle " << idNow  << fixed << setprecision(8)
-           << " has branching ratio sum " << bRatioSum + bRatioPos
-           << " while its antiparticle has " << bRatioSum + bRatioNeg
-           << "\n";
+        cout << " Warning: particle " << idNow  << fixed << setprecision(8)
+             << " has branching ratio sum " << bRatioSum + bRatioPos
+             << " while its antiparticle has " << bRatioSum + bRatioNeg
+             << "\n";
         hasPrinted = true;
         ++nErr;
       }
 
     // End study of decay channels and loop over particles.
     }
-    if (hasPrinted) os << "\n";
+    if (hasPrinted) cout << "\n";
   }
 
   // Final output. Done.
-  os << " Total number of errors and warnings is " << nErr << "\n";
-  os << "\n --------  End PYTHIA Check of Particle Data Table  --------"
+  cout << " Total number of errors and warnings is " << nErr << "\n";
+  cout << "\n --------  End PYTHIA Check of Particle Data Table  --------"
      << "------\n" << endl;
 
 }

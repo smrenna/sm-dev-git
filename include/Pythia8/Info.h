@@ -37,7 +37,7 @@ public:
     for (int i = 0; i < 40; ++i) counters[i] = 0;}
 
   // Listing of most available information on current event.
-  void   list(ostream& os = cout) const;
+  void   list() const;
 
   // Beam particles (in rest frame). CM energy of event.
   int    idA()                const {return idASave;}
@@ -174,13 +174,13 @@ public:
 
   // Print a message the first few times. Insert in database.
   void   errorMsg(string messageIn, string extraIn = " ",
-    bool showAlways = false, ostream& os = cout);
+    bool showAlways = false);
 
   // Provide total number of errors/aborts/warnings experienced to date.
   int    errorTotalNumber();
 
   // Print statistics on errors/aborts/warnings.
-  void   errorStatistics(ostream& os = cout);
+  void   errorStatistics();
 
   // Set initialization warning flag when too low pTmin in ISR/FSR/MPI.
   void   setTooLowPTmin(bool lowPTminIn) {lowPTmin = lowPTminIn;}

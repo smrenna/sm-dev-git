@@ -200,7 +200,7 @@ struct XMLTag {
   }
 
   // Print out this tag to a stream.
-  void print(ostream & os) const {
+  void list(ostream & os) const {
     os << "<" << name;
     for ( map<string,string>::const_iterator it = attr.begin();
           it != attr.end(); ++it )
@@ -211,7 +211,7 @@ struct XMLTag {
     }
     os << ">" << endl;
     for ( int i = 0, N = tags.size(); i < N; ++i )
-      tags[i]->print(os);
+      tags[i]->list(os);
 
     os << "````" << contents << "''''</" << name << ">" << endl;
   }
@@ -231,7 +231,7 @@ struct LHAweights {
   LHAweights(const XMLTag & tag);
 
   // Print out an XML tag.
-  void print(ostream & file) const;
+  void list(ostream & file) const;
 
   // Function to reset this object.
   void clear() {
@@ -265,7 +265,7 @@ struct LHAscales {
   LHAscales(const XMLTag & tag, double defscale = -1.0);
 
   // Print out the corresponding XML-tag.
-  void print(ostream & file) const;
+  void list(ostream & file) const;
 
   // Function to reset this object.
   void clear() {
@@ -309,7 +309,7 @@ struct LHAgenerator {
   LHAgenerator(const XMLTag & tag, string defname = "");
 
   // Print out the corresponding XML-tag.
-  void print(ostream & file) const;
+  void list(ostream & file) const;
 
   // Function to reset this object.
   void clear() {
@@ -347,7 +347,7 @@ struct LHAwgt {
   LHAwgt(const XMLTag & tag, double defwgt = 1.0);
 
   // Print out the corresponding XML-tag.
-  void print(ostream & file) const;
+  void list(ostream & file) const;
 
   // Function to reset this object.
   void clear() {
@@ -381,7 +381,7 @@ struct LHAweight {
   LHAweight(const XMLTag & tag, string defname = "");
 
   // Print out the corresponding XML-tag.
-  void print(ostream & file) const;
+  void list(ostream & file) const;
 
   // Function to reset this object.
   void clear() {
@@ -415,7 +415,7 @@ struct LHAweightgroup {
   LHAweightgroup(const XMLTag & tag);
 
   // Print out the corresponding XML-tag.
-  void print(ostream & file) const;
+  void list(ostream & file) const;
 
   // Function to reset this object.
   void clear() {
@@ -454,7 +454,7 @@ struct LHArwgt {
   LHArwgt(const XMLTag & tag);
 
   // Print out the corresponding XML-tag.
-  void print(ostream & file) const;
+  void list(ostream & file) const;
 
   // Function to reset this object.
   void clear() {
@@ -489,7 +489,7 @@ struct LHAinitrwgt {
   LHAinitrwgt(const XMLTag & tag);
 
   // Print out the corresponding XML-tag.
-  void print(ostream & file) const;
+  void list(ostream & file) const;
 
   // Function to reset this object.
   void clear() {
@@ -905,7 +905,7 @@ private:
 // The Writer class is initialized with a stream to which to write a
 // version 1.0 or 3.0 Les Houches Accord event file. In the init() function of
 // the Writer object the main XML tag, header and init blocks are written,
-// with the corresponding end tag is written by print_end_tag().
+// with the corresponding end tag is written by list_end_tag().
 // After a Writer object (in the following called "writer") has been created,
 // it is possible to assign version (3 by default) information by
 //
@@ -973,7 +973,7 @@ public:
   }
 
   // Write out the final XML end-tag.
-  void print_end_tag() {
+  void list_end_tag() {
     file << "</LesHouchesEvents>" << endl;
   }
 

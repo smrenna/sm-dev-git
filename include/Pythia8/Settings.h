@@ -183,17 +183,17 @@ public:
   void initPtr(Info* infoPtrIn) {infoPtr = infoPtrIn;}
 
   // Read in database from specific file.
-  bool init(string startFile = "../xmldoc/Index.xml", bool append = false,
-    ostream& os = cout) ;
+  bool init(string startFile = "../share/Pythia8/xmldoc/Index.xml",
+    bool append = false) ;
 
   // Read in database from stream.
-  bool init(istream& is, bool append = false, ostream& os = cout) ;
+  bool init(istream& is, bool append = false) ;
 
   // Overwrite existing database by reading from specific file.
-  bool reInit(string startFile = "../xmldoc/Index.xml", ostream& os = cout) ;
+  bool reInit(string startFile = "../share/Pythia8/xmldoc/Index.xml") ;
 
   // Read in one update from a single line.
-  bool readString(string line, bool warn = true, ostream& os = cout) ;
+  bool readString(string line, bool warn = true) ;
 
   // Keep track whether any readings have failed, invalidating run setup.
   bool readingFailed() {return readingFailedSave;}
@@ -205,12 +205,9 @@ public:
 
   // Print out table of database, either all or only changed ones,
   // or ones containing a given string.
-  void listAll(ostream& os = cout) {
-    list( true, false, " ", os); }
-  void listChanged(ostream& os = cout) {
-    list (false, false, " ", os); }
-  void list(string match, ostream& os = cout) {
-    list (false, true, match, os); }
+  void listAll() { list( true, false, " "); }
+  void listChanged() { list (false, false, " "); }
+  void list(string match) { list (false, true, match); }
 
   // Give back current value(s) as a string, whatever the type.
   string output(string keyIn, bool fullLine = true);
@@ -339,8 +336,7 @@ private:
   bool isInit, readingFailedSave;
 
   // Print out table of database, called from listAll and listChanged.
-  void list(bool doListAll, bool doListString, string match,
-    ostream& os = cout);
+  void list(bool doListAll, bool doListString, string match);
 
   // Master switch for program printout.
   void printQuiet(bool quiet);

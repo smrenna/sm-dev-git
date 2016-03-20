@@ -343,7 +343,7 @@ This method is not virtual. It is used to tell whether a weak gauge
 boson has been emitted in the shower evolution. 
 </method> 
  
-<method name="virtual void TimeShower::list( ostream& os = cout)"> 
+<method name="virtual void TimeShower::list()"> 
 This method is not at all required. In the current implementation it 
 outputs a list of all the dipole ends, with information on the 
 respective dipole. The routine is not called anywhere in the public 
@@ -588,7 +588,7 @@ This method is not virtual. It is used to tell whether a weak gauge
 boson has been emitted in the shower evolution. 
 </method> 
  
-<method name="virtual void SpaceShower::list( ostream& os = cout)"> 
+<method name="virtual void SpaceShower::list()"> 
 This method is not at all required. In the current implementation it 
 outputs a list of all the dipole ends, with information on the 
 respective dipole. The routine is not called anywhere in the public 

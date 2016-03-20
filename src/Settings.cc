@@ -21,7 +21,7 @@ namespace Pythia8 {
 
 // Read in database from specific file.
 
-bool Settings::init(string startFile, bool append, ostream& os) {
+bool Settings::init(string startFile, bool append) {
 
   // Don't initialize if it has already been done and not in append mode.
   if (isInit && !append) return true;
@@ -43,8 +43,8 @@ bool Settings::init(string startFile, bool append, ostream& os) {
 
     // Check that instream is OK.
     if (!is.good()) {
-      os << "\n PYTHIA Error: settings file " << files[i]
-         << " not found" << endl;
+      cout << "\n PYTHIA Error: settings file " << files[i]
+           << " not found" << endl;
       return false;
     }
 
@@ -79,8 +79,8 @@ bool Settings::init(string startFile, bool append, ostream& os) {
       if (tag == "<aidx") {
         string name = attributeValue( line, "href");
         if (name == "") {
-          os << " PYTHIA Error: failed to find name attribute in line "
-             << line << endl;
+          cout << " PYTHIA Error: failed to find name attribute in line "
+               << line << endl;
           ++nError;
           continue;
         }
@@ -91,16 +91,16 @@ bool Settings::init(string startFile, bool append, ostream& os) {
       // Find name attribute.
       string name = attributeValue( line, "name=");
       if (name == "") {
-        os << " PYTHIA Error: failed to find name attribute in line "
-           << line << endl;
+        cout << " PYTHIA Error: failed to find name attribute in line "
+             << line << endl;
         ++nError;
         continue;
       }
 
       // Check that default value attribute present, and whether max and min.
       if (line.find("default=") == string::npos) {
-        os << " PYTHIA Error: failed to find default value token in line "
-           << line << endl;
+        cout << " PYTHIA Error: failed to find default value token in line "
+             << line << endl;
         ++nError;
         continue;
       }
@@ -184,7 +184,7 @@ bool Settings::init(string startFile, bool append, ostream& os) {
 
 // Read in database from specific stream.
 
-bool Settings::init(istream& is, bool append, ostream& os) {
+bool Settings::init(istream& is, bool append) {
 
   // Don't initialize if it has already been done and not in append mode.
   if (isInit && !append) return true;
@@ -192,7 +192,7 @@ bool Settings::init(istream& is, bool append, ostream& os) {
 
   // Check that instream is OK.
   if (!is.good()) {
-    os << "\n PYTHIA Error: settings stream not found " << endl;
+    cout << "\n PYTHIA Error: settings stream not found " << endl;
     return false;
   }
 
@@ -226,16 +226,16 @@ bool Settings::init(istream& is, bool append, ostream& os) {
     // Find name attribute.
     string name = attributeValue( line, "name=");
     if (name == "") {
-      os << " PYTHIA Error: failed to find name attribute in line "
-         << line << endl;
+      cout << " PYTHIA Error: failed to find name attribute in line "
+           << line << endl;
       ++nError;
       continue;
     }
 
     // Check that default value attribute present, and whether max and min.
     if (line.find("default=") == string::npos) {
-      os << " PYTHIA Error: failed to find default value token in line "
-         << line << endl;
+      cout << " PYTHIA Error: failed to find default value token in line "
+           << line << endl;
       ++nError;
       continue;
     }
@@ -318,7 +318,7 @@ bool Settings::init(istream& is, bool append, ostream& os) {
 
 // Overwrite existing database by reading from specific file.
 
-bool Settings::reInit(string startFile, ostream& os) {
+bool Settings::reInit(string startFile) {
 
   // Reset maps to empty.
   flags.clear();
@@ -331,7 +331,7 @@ bool Settings::reInit(string startFile, ostream& os) {
 
   // Then let normal init do the rest.
   isInit = false;
-  return init(startFile, false, os);
+  return init(startFile, false);
 
 }
 
@@ -340,7 +340,7 @@ bool Settings::reInit(string startFile, ostream& os) {
 // Read in updates from a character string, like a line of a file.
 // Is used by readString (and readFile) in Pythia.
 
-bool Settings::readString(string line, bool warn, ostream& os) {
+bool Settings::readString(string line, bool warn) {
 
   // If empty line then done.
   if (line.find_first_not_of(" \n\t\v\b\r\f\a") == string::npos) return true;
@@ -403,7 +403,7 @@ bool Settings::readString(string line, bool warn, ostream& os) {
 
   // Warn and done if not in database.
   if (inDataBase == 0) {
-    if (warn) os << "\n PYTHIA Error: input string not found in settings"
+    if (warn) cout << "\n PYTHIA Error: input string not found in settings"
       << " databases::\n   " << line << endl;
     readingFailedSave = true;
     return false;
@@ -413,7 +413,7 @@ bool Settings::readString(string line, bool warn, ostream& os) {
   string valueString;
   splitLine >> valueString;
   if (!splitLine) {
-    if (warn) os << "\n PYTHIA Error: variable recognized, but its value"
+    if (warn) cout << "\n PYTHIA Error: variable recognized, but its value"
       << " not meaningful:\n   " << line << endl;
     readingFailedSave = true;
     return false;
@@ -421,7 +421,7 @@ bool Settings::readString(string line, bool warn, ostream& os) {
 
   // If value is a ? then echo the current value.
   if (valueString == "?") {
-    os << output(name);
+    cout << output(name);
     return true;
   }
 
@@ -436,13 +436,13 @@ bool Settings::readString(string line, bool warn, ostream& os) {
     int value;
     modeData >> value;
     if (!modeData) {
-      if (warn) os << "\n PYTHIA Error: variable recognized, but its value"
+      if (warn) cout << "\n PYTHIA Error: variable recognized, but its value"
         << " not meaningful:\n   " << line << endl;
       readingFailedSave = true;
       return false;
     }
     if (!mode(name, value)) {
-      if (warn) os << "\n PYTHIA Error: variable recognized, but its value"
+      if (warn) cout << "\n PYTHIA Error: variable recognized, but its value"
         << " non-existing option:\n   " << line << endl;
       readingFailedSave = true;
       return false;
@@ -454,7 +454,7 @@ bool Settings::readString(string line, bool warn, ostream& os) {
     double value;
     parmData >> value;
     if (!parmData) {
-      if (warn) os << "\n PYTHIA Error: variable recognized, but its value"
+      if (warn) cout << "\n PYTHIA Error: variable recognized, but its value"
         << " not meaningful:\n   " << line << endl;
       readingFailedSave = true;
       return false;
@@ -471,7 +471,7 @@ bool Settings::readString(string line, bool warn, ostream& os) {
     vector<bool> value(boolVectorAttributeValue(
       "value=\"" + valueString + "\"", "value="));
     if (!fvecData) {
-      if (warn) os << "\n PYTHIA Error: variable recognized, but its value"
+      if (warn) cout << "\n PYTHIA Error: variable recognized, but its value"
         << " not meaningful:\n   " << line << endl;
       readingFailedSave = true;
       return false;
@@ -484,7 +484,7 @@ bool Settings::readString(string line, bool warn, ostream& os) {
     vector<int> value(intVectorAttributeValue(
       "value=\"" + valueString + "\"", "value="));
     if (!mvecData) {
-      if (warn) os << "\n PYTHIA Error: variable recognized, but its value"
+      if (warn) cout << "\n PYTHIA Error: variable recognized, but its value"
         << " not meaningful:\n   " << line << endl;
       readingFailedSave = true;
       return false;
@@ -497,7 +497,7 @@ bool Settings::readString(string line, bool warn, ostream& os) {
     vector<double> value(doubleVectorAttributeValue(
       "value=\"" + valueString + "\"", "value="));
     if (!pvecData) {
-      if (warn) os << "\n PYTHIA Error: variable recognized, but its value"
+      if (warn) cout << "\n PYTHIA Error: variable recognized, but its value"
         << " not meaningful:\n   " << line << endl;
       readingFailedSave = true;
       return false;
@@ -861,25 +861,24 @@ bool Settings::writeFileXML(ostream& os) {
 
 // Print out table of database in lexigraphical order.
 
-void Settings::list(bool doListAll,  bool doListString, string match,
-  ostream& os) {
+void Settings::list(bool doListAll,  bool doListString, string match) {
 
   // Table header; output for bool as off/on.
   if (doListAll)
-    os << "\n *-------  PYTHIA Flag + Mode + Parm + Word + FVec + MVec + PVec "
-       << "Settings (all)  ----------------------------------* \n";
+    cout << "\n *-------  PYTHIA Flag + Mode + Parm + Word + FVec + MVec "
+       << "+ PVec Settings (all)  ----------------------------------* \n";
   else if (!doListString)
-    os << "\n *-------  PYTHIA Flag + Mode + Parm + Word + FVec + MVec + PVec "
-       << "Settings (changes only)  -------------------------* \n" ;
+    cout << "\n *-------  PYTHIA Flag + Mode + Parm + Word + FVec + MVec "
+       << "+ PVec Settings (changes only)  -------------------------* \n" ;
   else
-    os << "\n *-------  PYTHIA Flag + Mode + Parm + Word + FVec + MVec + PVec "
-       << "Settings (with requested string) -----------------* \n" ;
-  os << " |                                                           "
-     << "                                                      | \n"
-     << " | Name                                          |           "
-     << "           Now |      Default         Min         Max | \n"
-     << " |                                               |           "
-     << "               |                                      | \n";
+    cout << "\n *-------  PYTHIA Flag + Mode + Parm + Word + FVec + MVec "
+       << "+ PVec Settings (with requested string) -----------------* \n" ;
+  cout << " |                                                           "
+       << "                                                      | \n"
+       << " | Name                                          |           "
+       << "           Now |      Default         Min         Max | \n"
+       << " |                                               |           "
+       << "               |                                      | \n";
 
   // Convert input string to lowercase for match.
   match = toLower(match);
@@ -914,10 +913,10 @@ void Settings::list(bool doListAll,  bool doListString, string match,
       bool valDefault = flagEntry->second.valDefault;
       if ( doListAll || (!doListString && valNow != valDefault)
         || (doListString && flagEntry->first.find(match) != string::npos) )
-        os << " | " << setw(45) << left
-           << flagEntry->second.name << " | " << setw(24) << right
-           << state[valNow] << " | " << setw(12) << state[valDefault]
-           << "                         | \n";
+        cout << " | " << setw(45) << left
+             << flagEntry->second.name << " | " << setw(24) << right
+             << state[valNow] << " | " << setw(12) << state[valDefault]
+             << "                         | \n";
       ++flagEntry;
 
     // Else check if mode is next, and if so print it.
@@ -932,16 +931,16 @@ void Settings::list(bool doListAll,  bool doListString, string match,
       int valDefault = modeEntry->second.valDefault;
       if ( doListAll || (!doListString && valNow != valDefault)
         || (doListString && modeEntry->first.find(match) != string::npos) ) {
-        os << " | " << setw(45) << left
-           << modeEntry->second.name << " | " << setw(24) << right
-           << valNow << " | " << setw(12) << valDefault;
+        cout << " | " << setw(45) << left
+             << modeEntry->second.name << " | " << setw(24) << right
+             << valNow << " | " << setw(12) << valDefault;
         if (modeEntry->second.hasMin)
-          os << setw(12) << modeEntry->second.valMin;
-        else os << "            ";
+          cout << setw(12) << modeEntry->second.valMin;
+        else cout << "            ";
         if (modeEntry->second.hasMax)
-          os << setw(12) << modeEntry->second.valMax;
-        else os << "            ";
-        os << " | \n";
+          cout << setw(12) << modeEntry->second.valMax;
+        else cout << "            ";
+        cout << " | \n";
       }
       ++modeEntry;
 
@@ -957,30 +956,30 @@ void Settings::list(bool doListAll,  bool doListString, string match,
       double valDefault = parmEntry->second.valDefault;
       if ( doListAll || (!doListString && valNow != valDefault )
         || (doListString && parmEntry->first.find(match) != string::npos) ) {
-        os << " | " << setw(45) << left
-           << parmEntry->second.name << right << " |             ";
+        cout << " | " << setw(45) << left
+             << parmEntry->second.name << right << " |             ";
         for (int i = 0; i < 4; ++i) {
           if (i == 1) valNow = valDefault;
           if (i == 2) valNow = parmEntry->second.valMin;
           if (i == 3) valNow = parmEntry->second.valMax;
           if ( (i == 2 && !parmEntry->second.hasMin)
             || (i == 3 && !parmEntry->second.hasMax) )
-            os << "            ";
+            cout << "            ";
           else if ( valNow == 0. )
-            os << fixed << setprecision(1) << setw(12) << valNow;
+            cout << fixed << setprecision(1) << setw(12) << valNow;
           else if ( abs(valNow) < 0.001 )
-            os << scientific << setprecision(4) << setw(12) << valNow;
+            cout << scientific << setprecision(4) << setw(12) << valNow;
           else if ( abs(valNow) < 0.1 )
-            os << fixed << setprecision(7) << setw(12) << valNow;
+            cout << fixed << setprecision(7) << setw(12) << valNow;
           else if ( abs(valNow) < 1000. )
-            os << fixed << setprecision(5) << setw(12) << valNow;
+            cout << fixed << setprecision(5) << setw(12) << valNow;
           else if ( abs(valNow) < 1000000. )
-            os << fixed << setprecision(3) << setw(12) << valNow;
+            cout << fixed << setprecision(3) << setw(12) << valNow;
           else
-            os << scientific << setprecision(4) << setw(12) << valNow;
-          if (i == 0) os << " | ";
+            cout << scientific << setprecision(4) << setw(12) << valNow;
+          if (i == 0) cout << " | ";
         }
-        os << " | \n";
+        cout << " | \n";
       }
       ++parmEntry;
 
@@ -997,10 +996,10 @@ void Settings::list(bool doListAll,  bool doListString, string match,
       string blankPad( blankLeft, ' ');
       if ( doListAll || (!doListString && valNow != valDefault)
         || (doListString && wordEntry->first.find(match) != string::npos) )
-        os << " | " << setw(45) << left
-           << wordEntry->second.name << " | " << setw(24) << right
-           << valNow << " | " << setw(12) << valDefault << blankPad
-           << " | \n";
+        cout << " | " << setw(45) << left
+             << wordEntry->second.name << " | " << setw(24) << right
+             << valNow << " | " << setw(12) << valDefault << blankPad
+             << " | \n";
       ++wordEntry;
 
     // Else check if fvec is next, and if so print it.
@@ -1017,21 +1016,21 @@ void Settings::list(bool doListAll,  bool doListString, string match,
         for (unsigned int i = 0; i < valsNow.size() || i < valsDefault.size();
              ++i) {
           if ( i == 0 )
-            os << " | " << setw(45) << left
-               << fvecEntry->second.name << right << " |             ";
+            cout << " | " << setw(45) << left
+                 << fvecEntry->second.name << right << " |             ";
           else
-            os << " | " << setw(45) << " " << right << " |             ";
+            cout << " | " << setw(45) << " " << right << " |             ";
           for (int j = 0; j < 4; ++j) {
             if (i < valsNow.size()) valNow = valsNow[i];
             if (i < valsDefault.size()) valDefault = valsDefault[i];
             if (j == 1) valNow = valDefault;
             if ( (j == 0 && i >= valsNow.size())
                  || (j == 1 && i >= valsDefault.size()) || (j > 1) )
-              os << "            ";
-            else os << setw(12) << state[valNow];
-            if (j == 0) os << " | ";
+              cout << "            ";
+            else cout << setw(12) << state[valNow];
+            if (j == 0) cout << " | ";
           }
-          os << " | \n";
+          cout << " | \n";
         }
       }
       ++fvecEntry;
@@ -1048,10 +1047,10 @@ void Settings::list(bool doListAll,  bool doListString, string match,
         for (unsigned int i = 0; i < valsNow.size() || i < valsDefault.size();
              ++i) {
           if ( i == 0 )
-            os << " | " << setw(45) << left
-               << mvecEntry->second.name << right << " |             ";
+            cout << " | " << setw(45) << left
+                 << mvecEntry->second.name << right << " |             ";
           else
-            os << " | " << setw(45) << " " << right << " |             ";
+            cout << " | " << setw(45) << " " << right << " |             ";
           for (int j = 0; j < 4; ++j) {
             if (i < valsNow.size()) valNow = valsNow[i];
             if (i < valsDefault.size()) valDefault = valsDefault[i];
@@ -1062,11 +1061,11 @@ void Settings::list(bool doListAll,  bool doListString, string match,
                  || (j == 1 && i >= valsDefault.size())
                  || (j == 2 && !mvecEntry->second.hasMin)
                  || (j == 3 && !mvecEntry->second.hasMax) )
-              os << "            ";
-            else os << setw(12) << valNow;
-            if (j == 0) os << " | ";
+              cout << "            ";
+            else cout << setw(12) << valNow;
+            if (j == 0) cout << " | ";
           }
-          os << " | \n";
+          cout << " | \n";
         }
       }
       ++mvecEntry;
@@ -1081,10 +1080,10 @@ void Settings::list(bool doListAll,  bool doListString, string match,
         for (unsigned int i = 0; i < valsNow.size() || i < valsDefault.size();
              ++i) {
           if ( i == 0 )
-            os << " | " << setw(45) << left
-               << pvecEntry->second.name << right << " |             ";
+            cout << " | " << setw(45) << left
+                 << pvecEntry->second.name << right << " |             ";
           else
-            os << " | " << setw(45) << " " << right << " |             ";
+            cout << " | " << setw(45) << " " << right << " |             ";
           for (int j = 0; j < 4; ++j) {
             if (i < valsNow.size()) valNow = valsNow[i];
             if (i < valsDefault.size()) valDefault = valsDefault[i];
@@ -1095,22 +1094,22 @@ void Settings::list(bool doListAll,  bool doListString, string match,
                  || (j == 1 && i >= valsDefault.size())
                  || (j == 2 && !pvecEntry->second.hasMin)
                  || (j == 3 && !pvecEntry->second.hasMax) )
-              os << "            ";
+              cout << "            ";
             else if ( valNow == 0. )
-              os << fixed << setprecision(1) << setw(12) << valNow;
+              cout << fixed << setprecision(1) << setw(12) << valNow;
             else if ( abs(valNow) < 0.001 )
-              os << scientific << setprecision(4) << setw(12) << valNow;
+              cout << scientific << setprecision(4) << setw(12) << valNow;
             else if ( abs(valNow) < 0.1 )
-              os << fixed << setprecision(7) << setw(12) << valNow;
+              cout << fixed << setprecision(7) << setw(12) << valNow;
             else if ( abs(valNow) < 1000. )
-              os << fixed << setprecision(5) << setw(12) << valNow;
+              cout << fixed << setprecision(5) << setw(12) << valNow;
             else if ( abs(valNow) < 1000000. )
-              os << fixed << setprecision(3) << setw(12) << valNow;
+              cout << fixed << setprecision(3) << setw(12) << valNow;
             else
-              os << scientific << setprecision(4) << setw(12) << valNow;
-            if (j == 0) os << " | ";
+              cout << scientific << setprecision(4) << setw(12) << valNow;
+            if (j == 0) cout << " | ";
           }
-          os << " | \n";
+          cout << " | \n";
         }
       }
       ++pvecEntry;
@@ -1119,10 +1118,10 @@ void Settings::list(bool doListAll,  bool doListString, string match,
   } ;
 
   // End of loop over database contents.
-  os << " |                                                           "
-     << "                                                      | \n"
-     << " *-------  End PYTHIA Flag + Mode + Parm + Word + FVec + MVec + PVec "
-     << "Settings  ------------------------------------* " << endl;
+  cout << " |                                                           "
+       << "                                                      | \n"
+       << " *-------  End PYTHIA Flag + Mode + Parm + Word + FVec + MVec "
+       << "+ PVec Settings  ------------------------------------* " << endl;
 
 }
 

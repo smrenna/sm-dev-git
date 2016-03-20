@@ -315,22 +315,22 @@ rescaled by the factor <code>PomRescale</code> below.
 </option> 
 <option value="7">the ACTW B NLO <ei>Q^2</ei>-dependent 
 parametrization with <ei>epsilon=0.14</ei>, 
-based on a tune to HERA and ZEUS data <ref>Alv99</ref>, 
+based on a tune to H1 and ZEUS data <ref>Alv99</ref>, 
 rescaled by the factor <code>PomRescale</code> below. 
 </option> 
 <option value="8">the ACTW D NLO <ei>Q^2</ei>-dependent 
 parametrization with <ei>epsilon=0.14</ei>, 
-based on a tune to HERA and ZEUS data <ref>Alv99</ref>, 
+based on a tune to H1 and ZEUS data <ref>Alv99</ref>, 
 rescaled by the factor <code>PomRescale</code> below. 
 </option> 
 <option value="9">the ACTW SG NLO <ei>Q^2</ei>-dependent 
 parametrization with <ei>epsilon=0.14</ei>, 
-based on a tune to HERA and ZEUS data <ref>Alv99</ref>, 
+based on a tune to H1 and ZEUS data <ref>Alv99</ref>, 
 rescaled by the factor <code>PomRescale</code> below. 
 </option> 
 <option value="10">the ACTW D NLO <ei>Q^2</ei>-dependent 
 parametrization with <ei>epsilon=0.19</ei>, 
-based on a tune to HERA and ZEUS data <ref>Alv99</ref>, 
+based on a tune to H1 and ZEUS data <ref>Alv99</ref>, 
 rescaled by the factor <code>PomRescale</code> below. 
 </option> 
 </modepick> 

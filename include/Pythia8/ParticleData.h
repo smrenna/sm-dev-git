@@ -386,14 +386,14 @@ public:
     couplingsPtr = couplingsPtrIn;}
 
   // Read in database from specific file.
-  bool init(string startFile = "../xmldoc/ParticleData.xml") {
+  bool init(string startFile = "../share/Pythia8/xmldoc/ParticleData.xml") {
     initCommon(); return readXML(startFile);}
 
   // Read in database from saved file stored in memory.
-  bool init(const ParticleData &particleDataIn) {
+  bool init(const ParticleData& particleDataIn) {
     initCommon(); return copyXML(particleDataIn);}
 
-  // Read in database from istream.
+  // Read in database from an istream.
   bool init(istream& is) { initCommon(); return readXML(is);}
 
   // Overwrite existing database by reading from specific file.
@@ -422,27 +422,23 @@ public:
   void listFF(string outFile);
 
   // Read in one update from a single line.
-  bool readString(string lineIn, bool warn = true, ostream& os = cout) ;
+  bool readString(string lineIn, bool warn = true) ;
 
   // Keep track whether any readings have failed, invalidating run setup.
   bool readingFailed() {return readingFailedSave;}
 
   // Print out table of whole database, or of only part of it.
-  void listAll(ostream& os = cout) {list(false, true, os);}
-  void listChanged(ostream& os = cout) {list(true, false, os);}
-  void listChanged(bool changedRes, ostream& os = cout) {
-    list(true, changedRes, os);}
-  void list(bool changedOnly = false, bool changedRes = true,
-    ostream& os = cout);
+  void listAll() {list(false, true);}
+  void listChanged(bool changedRes = false) {list(true, changedRes);}
+  void list(bool changedOnly = false, bool changedRes = true);
 
   // Print out specified particles.
-  void list(int idList, ostream& os = cout) {vector<int> idListTemp;
-    idListTemp.push_back(idList); list( idListTemp, os);}
-  void list(vector<int> idList, ostream& os = cout);
+  void list(int idList) {vector<int> idListTemp;
+    idListTemp.push_back(idList); list( idListTemp);}
+  void list(vector<int> idList);
 
   // Check that table makes sense, especially for decays.
-  void checkTable(ostream& os = cout) {checkTable(1, os);};
-  void checkTable(int verbosity, ostream& os = cout) ;
+  void checkTable(int verbosity = 1) ;
 
   // Add new entry.
   void addParticle(int idIn, string nameIn = " ", int spinTypeIn = 0,

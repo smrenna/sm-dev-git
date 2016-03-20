@@ -5379,32 +5379,32 @@ void TimeShower::findAsymPol( Event& event, TimeDipoleEnd* dip) {
 
 // Print the list of dipoles.
 
-void TimeShower::list(ostream& os) const {
+void TimeShower::list() const {
 
   // Header.
-  os << "\n --------  PYTHIA TimeShower Dipole Listing  ----------------"
-     << "------------------------------------------------------- \n \n  "
-     << "  i    rad    rec       pTmax  col  chg  gam weak  oni   hv  is"
-     << "r  sys sysR type  MErec     mix  ord  spl  ~gR  pol \n"
-     << fixed << setprecision(3);
+  cout << "\n --------  PYTHIA TimeShower Dipole Listing  ----------------"
+       << "------------------------------------------------------- \n \n  "
+       << "  i    rad    rec       pTmax  col  chg  gam weak  oni   hv  is"
+       << "r  sys sysR type  MErec     mix  ord  spl  ~gR  pol \n"
+       << fixed << setprecision(3);
 
   // Loop over dipole list and print it.
   for (int i = 0; i < int(dipEnd.size()); ++i)
-  os << setw(5) << i                     << setw(7) << dipEnd[i].iRadiator
-     << setw(7) << dipEnd[i].iRecoiler   << setw(12) << dipEnd[i].pTmax
-     << setw(5) << dipEnd[i].colType     << setw(5) << dipEnd[i].chgType
-     << setw(5) << dipEnd[i].gamType     << setw(5) << dipEnd[i].weakType
-     << setw(5) << dipEnd[i].isOctetOnium
-     << setw(5) << dipEnd[i].isHiddenValley << setw(5) << dipEnd[i].isrType
-     << setw(5) << dipEnd[i].system      << setw(5) << dipEnd[i].systemRec
-     << setw(5) << dipEnd[i].MEtype      << setw(7) << dipEnd[i].iMEpartner
-     << setw(8) << dipEnd[i].MEmix       << setw(5) << dipEnd[i].MEorder
-     << setw(5) << dipEnd[i].MEsplit     << setw(5) << dipEnd[i].MEgluinoRec
-     << setw(5) << dipEnd[i].weakPol << "\n";
+  cout << setw(5) << i                     << setw(7) << dipEnd[i].iRadiator
+       << setw(7) << dipEnd[i].iRecoiler   << setw(12) << dipEnd[i].pTmax
+       << setw(5) << dipEnd[i].colType     << setw(5) << dipEnd[i].chgType
+       << setw(5) << dipEnd[i].gamType     << setw(5) << dipEnd[i].weakType
+       << setw(5) << dipEnd[i].isOctetOnium
+       << setw(5) << dipEnd[i].isHiddenValley << setw(5) << dipEnd[i].isrType
+       << setw(5) << dipEnd[i].system      << setw(5) << dipEnd[i].systemRec
+       << setw(5) << dipEnd[i].MEtype      << setw(7) << dipEnd[i].iMEpartner
+       << setw(8) << dipEnd[i].MEmix       << setw(5) << dipEnd[i].MEorder
+       << setw(5) << dipEnd[i].MEsplit     << setw(5) << dipEnd[i].MEgluinoRec
+       << setw(5) << dipEnd[i].weakPol << "\n";
 
   // Done.
-  os << "\n --------  End PYTHIA TimeShower Dipole Listing  ------------"
-     << "-------------------------------------------------------" << endl;
+  cout << "\n --------  End PYTHIA TimeShower Dipole Listing  ------------"
+       << "-------------------------------------------------------" << endl;
 
 }
 

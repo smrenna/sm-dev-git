@@ -851,11 +851,14 @@ information is <code>main38.cc</code>.
 LHEF 3.0 offers new features both in the initialisation and the event sections 
 of the input files. Possible information include extended 
 use of XML tags in the <code>&lt;header&gt;</code> and 
-<code>&lt;init&gt;</code> blocks: 
+<code>&lt;init&gt;</code> blocks.  The LHEF 3.0 information is stored 
+in a series <code>struct</code>'s: 
  
 <p/> 
  -- &nbsp; &nbsp; The <code>&lt;initrwgt&gt;</code> tag is a container 
- tag for weight and weightgroup tags. Currently, there is no dedicated 
+ tag for weight and weightgroup tags.   This information is stored 
+ internally in <code>LHAinitrwgt</code>. 
+ Currently, there is no dedicated 
  output for this tag. However, all the information stored in the tag can 
  be retrieved by using the <code>Info</code> class member pointer 
  <code>LHAinitrwgt Info::initrwgt</code>. 

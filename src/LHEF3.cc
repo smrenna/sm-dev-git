@@ -48,7 +48,7 @@ LHAweights::LHAweights(const XMLTag & tag) {
 
 // Print out.
 
-void LHAweights::print(ostream & file) const {
+void LHAweights::list(ostream & file) const {
   file << "<weights";
   for ( map<string,string>::const_iterator it = attributes.begin();
         it != attributes.end(); ++it )
@@ -83,7 +83,7 @@ LHAscales::LHAscales(const XMLTag & tag, double defscale)
 
 // Print out the corresponding XML-tag.
 
-void LHAscales::print(ostream & file) const {
+void LHAscales::list(ostream & file) const {
   file << "<scales";
   file << " muf=\"" << muf << "\"";
   file << " mur=\"" << mur << "\"";
@@ -118,7 +118,7 @@ LHAgenerator::LHAgenerator(const XMLTag & tag, string defname)
 
 // Print out the corresponding XML-tag.
 
-void LHAgenerator::print(ostream & file) const {
+void LHAgenerator::list(ostream & file) const {
   file << "<generator";
   if ( name    != "" ) file << " name=\""    << name    << "\"";
   if ( version != "" ) file << " version=\"" << version << "\"";
@@ -152,7 +152,7 @@ LHAwgt::LHAwgt(const XMLTag & tag, double defwgt)
 
 // Print out the corresponding XML-tag.
 
-void LHAwgt::print(ostream & file) const {
+void LHAwgt::list(ostream & file) const {
   file << "<wgt";
   if ( id    != "" ) file << " id=\""    << id << "\"";
   for ( map<string,string>::const_iterator it = attributes.begin();
@@ -185,7 +185,7 @@ LHAweight::LHAweight(const XMLTag & tag, string defname)
 
 // Print out the corresponding XML-tag.
 
-void LHAweight::print(ostream & file) const {
+void LHAweight::list(ostream & file) const {
   file << "<weight";
   if ( id  != "" ) file << " id=\""    << id << "\"";
   for ( map<string,string>::const_iterator it = attributes.begin();
@@ -246,7 +246,7 @@ LHAweightgroup::LHAweightgroup(const XMLTag & tag) {
 
 // Print out the corresponding XML-tag.
 
-void LHAweightgroup::print(ostream & file) const {
+void LHAweightgroup::list(ostream & file) const {
   file << "<weightgroup";
   if ( name != "" ) file << " name=\"" << name << "\"";
   for ( map<string,string>::const_iterator it = attributes.begin();
@@ -254,7 +254,7 @@ void LHAweightgroup::print(ostream & file) const {
     file << " " << it->first << "=\"" << it->second << "\"";
   file << " >\n";
   for ( map<string,LHAweight>::const_iterator it = weights.begin();
-        it != weights.end(); ++it ) it->second.print(file);
+        it != weights.end(); ++it ) it->second.list(file);
   file << "</weightgroup>" << endl;
 }
 
@@ -300,14 +300,14 @@ LHArwgt::LHArwgt(const XMLTag & tag) {
 
 // Print out the corresponding XML-tag.
 
-void LHArwgt::print(ostream & file) const {
+void LHArwgt::list(ostream & file) const {
   file << "<rwgt";
   for ( map<string,string>::const_iterator it = attributes.begin();
         it != attributes.end(); ++it )
     file << " " << it->first << "=\"" << it->second << "\"";
   file << " >\n";
   for ( map<string,LHAwgt>::const_iterator it = wgts.begin();
-        it != wgts.end(); ++it ) it->second.print(file);
+        it != wgts.end(); ++it ) it->second.list(file);
   file << "</rwgt>" << endl;
 }
 
@@ -411,16 +411,16 @@ LHAinitrwgt::LHAinitrwgt(const XMLTag & tag) {
 
 // Print out the corresponding XML-tag.
 
-void LHAinitrwgt::print(ostream & file) const {
+void LHAinitrwgt::list(ostream & file) const {
   file << "<initrwgt";
   for ( map<string,string>::const_iterator it = attributes.begin();
         it != attributes.end(); ++it )
     file << " " << it->first << "=\"" << it->second << "\"";
   file << " >\n";
   for ( map<string,LHAweightgroup>::const_iterator it = weightgroups.begin();
-        it != weightgroups.end(); ++it ) it->second.print(file);
+        it != weightgroups.end(); ++it ) it->second.list(file);
   for ( map<string,LHAweight>::const_iterator it = weights.begin();
-        it != weights.end(); ++it ) it->second.print(file);
+        it != weights.end(); ++it ) it->second.list(file);
   file << "</initrwgt>" << endl;
 }
 
@@ -848,7 +848,7 @@ void Writer::init() {
   // Print headercomments and header init information.
   file << "<header>" << endl;
   file << hashline(headerStream.str(),true) << std::flush;
-  if ( version != 1 ) heprup.initrwgt.print(file);
+  if ( version != 1 ) heprup.initrwgt.list(file);
   file << "</header>" << endl;
 
   file << "<init>"<< endl
@@ -877,7 +877,7 @@ void Writer::init() {
   }
 
   for ( int i = 0, N = heprup.generators.size(); i < N; ++i ) {
-    heprup.generators[i].print(file);
+    heprup.generators[i].list(file);
   }
 
   file << hashline(initStream.str(),true) << std::flush
@@ -927,9 +927,9 @@ bool Writer::writeEvent(HEPEUP * peup, int pDigits) {
   eventStream.str("");
 
   if ( version != 1 ) {
-    eup.rwgt.print(file);
-    eup.weights.print(file);
-    eup.scales.print(file);
+    eup.rwgt.list(file);
+    eup.weights.list(file);
+    eup.scales.list(file);
   }
 
   file << "</event>" << endl;

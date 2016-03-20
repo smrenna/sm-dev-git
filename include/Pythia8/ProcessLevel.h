@@ -48,8 +48,7 @@ public:
     BeamParticle* beamAPtrIn, BeamParticle* beamBPtrIn,
     Couplings* couplingsPtrIn, SigmaTotal* sigmaTotPtrIn, bool doLHAin,
     SLHAinterface* slhaInterfacePtrIn, UserHooks* userHooksPtrIn,
-    vector<SigmaProcess*>& sigmaPtrs, vector<PhaseSpace*>& phaseSpacePtrs,
-    ostream& os = cout);
+    vector<SigmaProcess*>& sigmaPtrs, vector<PhaseSpace*>& phaseSpacePtrs);
 
   // Store or replace Les Houches pointer.
   void setLHAPtr( LHAup* lhaUpPtrIn) {lhaUpPtr = lhaUpPtrIn;
@@ -65,7 +64,7 @@ public:
   void accumulate();
 
   // Print statistics on cross sections and number of events.
-  void statistics(bool reset = false, ostream& os = cout);
+  void statistics(bool reset = false);
 
   // Reset statistics.
   void resetStatistics();
@@ -152,7 +151,7 @@ private:
   bool checkColours( Event& process);
 
   // Print statistics when two hard processes allowed.
-  void statistics2(bool reset, ostream& os = cout);
+  void statistics2(bool reset);
 
 };
 

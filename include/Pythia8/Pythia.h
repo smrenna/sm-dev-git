@@ -154,8 +154,7 @@ public:
   bool forceRHadronDecays() {return doRHadronDecays();}
 
   // List the current Les Houches event.
-  void LHAeventList(ostream& os = cout) {
-    if (lhaUpPtr != 0) lhaUpPtr->listEvent(os);}
+  void LHAeventList() { if (lhaUpPtr != 0) lhaUpPtr->listEvent();}
 
   // Skip a number of Les Houches events at input.
   bool LHAeventSkip(int nSkip) {
@@ -323,10 +322,10 @@ private:
   RHadrons   rHadrons;
 
   // Write the Pythia banner, with symbol and version information.
-  void banner(ostream& os = cout);
+  void banner();
 
   // Check for lines in file that mark the beginning of new subrun.
-  int readSubrun(string line, bool warn = true, ostream& os = cout);
+  int readSubrun(string line, bool warn = true);
 
   // Check for lines that mark the beginning or end of commented section.
   int readCommented(string line);
@@ -353,7 +352,7 @@ private:
   bool doRHadronDecays();
 
   // Check that the final event makes sense.
-  bool check(ostream& os = cout);
+  bool check();
 
   // Initialization of SLHA data.
   bool initSLHA ();

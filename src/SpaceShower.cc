@@ -3011,25 +3011,25 @@ void SpaceShower::update(int , Event &, bool hasWeakRad) {
 
 // Print the list of dipoles.
 
-void SpaceShower::list(ostream& os) const {
+void SpaceShower::list() const {
 
   // Header.
-  os << "\n --------  PYTHIA SpaceShower Dipole Listing  -------------- \n"
-     << "\n    i  syst  side   rad   rec       pTmax  col  chg  ME rec \n"
-     << fixed << setprecision(3);
+  cout << "\n --------  PYTHIA SpaceShower Dipole Listing  -------------- \n"
+       << "\n    i  syst  side   rad   rec       pTmax  col  chg  ME rec \n"
+       << fixed << setprecision(3);
 
   // Loop over dipole list and print it.
   for (int i = 0; i < int(dipEnd.size()); ++i)
-  os << setw(5) << i << setw(6) << dipEnd[i].system
-     << setw(6) << dipEnd[i].side << setw(6) << dipEnd[i].iRadiator
-     << setw(6) << dipEnd[i].iRecoiler << setw(12) << dipEnd[i].pTmax
-     << setw(5) << dipEnd[i].colType << setw(5) << dipEnd[i].chgType
-     << setw(5) << dipEnd[i].MEtype << setw(4)
-     << dipEnd[i].normalRecoil << "\n";
+  cout << setw(5) << i << setw(6) << dipEnd[i].system
+       << setw(6) << dipEnd[i].side << setw(6) << dipEnd[i].iRadiator
+       << setw(6) << dipEnd[i].iRecoiler << setw(12) << dipEnd[i].pTmax
+       << setw(5) << dipEnd[i].colType << setw(5) << dipEnd[i].chgType
+       << setw(5) << dipEnd[i].MEtype << setw(4)
+       << dipEnd[i].normalRecoil << "\n";
 
   // Done.
-  os << "\n --------  End PYTHIA SpaceShower Dipole Listing  ----------"
-     << endl;
+  cout << "\n --------  End PYTHIA SpaceShower Dipole Listing  ----------"
+       << endl;
 
 
 }

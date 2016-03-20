@@ -516,6 +516,9 @@ bool PartonLevel::next( Event& process, Event& event) {
           // Update ISR and FSR dipoles.
           if (doISR)              spacePtr->prepare( nMPI - 1, event);
           if (doFSRduringProcess) timesPtr->prepare( nMPI - 1, event);
+          nBranch++;
+          pTLastBranch = pTmulti;
+          typeLastBranch = 1;
         }
 
         // Set maximal scales for next pT to pick.
@@ -523,9 +526,6 @@ bool PartonLevel::next( Event& process, Event& event) {
         pTmaxISR = min(pTmulti, pTmaxISR);
         pTmaxFSR = min(pTmulti, pTmaxFSR);
         pTmax    = pTmulti;
-        nBranch++;
-        pTLastBranch = pTmulti;
-        typeLastBranch = 1;
       }
 
       // Do an initial-state emission (if allowed).

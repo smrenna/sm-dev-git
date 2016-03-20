@@ -85,7 +85,7 @@ namespace Pythia8 {
     };
 
     // Simple print utility
-    void print() {
+    void list() {
       bool finished=false;
       int ibegin=first();
       i=ibegin;
@@ -183,7 +183,7 @@ namespace Pythia8 {
     double q() { return qDRbar; }
 
     // Simple print utility, to be elaborated on.
-    void print() {
+    void list() {
       for (i=1;i<=size;i++) {
         cout << "   "<<i << " " ;
         for (j=1;j<=size;j++) cout << entry[i][j] << " ";
@@ -259,7 +259,7 @@ namespace Pythia8 {
     double q() { return qDRbar; }
 
     // Simple print utility, to be elaborated on.
-    void print() {
+    void list() {
       for (i=1;i<=size;i++) {
         for (j=1;j<=size;j++) {
           cout << "   "<<i << " "<<j << " " ;
@@ -402,9 +402,9 @@ public:
   //int writeFile(string filename): write SLHA file on filename
 
   //Output utilities
-  void printHeader();   // print Header
-  void printFooter();   // print Footer
-  void printSpectrum(int ifail=0); // print Spectrum
+  void listHeader();   // print Header
+  void listFooter();   // print Footer
+  void listSpectrum(int ifail=0); // print Spectrum
 
   // Check spectrum and decays
   int checkSpectrum();

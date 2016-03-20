@@ -1698,7 +1698,7 @@ void Pythia::stat() {
 
 // Write the Pythia banner, with symbol and version information.
 
-void Pythia::banner(ostream& os) {
+void Pythia::banner() {
 
   // Read in version number and last date of change.
   double versionNumber = settings.parm("Pythia:versionNumber");
@@ -1713,132 +1713,132 @@ void Pythia::banner(ostream& os) {
   char timeNow[9];
   strftime(timeNow,9,"%H:%M:%S",localtime(&t));
 
-  os << "\n"
-     << " *-------------------------------------------"
-     << "-----------------------------------------* \n"
-     << " |                                           "
-     << "                                         | \n"
-     << " |  *----------------------------------------"
-     << "--------------------------------------*  | \n"
-     << " |  |                                        "
-     << "                                      |  | \n"
-     << " |  |                                        "
-     << "                                      |  | \n"
-     << " |  |   PPP   Y   Y  TTTTT  H   H  III    A  "
-     << "    Welcome to the Lund Monte Carlo!  |  | \n"
-     << " |  |   P  P   Y Y     T    H   H   I    A A "
-     << "    This is PYTHIA version " << fixed << setprecision(3)
-     << setw(5) << versionNumber << "      |  | \n"
-     << " |  |   PPP     Y      T    HHHHH   I   AAAAA"
-     << "    Last date of change: " << setw(2) << versionDate%100
-     << " " << month[ (versionDate/100)%100 - 1 ]
-     << " " << setw(4) << versionDate/10000 <<  "  |  | \n"
-     << " |  |   P       Y      T    H   H   I   A   A"
-     << "                                      |  | \n"
-     << " |  |   P       Y      T    H   H  III  A   A"
-     << "    Now is " << dateNow << " at " << timeNow << "    |  | \n"
-     << " |  |                                        "
-     << "                                      |  | \n"
-     << " |  |   Torbjorn Sjostrand;  Department of As"
-     << "tronomy and Theoretical Physics,      |  | \n"
-     << " |  |      Lund University, Solvegatan 14A, S"
-     << "E-223 62 Lund, Sweden;                |  | \n"
-     << " |  |      e-mail: torbjorn@thep.lu.se       "
-     << "                                      |  | \n"
-     << " |  |   Jesper Roy Christiansen;  Department "
-     << "of Astronomy and Theoretical Physics, |  | \n"
-     << " |  |      Lund University, Solvegatan 14A, S"
-     << "E-223 62 Lund, Sweden;                |  | \n"
-     << " |  |      e-mail: Jesper.Roy.Christiansen@th"
-     << "ep.lu.se                              |  | \n"
-     << " |  |   Nishita Desai;  Institut fuer Theoret"
-     << "ische Physik,                         |  | \n"
-     << " |  |     Universitaet Heidelberg, Philosophe"
-     << "nweg 16, D-69120 Heidelberg, Germany; |  | \n"
-     << " |  |      e-mail: n.desai@thphys.uni-heidelb"
-     << "erg.de                                |  | \n"
-     << " |  |   Ilkka Helenius;  Department of Astron"
-     << "omy and Theoretical Physics,          |  | \n"
-     << " |  |      Lund University, Solvegatan 14A, S"
-     << "E-223 62 Lund, Sweden;                |  | \n"
-     << " |  |      e-mail: ilkka.helenius@thep.lu.se "
-     << "                                      |  | \n"
-     << " |  |   Philip Ilten;  Massachusetts Institut"
-     << "e of Technology,                      |  | \n"
-     << " |  |      77 Massachusetts Ave, Cambridge, M"
-     << "A 02139, USA;                         |  | \n"
-     << " |  |      e-mail: philten@cern.ch           "
-     << "                                      |  | \n"
-     << " |  |   Stephen Mrenna;  Computing Division, "
-     << "Simulations Group,                    |  | \n"
-     << " |  |      Fermi National Accelerator Laborat"
-     << "ory, MS 234, Batavia, IL 60510, USA;  |  | \n"
-     << " |  |      e-mail: mrenna@fnal.gov           "
-     << "                                      |  | \n"
-     << " |  |   Stefan Prestel;  Theoretical Physics "
-     << "Group,                                |  | \n"
-     << " |  |      SLAC National Accelerator Laborato"
-     << "ry, Menlo Park, CA 94025, USA;        |  | \n"
-     << " |  |      e-mail: prestel@slac.stanford.edu "
-     << "                                      |  | \n"
-     << " |  |   Christine O. Rasmussen;  Department o"
-     << "f Astronomy and Theoretical Physics,  |  | \n"
-     << " |  |      Lund University, Solvegatan 14A, S"
-     << "E-223 62 Lund, Sweden;                |  | \n"
-     << " |  |      e-mail: christine.rasmussen@thep.l"
-     << "u.se                                  |  | \n"
-     << " |  |   Peter Skands;  School of Physics,    "
-     << "                                      |  | \n"
-     << " |  |      Monash University, PO Box 27, 3800"
-     << " Melbourne, Australia;                |  | \n"
-     << " |  |      e-mail: peter.skands@monash.edu   "
-     << "                                      |  | \n"
-     << " |  |                                        "
-     << "                                      |  | \n"
-     << " |  |   The main program reference is 'An Int"
-     << "roduction to PYTHIA 8.2',             |  | \n"
-     << " |  |   T. Sjostrand et al, Comput. Phys. Com"
-     << "mun. 191 (2015) 159                   |  | \n"
-     << " |  |   [arXiv:1410.3012 [hep-ph]]           "
-     << "                                      |  | \n"
-     << " |  |                                        "
-     << "                                      |  | \n"
-     << " |  |   The main physics reference is the 'PY"
-     << "THIA 6.4 Physics and Manual',         |  | \n"
-     << " |  |   T. Sjostrand, S. Mrenna and P. Skands"
-     << ", JHEP05 (2006) 026 [hep-ph/0603175]  |  | \n"
-     << " |  |                                        "
-     << "                                      |  | \n"
-     << " |  |   An archive of program versions and do"
-     << "cumentation is found on the web:      |  | \n"
-     << " |  |   http://www.thep.lu.se/Pythia         "
-     << "                                      |  | \n"
-     << " |  |                                        "
-     << "                                      |  | \n"
-     << " |  |   This program is released under the GN"
-     << "U General Public Licence version 2.   |  | \n"
-     << " |  |   Please respect the MCnet Guidelines f"
-     << "or Event Generator Authors and Users. |  | \n"
-     << " |  |                                        "
-     << "                                      |  | \n"
-     << " |  |   Disclaimer: this program comes withou"
-     << "t any guarantees.                     |  | \n"
-     << " |  |   Beware of errors and use common sense"
-     << " when interpreting results.           |  | \n"
-     << " |  |                                        "
-     << "                                      |  | \n"
-     << " |  |   Copyright (C) 2016 Torbjorn Sjostrand"
-     << "                                      |  | \n"
-     << " |  |                                        "
-     << "                                      |  | \n"
-     << " |  |                                        "
-     << "                                      |  | \n"
-     << " |  *----------------------------------------"
-     << "--------------------------------------*  | \n"
-     << " |                                           "
-     << "                                         | \n"
-     << " *-------------------------------------------"
-     << "-----------------------------------------* \n" << endl;
+  cout << "\n"
+       << " *-------------------------------------------"
+       << "-----------------------------------------* \n"
+       << " |                                           "
+       << "                                         | \n"
+       << " |  *----------------------------------------"
+       << "--------------------------------------*  | \n"
+       << " |  |                                        "
+       << "                                      |  | \n"
+       << " |  |                                        "
+       << "                                      |  | \n"
+       << " |  |   PPP   Y   Y  TTTTT  H   H  III    A  "
+       << "    Welcome to the Lund Monte Carlo!  |  | \n"
+       << " |  |   P  P   Y Y     T    H   H   I    A A "
+       << "    This is PYTHIA version " << fixed << setprecision(3)
+       << setw(5) << versionNumber << "      |  | \n"
+       << " |  |   PPP     Y      T    HHHHH   I   AAAAA"
+       << "    Last date of change: " << setw(2) << versionDate%100
+       << " " << month[ (versionDate/100)%100 - 1 ]
+       << " " << setw(4) << versionDate/10000 <<  "  |  | \n"
+       << " |  |   P       Y      T    H   H   I   A   A"
+       << "                                      |  | \n"
+       << " |  |   P       Y      T    H   H  III  A   A"
+       << "    Now is " << dateNow << " at " << timeNow << "    |  | \n"
+       << " |  |                                        "
+       << "                                      |  | \n"
+       << " |  |   Torbjorn Sjostrand;  Department of As"
+       << "tronomy and Theoretical Physics,      |  | \n"
+       << " |  |      Lund University, Solvegatan 14A, S"
+       << "E-223 62 Lund, Sweden;                |  | \n"
+       << " |  |      e-mail: torbjorn@thep.lu.se       "
+       << "                                      |  | \n"
+       << " |  |   Jesper Roy Christiansen;  Department "
+       << "of Astronomy and Theoretical Physics, |  | \n"
+       << " |  |      Lund University, Solvegatan 14A, S"
+       << "E-223 62 Lund, Sweden;                |  | \n"
+       << " |  |      e-mail: Jesper.Roy.Christiansen@th"
+       << "ep.lu.se                              |  | \n"
+       << " |  |   Nishita Desai;  Institut fuer Theoret"
+       << "ische Physik,                         |  | \n"
+       << " |  |     Universitaet Heidelberg, Philosophe"
+       << "nweg 16, D-69120 Heidelberg, Germany; |  | \n"
+       << " |  |      e-mail: n.desai@thphys.uni-heidelb"
+       << "erg.de                                |  | \n"
+       << " |  |   Ilkka Helenius;  Department of Astron"
+       << "omy and Theoretical Physics,          |  | \n"
+       << " |  |      Lund University, Solvegatan 14A, S"
+       << "E-223 62 Lund, Sweden;                |  | \n"
+       << " |  |      e-mail: ilkka.helenius@thep.lu.se "
+       << "                                      |  | \n"
+       << " |  |   Philip Ilten;  Massachusetts Institut"
+       << "e of Technology,                      |  | \n"
+       << " |  |      77 Massachusetts Ave, Cambridge, M"
+       << "A 02139, USA;                         |  | \n"
+       << " |  |      e-mail: philten@cern.ch           "
+       << "                                      |  | \n"
+       << " |  |   Stephen Mrenna;  Computing Division, "
+       << "Simulations Group,                    |  | \n"
+       << " |  |      Fermi National Accelerator Laborat"
+       << "ory, MS 234, Batavia, IL 60510, USA;  |  | \n"
+       << " |  |      e-mail: mrenna@fnal.gov           "
+       << "                                      |  | \n"
+       << " |  |   Stefan Prestel;  Theoretical Physics "
+       << "Group,                                |  | \n"
+       << " |  |      SLAC National Accelerator Laborato"
+       << "ry, Menlo Park, CA 94025, USA;        |  | \n"
+       << " |  |      e-mail: prestel@slac.stanford.edu "
+       << "                                      |  | \n"
+       << " |  |   Christine O. Rasmussen;  Department o"
+       << "f Astronomy and Theoretical Physics,  |  | \n"
+       << " |  |      Lund University, Solvegatan 14A, S"
+       << "E-223 62 Lund, Sweden;                |  | \n"
+       << " |  |      e-mail: christine.rasmussen@thep.l"
+       << "u.se                                  |  | \n"
+       << " |  |   Peter Skands;  School of Physics,    "
+       << "                                      |  | \n"
+       << " |  |      Monash University, PO Box 27, 3800"
+       << " Melbourne, Australia;                |  | \n"
+       << " |  |      e-mail: peter.skands@monash.edu   "
+       << "                                      |  | \n"
+       << " |  |                                        "
+       << "                                      |  | \n"
+       << " |  |   The main program reference is 'An Int"
+       << "roduction to PYTHIA 8.2',             |  | \n"
+       << " |  |   T. Sjostrand et al, Comput. Phys. Com"
+       << "mun. 191 (2015) 159                   |  | \n"
+       << " |  |   [arXiv:1410.3012 [hep-ph]]           "
+       << "                                      |  | \n"
+       << " |  |                                        "
+       << "                                      |  | \n"
+       << " |  |   The main physics reference is the 'PY"
+       << "THIA 6.4 Physics and Manual',         |  | \n"
+       << " |  |   T. Sjostrand, S. Mrenna and P. Skands"
+       << ", JHEP05 (2006) 026 [hep-ph/0603175]  |  | \n"
+       << " |  |                                        "
+       << "                                      |  | \n"
+       << " |  |   An archive of program versions and do"
+       << "cumentation is found on the web:      |  | \n"
+       << " |  |   http://www.thep.lu.se/Pythia         "
+       << "                                      |  | \n"
+       << " |  |                                        "
+       << "                                      |  | \n"
+       << " |  |   This program is released under the GN"
+       << "U General Public Licence version 2.   |  | \n"
+       << " |  |   Please respect the MCnet Guidelines f"
+       << "or Event Generator Authors and Users. |  | \n"
+       << " |  |                                        "
+       << "                                      |  | \n"
+       << " |  |   Disclaimer: this program comes withou"
+       << "t any guarantees.                     |  | \n"
+       << " |  |   Beware of errors and use common sense"
+       << " when interpreting results.           |  | \n"
+       << " |  |                                        "
+       << "                                      |  | \n"
+       << " |  |   Copyright (C) 2016 Torbjorn Sjostrand"
+       << "                                      |  | \n"
+       << " |  |                                        "
+       << "                                      |  | \n"
+       << " |  |                                        "
+       << "                                      |  | \n"
+       << " |  *----------------------------------------"
+       << "--------------------------------------*  | \n"
+       << " |                                           "
+       << "                                         | \n"
+       << " *-------------------------------------------"
+       << "-----------------------------------------* \n" << endl;
 
 }
 
@@ -1846,7 +1846,7 @@ void Pythia::banner(ostream& os) {
 
 // Check for lines in file that mark the beginning of new subrun.
 
-int Pythia::readSubrun(string line, bool warn, ostream& os) {
+int Pythia::readSubrun(string line, bool warn) {
 
   // If empty line then done.
   int subrunLine = SUBRUNDEFAULT;
@@ -1885,7 +1885,7 @@ int Pythia::readSubrun(string line, bool warn, ostream& os) {
   // Else find new subrun number and return it.
   splitLine >> subrunLine;
   if (!splitLine) {
-    if (warn) os << "\n PYTHIA Warning: Main:subrun number not"
+    if (warn) cout << "\n PYTHIA Warning: Main:subrun number not"
         << " recognized; skip:\n   " << line << endl;
     subrunLine = SUBRUNDEFAULT;
   }
@@ -1919,7 +1919,7 @@ int Pythia::readCommented(string line) {
 // Check that the final event makes sense: no unknown id codes;
 // charge and energy-momentum conserved.
 
-bool Pythia::check(ostream& os) {
+bool Pythia::check() {
 
   // Reset.
   bool physical     = true;
@@ -2144,56 +2144,56 @@ bool Pythia::check(ostream& os) {
 
   // Print (the first few) flawed events: local info.
   if (nErrEvent < nErrList) {
-    os << "\n PYTHIA erroneous event info: \n";
+    cout << "\n PYTHIA erroneous event info: \n";
     if (iErrId.size() > 0) {
-      os << " unknown particle codes in lines ";
+      cout << " unknown particle codes in lines ";
       for (int i = 0; i < int(iErrId.size()); ++i)
-        os << iErrId[i] << " ";
-      os << "\n";
+        cout << iErrId[i] << " ";
+      cout << "\n";
     }
     if (iErrCol.size() > 0) {
-      os << " incorrect colour assignments in lines ";
+      cout << " incorrect colour assignments in lines ";
       for (int i = 0; i < int(iErrCol.size()); ++i)
-        os << iErrCol[i] << " ";
-      os << "\n";
+        cout << iErrCol[i] << " ";
+      cout << "\n";
     }
     if (iErrEpm.size() > 0) {
-      os << " mismatch between energy/momentum/mass in lines ";
+      cout << " mismatch between energy/momentum/mass in lines ";
       for (int i = 0; i < int(iErrEpm.size()); ++i)
-        os << iErrEpm[i] << " ";
-      os << "\n";
+        cout << iErrEpm[i] << " ";
+      cout << "\n";
     }
     if (iErrNan.size() > 0) {
-      os << " not-a-number energy/momentum/mass in lines ";
+      cout << " not-a-number energy/momentum/mass in lines ";
       for (int i = 0; i < int(iErrNan.size()); ++i)
-        os << iErrNan[i] << " ";
-      os << "\n";
+        cout << iErrNan[i] << " ";
+      cout << "\n";
     }
     if (iErrNanVtx.size() > 0) {
-      os << " not-a-number vertex/lifetime in lines ";
+      cout << " not-a-number vertex/lifetime in lines ";
       for (int i = 0; i < int(iErrNanVtx.size()); ++i)
-        os << iErrNanVtx[i] << " ";
-      os << "\n";
+        cout << iErrNanVtx[i] << " ";
+      cout << "\n";
     }
-    if (epDev > epTolErr * eLab) os << scientific << setprecision(3)
+    if (epDev > epTolErr * eLab) cout << scientific << setprecision(3)
       << " total energy-momentum non-conservation = " << epDev << "\n";
-    if (abs(chargeSum) > 0.1) os << fixed << setprecision(2)
+    if (abs(chargeSum) > 0.1) cout << fixed << setprecision(2)
       << " total charge non-conservation = " << chargeSum << "\n";
     if (noMot.size() > 0) {
-      os << " missing mothers for particles ";
-      for (int i = 0; i < int(noMot.size()); ++i) os << noMot[i] << " ";
-      os << "\n";
+      cout << " missing mothers for particles ";
+      for (int i = 0; i < int(noMot.size()); ++i) cout << noMot[i] << " ";
+      cout << "\n";
     }
     if (noDau.size() > 0) {
-      os << " missing daughters for particles ";
-      for (int i = 0; i < int(noDau.size()); ++i) os << noDau[i] << " ";
-      os << "\n";
+      cout << " missing daughters for particles ";
+      for (int i = 0; i < int(noDau.size()); ++i) cout << noDau[i] << " ";
+      cout << "\n";
     }
     if (noMotDau.size() > 0) {
-      os << " inconsistent history for (mother,daughter) pairs ";
+      cout << " inconsistent history for (mother,daughter) pairs ";
       for (int i = 0; i < int(noMotDau.size()); ++i)
-        os << "(" << noMotDau[i].first << "," << noMotDau[i].second << ") ";
-      os << "\n";
+        cout << "(" << noMotDau[i].first << "," << noMotDau[i].second << ") ";
+      cout << "\n";
     }
 
     // Print (the first few) flawed events: standard listings.

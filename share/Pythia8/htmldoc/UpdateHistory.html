@@ -18,7 +18,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.217: 13 March 2016 
+<li>8.217: 20 March 2016 
 <ul> 
  
 <li>An interface to the Python programming language has been introduced, 
@@ -36,10 +36,14 @@ correct choice is not known or implemented. Thanks to
 Jesse Thaler, Michele Selvaggi and Fabio Maltoni.</li> 
  
 <li>New constructors that take streams rather than files as input. 
-(Steve:a few more lines of text.)</li> 
+Thus the contents of a file can be read and then broadcast to multiple 
+instances of Pythia, eliminating the inefficiency of multiple jobs 
+reading from the same initialization files. This facilitates running 
+with MPIs (Message Process Interfaces). Affected areas are settings, 
+particle data and PDF grids.</li> 
  
-<li>Small additions and fixes to the LHEF3 framework. (Steve:a few more 
-lines of text?)</li> 
+<li>Small additions and fixes to the LHEF3 framework, to keep track of 
+weight keys, and improve parsing.</li> 
  
 <li>A new class allows PDF data files in the lhagrid1 format, 
 with some restrictions, to be read and used. This does not replace 
@@ -67,6 +71,13 @@ extended to better handle heavy quarks, heavy colored particles (such
 as squarks) and "other" partons (coloured but produced from an 
 Electroweak vertex).</li> 
  
+<li>Remove many rarely (if ever) used <code>ostream& os = cout</code> 
+optional arguments in favour of hardcoded <code>cout</code> in the code. 
+Eliminates some redundancy of methods.</li> 
+ 
+<li>Rename <code>...print(...</code> methods to <code>...list(...</code> 
+to favour a more regular naming pattern.</li> 
+ 
 <li>Minor <code>configure</code> and <code>Makefile</code> updates, 
 to address potential linking problems on some platforms for boost, gzip 
 and promc. Thanks to Dmitri Konstantinov.</li> 
@@ -76,6 +87,14 @@ corrected. Thanks to Florian Koenig.</li>
  
 <li>Allow for lightest neutralino not to decay as a resonance.</li> 
  
+<li>Make some <code>SlowJet</code> methods virtual to allow derived 
+classes with modified properties.</li> 
+ 
+<li>Moved some misplaced info on parton-level choice of MPIs.</li> 
+ 
+<li>Corrected typos where some bottomonium long-distance matrix element 
+had been set larger than normally assumed.</li> 
+ 
 <li>Fixed problem with the SLHAinterface not being zeroed-out when 
 using repeated subruns.</li> 
  
@@ -84,7 +103,7 @@ using repeated subruns.</li>
 <li>Change a few true/false to on/off in the documentation to make the 
 php version of the manual recognize them.</li> 
  
-<li>Some manual and bibliography updates.</li> 
+<li>Some trivial code, manual and bibliography updates.</li> 
  
 </ul> 
 </li> 

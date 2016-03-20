@@ -348,9 +348,10 @@ initialize pointer to error-message database. Internal.
    
  
 <a name="method3"></a>
-<p/><strong>bool Settings::init(string startFile = &quot;../xmldoc/Index.xml&quot;, bool append = false, ostream& os = cout) &nbsp;</strong> <br/>
+<p/><strong>bool Settings::init(string startFile = &quot;../share/Pythia8/xmldoc/Index.xml&quot;, bool append = false) &nbsp;</strong> <br/>
 read in the settings database. 
-<br/><code>argument</code><strong> startFile </strong> (<code>default = <strong>&quot;../xmldoc/Index.xml&quot;</strong></code>) :  
+<br/><code>argument</code><strong> startFile </strong>  : <argument name="startFile" 
+default="&quot;../share/Pythia8/xmldoc/Index.xml&quot;"> 
 read in the settings from all the files listed in this file, and 
 assumed to be located in the same subdirectory. 
    
@@ -358,27 +359,29 @@ assumed to be located in the same subdirectory.
 By default nothing is done if the method has already been called once. 
 If true the further settings read in are added to the current database. 
    
-<br/><code>argument</code><strong> os </strong> (<code>default = <strong>cout</strong></code>) :  
-stream for error printout. 
-   
 <br/><b>Note:</b> The method returns false if it fails. 
    
  
 <a name="method4"></a>
-<p/><strong>bool Settings::reInit(string startFile = &quot;../xmldoc/Index.xml&quot;, ostream& os = cout) &nbsp;</strong> <br/>
+<p/><strong>bool init(istream& is, bool append = false) &nbsp;</strong> <br/>
+read in the settings from an input stream. This allows initialization 
+without reading the xml files directly, which is useful for initialization 
+of multiple copies of Pythia8. 
+   
+ 
+<a name="method5"></a>
+<p/><strong>bool Settings::reInit(string startFile = &quot;../share/Pythia8/xmldoc/Index.xml&quot;) &nbsp;</strong> <br/>
 overwrite the existing database. 
-<br/><code>argument</code><strong> startFile </strong> (<code>default = <strong>&quot;../xmldoc/Index.xml&quot;</strong></code>) :  
+<br/><code>argument</code><strong> startFile </strong>  : <argument name="startFile" 
+default="&quot;../share/Pythia8/xmldoc/Index.xml&quot;"> 
 read in the settings from all the files listed in this file, and 
 assumed to be located in the same subdirectory. 
-   
-<br/><code>argument</code><strong> os </strong> (<code>default = <strong>cout</strong></code>) :  
-stream for error printout. 
    
 <br/><b>Note:</b> The method returns false if it fails. 
    
  
-<a name="method5"></a>
-<p/><strong>bool Settings::readString(string line, bool warn = true, ostream& os = cout) &nbsp;</strong> <br/>
+<a name="method6"></a>
+<p/><strong>bool Settings::readString(string line, bool warn = true) &nbsp;</strong> <br/>
 read in a string, and change the relevant quantity in the database. 
 It is normally used indirectly, via 
 <code>Pythia::readString(...)</code> and 
@@ -390,14 +393,11 @@ the string to be interpreted as an instruction.
 write a warning message or not whenever the instruction does not make 
 sense, e.g. if the variable does not exist in the databases. 
    
-<br/><code>argument</code><strong> os </strong> (<code>default = <strong>cout</strong></code>) :  
-stream for error printout. 
-   
 <br/><b>Note:</b> the method returns false if it fails to 
 make sense out of the input string. 
    
  
-<a name="method6"></a>
+<a name="method7"></a>
 <p/><strong>bool Settings::writeFile(string toFile, bool writeAll = false) &nbsp;</strong> <br/>
    
 <strong>bool Settings::writeFile(ostream& os = cout, bool writeAll = false) &nbsp;</strong> <br/>
@@ -412,23 +412,26 @@ but if true then all settings are output.
 <br/><b>Note:</b> the method returns false if it fails. 
    
  
-<a name="method7"></a>
-<p/><strong>void Settings::listAll(ostream& os = cout) &nbsp;</strong> <br/>
+<a name="method8"></a>
+<p/><strong>bool writeFileXML(ostream& os = cout) &nbsp;</strong> <br/>
+write out the information stored in xmldoc to be used later to 
+initialize Settings through an input stream. 
    
-<strong>void Settings::listChanged(ostream& os = cout) &nbsp;</strong> <br/>
+ 
+<a name="method9"></a>
+<p/><strong>void Settings::listAll() &nbsp;</strong> <br/>
    
-<strong>void Settings::list(string match, ostream& os = cout) &nbsp;</strong> <br/>
+<strong>void Settings::listChanged() &nbsp;</strong> <br/>
+   
+<strong>void Settings::list(string match) &nbsp;</strong> <br/>
 list all or changed settings, or a group of them. 
 <br/><code>argument</code><strong> match </strong>  :  
 list all those settings where the name contains 
 the <code>match</code> (sub)string (case-insensitive). 
    
-<br/><code>argument</code><strong> os </strong> (<code>default = <strong>cout</strong></code>) :  
-output stream for the listing. 
-   
    
  
-<a name="method8"></a>
+<a name="method10"></a>
 <p/><strong>string Settings::output(string key, bool fullLine = true) &nbsp;</strong> <br/>
 provide the value of a variable as a character string, whatever the type. 
 If the variable does not exist then <code>unknown</code> is returned. 
@@ -441,12 +444,12 @@ while if false only the  <code>value</code> string.
    
    
  
-<a name="method9"></a>
+<a name="method11"></a>
 <p/><strong>void Settings::resetAll() &nbsp;</strong> <br/>
 reset all current values to their defaults. 
    
  
-<a name="method10"></a>
+<a name="method12"></a>
 <p/><strong>bool Settings::isFlag(string key) &nbsp;</strong> <br/>
    
 <strong>bool Settings::isMode(string key) &nbsp;</strong> <br/>
@@ -464,7 +467,7 @@ return true if an entry of the given name and kind
 exists, else false. 
    
  
-<a name="method11"></a>
+<a name="method13"></a>
 <p/><strong>void Settings::addFlag(string key, bool default) &nbsp;</strong> <br/>
    
 <strong>void Settings::addMode(string key, int default, bool hasMin, bool hasMax, int min, int max) &nbsp;</strong> <br/>
@@ -484,7 +487,7 @@ value(s) always has to be supplied, for <code>Mode</code>, <code>Parm</code>,
 upper limits are to be imposed and, if so, what those limit are. 
    
  
-<a name="method12"></a>
+<a name="method14"></a>
 <p/><strong>bool Settings::flag(string key) &nbsp;</strong> <br/>
    
 <strong>int Settings::mode(string key) &nbsp;</strong> <br/>
@@ -505,7 +508,7 @@ vector of length 1 and value <code>false</code>, <code>0</code> or
 <code>0.</code>, respectively, is returned. 
    
  
-<a name="method13"></a>
+<a name="method15"></a>
 <p/><strong>bool Settings::flagDefault(string key) &nbsp;</strong> <br/>
    
 <strong>int Settings::modeDefault(string key) &nbsp;</strong> <br/>
@@ -526,7 +529,7 @@ vector of length 1 and value <code>false</code>, <code>0</code> or
 <code>0.</code>, respectively, is returned. 
    
  
-<a name="method14"></a>
+<a name="method16"></a>
 <p/><strong>map<string, Flag> Settings::getFlagMap(string match) &nbsp;</strong> <br/>
    
 <strong>map<string, Mode> Settings::getModeMap(string match) &nbsp;</strong> <br/>
@@ -544,7 +547,7 @@ return a map of all settings of the respective type that contain the
 string "match" in its name. 
    
  
-<a name="method15"></a>
+<a name="method17"></a>
 <p/><strong>void Settings::flag(string key, bool now) &nbsp;</strong> <br/>
    
 <strong>void Settings::mode(string key, int now) &nbsp;</strong> <br/>
@@ -564,7 +567,7 @@ outside the allowed range are reinterpreted as being a the nearest
 limit. 
    
  
-<a name="method16"></a>
+<a name="method18"></a>
 <p/><strong>void Settings::forceMode(string key, int now) &nbsp;</strong> <br/>
    
 <strong>void Settings::forceParm(string key, double now) &nbsp;</strong> <br/>
@@ -576,7 +579,7 @@ as above, but do not check lower and upper limits, so that the current
 value(s) can be put outside the intended borders. 
    
  
-<a name="method17"></a>
+<a name="method19"></a>
 <p/><strong>void Settings::resetFlag(string key) &nbsp;</strong> <br/>
    
 <strong>void Settings::resetMode(string key) &nbsp;</strong> <br/>
@@ -593,7 +596,7 @@ value(s) can be put outside the intended borders.
 reset the current value to the default one. 
    
  
-<a name="method18"></a>
+<a name="method20"></a>
 <p/><strong>bool Settings::getIsInit() &nbsp;</strong> <br/>
 return true if the database has been initialized, else false. 
    

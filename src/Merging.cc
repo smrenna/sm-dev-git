@@ -48,7 +48,7 @@ void Merging::init( Settings* settingsPtrIn, Info* infoPtrIn,
 //--------------------------------------------------------------------------
 
 // Function to print information.
-void Merging::statistics( ostream& os ) {
+void Merging::statistics() {
 
   // Recall switch to enfore merging scale cut.
   bool enforceCutOnLHE  = settingsPtr->flag("Merging:enforceCutOnLHE");
@@ -61,20 +61,20 @@ void Merging::statistics( ostream& os ) {
   if (!printBanner) return;
 
   // Header.
-  os << "\n *-------  PYTHIA Matrix Element Merging Information  ------"
-     << "-------------------------------------------------------*\n"
-     << " |                                                            "
-     << "                                                     |\n";
+  cout << "\n *-------  PYTHIA Matrix Element Merging Information  ------"
+       << "-------------------------------------------------------*\n"
+       << " |                                                            "
+       << "                                                     |\n";
   // Print warning if the minimal tms value of any event was significantly
   // above the desired merging scale value.
-  os << " | Warning in Merging::statistics: All Les Houches events"
-     << " significantly above Merging:TMS cut. Please check.       |\n";
+  cout << " | Warning in Merging::statistics: All Les Houches events"
+       << " significantly above Merging:TMS cut. Please check.       |\n";
 
   // Listing finished.
-  os << " |                                                            "
-     << "                                                     |\n"
-     << " *-------  End PYTHIA Matrix Element Merging Information -----"
-     << "-----------------------------------------------------*" << endl;
+  cout << " |                                                            "
+       << "                                                     |\n"
+       << " *-------  End PYTHIA Matrix Element Merging Information -----"
+       << "-----------------------------------------------------*" << endl;
 }
 
 //--------------------------------------------------------------------------

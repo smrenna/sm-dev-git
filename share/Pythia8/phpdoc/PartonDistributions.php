@@ -183,7 +183,9 @@ The MRST/MSTW, CTEQ/CT, NNPDF and H1 PDF routines are based on the
 interpolation in <i>(x, Q)</i> grids. The grid files are stored in the 
 <code>xmldoc</code> subdirectory, like settings and particle data. 
 Only PDF sets that will be used are read in during the initialization 
-stage. 
+stage. Just as input streams can be used to initialize the settings 
+and particle data, so can the individual PDFs be constructed.   See 
+the header files for explicit constructor descriptions. 
  
 </body>
 </html>

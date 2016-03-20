@@ -539,8 +539,7 @@ protected:
   // Functions for internal use inside Pythia source code
   // Initialize.
   void init( Settings settings, Info* infoPtrIn,
-    ParticleData* particleDataPtrIn, PartonSystems* partonSystemsPtrIn,
-    ostream& os = cout);
+    ParticleData* particleDataPtrIn, PartonSystems* partonSystemsPtrIn);
 
   // Function storing candidates for the hard process in the current event
   // Needed in order not to cluster members of the core process
