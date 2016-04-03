@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.217: 20 March 2016 
+<li>8.217: 3 April 2016 
 <ul> 
  
 <li>An interface to the Python programming language has been introduced, 
@@ -103,6 +103,9 @@ to favour a more regular naming pattern.</li>
 <li>Minor <code>configure</code> and <code>Makefile</code> updates, 
 to address potential linking problems on some platforms for boost, gzip 
 and promc. Thanks to Dmitri Konstantinov.</li> 
+ 
+<li>New <code>--config</code> option of <code>pythia8-config</code> 
+echoes the arguments passed to <code>configure</code>.</li> 
  
 <li>The description of <code>POWHEG:vetoCount = 0</code> has been 
 corrected. Thanks to Florian Koenig.</li> 

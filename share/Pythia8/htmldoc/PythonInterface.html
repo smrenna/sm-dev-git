@@ -47,13 +47,20 @@ available.</li>
 <li>Classes with defined <code>[]</code> operators are iterable, using 
 standard Python iteration, e.g. <code>for prt in 
 pythia.event</code>.</li> 
-<li>Classes where the <code>&lt&lt</code> operator, 
-a <code>print</code> function, or a <code>list</code> function, can be 
-printed via the built-in <code>print</code> function in Python. Note 
-this means that a string representation via <code>str</code> is also 
-available for these classes in Python. The <code>print</code> 
-function, when defined for a PYTHIA class, is also available in the 
-Python interface as <code>list</code>.</li> 
+<li>Classes with a <code>&lt&lt</code> operator or a <code>list</code> 
+function can be printed via the built-in <code>print</code> function 
+in Python. Note this means that a string representation 
+via <code>str</code> is also available for these classes in 
+Python.</li> 
+<li>Specific versions of templates needed by PYTHIA classes are 
+available where the naming scheme is the template class name followed 
+by its arguments (stripped of namespace specifiers); pointers to 
+classes are prepended with <code>Ptr</code>. For 
+example, <code>vector&ltint&gt</code> is available via the interface 
+as <code>VectorInt</code>, <code>map&ltstring, Mode&gt</code> 
+as <code>MapStringMode</code>, 
+and <code>vector&ltProcessContainer*&gt</code> 
+as <code>VectorProcessContainerPtr</code>.</li> 
 <li>Derived classes in Python, for a subset of PYTHIA classes, can be 
 passed back to PYTHIA. This is possible for all classes that can be 
 passed to the <code>Pythia</code> class via the <code>setXPtr</code> 

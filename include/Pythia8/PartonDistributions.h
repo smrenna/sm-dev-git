@@ -180,7 +180,7 @@ public:
     : PDF(idBeamIn) {init( iFitIn,  xmlPath, infoPtr);}
 
   // Constructor with a stream.
-  MSTWpdf(int idBeamIn = 2212, istream& is = std::cin, Info* infoPtr = 0)
+  MSTWpdf(int idBeamIn, istream& is, Info* infoPtr = 0)
     : PDF(idBeamIn) {init( is, infoPtr);}
 
 private:
@@ -246,7 +246,7 @@ public:
     init( iFitIn, xmlPath, infoPtr);}
 
   // Constructor with a stream.
-  CTEQ6pdf(int idBeamIn = 2212, istream& is = std::cin, bool isPdsGrid = false,
+  CTEQ6pdf(int idBeamIn, istream& is, bool isPdsGrid = false,
     Info* infoPtr = 0) : PDF(idBeamIn), doExtraPol(false) {
     init( is, isPdsGrid, infoPtr);}
 
@@ -382,7 +382,7 @@ public:
    init( iFit, xmlPath, infoPtr);}
 
   // Constructor with a stream.
- PomH1FitAB(int idBeamIn = 990, double rescaleIn = 1., istream& is = std::cin,
+ PomH1FitAB(int idBeamIn, double rescaleIn, istream& is,
    Info* infoPtr = 0) : PDF(idBeamIn), doExtraPol(false) {
    rescale = rescaleIn; init( is, infoPtr);}
 
@@ -427,7 +427,7 @@ public:
     init( iFit, xmlPath, infoPtr);}
 
   // Constructor with a stream.
-  PomH1Jets(int idBeamIn = 990,  double rescaleIn = 1., istream& is = std::cin,
+  PomH1Jets(int idBeamIn, double rescaleIn, istream& is,
     Info* infoPtr = 0) : PDF(idBeamIn), doExtraPol(false) {rescale = rescaleIn;
     init( is, infoPtr);}
 
@@ -541,7 +541,7 @@ public:
     init( iFitIn, xmlPath, infoPtr); };
 
   // Constructor with a stream.
-  NNPDF(int idBeamIn = 2212, istream& is = std::cin, Info* infoPtr = 0)
+  NNPDF(int idBeamIn, istream& is, Info* infoPtr = 0)
     : PDF(idBeamIn), fPDFGrid(NULL), fXGrid(NULL), fLogXGrid(NULL),
     fQ2Grid(NULL), fLogQ2Grid(NULL), fRes(NULL) { init( is, infoPtr); };
 
@@ -735,7 +735,7 @@ public:
     init( iFitIn, xmlPath, infoPtr); };
 
   // Constructor with a stream.
-  LHAGrid1(int idBeamIn = 2212, istream& is = std::cin, Info* infoPtr = 0)
+  LHAGrid1(int idBeamIn, istream& is, Info* infoPtr = 0)
     : PDF(idBeamIn), doExtraPol(false), pdfGrid(NULL), pdfSlope(NULL) {
     init( is, infoPtr); };
 

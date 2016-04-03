@@ -68,6 +68,20 @@ cat > $CFG_FILE << BLOCKTEXT
 %include <std_streambuf.i>
 %include <complex.i>
 
+// Template instantiations with only STL classes.
+%template(PairIntInt) std::pair<int, int>;
+%template(MapIntInt) std::map<int, int>;
+%template(MapStringString) std::map<std::string, std::string>;
+%template(MapDoublePairIntInt) std::map<double, std::pair<int, int> >;
+%template(VectorBool) std::vector<bool>;
+%template(VectorComplex) std::vector<std::complex<double> >;
+%template(VectorDouble) std::vector<double>;
+%template(VectorInt) std::vector<int>;
+%template(VectorString) std::vector<std::string>;
+%template(VectorPairIntInt) std::vector<std::pair<int, int> >;
+%template(VectorVectorInt) std::vector<std::vector<int> >;
+%template(VectorVectorComplex) std::vector<std::vector<std::complex<double> > >;
+
 // Operators that can be ignored that are handled later.
 %ignore Pythia8::Vec4::operator=;
 %ignore Pythia8::Vec4::operator[];
@@ -91,7 +105,6 @@ cat > $CFG_FILE << BLOCKTEXT
 %ignore Pythia8::BeamParticle::operator[];
 
 // Methods that should be renamed.
-%rename(list) print;
 %rename(getOrderHistories) orderHistories();
 %rename(getAllowCutOnRecState) allowCutOnRecState();
 %rename(getDoWeakClustering) doWeakClustering();
@@ -236,40 +249,27 @@ cat >> $CFG_FILE << BLOCKTEXT
     std::ostringstream oss(std::ostringstream::out); \$self->list(oss);
     return oss.str();}
 %enddef
-%define __STR_PRINT__()
-  std::string __str__() {
-    std::streambuf* old = cout.rdbuf();
-    std::ostringstream oss(std::ostringstream::out);
-    cout.rdbuf(oss.rdbuf()); \$self->print(); cout.rdbuf(old);
-    return oss.str();}
-%enddef
-%define __STR_PRINT_OSS__()
-  std::string __str__() {
-    std::ostringstream oss(std::ostringstream::out); \$self->print(oss);
-    return oss.str();}
-%enddef
 
 // Class extensions.
 %extend Pythia8::BeamParticle {
-  __STR_LIST_OSS__()
+  __STR_LIST__()
   Pythia8::ResolvedParton *__getitem__(int i) {
   if (i >= \$self->size()) {
     BEAMPARTICLE_ERROR = 1; return 0;} return &(*(\$self))[i];}
 }
-%extend Pythia8::CellJet {__STR_LIST_OSS__()}
+%extend Pythia8::CellJet {__STR_LIST__()}
 %extend Pythia8::Clustering {__STR_LIST__()}
-%extend Pythia8::ClusterJet {__STR_LIST_OSS__()}
+%extend Pythia8::ClusterJet {__STR_LIST__()}
 %extend Pythia8::ColConfig {
-  __STR_LIST_OSS__()
+  __STR_LIST__()
   Pythia8::ColSinglet *__getitem__(int i) {
     if (i >= \$self->size()) {COLCONFIG_ERROR = 1; return 0;}
     return &(*(\$self))[i];}
 }
-%extend Pythia8::ColourDipole {__STR_PRINT__()}
-%extend Pythia8::ColourJunction {__STR_PRINT__()}
-%extend Pythia8::ColourParticle {__STR_LIST__()}
+%extend Pythia8::ColourDipole {__STR_LIST__()}
+%extend Pythia8::ColourJunction {__STR_LIST__()}
 %extend Pythia8::Event {
-  __STR_LIST_OSS__()
+  __STR_LIST__()
   Pythia8::Particle *__getitem__(int i) {
     if (i >= \$self->size()) {EVENT_ERROR = 1; return 0;}
     return &(*(\$self))[i];}
@@ -295,26 +295,26 @@ cat >> $CFG_FILE << BLOCKTEXT
   Pythia8::Hist __rdiv__(double f) {
     Pythia8::Hist h = *\$self; return f/h;}
 }
-%extend Pythia8::Info {__STR_LIST_OSS__()}
-%extend Pythia8::LHAgenerator {__STR_PRINT_OSS__()}
-%extend Pythia8::LHAinitrwgt {__STR_PRINT_OSS__()}
-%extend Pythia8::LHArwgt {__STR_PRINT_OSS__()}
-%extend Pythia8::LHAscales {__STR_PRINT_OSS__()}
-%extend Pythia8::LHAweightgroup {__STR_PRINT_OSS__()}
-%extend Pythia8::LHAweight {__STR_PRINT_OSS__()}
-%extend Pythia8::LHAweights {__STR_PRINT_OSS__()}
-%extend Pythia8::LHAwgt {__STR_PRINT_OSS__()}
-%extend Pythia8::LHblock {__STR_PRINT_OSS__()}
-%extend Pythia8::LHmatrixBlock {__STR_PRINT_OSS__()}
-%extend Pythia8::LHtensor3Block {__STR_PRINT_OSS__()}
-%extend Pythia8::ParticleData {__STR_LIST_OSS__()}
-%extend Pythia8::PartonSystems {__STR_LIST_OSS__()}
+%extend Pythia8::Info {__STR_LIST__()}
+%extend Pythia8::LHAgenerator {__STR_LIST_OSS__()}
+%extend Pythia8::LHAinitrwgt {__STR_LIST_OSS__()}
+%extend Pythia8::LHArwgt {__STR_LIST_OSS__()}
+%extend Pythia8::LHAscales {__STR_LIST_OSS__()}
+%extend Pythia8::LHAweightgroup {__STR_LIST_OSS__()}
+%extend Pythia8::LHAweight {__STR_LIST_OSS__()}
+%extend Pythia8::LHAweights {__STR_LIST_OSS__()}
+%extend Pythia8::LHAwgt {__STR_LIST_OSS__()}
+%extend Pythia8::LHblock {__STR_LIST_OSS__()}
+%extend Pythia8::LHmatrixBlock {__STR_LIST_OSS__()}
+%extend Pythia8::LHtensor3Block {__STR_LIST_OSS__()}
+%extend Pythia8::ParticleData {__STR_LIST__()}
+%extend Pythia8::PartonSystems {__STR_LIST__()}
 %extend Pythia8::RotBstMatrix {__STR_OSS__()}
-%extend Pythia8::SlowJet {__STR_LIST_OSS__()}
-%extend Pythia8::SpaceShower {__STR_LIST_OSS__()}
-%extend Pythia8::Sphericity {__STR_LIST_OSS__()}
-%extend Pythia8::Thrust {__STR_LIST_OSS__()}
-%extend Pythia8::TimeShower {__STR_LIST_OSS__()}
+%extend Pythia8::SlowJet {__STR_LIST__()}
+%extend Pythia8::SpaceShower {__STR_LIST__()}
+%extend Pythia8::Sphericity {__STR_LIST__()}
+%extend Pythia8::Thrust {__STR_LIST__()}
+%extend Pythia8::TimeShower {__STR_LIST__()}
 %extend Pythia8::Vec4 {
   __STR_OSS__()
   double __getitem__(int i) {
@@ -331,7 +331,22 @@ cat >> $CFG_FILE << BLOCKTEXT
   Pythia8::Wave4 __mul__(Pythia8::GammaMatrix g) {
     Pythia8::Wave4 w = *\$self; return w*g;}
 }
-%extend Pythia8::XMLTag {__STR_PRINT_OSS__()}
+%extend Pythia8::XMLTag {__STR_LIST_OSS__()}
+
+// Template instantiations with Pythia classes.
+%template(MapStringFlag) std::map<std::string, Pythia8::Flag>;
+%template(MapStringMode) std::map<std::string, Pythia8::Mode>;
+%template(MapStringParm) std::map<std::string, Pythia8::Parm>;
+%template(MapStringWord) std::map<std::string, Pythia8::Word>;
+%template(MapStringFVec) std::map<std::string, Pythia8::FVec>;
+%template(MapStringMVec) std::map<std::string, Pythia8::MVec>;
+%template(MapStringPVec) std::map<std::string, Pythia8::PVec>;
+%template(VectorClustering) std::vector<Pythia8::Clustering>;
+%template(VectorHelicityParticle) std::vector<Pythia8::HelicityParticle>;
+%template(VectorProcessContainerPtr) std::vector<Pythia8::ProcessContainer*>;
+%template(VectorResonanceWidthsPtr) std::vector<Pythia8::ResonanceWidths*>;
+%template(VectorSigmaProcessPtr) std::vector<Pythia8::SigmaProcess*>;
+%template(VectorVec4) std::vector<Pythia8::Vec4>;
 BLOCKTEXT
 
 # Run SWIG and create the C++ wrapper header file.
@@ -351,11 +366,81 @@ cat $INC_FILE >> $HEADER_FILE;
 SPLIT=$[$SPLIT+2]; tail -n +$SPLIT $CXX_FILE >> $HEADER_FILE
 echo "// PYTHON SOURCE" >> $HEADER_FILE
 cat >> $HEADER_FILE << BLOCKTEXT
-//# Copyright (C) 2016 Torbjorn Sjostrand.
-//# PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
-//# Please respect the MCnet Guidelines, see GUIDELINES for details.
-
-//# This file contains a Python interface to Pythia 8 generated with SWIG.
+//"""
+//Copyright (C) 2016 Torbjorn Sjostrand.
+//PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
+//Please respect the MCnet Guidelines, see GUIDELINES for details.
+//
+//This module is a Python interface to PYTHIA 8, generated
+//automatically with SWIG. An attempt has been made to translate all
+//PYTHIA classes and functions as directly as possible. The following
+//features are included:
+//
+//* All PYTHIA classes and functions are available. See main01.py for
+//  a direct Python translation of the C++ main01.cc example.
+//* Most of the plugin classes are also available in the
+//  interface. See main34.py for a direct Python translation of the C++
+//  main34.cc example which uses the LHAupMadgraph class from
+//  include/Pythia8Plugins/LHAMadgraph.h.
+//* When available, documentation through the built-in help function
+//  in Python is provided. Please note that this documentation is
+//  automatically generated, similar to the Doxygen
+//  documentation. Consequently, the inline Python documentation is not a
+//  replacement for this manual.
+//* All operators defined in C++, e.g. Vec4*double, as well as reverse
+//  operators, e.g. double*Vec4, are available.
+//* Classes with defined [] operators are iterable, using standard
+//  Python iteration, e.g. for prt in pythia.event.
+//* Classes with a << operator or a list function can be printed
+//  via the built-in print function in Python. Note this means that a
+//  string representation via str is also available for these classes in
+//  Python.
+//* Specific versions of templates needed by PYTHIA classes are
+//  available where the naming scheme is the template class name followed
+//  by its arguments (stripped of namespace specifiers); pointers to
+//  classes are prepended with Ptr. For example, vector<int> is available
+//  via the interface as VectorInt, map<string, Mode> as MapStringMode,
+//  and vector<ProcessContainer*> as VectorProcessContainerPtr.
+//* Derived classes in Python, for a subset of PYTHIA classes, can be
+//  passed back to PYTHIA. This is possible for all classes that can be
+//  passed to the Pythia class via the setXPtr functions and includes the
+//  following classes: BeamShape, DecayHandler, LHAup, MergingHooks, PDF,
+//  PhaseSpace, ResonanceWidths, RndmEngine, SigmaProcess, SpaceShower,
+//  TimeShower, and UserHooks. The protected functions and members of
+//  these classes are available through the Python interface. See
+//  main10.py for a direct Python translation of the C++ main10.cc example
+//  which uses a derived class from the UserHooks class to veto events.
+//
+//This interface currently suffers from the following limitations:
+//
+//* In the CoupSUSY class all public members that are 3-by-3 arrays
+//  cannot be accessed, these include LsddX, LsuuX, LsduX, LsudX, LsvvX,
+//  LsllX, LsvlX, LslvX, as well as the equivalent R versions of these
+//  members. Additionally, rvLLE, rvLQD, and rvUDD cannot be accessed.
+//* In the MergingHooks class, the protected methods orderHistories,
+//  allowCutonRecState, and doWeakClustering with bool return values have
+//  been renamed as getOrderHistories, getAllowCutonRecState, and
+//  getDoWeakClustering, respectively, in the Python interface.
+//* The public headerStream, initStream, and eventStream members of
+//  the Writer class, used for writing LHEF output, cannot be accessed
+//  from the Python interface.
+//* For derived Python classes of the PYTHIA class LHAup, the
+//  protected member osLHEF cannot be accessed.
+//* The wrapper generated by SWIG is large (10 MB), and consequently
+//  the compile time can be significant. The only way to reduce the size
+//  of the wrapper is to remove functionality from the interface.
+//* Creating a derived Python class from a PYTHIA class, as described
+//  above in the features, is only possible for a subset of PYTHIA
+//  classes. However, if this feature is needed for specific classes, they
+//  can be added in the future upon request. This feature is not enabled
+//  by default for all classes to reduce the generated wrapper size.
+//* Python interfaces have not been generated for plugins within
+//  include/Pythia8Plugins which have direct external dependencies. This
+//  means there are no Python interfaces for any of the classes or
+//  functions defined in EvtGen.h, FastJet3.h, HepMC2.h, or
+//  LHAFortran.h. However, interfaces are available for all remaining
+//  plugins, including both LHAMadgraph.h and PowhegProcs.h.
+//"""
 
 BLOCKTEXT
 
@@ -406,4 +491,4 @@ for l in i:
         else: o.write('//' + l)
     else: o.write('//' + l)
 BLOCKTEXT
-rm -rf $CFG_FILE $CXX_FILE $PYTHON_FILE python
+rm -rf $CFG_FILE $CXX_FILE $INC_FILE $PYTHON_FILE python
