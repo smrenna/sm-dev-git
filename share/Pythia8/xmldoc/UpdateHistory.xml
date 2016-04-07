@@ -12,7 +12,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.217: 3 April 2016 
+<li>8.217: 7 April 2016 
 <ul> 
  
 <li>An interface to the Python programming language has been introduced, 
@@ -94,6 +94,9 @@ had been set larger than normally assumed.</li>
  
 <li>Fixed problem with the SLHAinterface not being zeroed-out when 
 using repeated subruns.</li> 
+ 
+<li>Minor fix for beam particles, that no default was set as to whether 
+they are gammas or not.</li> 
  
 <li>Cleaned up error printout for the PDF classes.</li> 
  

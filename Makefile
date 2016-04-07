@@ -132,7 +132,8 @@ $(LOCAL_LIB)/pythia8.py: $(LOCAL_INCLUDE)/Pythia8Plugins/PythonWrapper.h
 	 SPLIT=$$[$$SPLIT+1]; tail -n +$$SPLIT $< | cut -d "/" -f 3- > $@
 	$(PYTHON_BIN)python -m compileall $(LOCAL_LIB)
 $(LOCAL_LIB)/_pythia8.so: $(LOCAL_INCLUDE)/Pythia8Plugins/PythonWrapper.h\
-	$(LOCAL_LIB)/pythia8.py $(LOCAL_LIB)/libpythia8$(LIB_SUFFIX)
+	$(LOCAL_LIB)/pythia8.py $(wildcard $(LOCAL_INCLUDE)/*/*.h) |\
+	$(LOCAL_LIB)/libpythia8$(LIB_SUFFIX)
 	$(CXX) -x c++ $< -o $@ -w $(PYTHON_COMMON) $(CXX_SHARED)\
 	 $(CXX_SONAME),$(notdir $@) -L$(LOCAL_LIB) -lpythia8
 	if type "install_name_tool" &> /dev/null; then\

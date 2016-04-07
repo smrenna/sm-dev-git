@@ -141,6 +141,7 @@ void BeamParticle::initBeamKind() {
   isHadronBeam = false;
   isMesonBeam  = false;
   isBaryonBeam = false;
+  isGammaBeam  = false;
   nValKinds    = 0;
 
   // Check for leptons.
