@@ -43,7 +43,8 @@ public:
     setValenceContent(); idSav = 9; xSav = -1.; Q2Sav = -1.;
     xu = 0.; xd = 0.; xs = 0.; xubar = 0.; xdbar = 0.; xsbar = 0.; xc = 0.;
     xb = 0.; xg = 0.; xlepton = 0.; xgamma = 0.; xuVal = 0.; xuSea = 0.;
-    xdVal = 0.; xdSea = 0.; isSet = true; isInit = false;}
+    xdVal = 0.; xdSea = 0.; isSet = true; isInit = false;
+    hasGammaInLepton = false; }
 
   // Destructor.
   virtual ~PDF() {}
@@ -83,6 +84,12 @@ public:
   // Sample the valence content for photons.
   virtual int sampleGammaValFlavor(double) { return 0.; }
 
+  // Return the sampled value for x_gamma.
+  virtual double xGamma(int){ return 1; }
+
+  // Normal PDFs unless gamma inside lepton -> an overestimate for sampling.
+  virtual double xfMax(int id, double x, double Q2) { return xf( id, x, Q2); }
+
 protected:
 
   // Allow the LHAPDF class to access these methods.
@@ -97,6 +104,9 @@ protected:
 
   // More valence and sea flavors for photon PDFs.
   double xsVal, xcVal, xbVal, xsSea, xcSea, xbSea;
+
+  // True if a photon beam inside a lepton beam, otherwise set false.
+  bool hasGammaInLepton;
 
   // Resolve valence content for assumed meson. Possibly modified later.
   void setValenceContent();
@@ -729,10 +739,10 @@ class LHAGrid1 : public PDF {
 public:
 
   // Constructor.
-  LHAGrid1(int idBeamIn = 2212, int iFitIn = 1,
+  LHAGrid1(int idBeamIn = 2212, string pdfWord = "void",
     string xmlPath = "../share/Pythia8/xmldoc/", Info* infoPtr = 0)
     : PDF(idBeamIn), doExtraPol(false), pdfGrid(NULL), pdfSlope(NULL) {
-    init( iFitIn, xmlPath, infoPtr); };
+    init( pdfWord, xmlPath, infoPtr); };
 
   // Constructor with a stream.
   LHAGrid1(int idBeamIn, istream& is, Info* infoPtr = 0)
@@ -753,7 +763,7 @@ private:
 
   // Variables to be set during code initialization.
   bool   doExtraPol;
-  int    iFit, nx, nq, nqSub;
+  int    nx, nq, nqSub;
   vector<int> nqSum;
   double xMin, xMax, qMin, qMax, pdfVal[12];
   vector<double> xGrid, lnxGrid, qGrid, lnqGrid, qDiv;
@@ -761,7 +771,7 @@ private:
   double** pdfSlope;
 
   // Initialization of data array.
-  void init( int iFitIn, string xmlPath, Info* infoPtr);
+  void init( string pdfSet, string xmlPath, Info* infoPtr);
 
   // Initialization through a stream.
   void init( istream& is, Info* infoPtr);
@@ -771,6 +781,45 @@ private:
 
   // Interpolation in the grid for a given PDF flavour.
   void xfxevolve(double x, double Q2);
+
+};
+
+//==========================================================================
+
+// Convolution with photon flux from leptons and photon PDFs.
+// Photon flux from equivalent photon approximation (EPA).
+// Contains a pointer to a photon PDF set and samples the
+// convolution integral event-by-event basis.
+// Includes also a overestimate for the PDF set in order to set up
+// the phase-space sampling correctly.
+
+class Lepton2gamma : public PDF {
+
+public:
+
+  // Constructor.
+  Lepton2gamma(int idBeamIn, double m2leptonIn, double Q2maxGamma,
+      PDF* gammaPDFPtrIn, Rndm* rndmPtrIn) : PDF(idBeamIn) {
+      m2lepton = m2leptonIn; Q2max = Q2maxGamma; gammaPDFPtr = gammaPDFPtrIn;
+      rndmPtr = rndmPtrIn; hasGammaInLepton = true;
+      xGamMax = Q2max/(2*m2lepton)*(sqrt(1 + 4*m2lepton/Q2max) - 1); }
+
+  // Override the member function definitions where relevant.
+  void xfUpdate(int id, double x, double Q2);
+  double xGamma(int){ return xGm; }
+  double xfMax(int id, double x, double Q2);
+
+private:
+
+  // Parameters for convolution.
+  static const double ALPHAEM, Q2MIN;
+  double m2lepton, Q2max, xGamMax, xGm;
+
+  // Photon PDFs with the photon flux is convoluted with.
+  PDF* gammaPDFPtr;
+
+  // Pointer to random number generator used for sampling x_gamma.
+  Rndm* rndmPtr;
 
 };
 

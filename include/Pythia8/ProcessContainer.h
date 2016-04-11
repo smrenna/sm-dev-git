@@ -112,6 +112,8 @@ public:
   double Q2Fac()       const {return sigmaProcessPtr->Q2Fac();}
   double mHat()        const {return sqrtpos(phaseSpacePtr->sHat());}
   double pTHat()       const {return phaseSpacePtr->pTHat();}
+  double xGamma1()     const {return sigmaProcessPtr->xGamma1();}
+  double xGamma2()     const {return sigmaProcessPtr->xGamma2();}
 
   // Tell whether container is for Les Houches events.
   bool   isLHAContainer() const {return isLHA;}
@@ -174,6 +176,9 @@ private:
   long   nTry, nSel, nAcc, nTryStat;
   double sigmaMx, sigmaSgn, sigmaSum, sigma2Sum, sigmaNeg, sigmaAvg,
          sigmaFin, deltaFin, weightNow, wtAccSum;
+
+  // Flags to store whether beam has a gamma beam inside.
+  bool   beamAhasGamma, beamBhasGamma;
 
   // Statistics for Les Houches event classification.
   vector<int> codeLHA;

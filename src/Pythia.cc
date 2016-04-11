@@ -193,6 +193,8 @@ Pythia::~Pythia() {
   if (useNewPdfB) delete pdfBPtr;
   if (useNewPdfPomA) delete pdfPomAPtr;
   if (useNewPdfPomB) delete pdfPomBPtr;
+  if (useNewPdfGamA) delete pdfGamAPtr;
+  if (useNewPdfGamB) delete pdfGamBPtr;
 
   // Delete the Les Houches object created with new.
   if (useNewLHA) delete lhaUpPtr;
@@ -222,12 +224,16 @@ void Pythia::initPtrs() {
   useNewPdfHard   = false;
   useNewPdfPomA   = false;
   useNewPdfPomB   = false;
+  useNewPdfGamA   = false;
+  useNewPdfGamB   = false;
   pdfAPtr         = 0;
   pdfBPtr         = 0;
   pdfHardAPtr     = 0;
   pdfHardBPtr     = 0;
   pdfPomAPtr      = 0;
   pdfPomBPtr      = 0;
+  pdfGamAPtr      = 0;
+  pdfGamBPtr      = 0;
 
   // Initial values for pointers to Les Houches Event objects.
   doLHA           = false;
@@ -391,7 +397,8 @@ bool Pythia::readFile(istream& is, bool warn, int subrun) {
 // Routine to pass in pointers to PDF's. Usage optional.
 
 bool Pythia::setPDFPtr( PDF* pdfAPtrIn, PDF* pdfBPtrIn, PDF* pdfHardAPtrIn,
-  PDF* pdfHardBPtrIn, PDF* pdfPomAPtrIn, PDF* pdfPomBPtrIn) {
+  PDF* pdfHardBPtrIn, PDF* pdfPomAPtrIn, PDF* pdfPomBPtrIn,
+  PDF* pdfGamAPtrIn, PDF* pdfGamBPtrIn) {
 
   // Delete any PDF's created in a previous init call.
   if (useNewPdfHard && pdfHardAPtr != pdfAPtr) delete pdfHardAPtr;
@@ -400,6 +407,8 @@ bool Pythia::setPDFPtr( PDF* pdfAPtrIn, PDF* pdfBPtrIn, PDF* pdfHardAPtrIn,
   if (useNewPdfB) delete pdfBPtr;
   if (useNewPdfPomA) delete pdfPomAPtr;
   if (useNewPdfPomB) delete pdfPomBPtr;
+  if (useNewPdfGamA) delete pdfGamAPtr;
+  if (useNewPdfGamB) delete pdfGamBPtr;
 
   // Reset pointers to be empty.
   useNewPdfA    = false;
@@ -407,12 +416,16 @@ bool Pythia::setPDFPtr( PDF* pdfAPtrIn, PDF* pdfBPtrIn, PDF* pdfHardAPtrIn,
   useNewPdfHard = false;
   useNewPdfPomA = false;
   useNewPdfPomB = false;
+  useNewPdfGamA = false;
+  useNewPdfGamB = false;
   pdfAPtr       = 0;
   pdfBPtr       = 0;
   pdfHardAPtr   = 0;
   pdfHardBPtr   = 0;
   pdfPomAPtr    = 0;
   pdfPomBPtr    = 0;
+  pdfGamAPtr    = 0;
+  pdfGamBPtr    = 0;
 
   // Switch off external PDF's by zero as input.
   if (pdfAPtrIn == 0 && pdfBPtrIn == 0) return true;
@@ -440,6 +453,13 @@ bool Pythia::setPDFPtr( PDF* pdfAPtrIn, PDF* pdfBPtrIn, PDF* pdfHardAPtrIn,
     if (pdfPomAPtrIn == pdfPomBPtrIn) return false;
     pdfPomAPtr  = pdfPomAPtrIn;
     pdfPomBPtr  = pdfPomBPtrIn;
+  }
+
+  // Optionally allow pointers for Gammas in the leptons.
+  if (pdfGamAPtrIn != 0 && pdfGamBPtrIn != 0) {
+    if (pdfGamAPtrIn == pdfGamBPtrIn) return false;
+    pdfGamAPtr  = pdfGamAPtrIn;
+    pdfGamBPtr  = pdfGamBPtrIn;
   }
 
   // Done.
@@ -799,12 +819,20 @@ bool Pythia::init() {
       beamPomB.init( 990, -0.5 * eCM, 0.5 * eCM, 0., &info, settings,
         &particleData, &rndm, pdfPomBPtr, pdfPomBPtr, false, flavSelPtr);
     }
+
+    // Optionally set up a photon beam within a lepton beam.
+    if ( beamA.hasGamma() ) beamGamA.init( 22,  0.5 * eCM, 0.5 * eCM, 0.,
+      &info, settings, &particleData, &rndm, pdfGamAPtr, pdfGamAPtr, false,
+      flavSelPtr);
+    if ( beamB.hasGamma() ) beamGamB.init( 22, -0.5 * eCM, 0.5 * eCM, 0.,
+      &info, settings, &particleData, &rndm, pdfGamBPtr, pdfGamBPtr, false,
+      flavSelPtr);
   }
 
   // Send info/pointers to process level for initialization.
   if ( doProcessLevel && !processLevel.init( &info, settings, &particleData,
-    &rndm, &beamA, &beamB, couplingsPtr, &sigmaTot, doLHA, &slhaInterface,
-    userHooksPtr, sigmaPtrs, phaseSpacePtrs) ) {
+    &rndm, &beamA, &beamB, &beamGamA, &beamGamB, couplingsPtr, &sigmaTot,
+    doLHA, &slhaInterface, userHooksPtr, sigmaPtrs, phaseSpacePtrs) ) {
     info.errorMsg("Abort from Pythia::init: "
       "processLevel initialization failed");
     return false;
@@ -820,9 +848,9 @@ bool Pythia::init() {
 
   // Send info/pointers to parton level for initialization.
   if ( doPartonLevel && doProcessLevel && !partonLevel.init( &info, settings,
-    &particleData, &rndm, &beamA, &beamB, &beamPomA, &beamPomB, couplingsPtr,
-    &partonSystems, &sigmaTot, timesDecPtr, timesPtr, spacePtr, &rHadrons,
-    userHooksPtr, mergingHooksPtr, false) ) {
+    &particleData, &rndm, &beamA, &beamB, &beamPomA, &beamPomB, &beamGamA,
+    &beamGamB, couplingsPtr, &partonSystems, &sigmaTot, timesDecPtr, timesPtr,
+    spacePtr, &rHadrons, userHooksPtr, mergingHooksPtr, false) ) {
     info.errorMsg("Abort from Pythia::init: "
       "partonLevel initialization failed" );
     return false;
@@ -834,14 +862,14 @@ bool Pythia::init() {
 
   // Alternatively only initialize final-state showers in resonance decays.
   if ( !doProcessLevel || !doPartonLevel) partonLevel.init( &info, settings,
-    &particleData, &rndm, 0, 0, 0, 0, couplingsPtr, &partonSystems, 0,
+    &particleData, &rndm, 0, 0, 0, 0, 0, 0, couplingsPtr, &partonSystems, 0,
     timesDecPtr, 0, 0, &rHadrons, 0, 0, false);
 
   // Send info/pointers to parton level for trial shower initialization.
   if ( doMerging && !trialPartonLevel.init( &info, settings, &particleData,
-      &rndm, &beamA, &beamB, &beamPomA, &beamPomB, couplingsPtr,
-      &partonSystems, &sigmaTot, timesDecPtr, timesPtr, spacePtr, &rHadrons,
-      userHooksPtr, mergingHooksPtr, true) ) {
+      &rndm, &beamA, &beamB, &beamPomA, &beamPomB, &beamGamA, &beamGamB,
+      couplingsPtr, &partonSystems, &sigmaTot, timesDecPtr, timesPtr,
+      spacePtr, &rHadrons, userHooksPtr, mergingHooksPtr, true) ) {
     info.errorMsg("Abort from Pythia::init: "
       "trialPartonLevel initialization failed");
     return false;
@@ -977,12 +1005,14 @@ bool Pythia::checkBeams() {
 
   // Lepton-hadron collisions OK for DIS processes or LHEF input,
   // although still primitive.
+  // Photon beam inside lepton not yet included for lepton-hadron.
   if ( (isLeptonA && isHadronB) || (isHadronA && isLeptonB) ) {
     bool doDIS = settings.flag("WeakBosonExchange:all")
               || settings.flag("WeakBosonExchange:ff2ff(t:gmZ)")
               || settings.flag("WeakBosonExchange:ff2ff(t:W)")
               || (frameType == 4);
-    if (doDIS) return true;
+    bool lepton2gamma = settings.flag("PDF:lepton2gamma");
+    if (doDIS && !lepton2gamma) return true;
   }
 
   // If no case above then failed.
@@ -1104,6 +1134,32 @@ bool Pythia::initPDFs() {
     useNewPdfPomB = false;
     pdfPomBPtr    = 0;
   }
+  if (useNewPdfGamA) {
+    delete pdfGamAPtr;
+    useNewPdfGamA = false;
+    pdfGamAPtr    = 0;
+  }
+  if (useNewPdfGamB) {
+    delete pdfGamBPtr;
+    useNewPdfGamB = false;
+    pdfGamBPtr    = 0;
+  }
+
+  // Optionally set up photon PDF's for lepton -> gamma collisions.
+  // Done before the main PDFs so that the gamma pointer can be used
+  // for the main PDF (lepton).
+  if ( settings.flag("PDF:lepton2gamma") ) {
+    if ( (abs(idA) == 11 || abs(idA) == 13 || abs(idA) == 15)
+        && pdfGamAPtr == 0 ) {
+      pdfGamAPtr    = getPDFPtr(22);
+      useNewPdfGamA = true;
+    }
+    if ( (abs(idB) == 11 || abs(idB) == 13 || abs(idB) == 15)
+        && pdfGamBPtr == 0 ) {
+      pdfGamBPtr    = getPDFPtr(22);
+      useNewPdfGamB = true;
+    }
+  }
 
   // Set up the PDF's, if not already done.
   if (pdfAPtr == 0) {
@@ -1208,6 +1264,8 @@ bool Pythia::next() {
   beamB.clear();
   beamPomA.clear();
   beamPomB.clear();
+  beamGamA.clear();
+  beamGamB.clear();
 
   // Pick current beam valence flavours (for pi0, K0S, K0L, Pomeron).
   beamA.newValenceContent();
@@ -1318,7 +1376,10 @@ bool Pythia::next() {
       beamB.clear();
       beamPomA.clear();
       beamPomB.clear();
+      beamGamA.clear();
+      beamGamB.clear();
       partonSystems.clear();
+
 
       // Parton-level evolution: ISR, FSR, MPI.
       if ( !partonLevel.next( process, event) ) {
@@ -2224,54 +2285,70 @@ PDF* Pythia::getPDFPtr(int idIn, int sequence, string beam) {
 
   // Proton beam, normal or hard choice. Also used for neutron.
   if (abs(idIn) == 2212 || abs(idIn) == 2112) {
-    string pSet = settings.word("PDF:p"
+    string pWord = settings.word("PDF:p"
       + string(sequence == 1 ? "" : "Hard") + "Set" + beam);
-    if (pSet == "void" && sequence != 1 && beam == "B")
-      pSet = settings.word("PDF:pHardSet");
-    if (pSet == "void") pSet = settings.word("PDF:pSet");
-    istringstream pSetStream(pSet);
-    int pSetInt(0);
-    pSetStream >> pSetInt;
+    if (pWord == "void" && sequence != 1 && beam == "B")
+      pWord = settings.word("PDF:pHardSet");
+    if (pWord == "void") pWord = settings.word("PDF:pSet");
+    istringstream pStream(pWord);
+    int pSet = 0;
+    pStream >> pSet;
+
+    // Use internal LHAgrid1 implementation for LHAPDF6 files.
+    if (pSet == 0 && isLHAGrid1(pWord))
+      tempPDFPtr = new LHAGrid1(idIn, pWord, xmlPath, &info);
 
     // Use sets from LHAPDF.
-    if (pSetInt == 0)
-      tempPDFPtr = new LHAPDF(idIn, pSet, &info);
+    else if (pSet == 0) tempPDFPtr = new LHAPDF(idIn, pWord, &info);
 
     // Use internal sets.
-    else if (pSetInt == 1) tempPDFPtr = new GRV94L(idIn);
-    else if (pSetInt == 2) tempPDFPtr = new CTEQ5L(idIn);
-    else if (pSetInt <= 6)
-      tempPDFPtr = new MSTWpdf(idIn, pSetInt - 2, xmlPath, &info);
-    else if (pSetInt <= 12)
-      tempPDFPtr = new CTEQ6pdf(idIn, pSetInt - 6, 1., xmlPath, &info);
-    else if (pSetInt <= 16)
-      tempPDFPtr = new NNPDF(idIn, pSetInt - 12, xmlPath, &info);
+    else if (pSet == 1) tempPDFPtr = new GRV94L(idIn);
+    else if (pSet == 2) tempPDFPtr = new CTEQ5L(idIn);
+    else if (pSet <= 6)
+      tempPDFPtr = new MSTWpdf(idIn, pSet - 2, xmlPath, &info);
+    else if (pSet <= 12)
+      tempPDFPtr = new CTEQ6pdf(idIn, pSet - 6, 1., xmlPath, &info);
+    else if (pSet <= 16)
+      tempPDFPtr = new NNPDF(idIn, pSet - 12, xmlPath, &info);
     else tempPDFPtr = 0;
   }
 
   // Pion beam (or, in one option, Pomeron beam).
   else if (abs(idIn) == 211 || idIn == 111) {
-    string pSet = settings.word("PDF:piSet" + beam);
-    istringstream pSetStream(pSet);
-    int pSetInt(0);
-    pSetStream >> pSetInt;
+    string piWord = settings.word("PDF:piSet" + beam);
+    istringstream piStream(piWord);
+    int piSet = 0;
+    piStream >> piSet;
+
+    // Use internal LHAgrid1 implementation for LHAPDF6 files.
+    if (piSet == 0 && isLHAGrid1(piWord))
+      tempPDFPtr = new LHAGrid1(idIn, piWord, xmlPath, &info);
 
     // Use sets from LHAPDF.
-    if (pSetInt == 0)
-      tempPDFPtr = new LHAPDF(idIn, pSet, &info);
+    else if (piSet == 0) tempPDFPtr = new LHAPDF(idIn, piWord, &info);
 
     // Use internal set.
-    else if (pSetInt == 1) tempPDFPtr = new GRVpiL(idIn);
+    else if (piSet == 1) tempPDFPtr = new GRVpiL(idIn);
     else tempPDFPtr = 0;
   }
 
   // Pomeron beam, if not treated like a pi0 beam.
   else if (idIn == 990) {
-    int    pomSet  = settings.mode("PDF:PomSet");
+    string pomWord = settings.word("PDF:PomSet");
     double rescale = settings.parm("PDF:PomRescale");
+    istringstream pomStream(pomWord);
+    int pomSet = 0;
+    pomStream >> pomSet;
+
+    // Use internal LHAgrid1 implementation for LHAPDF6 files.
+    if (pomSet == 0 && isLHAGrid1(pomWord))
+      tempPDFPtr = new LHAGrid1(idIn, pomWord, xmlPath, &info);
+
+    // Use sets from LHAPDF.
+    else if (pomSet == 0) tempPDFPtr = new LHAPDF(idIn, pomWord, &info);
 
     // A generic Q2-independent parametrization.
-    if (pomSet == 1) {
+    else if (pomSet == 1) {
       double gluonA      = settings.parm("PDF:PomGluonA");
       double gluonB      = settings.parm("PDF:PomGluonB");
       double quarkA      = settings.parm("PDF:PomQuarkA");
@@ -2298,6 +2375,7 @@ PDF* Pythia::getPDFPtr(int idIn, int sequence, string beam) {
       settings.parm("Diffraction:PomFluxEpsilon", pomFluxEps);
       settings.parm("Diffraction:PomFluxAlphaPrime", 0.25);
     }
+    else tempPDFPtr = 0;
   }
 
   // Photon beam.
@@ -2308,8 +2386,26 @@ PDF* Pythia::getPDFPtr(int idIn, int sequence, string beam) {
   }
 
   // Lepton beam: neutrino, resolved charged lepton or unresolved ditto.
+  // Now also photon inside lepton PDFs.
   else if (abs(idIn) > 10 && abs(idIn) < 17) {
     if (abs(idIn)%2 == 0) tempPDFPtr = new NeutrinoPoint(idIn);
+    else if  (settings.flag("PDF:lepton2gamma")) {
+      PDF* tempGammaPDFPtr = 0;
+      if ( beam == "B" ) tempGammaPDFPtr = pdfGamBPtr;
+      else               tempGammaPDFPtr = pdfGamAPtr;
+
+      // Get the mass of lepton and maximum virtuality of the photon.
+      double m2lepton   = pow2(particleData.m0(idIn));
+      double Q2maxGamma = settings.parm("Photon:Q2max");
+
+      // Initialize the gamma-inside-lepton PDFs.
+      int lepton2gammaSet  = settings.mode("PDF:lepton2gammaSet");
+      if (lepton2gammaSet == 1) {
+        tempPDFPtr = new Lepton2gamma(idIn, m2lepton, Q2maxGamma,
+          tempGammaPDFPtr, &rndm);
+      } else tempPDFPtr = 0;
+
+    }
     else if (settings.flag("PDF:lepton")) tempPDFPtr = new Lepton(idIn);
     else tempPDFPtr = new LeptonPoint(idIn);
   }

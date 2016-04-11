@@ -156,6 +156,8 @@ made to vanish for <i>x > 1 - 10^{-10}</i>, and scaled up in the range
 total area under the pdf is preserved.</li> 
 <li><code>LeptonPoint</code> gives the trivial distribution of a 
 pointlike (i.e. unresolved) charged lepton.</li> 
+<li><code>Lepton2gamma</code> gives the convolution between photon 
+flux from leptons and photon PDFs.</li> 
 </ul> 
  
 <p/> 

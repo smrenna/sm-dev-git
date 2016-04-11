@@ -46,6 +46,7 @@ public:
   bool init( Info* infoPtrIn, Settings& settings,
     ParticleData* particleDataPtrIn, Rndm* rndmPtrIn,
     BeamParticle* beamAPtrIn, BeamParticle* beamBPtrIn,
+    BeamParticle* beamGamAPtrIn, BeamParticle* beamGamBPtrIn,
     Couplings* couplingsPtrIn, SigmaTotal* sigmaTotPtrIn, bool doLHAin,
     SLHAinterface* slhaInterfacePtrIn, UserHooks* userHooksPtrIn,
     vector<SigmaProcess*>& sigmaPtrs, vector<PhaseSpace*>& phaseSpacePtrs);
@@ -91,6 +92,10 @@ private:
   double mHatMin1, mHatMax1, pTHatMin1, pTHatMax1, mHatMin2, mHatMax2,
          pTHatMin2, pTHatMax2, sigmaND, sumImpactFac, sum2ImpactFac;
 
+  // Variables for gamma-inside-lepton collisions.
+  bool   isLepton2gamma;
+  double xGamma1, xGamma2;
+
   // Vector of containers of internally-generated processes.
   vector<ProcessContainer*> containerPtrs;
   int    iContainer, iLHACont;
@@ -116,6 +121,10 @@ private:
   // Pointers to the two incoming beams.
   BeamParticle*   beamAPtr;
   BeamParticle*   beamBPtr;
+
+  // Pointers to the two possible photon beams inside the incoming beams.
+  BeamParticle*   beamGamAPtr;
+  BeamParticle*   beamGamBPtr;
 
   // Pointer to Standard Model couplings, including alphaS and alphaEM.
   Couplings*      couplingsPtr;

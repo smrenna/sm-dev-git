@@ -118,11 +118,20 @@ void BeamParticle::init( int idIn, double pzIn, double eIn, double mIn,
   // Add remnants for photon beam unless ISR ends up as a photon.
   gammaRemnants     = false;
 
+  // Is there a gamma beam inside lepton.
+  lepton2gamma      = settings.flag("PDF:lepton2gamma");
+
   // Store info on the incoming beam.
   idBeam            = idIn;
   initBeamKind();
   pBeam             = Vec4( 0., 0., pzIn, eIn);
   mBeam             = mIn;
+
+  // Initialize gamma-in-lepton kinematic variables.
+  xGm               = 1.;
+  kTgamma           = 0.;
+  phiGamma          = 0.;
+
   clear();
 
 }
@@ -136,12 +145,13 @@ void BeamParticle::init( int idIn, double pzIn, double eIn, double mIn,
 void BeamParticle::initBeamKind() {
 
   // Reset.
-  idBeamAbs    = abs(idBeam);
-  isLeptonBeam = false;
-  isHadronBeam = false;
-  isMesonBeam  = false;
-  isBaryonBeam = false;
-  isGammaBeam  = false;
+  idBeamAbs        = abs(idBeam);
+  isLeptonBeam     = false;
+  isHadronBeam     = false;
+  isMesonBeam      = false;
+  isBaryonBeam     = false;
+  isGammaBeam      = false;
+  hasGammaInLepton = false;
   nValKinds    = 0;
 
   // Check for leptons.
@@ -150,6 +160,8 @@ void BeamParticle::initBeamKind() {
     nVal[0]   = 1;
     idVal[0]  = idBeam;
     isLeptonBeam = true;
+    // If not a neutrino, set hasGammaInLepton appropriately.
+    if ( idBeamAbs%2 == 1 && lepton2gamma ) hasGammaInLepton = true;
   }
 
   // Valence content for photons.
@@ -402,7 +414,7 @@ int BeamParticle::pickValSeaComp() {
   // For lepton beam assume same-kind lepton inside is valence.
   else if (isLeptonBeam && idSave == idBeam) vsc = -3;
 
-  // Separate method for photon beams.
+  // Separate method for photon beams so do nothing here.
   else if (isGammaBeam) ;
 
   // Decide if valence or sea quark.
@@ -460,7 +472,7 @@ double BeamParticle::xValFrac(int j, double Q2) {
   if (isBaryonBeam && nVal[j] == 2) return uValInt;
 
   // Meson: (2 * u + d) / 2 of proton so same total valence quark fraction.
-    return 0.5 * (2. * uValInt + dValInt);
+  return 0.5 * (2. * uValInt + dValInt);
 
 }
 
@@ -650,7 +662,7 @@ bool BeamParticle::remnantFlavours(Event& event, bool isDIS) {
     nValLeft[i] = nVal[i];
     for (int j = 0; j < nInit; ++j) if (resolved[j].isValence()
       && resolved[j].id() == idVal[i]) --nValLeft[i];
-    // No valence quarks if ISR find the original beam photon.
+      // No valence quarks if ISR find the original beam photon.
     if( isGammaBeam && doISR && !gammaRemnants ) nValLeft[i] = 0;
     // Add remaining valence quarks to record. Partly temporary values.
     for (int k = 0; k < nValLeft[i]; ++k) append(0, idVal[i], 0., -3);

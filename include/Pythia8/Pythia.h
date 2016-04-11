@@ -89,7 +89,8 @@ public:
 
   // Possibility to pass in pointers to PDF's.
   bool setPDFPtr( PDF* pdfAPtrIn, PDF* pdfBPtrIn, PDF* pdfHardAPtrIn = 0,
-    PDF* pdfHardBPtrIn = 0, PDF* pdfPomAPtrIn = 0, PDF* pdfPomBPtrIn = 0);
+    PDF* pdfHardBPtrIn = 0, PDF* pdfPomAPtrIn = 0, PDF* pdfPomBPtrIn = 0,
+    PDF* pdfGamAPtrIn = 0, PDF* pdfGamBPtrIn = 0);
 
   // Possibility to pass in pointer to external LHA-interfaced generator.
   bool setLHAupPtr( LHAup* lhaUpPtrIn) {lhaUpPtr = lhaUpPtrIn; return true;}
@@ -251,8 +252,13 @@ private:
   PDF* pdfPomAPtr;
   PDF* pdfPomBPtr;
 
+  // Extra Photon PDF pointers to be used in lepton -> gamma processes.
+  PDF* pdfGamAPtr;
+  PDF* pdfGamBPtr;
+
   // Keep track when "new" has been used and needs a "delete" for PDF's.
-  bool useNewPdfA, useNewPdfB, useNewPdfHard, useNewPdfPomA, useNewPdfPomB;
+  bool useNewPdfA, useNewPdfB, useNewPdfHard, useNewPdfPomA, useNewPdfPomB,
+       useNewPdfGamA, useNewPdfGamB;
 
   // The two incoming beams.
   BeamParticle beamA;
@@ -261,6 +267,10 @@ private:
   // Alternative Pomeron beam-inside-beam.
   BeamParticle beamPomA;
   BeamParticle beamPomB;
+
+  // Alternative photon beam-inside-beam.
+  BeamParticle beamGamA;
+  BeamParticle beamGamB;
 
   // LHAup object for generating external events.
   bool   doLHA, useNewLHA;
@@ -357,6 +367,12 @@ private:
   // Initialization of SLHA data.
   bool initSLHA ();
   stringstream particleDataBuffer;
+
+  // Small helper to identify LHAGrid1 input command.
+  bool isLHAGrid1(string pdfSet) { if (pdfSet.length() < 10) return false;
+    for (int i = 0; i < 8; ++i) pdfSet[i] = tolower(pdfSet[i]);
+    return (pdfSet.substr(0,9) == "lhagrid1:") ? true : false; }
+
 };
 
 //==========================================================================

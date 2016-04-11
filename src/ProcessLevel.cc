@@ -44,6 +44,7 @@ ProcessLevel::~ProcessLevel() {
 bool ProcessLevel::init( Info* infoPtrIn, Settings& settings,
   ParticleData* particleDataPtrIn, Rndm* rndmPtrIn,
   BeamParticle* beamAPtrIn, BeamParticle* beamBPtrIn,
+  BeamParticle* beamGamAPtrIn, BeamParticle* beamGamBPtrIn,
   Couplings* couplingsPtrIn, SigmaTotal* sigmaTotPtrIn, bool doLHA,
   SLHAinterface* slhaInterfacePtrIn, UserHooks* userHooksPtrIn,
   vector<SigmaProcess*>& sigmaPtrs, vector<PhaseSpace*>& phaseSpacePtrs) {
@@ -58,6 +59,12 @@ bool ProcessLevel::init( Info* infoPtrIn, Settings& settings,
   sigmaTotPtr      = sigmaTotPtrIn;
   userHooksPtr     = userHooksPtrIn;
   slhaInterfacePtr = slhaInterfacePtrIn;
+
+  // Initialize variables related photon-inside-lepton.
+  beamGamAPtr      = beamGamAPtrIn;
+  beamGamBPtr      = beamGamBPtrIn;
+  xGamma1          = 1.;
+  xGamma2          = 1.;
 
   // Send on some input pointers.
   resonanceDecays.init( infoPtr, particleDataPtr, rndmPtr);
@@ -79,6 +86,9 @@ bool ProcessLevel::init( Info* infoPtrIn, Settings& settings,
   // Check whether ISR applied. Affects processes with photon beams.
   doISR         = ( settings.flag("PartonLevel:ISR") &&
                     settings.flag("PartonLevel:all") );
+
+  // Check whether lepton2gamma is set on.
+  isLepton2gamma = settings.flag("PDF:lepton2gamma");
 
   // Second interaction not to be combined with biased phase space.
   if (doSecondHard && userHooksPtr != 0
@@ -646,15 +656,6 @@ bool ProcessLevel::nextOne( Event& process) {
     if ( !containerPtrs[iContainer]->constructProcess( process) )
       physical = false;
 
-    // Check that enough room for beam remnants int the photon beams and
-    // set the valence content for photon beams.
-    if( beamAPtr->isGamma() && beamBPtr->isGamma() ){
-      if( !roomForRemnants() ){
-        physical = false;
-        continue;
-      }
-    }
-
     // Do all resonance decays.
     if ( physical && doResDecays
       && !containerPtrs[iContainer]->decayResonances( process) )
@@ -670,6 +671,32 @@ bool ProcessLevel::nextOne( Event& process) {
 
     // Add any junctions to the process event record list.
     if (physical) findJunctions( process);
+
+    // Set the photon beam momenta according to the process.
+    if ( beamAPtr->hasGamma() ){
+      double pzGamma = process[3].pz();
+      double eGamma  = process[3].e();
+      xGamma1 = containerPtrs[iContainer]->xGamma1();
+      beamAPtr->newxGamma(xGamma1);
+      beamGamAPtr->newPzE(pzGamma, eGamma);
+    }
+    if ( beamBPtr->hasGamma() ){
+      double pzGamma = process[4].pz();
+      double eGamma  = process[4].e();
+      xGamma2 = containerPtrs[iContainer]->xGamma2();
+      beamBPtr->newxGamma(xGamma2);
+      beamGamBPtr->newPzE(pzGamma, eGamma);
+    }
+
+    // Check that enough room for beam remnants in the photon beams and
+    // set the valence content for photon beams.
+    if ( (beamAPtr->isGamma() && beamBPtr->isGamma())
+      || (beamGamAPtr->isGamma() && beamGamBPtr->isGamma()) ) {
+      if ( !roomForRemnants() ){
+        physical = false;
+        continue;
+      }
+    }
 
     // Outer loop should normally work first time around.
     if (physical) break;
@@ -847,9 +874,15 @@ bool ProcessLevel::nextTwo( Event& process) {
 
 bool ProcessLevel::roomForRemnants() {
 
+  // Set the beamParticle pointers to photon beams.
+  bool beamAhasGamma = beamAPtr->hasGamma();
+  bool beamBhasGamma = beamBPtr->hasGamma();
+  BeamParticle* tmpBeamAPtr = beamAhasGamma ? beamGamAPtr : beamAPtr;
+  BeamParticle* tmpBeamBPtr = beamBhasGamma ? beamGamBPtr : beamBPtr;
+
   // Clear the previous choice.
-  beamAPtr->initiatorVal(false);
-  beamBPtr->initiatorVal(false);
+  tmpBeamAPtr->initiatorVal(false);
+  tmpBeamBPtr->initiatorVal(false);
 
   // Store the relevant information.
   int id1 = containerPtrs[iContainer]->id1();
@@ -859,7 +892,18 @@ bool ProcessLevel::roomForRemnants() {
   double Q2 = containerPtrs[iContainer]->Q2Fac();
 
   // Calculate the mT left for the beams after hard interaction.
-  double mTRem = (infoPtr->eCM())*sqrt( (1-x1)*(1-x2) );
+  double eCMgmgm = infoPtr->eCM();
+
+  // If gamma inside lepton calculate gamma+gamma eCM and scale x's.
+  if (beamAhasGamma) {
+    eCMgmgm *= xGamma1;
+    x1 = x1/xGamma1;
+  }
+  if (beamBhasGamma){
+    eCMgmgm *= xGamma2;
+    x2 = x2/xGamma2;
+  }
+  double mTRem = eCMgmgm*sqrt( (1 - x1)*(1 - x2) );
   double m1 = 0, m2 = 0;
 
   bool physical = false;
@@ -874,24 +918,24 @@ bool ProcessLevel::roomForRemnants() {
 
       // Check whether the hard parton is a valence quark and if not use the
       // parametrization for the valence flavor ratios.
-      bool hard1Val = beamAPtr->gammaInitiatorIsVal(id1, x1, Q2);
-      bool hard2Val = beamBPtr->gammaInitiatorIsVal(id2, x2, Q2);
+      bool init1Val = tmpBeamAPtr->gammaInitiatorIsVal(id1, x1, Q2);
+      bool init2Val = tmpBeamBPtr->gammaInitiatorIsVal(id2, x2, Q2);
 
       // If no ISR is generated must leave room for beam remnants.
       // Calculate the required amount of energy for three different cases:
       // Hard parton is a valence quark:   Remnant mass = m_val.
       // Hard parton is a gluon:           Remnant mass = 2*m_val.
       // Hard parton is not valence quark: Remnant mass = 2*m_val + m_hard.
-      if(hard1Val) {
+      if (init1Val) {
         m1 = particleDataPtr->m0(id1);
       } else {
-        m1 = 2*( particleDataPtr->m0( beamAPtr->getGammaValFlavour() ) );
+        m1 = 2*( particleDataPtr->m0( tmpBeamAPtr->getGammaValFlavour() ) );
         if(id1 != 21) m1 += particleDataPtr->m0(id1);
       }
-      if(hard2Val) {
+      if (init2Val) {
         m2 = particleDataPtr->m0(id2);
       } else {
-        m2 = 2*( particleDataPtr->m0( beamBPtr->getGammaValFlavour() ) );
+        m2 = 2*( particleDataPtr->m0( tmpBeamBPtr->getGammaValFlavour() ) );
         if(id2 != 21) m2 += particleDataPtr->m0(id2);
       }
       physical = ( (m1 + m2) < mTRem );
@@ -900,14 +944,14 @@ bool ProcessLevel::roomForRemnants() {
       ++nTry;
       if (nTry == maxTry) {
         if ( abs(id1) == 5 || abs(id2) == 5 ) {
-          infoPtr->errorMsg("Error in ProcessLevel::roomForRemnants: "
-            "No room for bottom quarks in beam remnants for the hard process");
+          infoPtr->errorMsg("Warning in ProcessLevel::roomForRemnants: "
+            "No room for bottom quarks in beam remnants");
         } else if ( abs(id1) == 4 || abs(id2) == 4 ) {
-          infoPtr->errorMsg("Error in ProcessLevel::roomForRemnants: "
-            "No room for charm quarks in beam remnants for the hard process");
+          infoPtr->errorMsg("Warning in ProcessLevel::roomForRemnants: "
+            "No room for charm quarks in beam remnants");
         } else {
-          infoPtr->errorMsg("Error in ProcessLevel::roomForRemnants: "
-            "No room for light quarks in beam remnants for the hard process");
+          infoPtr->errorMsg("Warning in ProcessLevel::roomForRemnants: "
+            "No room for light quarks in beam remnants");
         }
         break;
       }
@@ -928,14 +972,14 @@ bool ProcessLevel::roomForRemnants() {
     physical = ( (m1 + m2) < mTRem );
     if (physical == false) {
       if ( abs(id1) == 5 || abs(id2) == 5 ) {
-        infoPtr->errorMsg("Error in ProcessLevel::roomForRemnants: "
-          "No room for bottom quarks in beam remnants for the hard process");
+        infoPtr->errorMsg("Warning in ProcessLevel::roomForRemnants: "
+          "No room for bottom quarks in beam remnants");
       } else if ( abs(id1) == 4 || abs(id2) == 4 ) {
-        infoPtr->errorMsg("Error in ProcessLevel::roomForRemnants: "
-          "No room for charm quarks in beam remnants for the hard process");
+        infoPtr->errorMsg("Warning in ProcessLevel::roomForRemnants: "
+          "No room for charm quarks in beam remnants");
       } else {
-        infoPtr->errorMsg("Error in ProcessLevel::roomForRemnants: "
-          "No room for light quarks in beam remnants for the hard process");
+        infoPtr->errorMsg("Warning in ProcessLevel::roomForRemnants: "
+          "No room for light quarks in beam remnants");
       }
     }
   }

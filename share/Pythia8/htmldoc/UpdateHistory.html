@@ -18,7 +18,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.217: 3 April 2016 
+<li>8.217: 11 April 2016 
 <ul> 
  
 <li>An interface to the Python programming language has been introduced, 
@@ -34,6 +34,11 @@ a new switch, <code>TimeShower:MEextended</code>, on by defaults,
 attempts to guess the most relevant ME correction when the 
 correct choice is not known or implemented. Thanks to 
 Jesse Thaler, Michele Selvaggi and Fabio Maltoni.</li> 
+ 
+<li>The <i>gamma-gamma</i> hard-process machinery has been extended to 
+convolute the partonic PDFs in a photon with the flux of photons inside 
+a lepton. The description is intended for the region of quasireal photons, 
+but full kinematics is implemented.</li> 
  
 <li>New constructors that take streams rather than files as input. 
 Thus the contents of a file can be read and then broadcast to multiple 
@@ -100,6 +105,9 @@ had been set larger than normally assumed.</li>
  
 <li>Fixed problem with the SLHAinterface not being zeroed-out when 
 using repeated subruns.</li> 
+ 
+<li>Minor fix for beam particles, that no default was set as to whether 
+they are gammas or not.</li> 
  
 <li>Cleaned up error printout for the PDF classes.</li> 
  

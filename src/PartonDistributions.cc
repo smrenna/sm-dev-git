@@ -124,6 +124,19 @@ double PDF::xf(int id, double x, double Q2) {
     if (idAbs == 22) return max(0., xgamma);
     return 0.;
 
+  // Photon beam inside lepton beam.
+  } else if ( ( idBeamAbs == 11 || idBeamAbs == 13 || idBeamAbs == 15 )
+    && hasGammaInLepton ) {
+    int idAbs = abs(id);
+    if (idAbs ==  0 || idAbs == 21) return max(0., xg);
+    if (idAbs ==  1) return max(0., xd);
+    if (idAbs ==  2) return max(0., xu);
+    if (idAbs ==  3) return max(0., xs);
+    if (idAbs ==  4) return max(0., xc);
+    if (idAbs ==  5) return max(0., xb);
+    if (idAbs == 22) return max(0., xgamma);
+    return 0.;
+
   // Lepton beam.
   } else {
     if (id == idBeam ) return max(0., xlepton);
@@ -3158,17 +3171,26 @@ double CJKL::hadronlikeB(double x, double s, double Q2) {
 
 // Initialize PDF: select data file and open stream.
 
-void LHAGrid1::init(int iFitIn, string xmlPath, Info* infoPtr) {
+void LHAGrid1::init(string pdfWord, string xmlPath, Info* infoPtr) {
 
-  // Choice of fit among possibilities.
-  iFit = iFitIn;
+  // Identify whether file number or name.
+  pdfWord = pdfWord.substr(9, pdfWord.length() - 9);
+  istringstream pdfStream(pdfWord);
+  int pdfSet = 0;
+  pdfStream >> pdfSet;
+
+  // Input is file name.
+  string dataFile = "";
+  if ( xmlPath[ xmlPath.length() - 1 ] != '/') xmlPath += "/";
+  if (pdfWord[0] == '/') dataFile = pdfWord;
+  else if (pdfSet == 0) dataFile = xmlPath + pdfWord;
+
+  // Input is fit number. Current selection for tryout only.
+  else if (pdfSet == 1) dataFile = xmlPath + "hf_pdf_0000.dat";
+  else if (pdfSet == 2) dataFile = xmlPath + "NNPDF23_lo_as_0119_qed_0000.dat";
 
   // Open files from which grids should be read in.
-  if ( xmlPath[ xmlPath.length() - 1 ] != '/' && iFit != 0) xmlPath += "/";
-  string         dataFile = "";
-  if (iFit == 1) dataFile = "hf_pdf_0000.dat";
-  if (iFit == 2) dataFile = "NNPDF23_lo_as_0119_qed_0000.dat";
-  ifstream is( (xmlPath + dataFile).c_str() );
+  ifstream is( dataFile.c_str() );
   if (!is.good()) {
     printErr("Error in LHAGrid1::init: did not find data file", infoPtr);
     isSet = false;
@@ -3200,9 +3222,10 @@ void LHAGrid1::init(istream& is, Info* infoPtr) {
   int nqNow, idNow, idNowMap;
   double xNow, qNow, pdfNow;
 
-  // Skip 3 lines of header. Probe for next subgrid in Q space.
+  // Skip lines of header, until ---. Probe for next subgrid in Q space.
   nqSub = 0;
-  for (int i = 0; i < 3; ++i) getline( is, line);
+  do getline( is, line);
+  while (line.find("---") == string::npos);
   if (!is.good()) {
     printErr("Error in LHAGrid1::init: could not read data file", infoPtr);
     isSet = false;
@@ -3430,6 +3453,97 @@ void LHAGrid1::xfxevolve(double x, double Q2) {
         * (doExtraPol ? pow( x / xMin, pdfSlope[iid][maxq]) : 1.);
   }
 
+}
+
+//==========================================================================
+
+// Convolution with photon flux from leptons and photon PDFs.
+// Contains a pointer to a photon PDF set and samples the
+// convolution integral event-by-event basis.
+// Includes also a overestimate for the PDF set in order to set up
+// the phase-space sampling correctly.
+
+// Constants related to the fit.
+const double Lepton2gamma::ALPHAEM = 0.007297353080;
+const double Lepton2gamma::Q2MIN   = 1.;
+
+//--------------------------------------------------------------------------
+
+// Update PDFs and sample a value for x_gamma.
+
+void Lepton2gamma::xfUpdate(int , double x, double Q2){
+
+  // Freeze scale at Q^2 < Q^2_min.
+  if(Q2 < Q2MIN) Q2 = Q2MIN;
+
+  // Pre-calculate some logs.
+  double log2x    = pow2( log( Q2max/(m2lepton*pow2(x)) ) );
+  double log2xMax = pow2( log( Q2max/(m2lepton*pow2(xGamMax)) ) );
+
+  // Sample x_gamma.
+  xGm = sqrt( Q2max/m2lepton*exp( - sqrt( log2x + rndmPtr->flat()*
+            ( log2xMax - log2x ) ) ) );
+
+  double xInGamma = x/xGm;
+  double xgGm = gammaPDFPtr->xf(21, xInGamma, Q2);
+  double xdGm = gammaPDFPtr->xf(1 , xInGamma, Q2);
+  double xuGm = gammaPDFPtr->xf(2 , xInGamma, Q2);
+  double xsGm = gammaPDFPtr->xf(3 , xInGamma, Q2);
+  double xcGm = gammaPDFPtr->xf(4 , xInGamma, Q2);
+  double xbGm = gammaPDFPtr->xf(5 , xInGamma, Q2);
+
+  // Correct with weight.
+  double alphaLog = ALPHAEM/(2*M_PI)*( 1 + pow2(1-xGm) )
+    * ( log2x - log2xMax )*0.25
+    * log( ( Q2max*(1 - xGm) )/( m2lepton*pow2(xGm) ) )
+    / log( ( Q2max )/( m2lepton*pow2(xGm) ) );
+
+  xg = alphaLog*xgGm;
+  xd = alphaLog*xdGm;
+  xu = alphaLog*xuGm;
+  xs = alphaLog*xsGm;
+  xc = alphaLog*xcGm;
+  xb = alphaLog*xbGm;
+  xubar  = xu;
+  xdbar  = xd;
+  xsbar  = xs;
+
+  // Photon inside electron not currently implemented (Use point-like lepton).
+  xgamma = 0;
+
+  // idSav = 9 to indicate that all flavours reset.
+  idSav = 9;
+
+}
+
+//--------------------------------------------------------------------------
+
+// Approximate the maximum of convoluted PDF to correctly set up the
+// sampling of the phase space.
+
+double Lepton2gamma::xfMax(int id, double x, double Q2){
+
+  // Freeze scale at Q^2 < Q^2_min.
+  if(Q2 < Q2MIN) Q2 = Q2MIN;
+
+  // Pre-calculate some logs.
+  double log2x    = pow2( log( Q2max/(m2lepton*pow2(x)) ) );
+  double log2xMax = pow2( log( Q2max/(m2lepton*pow2(xGamMax)) ) );
+
+  // Find approximate x-behaviour for each flavour. Optimized for CJKL.
+  double xApprox = 0.;
+  int idAbs = abs(id);
+  if ( idAbs == 21 || idAbs == 0 ) xApprox = 2.35;
+  else if ( idAbs == 1 ) xApprox = (pow(x,0.2) + pow(1-x,-0.15))*0.8;
+  else if ( idAbs == 2 ) xApprox = (pow(x,1.0) + pow(1-x,-0.4))*0.4;
+  else if ( idAbs == 3 ) xApprox = (pow(x,0.2) + pow(1-x,-0.5))*0.5;
+  else if ( idAbs == 4 ) xApprox = (pow(x,1.0) + pow(1-x,-0.4))*0.7;
+  else if ( idAbs == 5 ) xApprox = (pow(x,0.2) + pow(1-x,-0.5))*0.5;
+  else xApprox = 0.;
+
+  // Return the approximation.
+  return ALPHAEM/(2*M_PI)*( log2x - log2xMax )*0.5*gammaPDFPtr->xf(id, x, Q2)
+    /(xApprox);
 }
 
 //==========================================================================

@@ -610,7 +610,7 @@ bool PhaseSpace::setupSampling123(bool is2, bool is3) {
         // 2 -> 1: calculate cross section, weighted by phase-space volume.
         if (!is2 && !is3) {
           sigmaProcessPtr->set1Kin( x1H, x2H, sH);
-          sigmaTmp = sigmaProcessPtr->sigmaPDF();
+          sigmaTmp = sigmaProcessPtr->sigmaPDF(true);
           sigmaTmp *= wtTau * wtY;
 
         // 2 -> 2: calculate cross section, weighted by phase-space volume
@@ -618,7 +618,7 @@ bool PhaseSpace::setupSampling123(bool is2, bool is3) {
         } else if (is2) {
           sigmaProcessPtr->set2Kin( x1H, x2H, sH, tH, m3, m4,
             runBW3H, runBW4H);
-          sigmaTmp = sigmaProcessPtr->sigmaPDF();
+          sigmaTmp = sigmaProcessPtr->sigmaPDF(true);
           sigmaTmp *= wtTau * wtY * wtZ * wtBW;
 
         // 2 -> 3: repeat internal 3-body phase space several times and
@@ -629,7 +629,7 @@ bool PhaseSpace::setupSampling123(bool is2, bool is3) {
             if (!select3Body()) continue;
             sigmaProcessPtr->set3Kin( x1H, x2H, sH, p3cm, p4cm, p5cm,
               m3, m4, m5, runBW3H, runBW4H, runBW5H);
-            double sigmaTry = sigmaProcessPtr->sigmaPDF();
+            double sigmaTry = sigmaProcessPtr->sigmaPDF(true);
             sigmaTry *= wtTau * wtY * wt3Body * wtBW;
             if (sigmaTry > sigmaTmp) sigmaTmp = sigmaTry;
           }
@@ -764,7 +764,7 @@ bool PhaseSpace::setupSampling123(bool is2, bool is3) {
         // 2 -> 1: calculate cross section, weighted by phase-space volume.
         if (!is2 && !is3) {
           sigmaProcessPtr->set1Kin( x1H, x2H, sH);
-          sigmaTmp = sigmaProcessPtr->sigmaPDF();
+          sigmaTmp = sigmaProcessPtr->sigmaPDF(true);
           sigmaTmp *= wtTau * wtY;
 
         // 2 -> 2: calculate cross section, weighted by phase-space volume
@@ -772,7 +772,7 @@ bool PhaseSpace::setupSampling123(bool is2, bool is3) {
         } else if (is2) {
           sigmaProcessPtr->set2Kin( x1H, x2H, sH, tH, m3, m4,
             runBW3H, runBW4H);
-          sigmaTmp = sigmaProcessPtr->sigmaPDF();
+          sigmaTmp = sigmaProcessPtr->sigmaPDF(true);
           sigmaTmp *= wtTau * wtY * wtZ * wtBW;
 
         // 2 -> 3: repeat internal 3-body phase space several times and
@@ -783,7 +783,7 @@ bool PhaseSpace::setupSampling123(bool is2, bool is3) {
             if (!select3Body()) continue;
             sigmaProcessPtr->set3Kin( x1H, x2H, sH, p3cm, p4cm, p5cm,
               m3, m4, m5, runBW3H, runBW4H, runBW5H);
-            double sigmaTry = sigmaProcessPtr->sigmaPDF();
+            double sigmaTry = sigmaProcessPtr->sigmaPDF(true);
             sigmaTry *= wtTau * wtY * wt3Body * wtBW;
             if (sigmaTry > sigmaTmp) sigmaTmp = sigmaTry;
           }
@@ -924,7 +924,7 @@ bool PhaseSpace::setupSampling123(bool is2, bool is3) {
             // 2 -> 1: calculate cross section, weighted by phase-space volume.
             if (!is2 && !is3) {
               sigmaProcessPtr->set1Kin( x1H, x2H, sH);
-              sigmaTmp = sigmaProcessPtr->sigmaPDF();
+              sigmaTmp = sigmaProcessPtr->sigmaPDF(true);
               sigmaTmp *= wtTau * wtY;
 
             // 2 -> 2: calculate cross section, weighted by phase-space volume
@@ -932,7 +932,7 @@ bool PhaseSpace::setupSampling123(bool is2, bool is3) {
             } else if (is2) {
               sigmaProcessPtr->set2Kin( x1H, x2H, sH, tH, m3, m4,
                 runBW3H, runBW4H);
-              sigmaTmp = sigmaProcessPtr->sigmaPDF();
+              sigmaTmp = sigmaProcessPtr->sigmaPDF(true);
               sigmaTmp *= wtTau * wtY * wtZ * wtBW;
 
             // 2 -> 3: repeat internal 3-body phase space several times and
@@ -943,7 +943,7 @@ bool PhaseSpace::setupSampling123(bool is2, bool is3) {
                 if (!select3Body()) continue;
                 sigmaProcessPtr->set3Kin( x1H, x2H, sH, p3cm, p4cm, p5cm,
                   m3, m4, m5, runBW3H, runBW4H, runBW5H);
-                double sigmaTry = sigmaProcessPtr->sigmaPDF();
+                double sigmaTry = sigmaProcessPtr->sigmaPDF(true);
                 sigmaTry *= wtTau * wtY * wt3Body * wtBW;
                 if (sigmaTry > sigmaTmp) sigmaTmp = sigmaTry;
               }
@@ -974,7 +974,7 @@ bool PhaseSpace::setupSampling123(bool is2, bool is3) {
   sigmaPos = sigmaMx;
 
   // Optional printout.
-  if (showSearch) cout << "\n Final maximum = "  << setw(11) << sigmaMx 
+  if (showSearch) cout << "\n Final maximum = "  << setw(11) << sigmaMx
     << endl;
 
   // Done.

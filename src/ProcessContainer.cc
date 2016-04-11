@@ -67,6 +67,10 @@ bool ProcessContainer::init(bool isFirst, Info* infoPtrIn,
   // Flag for maximum violation handling.
   increaseMaximum = settings.flag("PhaseSpace:increaseMaximum");
 
+  // Store whether beam has a gamma beam inside (leptons).
+  beamAhasGamma = beamAPtr->hasGamma();
+  beamBhasGamma = beamBPtr->hasGamma();
+
   // Pick and create phase space generator. Send pointers where required.
   if (phaseSpacePtr != 0) ;
   else if (isLHA)       phaseSpacePtr = new PhaseSpaceLHA();
@@ -325,6 +329,23 @@ bool ProcessContainer::constructProcess( Event& process, bool isHardest) {
   double scale  = 0.;
   double scalup = 0.;
 
+  // Add intermediate gammas for lepton -> gamma -> parton processes.
+  int nOffsetGamma = 0;
+  if ( beamAhasGamma) {
+    double xGm1 = xGamma1();
+    process.append( 22, -13, 1, 0, 0, 0, 0, 0,
+      Vec4(0., 0., xGm1*infoPtr->pzA(), xGm1*infoPtr->eA()), 0, 0. );
+    process[3].daughter1(5);
+    ++nOffsetGamma;
+  }
+  if ( beamBhasGamma) {
+    double xGm2 = xGamma2();
+    process.append( 22, -13, 2, 0, 0, 0, 0, 0,
+      Vec4(0., 0., xGm2*infoPtr->pzB(), xGm2*infoPtr->eB()), 0, 0. );
+    process[3 + nOffsetGamma].daughter1(5 + nOffsetGamma);
+    ++nOffsetGamma;
+  }
+
   // For DiffC entries 3 - 5 come jointly from 1 and 2 (to keep HepMC happy).
   if (isDiffC) {
     process[1].daughters(3, 5);
@@ -368,6 +389,14 @@ bool ProcessContainer::constructProcess( Event& process, bool isHardest) {
       int acol      = sigmaProcessPtr->acol(i);
       if      (acol > 0) acol += colOffset;
       else if (acol < 0) acol -= colOffset;
+
+      // If extra photons in event record, offset the mother/daughter list.
+      if ( beamAhasGamma || beamBhasGamma ) {
+        if (mother1 > 0)   mother1   += nOffsetGamma;
+        if (mother2 > 0)   mother2   += nOffsetGamma;
+        if (daughter1 > 0) daughter1 += nOffsetGamma;
+        if (daughter2 > 0) daughter2 += nOffsetGamma;
+      }
 
       // Append to process record.
       int iNow = process.append( id, status, mother1, mother2,
