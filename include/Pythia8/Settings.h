@@ -10,6 +10,7 @@
 // Word: helper class with string words.
 // MVec: vector of Modes (integers).
 // PVec: vector of Parms (doubles).
+// UVar: uncertainty variation (mixed strings and doubles).
 // Settings: maps of flags, modes, parms and words with input/output.
 
 #ifndef Pythia8_Settings_H
@@ -166,6 +167,63 @@ public:
 
 };
 
+
+//==========================================================================
+
+// UVar class.
+// This class stores a single (set of) uncertainty variation definitions
+// Corresponds to one uncertainty weight E.g., can include simultaneous
+// ISR and FSR muR variation but only in a single (up or down) direction.
+
+class UVar {
+
+ public:
+
+  // Constructor
+  UVar(string labelIn="") : labelSav(labelIn) { var.resize(0); keys.clear();}
+
+  // Set and get label
+  void setLabel(string labelIn) { labelSav = labelIn;}
+  string label() {return labelSav;}
+
+  // Add a variation
+  bool addVar(string nameIn, double parameterIn) {
+    // Do not overwrite an existing entry
+    if (hasVar(nameIn)) return false;
+    var.push_back(parameterIn);
+    keys[nameIn]=var.size()-1;
+    return true;
+  }
+
+  // Check if this uncertainty contains a certain type of variation
+  bool hasVar(string nameIn) {
+    if (keys.find(nameIn) != keys.end()) return true;
+    else return false;
+  }
+
+  // Check if this uncertainty contains a certain type of variation
+  double getVar(string nameIn) {
+    if (hasVar(nameIn)) return var[keys[nameIn]];
+    else return -999;
+  }
+
+  // Get the names of all variations stored in this UVar
+  bool getVarNames(vector<string>& namesReturn) {
+    namesReturn.resize(0);
+    for (map<string,int>::iterator it = keys.begin(); it != keys.end(); it++)
+      namesReturn.push_back(it->first);
+    if (namesReturn.size() >= 1) return true;
+    else return false;
+  }
+
+  private:
+
+  string labelSav;
+  map<string,int> keys;
+  vector<double> var;
+
+};
+
 //==========================================================================
 
 // This class holds info on flags (bool), modes (int), parms (double),
@@ -180,7 +238,10 @@ public:
   Settings() : isInit(false), readingFailedSave(false) {}
 
   // Initialize Info pointer.
-  void initPtr(Info* infoPtrIn) {infoPtr = infoPtrIn;}
+  void initPtr(Info* infoPtrIn) {
+    infoPtr = infoPtrIn;
+    uvars.resize(0);
+    uvars.push_back(UVar("Baseline"));}
 
   // Read in database from specific file.
   bool init(string startFile = "../share/Pythia8/xmldoc/Index.xml",
@@ -230,6 +291,11 @@ public:
     return (mvecs.find(toLower(keyIn)) != mvecs.end()); }
   bool isPVec(string keyIn) {
     return (pvecs.find(toLower(keyIn)) != pvecs.end()); }
+  bool isUVar(string keyIn) {
+    if (toLower(keyIn) == "uvar" ||
+        toLower(keyIn) == "uncertaintyvariation") return true;
+    else return false;
+  }
 
   // Add new entry.
   void addFlag(string keyIn, bool defaultIn) {
@@ -303,6 +369,15 @@ public:
   void resetMVec(string keyIn);
   void resetPVec(string keyIn);
 
+  // Query number of uncertainty variations (for easy looping)
+  int nUVar() { return uvars.size(); }
+  // Return pointers to UVars, by index number or by label
+  UVar* getUVarPtr(int iVar) {
+    if (iVar >= 0 && iVar<nUVar()) return &uvars[iVar]; else return 0;}
+  UVar* getUVarPtr(string varLabel) {
+    if (uvarIndexMap.find(varLabel) != uvarIndexMap.end())
+    return &uvars[uvarIndexMap[varLabel]]; else return 0;}
+
   // Check initialisation status.
   bool getIsInit() {return isInit;}
 
@@ -331,6 +406,10 @@ private:
 
   // Map for vectors of double.
   map<string, PVec> pvecs;
+
+  // Map for uncertainty variations
+  vector<UVar>      uvars;
+  map<string,int>   uvarIndexMap;
 
   // Flags that initialization has been performed; whether any failures.
   bool isInit, readingFailedSave;

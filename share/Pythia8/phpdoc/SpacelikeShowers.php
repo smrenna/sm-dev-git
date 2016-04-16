@@ -292,7 +292,18 @@ Assumed smaller than (or equal to) <i>pTminChgQ</i>.
 Force emissions, after the first,  to be ordered in rapidity, 
 i.e. in terms of decreasing angles in a backwards-evolution sense. 
 Could be used to probe sensitivity to unordered emissions. 
-Only affects QCD emissions. 
+Only affects QCD emissions, and only the hard subcollision of an event. 
+(For the case "soft QCD" processes the first MPI counts as the hard 
+subcollision.) 
+ 
+   
+ 
+<br/><br/><strong>SpaceShower:rapidityOrderMPI</strong>  <input type="radio" name="20" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="20" value="off"><strong>Off</strong>
+ &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
+Same as the last switch, but this time only emissions in secondary 
+scattering systems from MPIs are forced to be ordered in rapidity. 
+Each MPI is ordered separately from the others. 
    
  
 <h3>Weak showers</h3> 
@@ -305,13 +316,13 @@ weak radiation, while common settings are found in the
 <?php $filepath = $_GET["filepath"];
 echo "<a href='WeakShowers.php?filepath=".$filepath."' target='page'>";?>Weak Showers</a> description. 
  
-<br/><br/><strong>SpaceShower:weakShower</strong>  <input type="radio" name="20" value="on"><strong>On</strong>
-<input type="radio" name="20" value="off" checked="checked"><strong>Off</strong>
+<br/><br/><strong>SpaceShower:weakShower</strong>  <input type="radio" name="21" value="on"><strong>On</strong>
+<input type="radio" name="21" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
 Allow a weak shower, yes or no. 
    
  
-<br/><br/><table><tr><td><strong>SpaceShower:weakShowerMode  </td><td></td><td> <input type="text" name="21" value="0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0</strong></code>; <code>minimum = 0</code>; <code>maximum = 2</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>SpaceShower:weakShowerMode  </td><td></td><td> <input type="text" name="22" value="0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0</strong></code>; <code>minimum = 0</code>; <code>maximum = 2</code>)</td></tr></table>
 Determine which branchings are allowed. 
 <br/><code>option </code><strong> 0</strong> :  both <i>W^+-</i> and <i>Z^0</i> branchings. 
    
@@ -319,7 +330,7 @@ Determine which branchings are allowed.
 <br/><code>option </code><strong> 2</strong> :  only <i>Z^0</i> branchings.    
    
  
-<br/><br/><table><tr><td><strong> </td><td></td><td> <input type="text" name="22" value="1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.0</strong></code>; <code>minimum = 0.1</code>; <code>maximum = 2.0</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong> </td><td></td><td> <input type="text" name="23" value="1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.0</strong></code>; <code>minimum = 0.1</code>; <code>maximum = 2.0</code>)</td></tr></table>
 Parton shower cut-off <i>pT</i> for weak branchings. 
  
 <h3>Further variables</h3> 
@@ -331,20 +342,20 @@ cross-checks.
 There are three flags you can use to switch on or off selected 
 branchings in the shower: 
  
-<br/><br/><strong>SpaceShower:QCDshower</strong>  <input type="radio" name="23" value="on" checked="checked"><strong>On</strong>
-<input type="radio" name="23" value="off"><strong>Off</strong>
+<br/><br/><strong>SpaceShower:QCDshower</strong>  <input type="radio" name="24" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="24" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 Allow a QCD shower; on/off = true/false. 
    
  
-<br/><br/><strong>SpaceShower:QEDshowerByQ</strong>  <input type="radio" name="24" value="on" checked="checked"><strong>On</strong>
-<input type="radio" name="24" value="off"><strong>Off</strong>
+<br/><br/><strong>SpaceShower:QEDshowerByQ</strong>  <input type="radio" name="25" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="25" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 Allow quarks to radiate photons; on/off = true/false. 
    
  
-<br/><br/><strong>SpaceShower:QEDshowerByL</strong>  <input type="radio" name="25" value="on" checked="checked"><strong>On</strong>
-<input type="radio" name="25" value="off"><strong>Off</strong>
+<br/><br/><strong>SpaceShower:QEDshowerByL</strong>  <input type="radio" name="26" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="26" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 Allow leptons to radiate photons; on/off = true/false. 
    
@@ -352,14 +363,14 @@ Allow leptons to radiate photons; on/off = true/false.
 <p/> 
 There are some further possibilities to modify the shower: 
  
-<br/><br/><strong>SpaceShower:MEcorrections</strong>  <input type="radio" name="26" value="on" checked="checked"><strong>On</strong>
-<input type="radio" name="26" value="off"><strong>Off</strong>
+<br/><br/><strong>SpaceShower:MEcorrections</strong>  <input type="radio" name="27" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="27" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 Use of matrix element corrections; on/off = true/false. 
    
  
-<br/><br/><strong>SpaceShower:MEafterFirst</strong>  <input type="radio" name="27" value="on" checked="checked"><strong>On</strong>
-<input type="radio" name="27" value="off"><strong>Off</strong>
+<br/><br/><strong>SpaceShower:MEafterFirst</strong>  <input type="radio" name="28" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="28" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 Use of matrix element corrections also after the first emission, 
 for dipole ends of the same system that did not yet radiate. 
@@ -367,45 +378,45 @@ Only has a meaning if <code>MEcorrections</code> above is
 switched on. 
    
  
-<br/><br/><strong>SpaceShower:phiPolAsym</strong>  <input type="radio" name="28" value="on" checked="checked"><strong>On</strong>
-<input type="radio" name="28" value="off"><strong>Off</strong>
+<br/><br/><strong>SpaceShower:phiPolAsym</strong>  <input type="radio" name="29" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="29" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 Azimuthal asymmetry induced by gluon polarization; on/off = true/false. 
    
  
-<br/><br/><strong>SpaceShower:phiPolAsymHard</strong>  <input type="radio" name="29" value="on" checked="checked"><strong>On</strong>
-<input type="radio" name="29" value="off"><strong>Off</strong>
+<br/><br/><strong>SpaceShower:phiPolAsymHard</strong>  <input type="radio" name="30" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="30" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 Extend the above azimuthal asymmetry (if on) also back to gluons produced 
 in the hard process itself, where feasible; on/off = true/false. 
    
  
-<br/><br/><strong>SpaceShower:phiIntAsym</strong>  <input type="radio" name="30" value="on" checked="checked"><strong>On</strong>
-<input type="radio" name="30" value="off"><strong>Off</strong>
+<br/><br/><strong>SpaceShower:phiIntAsym</strong>  <input type="radio" name="31" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="31" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 Azimuthal asymmetry induced by interference; on/off = true/false. 
    
  
-<br/><br/><table><tr><td><strong>SpaceShower:strengthIntAsym </td><td></td><td> <input type="text" name="31" value="0.7" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.7</strong></code>; <code>minimum = 0.</code>; <code>maximum = 0.9</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>SpaceShower:strengthIntAsym </td><td></td><td> <input type="text" name="32" value="0.7" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.7</strong></code>; <code>minimum = 0.</code>; <code>maximum = 0.9</code>)</td></tr></table>
 Size of asymmetry induced by interference. Natural value of order 0.5; 
 expression would blow up for a value of 1. 
    
  
-<br/><br/><table><tr><td><strong>SpaceShower:nQuarkIn  </td><td></td><td> <input type="text" name="32" value="5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>5</strong></code>; <code>minimum = 0</code>; <code>maximum = 5</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>SpaceShower:nQuarkIn  </td><td></td><td> <input type="text" name="33" value="5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>5</strong></code>; <code>minimum = 0</code>; <code>maximum = 5</code>)</td></tr></table>
 Number of allowed quark flavours in <i>g &rarr; q qbar</i> branchings, 
 when kinematically allowed, and thereby also in incoming beams. 
 Changing it to 4 would forbid <i>g &rarr; b bbar</i>, etc. 
    
  
-<br/><br/><strong>SpaceShower:useFixedFacScale</strong>  <input type="radio" name="33" value="on"><strong>On</strong>
-<input type="radio" name="33" value="off" checked="checked"><strong>Off</strong>
+<br/><br/><strong>SpaceShower:useFixedFacScale</strong>  <input type="radio" name="34" value="on"><strong>On</strong>
+<input type="radio" name="34" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
 Allow the possibility to use a fixed factorization scale, set by 
 the <code>parm</code> below. This option is unphysical and only 
 intended for toy-model and debug studies. 
    
  
-<br/><br/><table><tr><td><strong>SpaceShower:fixedFacScale </td><td></td><td> <input type="text" name="34" value="100." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>100.</strong></code>; <code>minimum = 1.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>SpaceShower:fixedFacScale </td><td></td><td> <input type="text" name="35" value="100." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>100.</strong></code>; <code>minimum = 1.</code>)</td></tr></table>
 The fixed factorization scale, in GeV, that would be used in the 
 evaluation of parton densities if the <code>flag</code> above is on. 
    
@@ -568,79 +579,84 @@ if($_POST["19"] != "on")
 $data = "SpaceShower:rapidityOrder = ".$_POST["19"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["20"] != "off")
+if($_POST["20"] != "on")
 {
-$data = "SpaceShower:weakShower = ".$_POST["20"]."\n";
+$data = "SpaceShower:rapidityOrderMPI = ".$_POST["20"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["21"] != "0")
+if($_POST["21"] != "off")
 {
-$data = "SpaceShower:weakShowerMode = ".$_POST["21"]."\n";
+$data = "SpaceShower:weakShower = ".$_POST["21"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["22"] != "1.0")
+if($_POST["22"] != "0")
 {
-$data = " = ".$_POST["22"]."\n";
+$data = "SpaceShower:weakShowerMode = ".$_POST["22"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["23"] != "on")
+if($_POST["23"] != "1.0")
 {
-$data = "SpaceShower:QCDshower = ".$_POST["23"]."\n";
+$data = " = ".$_POST["23"]."\n";
 fwrite($handle,$data);
 }
 if($_POST["24"] != "on")
 {
-$data = "SpaceShower:QEDshowerByQ = ".$_POST["24"]."\n";
+$data = "SpaceShower:QCDshower = ".$_POST["24"]."\n";
 fwrite($handle,$data);
 }
 if($_POST["25"] != "on")
 {
-$data = "SpaceShower:QEDshowerByL = ".$_POST["25"]."\n";
+$data = "SpaceShower:QEDshowerByQ = ".$_POST["25"]."\n";
 fwrite($handle,$data);
 }
 if($_POST["26"] != "on")
 {
-$data = "SpaceShower:MEcorrections = ".$_POST["26"]."\n";
+$data = "SpaceShower:QEDshowerByL = ".$_POST["26"]."\n";
 fwrite($handle,$data);
 }
 if($_POST["27"] != "on")
 {
-$data = "SpaceShower:MEafterFirst = ".$_POST["27"]."\n";
+$data = "SpaceShower:MEcorrections = ".$_POST["27"]."\n";
 fwrite($handle,$data);
 }
 if($_POST["28"] != "on")
 {
-$data = "SpaceShower:phiPolAsym = ".$_POST["28"]."\n";
+$data = "SpaceShower:MEafterFirst = ".$_POST["28"]."\n";
 fwrite($handle,$data);
 }
 if($_POST["29"] != "on")
 {
-$data = "SpaceShower:phiPolAsymHard = ".$_POST["29"]."\n";
+$data = "SpaceShower:phiPolAsym = ".$_POST["29"]."\n";
 fwrite($handle,$data);
 }
 if($_POST["30"] != "on")
 {
-$data = "SpaceShower:phiIntAsym = ".$_POST["30"]."\n";
+$data = "SpaceShower:phiPolAsymHard = ".$_POST["30"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["31"] != "0.7")
+if($_POST["31"] != "on")
 {
-$data = "SpaceShower:strengthIntAsym = ".$_POST["31"]."\n";
+$data = "SpaceShower:phiIntAsym = ".$_POST["31"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["32"] != "5")
+if($_POST["32"] != "0.7")
 {
-$data = "SpaceShower:nQuarkIn = ".$_POST["32"]."\n";
+$data = "SpaceShower:strengthIntAsym = ".$_POST["32"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["33"] != "off")
+if($_POST["33"] != "5")
 {
-$data = "SpaceShower:useFixedFacScale = ".$_POST["33"]."\n";
+$data = "SpaceShower:nQuarkIn = ".$_POST["33"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["34"] != "100.")
+if($_POST["34"] != "off")
 {
-$data = "SpaceShower:fixedFacScale = ".$_POST["34"]."\n";
+$data = "SpaceShower:useFixedFacScale = ".$_POST["34"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["35"] != "100.")
+{
+$data = "SpaceShower:fixedFacScale = ".$_POST["35"]."\n";
 fwrite($handle,$data);
 }
 fclose($handle);

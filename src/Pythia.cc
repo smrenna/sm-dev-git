@@ -23,7 +23,7 @@ namespace Pythia8 {
 
 // The current Pythia (sub)version number, to agree with XML version.
 const double Pythia::VERSIONNUMBERHEAD = PYTHIA_VERSION;
-const double Pythia::VERSIONNUMBERCODE = 8.217;
+const double Pythia::VERSIONNUMBERCODE = 8.218;
 
 //--------------------------------------------------------------------------
 
@@ -701,7 +701,7 @@ bool Pythia::init() {
 
   // Initialise merging hooks.
   if ( doMerging && (hasMergingHooks || hasOwnMergingHooks) )
-    mergingHooksPtr->init( settings, &info, &particleData, &partonSystems );
+    mergingHooksPtr->init( settings, &info, &particleData, &partonSystems);
 
   // Check that combinations of settings are allowed; change if not.
   checkSettings();
@@ -1297,11 +1297,10 @@ bool Pythia::next() {
 
     // Provide the hard process that starts it off. Only one try.
     info.clear();
-
+    process.clear();
     // Reset the event information. Necessary if the previous event was read
     // from LHEF, while the current event is not read from LHEF.
     info.setLHEF3EventInfo();
-    process.clear();
 
     if ( !processLevel.next( process) ) {
       if (doLHA && info.atEndOfFile()) info.errorMsg("Abort from "
@@ -1312,6 +1311,10 @@ bool Pythia::next() {
     }
 
     info.addCounter(11);
+
+    // Update tried and selected events immediately after next event was
+    // generated. Note: This does not accumulate cross section.
+    processLevel.accumulate(false);
 
     // Possibility for a user veto of the process-level event.
     if (doVetoProcess) {

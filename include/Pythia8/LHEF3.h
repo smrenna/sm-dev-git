@@ -249,6 +249,9 @@ struct LHAweights {
   // The contents of the tag.
   string contents;
 
+  // Return number of weights.
+  int size() { return int(weights.size()); }
+
 };
 
 //==========================================================================
@@ -438,6 +441,9 @@ struct LHAweightgroup {
   // Any other attributes.
   map<string,string> attributes;
 
+  // Return number of weights.
+  int size() { return int(weights.size()); }
+
 };
 
 //==========================================================================
@@ -472,6 +478,9 @@ struct LHArwgt {
 
   // Any other attributes.
   map<string,string> attributes;
+
+  // Return number of weights.
+  int size() { return int(wgts.size()); }
 
 };
 
@@ -512,6 +521,12 @@ struct LHAinitrwgt {
 
   // Any other attributes.
   map<string,string> attributes;
+
+  // Return number of weights.
+  int size() { return int(weights.size());}
+
+  // Return number of weights.
+  int sizeWeightGroups() { return int(weightgroups.size()); }
 
 };
 
@@ -750,13 +765,13 @@ public:
   vector<double> weights_compressed;
 
   // Contents of the LHAscales tag
-  LHAscales scales;
+  LHAscales scalesSave;
 
   // Contents of the LHAweights tag (compressed format)
-  LHAweights weights;
+  LHAweights weightsSave;
 
   // Contents of the LHArwgt tag (detailed format)
-  LHArwgt rwgt;
+  LHArwgt rwgtSave;
 
   // Any other attributes.
   map<string,string> attributes;
@@ -832,6 +847,14 @@ public:
   // member variable.
   bool readEvent(HEPEUP * peup = 0);
 
+  // Reset values of all event-related members to their defaults.
+  void clearEvent() {
+   currentLine = "";
+   hepeup.clear();
+   eventComments = "";
+   weights_detailed_vec.resize(0);
+  }
+
 protected:
 
   // Used internally to read a single line from the stream.
@@ -886,6 +909,10 @@ public:
 
   // Additional comments found with the last read event.
   string eventComments;
+
+  // The detailed weights associated with this event, linearized to a vector.
+  vector<double> weights_detailed_vec;
+  vector<double> weights_detailed_vector() { return weights_detailed_vec; }
 
 private:
 

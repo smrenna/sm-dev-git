@@ -894,6 +894,10 @@ in a series <code>struct</code>'s:
    
  
 <p/> 
+The complete header can be obtained with the <code>Info</code> class 
+member <code>string getHeaderBlock()</code>. 
+ 
+<p/> 
 The contents of a <code>&lt;generator&gt;</code> tag can be accessed through 
 the method 
 <br/><strong>string Info::getGeneratorValue(unsigned int n = 0) &nbsp;</strong> <br/>
@@ -941,6 +945,13 @@ Possible information also includes extended use of XML tags in the
  can be obtained from 
 <br/><strong>unsigned int Info::getWeightsDetailedSize() &nbsp;</strong> <br/>
    
+ 
+<p/> 
+A convenient access point to the information stored in the 
+<code>&lt;wgt&gt;</code> tags is the <code>Info</code> class member 
+<code>vector&lt;double&gt; Info::weights_detailed_vector</code>. The 
+entries of this vector are ordered according to how <code>&lt;wgt&gt;</code> 
+tags appear in the event block. 
  
 <p/> 
 The contents of a <code>&lt;wgt&gt;</code> tag can be accessed through the 
@@ -1015,6 +1026,11 @@ return the value of the event attribute named <code>key</code>. Setting
 any whitespace. An empty string is returned if the attribute named 
 <code>key</code> does not exist. 
    
+ 
+<p/> 
+Additional comments appearing in the <code>&lt;event&gt;</code> tag 
+can be obtained with the <code>Info</code> class member 
+<code>string getEventComments()</code>. 
  
 <h3>Header information</h3> 
  

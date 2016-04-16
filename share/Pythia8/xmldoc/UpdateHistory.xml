@@ -12,7 +12,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.217: 11 April 2016 
+<li>8.218: 16 April 2016 
 <ul> 
  
 <li>An interface to the Python programming language has been introduced, 
@@ -55,6 +55,10 @@ implemented.</li>
 <li>The three Pomeron H1 Jets PDF data files have been joined to one. 
 </li> 
  
+<li>The <aloc href="ExternalDecays">external decays</aloc> interface has 
+been extended by a new method that allows sequential decays to be done 
+in one call.</li> 
+ 
 <li>Increased possibilities to set the <ei>epsilon</ei> and 
 <ei>alpha'</ei> parameters of the Pomeron trajectory for 
 hard-diffraction Pomeron fluxes.</li> 
@@ -69,6 +73,39 @@ resonances, like the <ei>W^+-</ei>, to radiate photons.</li>
 extended to better handle heavy quarks, heavy colored particles (such 
 as squarks) and "other" partons (coloured but produced from an 
 Electroweak vertex).</li> 
+ 
+<li>Added a new option <code>SpaceShower:rapidityOrderMPI</code>, which 
+will enforce an ordering in rapidity for emissions off secondary 
+scattering systems. This will be enabled by default, ensuring backwards 
+compatibility. The old <code>SpaceShower:rapidityOrder</code> now only 
+refers to the hard(est) subprocess.</li> 
+ 
+<li>Changes to the cross section handling in the presence of user 
+vetoes/weights, containing three changes: 
+<br/>1. Counter of selected event <code>pythia.info.nSelected()</code> 
+is now updated  immediately after the hard process generation. 
+<br/>2. More fine-grained input settings to enforce that Pythia 
+generates (or reads) exactly a fixed number of hard process events. 
+<br/>3. The Pythia "internal cross section" 
+<code>pythia.info.sigmaGen()</code> and the event weight 
+<code>pythia.info.weight()</code> now directly include the effect of 
+event vetoes and event reweighting that are applied by the leading-order 
+ME+PS merging prescriptions.</li> 
+ 
+<li>Changes to the merging classes to allow for a postponed CKKW-L 
+event veto. (See end of <aloc href="CKKWLMerging">CKKW-L Merging</aloc> 
+page for details.)</li> 
+ 
+<li>Small changes to virtual parton shower functions, and to the merging 
+classes, to prepare ME+PS merging with the Vincia parton shower.</li> 
+ 
+<li>The <aloc href="HepMCInterface">HepMC</aloc> interface has been 
+modified such that the detection of unhadronized quarks or gluons 
+leads to an exception being thrown, so that the user can decide what 
+action to take. See further new/renamed <code>free_parton_exception</code> 
+switch. The usage of exceptions for this specific task is by request 
+from ATLAS, and does not represent a general change of programming 
+style. Thanks to James Monk.</li> 
  
 <li>Remove many rarely (if ever) used <code>ostream& os = cout</code> 
 optional arguments in favour of hardcoded <code>cout</code> in the code. 

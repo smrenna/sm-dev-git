@@ -242,6 +242,56 @@ void TimeShower::init( BeamParticle* beamAPtrIn,
   splittingNameNow   = "";
   enhanceFactors.clear();
 
+  // Populate lists of uncertainty variations related to TimeShower, by keyword
+  iUVarQCD.resize(0);
+  iUVarQED.resize(0);
+  uVarMuSoftCorr = settingsPtr->flag("Uncertainties:muSoftCorr");
+  cout<<"Total number of uncertainty bands : "<<settingsPtr->nUVar()<<endl;
+  for (int iWeight=1; iWeight<settingsPtr->nUVar(); ++iWeight) {
+    UVar* uVarPtr = settingsPtr->getUVarPtr(iWeight);
+    if (uVarPtr == 0) continue;
+    // 1) Define and resolve any allowed shorthand notations
+    if (uVarPtr->hasVar("fsr:muR")) {
+      double parm = uVarPtr->getVar("fsr:muR");
+      uVarPtr->addVar("fsr:G2GG:muR",parm);
+      uVarPtr->addVar("fsr:Q2QG:muR",parm);
+      uVarPtr->addVar("fsr:G2QQ:muR",parm);
+    }
+    if (uVarPtr->hasVar("fsr:cNS")) {
+      double parm = uVarPtr->getVar("fsr:cNS");
+      uVarPtr->addVar("fsr:G2GG:cNS",parm);
+      uVarPtr->addVar("fsr:Q2QG:cNS",parm);
+      uVarPtr->addVar("fsr:G2QQ:cNS",parm);
+    }
+    if (uVarPtr->hasVar("fsr:muRqed")) {
+      double parm = uVarPtr->getVar("fsr:muRqed");
+      uVarPtr->addVar("fsr:X2XA:muRqed",parm);
+      uVarPtr->addVar("fsr:A2LL:muRqed",parm);
+      uVarPtr->addVar("fsr:A2QQ:muRqed",parm);
+    }
+    if (uVarPtr->hasVar("fsr:cNSqed")) {
+      double parm = uVarPtr->getVar("fsr:cNSqed");
+      uVarPtr->addVar("fsr:X2XA:cNSqed",parm);
+      uVarPtr->addVar("fsr:A2LL:cNSqed",parm);
+      uVarPtr->addVar("fsr:A2QQ:cNSqed",parm);
+    }
+    // 2.1) Populate list of QCD variations
+    if (uVarPtr->hasVar("fsr:G2GG:muR") || uVarPtr->hasVar("fsr:Q2QG:muR")
+        || uVarPtr->hasVar("fsr:G2QQ:muR") || uVarPtr->hasVar("fsr:G2GG:cNS")
+        || uVarPtr->hasVar("fsr:Q2QG:cNS") || uVarPtr->hasVar("fsr:G2QQ:cNS")
+        || uVarPtr->hasVar("fsr:G2QQ:weight"))
+      iUVarQCD.push_back(iWeight);
+    // 2.2) Populate list of QED variations
+    if (uVarPtr->hasVar("fsr:X2XA:muR") || uVarPtr->hasVar("fsr:A2LL:muR")
+        || uVarPtr->hasVar("fsr:A2QQ:muR") || uVarPtr->hasVar("fsr:X2XA:cNS")
+        || uVarPtr->hasVar("fsr:A2LL:nCNS") || uVarPtr->hasVar("fsr:A2QQ:nCNS")
+        || uVarPtr->hasVar("fsr:A2LL:weight")
+        || uVarPtr->hasVar("fsr:A2QQ:weight"))
+      iUVarQED.push_back(iWeight);
+
+  // End loop over uncertainty variations
+  }
+
 }
 
 //--------------------------------------------------------------------------
@@ -1867,6 +1917,7 @@ double TimeShower::pTnext( Event& event, double pTbegAll, double pTendAll,
 
   for (int iDip = 0; iDip < int(dipEnd.size()); ++iDip) {
     TimeDipoleEnd& dip = dipEnd[iDip];
+    dip.pAccept        = 1.0;
 
     // Check if this system is part of the hard scattering
     // (including resonance decay products).
@@ -2044,6 +2095,13 @@ void TimeShower::pT2nextQCD(double pT2begDip, double pT2sel,
   double wt            = 0.;
   bool   mustFindRange = true;
 
+  // Variables used by uncertainty evaluations:
+  int    nUVar         = iUVarQCD.size();
+  // Add more headRoom if doing uncertainty variations
+  // (to ensure at least a minimal number of failed branchings)
+  double overFac         = 1.0;
+  if (nUVar > 0) overFac = 2.0;
+
   // Set default values for enhanced emissions.
   bool isEnhancedQ2QG, isEnhancedG2QQ, isEnhancedG2GG;
   isEnhancedQ2QG = isEnhancedG2QQ = isEnhancedG2GG = false;
@@ -2088,7 +2146,7 @@ void TimeShower::pT2nextQCD(double pT2begDip, double pT2sel,
       if (zMinAbs > 0.499) { dip.pT2 = 0.; return; }
 
       // Find emission coefficients for X -> X g and g -> q qbar.
-      emitCoefGlue = wtPSglue * colFac * log(1. / zMinAbs - 1.);
+      emitCoefGlue = overFac * wtPSglue * colFac * log(1. / zMinAbs - 1.);
       // Optionally enhanced branching rate.
       if (canEnhanceET && colTypeAbs == 2)
         emitCoefGlue *= userHooksPtr->enhanceFactor("fsr:G2GG");
@@ -2097,7 +2155,7 @@ void TimeShower::pT2nextQCD(double pT2begDip, double pT2sel,
 
       emitCoefTot  = emitCoefGlue;
       if (colTypeAbs == 2 && event[dip.iRadiator].id() == 21) {
-        emitCoefQqbar = wtPSqqbar * (1. - 2. * zMinAbs);
+        emitCoefQqbar = overFac * wtPSqqbar * (1. - 2. * zMinAbs);
         // Optionally enhanced branching rate.
         if (canEnhanceET)
           emitCoefQqbar *= userHooksPtr->enhanceFactor("fsr:G2QQ");
@@ -2244,6 +2302,9 @@ void TimeShower::pT2nextQCD(double pT2begDip, double pT2sel,
                 / log(scaleGluonToQuark * dip.m2 / Lambda2);
         }
 
+        // Cancel out headroom factor
+        if (overFac != 1.0 && overFac > 0.) wt /= overFac;
+
         // Suppression factors for dipole to beam remnant.
         if (dip.isrType != 0 && useLocalRecoilNow) {
           BeamParticle& beam = (dip.isrType == 1) ? *beamAPtr : *beamBPtr;
@@ -2286,6 +2347,13 @@ void TimeShower::pT2nextQCD(double pT2begDip, double pT2sel,
         if (dopTdamp && dip.system == 0 && dip.MEtype == 0)
           wt *= pT2damp / (dip.pT2 + pT2damp);
       }
+    }
+
+    // If doing uncertainty variations, postpone accept/reject to branch()
+    if( wt>0 && dip.pT2 > pT2min && iUVarQCD.size() > 0) {
+      dip.nameNow = nameNow;
+      dip.pAccept = wt;
+      wt         = 1.0;
     }
 
   // Iterate until acceptable pT (or have fallen below pTmin).
@@ -3153,15 +3221,125 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
   }
 
   // ME corrections can lead to branching being rejected.
-  if (dipSel->MEtype > 0) {
-    Particle& partner = (dipSel->iMEpartner == iRecBef)
-      ? rec : event[dipSel->iMEpartner];
-    if ( findMEcorr( dipSel, rad, partner, emt) < rndmPtr->flat() )
+  // Also do delayed shower-accept probability here (when computing
+  // uncertainty variations).
+  if (dipSel->MEtype > 0 || dipSel->pAccept != 1.0) {
+
+    int nUVarsQCD = (dipSel->colType != 0) ? iUVarQCD.size() : 0;
+    vector<double> uVarFac;
+    uVarFac.resize(0);
+
+    // 1) Compute QCD uncertainty variations
+    for (int i=0; i < nUVarsQCD; ++i) {
+
+      // Get pointer to UVar and initialize ratio-factor
+      int iWeight = iUVarQCD[i];
+      UVar* uVarPtr = settingsPtr->getUVarPtr(iWeight);
+      uVarFac.push_back(1.0);
+
+      // Compute alphaS variations (only for running alphaS)
+      string varName = dipSel->nameNow+":muR";
+      if ( uVarPtr->hasVar(varName) && alphaSorder >= 1) {
+        double muR2 = renormMultFac * dipSel->pT2;
+        // TO DO: change to MQQ if using alternative g->qq weight
+        double alphaSbaseline = alphaS.alphaS(muR2);
+        // Correction-factor alphaS
+        double facMu      = uVarPtr->getVar(varName);
+        double muR2var = max(1.1*Lambda3flav2, pow2(facMu) * muR2);
+        double alphaSratio = alphaS.alphaS(muR2var) / alphaSbaseline;
+        // Apply soft correction factor to X2XG
+        double facCorr = 1.;
+        if (emt.id() == 21 && uVarMuSoftCorr) {
+          // Use smallest alphaS and b0, to make the compensation conservative
+          int nf = 5;
+          if (dipSel->pT2 < pow2(mc)) nf = 3;
+          else if (dipSel->pT2 < pow2(mb)) nf = 4;
+          double alphaScorr = alphaS.alphaS(dipSel->m2Dip);
+          double facSoft    = alphaScorr*(33-2*nf)/6./M_PI;
+          double zeta = 1.-dipSel->z;
+          if (rad.id() == 21) zeta = min(dipSel->z,1-dipSel->z);
+          facCorr = 1. + (1.-zeta) * facSoft * log(facMu);
+        }
+        // Apply correction factor here for emission processes
+        double alphaSfac   = alphaSratio * facCorr;
+        // Limit absolute variation to +/- 0.2
+        if (alphaSfac > 1.)
+          alphaSfac = min(alphaSfac,(alphaSbaseline+0.2)/alphaSbaseline);
+        else if (alphaSbaseline > 0.2)
+          alphaSfac = max(alphaSfac,(alphaSbaseline-0.2)/alphaSbaseline);
+        uVarFac[i] = alphaSfac;
+      }
+
+      // Compute finite-term variations (only when no MECs)
+      varName = dipSel->nameNow+":cNS";
+      if ( uVarPtr->hasVar(varName) && dipSel->MEtype == 0) {
+        // Correction-factor alphaS
+        double z   = dipSel->z;
+        double Q2  = dipSel->m2;
+        // Virtuality for massive radiators
+        if (rad.idAbs() >= 4 && rad.id() != 21) Q2 = max(1.,Q2-rad.m2());
+        double yQ  = Q2/dipSel->m2Dip;
+        double num = yQ * uVarPtr->getVar(varName);
+        double denom = 1.;
+        // G->GG
+        if (idEmt == 21 && idRad == 21)
+          denom = pow2(1. - z * (1.-z)) / (z*(1.-z));
+        // Q->QG
+        else if (idEmt == 21)
+          denom = (1. + pow2(z)) / (1. - z);
+        // G->QQ
+        else
+          denom = pow2(z) + pow2(1. - z);
+        // Compute reweight ratio
+        uVarFac[i] *= 1. + num/denom;
+      }
+
+    }
+
+    // 2) Compute QED uncertainty variations
+
+    // 3) Compute Matrix-Element Corrections
+    double pMEC = 1.0;
+    if (dipSel->MEtype > 0) {
+      Particle& partner = (dipSel->iMEpartner == iRecBef)
+        ? rec : event[dipSel->iMEpartner];
+      pMEC = findMEcorr( dipSel, rad, partner, emt);
+      if (dipSel->MEtype >= 200 && dipSel->MEtype <= 210)
+        pMEC *= findMEcorrWeak( dipSel, rad.p(), partner.p(), emt.p(),
+          p3weak, p4weak, event[iRadBef].p(), event[iRecBef].p());
+    }
+
+    // 4) Check whether to accept or reject branching
+    double pAccept = dipSel->pAccept * pMEC;
+    // Ensure 0 < PacceptPrime < 1 (with small margins)
+    for (int i=0; i<nUVarsQCD; ++i) {
+      double pAcceptPrime = pAccept * uVarFac[i];
+      if (pAcceptPrime > 0.99) uVarFac[i] *= 0.99 / pAcceptPrime;
+    }
+
+    if ( pAccept < rndmPtr->flat() ) {
+      // Reject trial : apply uncertainty-variation Sudakov reweightings
+      for (int i=0; i < nUVarsQCD; ++i) {
+        int iWeight = iUVarQCD[i];
+        // Check for near-singular denominators (indicates too few failures,
+        // and hence would need to increase headroom)
+        double denom = 1.-pAccept;
+        if (denom < 0.1) cout<<" Warning: reject denom = "
+                             << denom << " iWeight = "<<iWeight<<endl;
+        // Reject reweighting factor (force > 0)
+        double reWtFail = max(0.01,(1. - uVarFac[i]*pAccept)/denom);
+        infoPtr->reWeight(iWeight,reWtFail);
+      }
+      // Tell calling method that this trial was rejeced
       return false;
-    if (dipSel->MEtype >= 200 && dipSel->MEtype <= 210
-      && findMEcorrWeak( dipSel, rad.p(), partner.p(), emt.p(), p3weak, p4weak,
-      event[iRadBef].p(), event[iRecBef].p()) < rndmPtr->flat() )
-      return false;
+
+    } else {
+      // Accept trial : apply uncertainty-variation Accept reweightings
+      for (int i=0; i < nUVarsQCD; ++i) {
+        int iWeight = iUVarQCD[i];
+        infoPtr->reWeight(iWeight,uVarFac[i]);
+      }
+    }
   }
 
   // Rescatter: if the recoiling partner is not in the same system

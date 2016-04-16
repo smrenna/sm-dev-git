@@ -1,0 +1,59 @@
+<html>
+<head>
+<title>Variations of Shower Parameters</title>
+<link rel="stylesheet" type="text/css" href="pythia.css"/>
+<link rel="shortcut icon" href="pythia32.gif"/>
+</head>
+<body>
+ 
+<h2>Variations of Shower Parameters</h2> 
+<p> 
+While a number of different central Tunes are provided, it is often desired 
+to study how event properties change when some of the parameters 
+(such as those describing the parton showers) are 
+varied.   Pythia8 now has the ability to provide a series of weights 
+to reflect the change in probability for a particular final state to occur when 
+a subset of parton shower parameters are varied.   Currently, the list of 
+available variations are for: 
+<ol> 
+<li> the renormalization scale for QCD emissions in FSR; </li> 
+<li> the renormalization scale for QCD emissions in ISR; </li> 
+<li> the inclusion of finite pieces in QCD emissions in FSR; </li> 
+<li> the inclusion of finite pieces in QCD emissions in ISR. </li> 
+</ol> 
+Similar variations are possible for QED emissions, but these are not 
+yet implemented. 
+</p> 
+ 
+The variations are steered by a settings string with the format: 
+ 
+<p>"user-provided-name-for-this-variation  variation-parameter value ... variation-parameter value"</p> 
+ 
+Examples are: 
+ 
+<ul> 
+<li> "UncertaintyVariation A fsr:muR 0.5 isr:muR 0.5" </li> 
+<li> "UncertaintyVariation C fsr:cNS 3.0" </li> 
+</ul> 
+ 
+<p/> 
+The weights for each variation are available on an event-by-event basis 
+using: 
+<i> pythia.info.weight(int i); </i> 
+where <i> i </i> represents the <i>i</i>'th variation. 
+<i> weight(0) </i> is the baseline (unvaried) prediction with unit weight. 
+ 
+<p/> 
+ 
+Additionally, there is a run-time parameter: 
+ 
+<p/><code>flag&nbsp; </code><strong> Uncertainties:muSoftCorr &nbsp;</strong> 
+ (<code>default = <strong>off</strong></code>)<br/>
+This flags tells the shower to apply a soft correction to 
+gluon emission. 
+   
+ 
+</body>
+</html>
+ 
+<!-- Copyright (C) 2016 Torbjorn Sjostrand --> 

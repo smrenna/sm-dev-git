@@ -328,7 +328,17 @@ Assumed smaller than (or equal to) <i>pTminChgQ</i>.
 Force emissions, after the first,  to be ordered in rapidity, 
 i.e. in terms of decreasing angles in a backwards-evolution sense. 
 Could be used to probe sensitivity to unordered emissions. 
-Only affects QCD emissions. 
+Only affects QCD emissions, and only the hard subcollision of an event. 
+(For the case "soft QCD" processes the first MPI counts as the hard 
+subcollision.) 
+ 
+   
+ 
+<p/><code>flag&nbsp; </code><strong> SpaceShower:rapidityOrderMPI &nbsp;</strong> 
+ (<code>default = <strong>on</strong></code>)<br/>
+Same as the last switch, but this time only emissions in secondary 
+scattering systems from MPIs are forced to be ordered in rapidity. 
+Each MPI is ordered separately from the others. 
    
  
 <h3>Weak showers</h3> 

@@ -3174,7 +3174,12 @@ double CJKL::hadronlikeB(double x, double s, double Q2) {
 void LHAGrid1::init(string pdfWord, string xmlPath, Info* infoPtr) {
 
   // Identify whether file number or name.
-  pdfWord = pdfWord.substr(9, pdfWord.length() - 9);
+  if (pdfWord.length() > 9) {
+    string pdfTmp = pdfWord;
+    for (int i = 0; i < 8; ++i) pdfTmp[i] = tolower(pdfTmp[i]);
+    if (pdfTmp.substr(0,9) == "lhagrid1:")
+      pdfWord = pdfWord.substr(9, pdfWord.length() - 9);
+  }
   istringstream pdfStream(pdfWord);
   int pdfSet = 0;
   pdfStream >> pdfSet;
@@ -3186,8 +3191,8 @@ void LHAGrid1::init(string pdfWord, string xmlPath, Info* infoPtr) {
   else if (pdfSet == 0) dataFile = xmlPath + pdfWord;
 
   // Input is fit number. Current selection for tryout only.
-  else if (pdfSet == 1) dataFile = xmlPath + "hf_pdf_0000.dat";
-  else if (pdfSet == 2) dataFile = xmlPath + "NNPDF23_lo_as_0119_qed_0000.dat";
+  //else if (pdfSet == 1) dataFile = xmlPath+"hf_pdf_0000.dat";
+  //else if (pdfSet == 2) dataFile = xmlPath+"NNPDF23_lo_as_0119_qed_0000.dat";
 
   // Open files from which grids should be read in.
   ifstream is( dataFile.c_str() );
@@ -3388,12 +3393,13 @@ void LHAGrid1::xfxevolve(double x, double Q2) {
   int inx  = (x <= xMin) ? -1 : ((x >= xMax) ? 1 : 0);
   int inq  = (q <= qMin) ? -1 : ((q >= qMax) ? 1 : 0);
 
+  // Set up default for x interpolation.
+  int    minx  = 0;
+  int    maxx  = nx - 1;
+  int    m3x   = 0;
+  double wx[4] = {1., 1., 1., 1.};
+
   // Find grid value on either side of x.
-  int    minx = 0;
-  int    maxx = nx - 1;
-  double dlnx = 0.5;
-  int    m3   = 0;
-  double wLoc[4] = {1., 1., 1., 1.};
   if (inx == 0) {
     int midx;
     while (maxx - minx > 1) {
@@ -3401,28 +3407,30 @@ void LHAGrid1::xfxevolve(double x, double Q2) {
       if (x < xGrid[midx]) maxx = midx;
       else                 minx = midx;
     }
-    double lnx = log(x);
-    dlnx = (lnx - lnxGrid[minx]) / (lnxGrid[maxx] - lnxGrid[minx]);
 
     // Weights for cubic interpolation in ln(x).
-    if      (minx == 0)      m3 = 0;
-    else if (maxx == nx - 1) m3 = nx - 4;
-    else                     m3 = minx - 1;
+    double lnx = log(x);
+    if      (minx == 0)      m3x = 0;
+    else if (maxx == nx - 1) m3x = nx - 4;
+    else                     m3x = minx - 1;
     for (int i3 = 0; i3 < 4; ++i3)
     for (int j = 0; j < 4; ++j) if (j != i3)
-      wLoc[i3] *= (lnx - lnxGrid[m3+j]) / (lnxGrid[m3+i3] - lnxGrid[m3+j]);
+      wx[i3] *= (lnx - lnxGrid[m3x+j]) / (lnxGrid[m3x+i3] - lnxGrid[m3x+j]);
+  }
 
-  // Freeze at border of x range.
-  } else if (inx == -1) maxx = minx;
-    else if (inx ==  1) minx = maxx;
-
-  // Find q subgrid and grid value on either side of q.
+  // Find q subgrid and set up default for q interpolation.
   int    iqDiv = 0;
   for (int iqSub = 1; iqSub < nqSub; ++iqSub)
     if (q > qDiv[iqSub - 1]) iqDiv = iqSub;
-  int    minq = (iqDiv == 0) ? 0 : nqSum[iqDiv - 1];
-  int    maxq = nqSum[iqDiv] - 1;
-  double dlnq = 0.5;
+  int    minS  = (iqDiv == 0) ? 0 : nqSum[iqDiv - 1];
+  int    maxS  = nqSum[iqDiv] - 1;
+  int    minq  = minS;
+  int    maxq  = maxS;
+  int    n3q   = 4;
+  int    m3q   = 0.;
+  double wq[4] = {1., 1., 1., 1.};
+
+  // Find grid value on either side of q.
   if (inq == 0) {
     int midq;
     while (maxq - minq > 1) {
@@ -3430,27 +3438,43 @@ void LHAGrid1::xfxevolve(double x, double Q2) {
       if (q < qGrid[midq]) maxq = midq;
       else                 minq = midq;
     }
-    dlnq = (log(q) - lnqGrid[minq]) / (lnqGrid[maxq] - lnqGrid[minq]);
+
+    // Weights for linear or cubic interpolation in ln(q).
+    double lnq = log(q);
+    if (maxS - minS < 3) {
+      n3q = 2;
+      m3q = minq;
+      wq[1] = (lnq - lnqGrid[minq]) / (lnqGrid[maxq] - lnqGrid[minq]);
+      wq[0] = 1. - wq[1];
+    } else {
+      if      (minq == minS) m3q = minS;
+      else if (maxq == maxS) m3q = maxS - 3;
+      else                   m3q = minq - 1;
+      for (int i3 = 0; i3 < 4; ++i3)
+      for (int j = 0; j < 4; ++j) if (j != i3)
+        wq[i3] *= (lnq - lnqGrid[m3q+j]) / (lnqGrid[m3q+i3] - lnqGrid[m3q+j]);
+    }
 
   // Freeze at border of q range.
-  } else if (inq == -1) maxq = minq;
-    else if (inq ==  1) minq = maxq;
+  } else {
+    n3q = 1;
+    if (inq == 1) m3q = nq - 1;
+  }
 
-  // Interpolate between grid elements, cubic in ln(x), linear in ln(q).
+  // Interpolate between grid elements, normally bicubic, or simpler in ln(q).
   for (int iid = 0; iid < 12; ++iid) pdfVal[iid] = 0.;
   if (inx == 0) {
     for (int iid = 0; iid < 12; ++iid)
-    for (int i3 = 0; i3 < 4; ++i3)
-      pdfVal[iid] += wLoc[i3] * ( (1. - dlnq) * pdfGrid[iid][m3+i3][minq]
-        + dlnq * pdfGrid[iid][m3+i3][maxq] );
+    for (int i3x = 0; i3x < 4; ++i3x)
+    for (int i3q = 0; i3q < n3q; ++i3q)
+      pdfVal[iid] += wx[i3x] * wq[i3q] * pdfGrid[iid][m3x+i3x][m3q+i3q];
 
-  // Special: extrapolate to small x. (Let vanish at large x.)
+  // Special: extrapolate to small x. (Let vanish at large x, so no such code.)
   } else if (inx == -1) {
     for (int iid = 0; iid < 12; ++iid)
-      pdfVal[iid] = (1. - dlnq) * pdfGrid[iid][0][minq]
-        * (doExtraPol ? pow( x / xMin, pdfSlope[iid][minq]) : 1.)
-        + dlnq * pdfGrid[iid][0][maxq]
-        * (doExtraPol ? pow( x / xMin, pdfSlope[iid][maxq]) : 1.);
+    for (int i3q = 0; i3q < n3q; ++i3q)
+      pdfVal[iid] += wq[i3q] * pdfGrid[iid][0][m3q+i3q]
+        * (doExtraPol ? pow( x / xMin, pdfSlope[iid][m3q+i3q]) : 1.);
   }
 
 }

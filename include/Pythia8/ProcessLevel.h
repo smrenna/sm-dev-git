@@ -62,7 +62,7 @@ public:
   bool nextLHAdec( Event& process);
 
   // Accumulate and update statistics (after possible user veto).
-  void accumulate();
+  void accumulate( bool doAccumulate = true);
 
   // Print statistics on cross sections and number of events.
   void statistics(bool reset = false);

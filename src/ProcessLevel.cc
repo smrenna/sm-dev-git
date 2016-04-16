@@ -391,10 +391,10 @@ bool ProcessLevel::nextLHAdec( Event& process) {
 
 // Accumulate and update statistics (after possible user veto).
 
-void ProcessLevel::accumulate() {
+void ProcessLevel::accumulate( bool doAccumulate) {
 
   // Increase number of accepted events.
-  containerPtrs[iContainer]->accumulate();
+  if (doAccumulate) containerPtrs[iContainer]->accumulate();
 
   // Provide current generated cross section estimate.
   long   nTrySum    = 0;
@@ -445,7 +445,7 @@ void ProcessLevel::accumulate() {
   }
 
   // Increase counter for a second hard interaction.
-  container2Ptrs[i2Container]->accumulate();
+  if (doAccumulate) container2Ptrs[i2Container]->accumulate();
 
   // Update statistics on average impact factor.
   ++nImpact;

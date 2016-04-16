@@ -103,6 +103,7 @@ echo "<a href='SaveSettings.php?returning=1&filename=".$filename."' target='page
 <a href='ParticleData.php?filepath=".$filepath."' target='page'>Particle Data</a><br/> 
 <a href='ErrorChecks.php?filepath=".$filepath."' target='page'>Error Checks</a><br/> 
 <a href='Tunes.php?filepath=".$filepath."' target='page'>Tunes</a><br/> 
+<a href='Variations.php?filepath=".$filepath."' target='page'>Variations in ISR and FSR</a><br/> 
 
 ";?>
  

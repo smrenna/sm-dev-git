@@ -461,27 +461,27 @@ void HEPRUP::clear() {
 
 HEPEUP & HEPEUP::setEvent(const HEPEUP & x) {
 
-  NUP = x.NUP;
-  IDPRUP = x.IDPRUP;
-  XWGTUP = x.XWGTUP;
-  XPDWUP = x.XPDWUP;
-  SCALUP = x.SCALUP;
-  AQEDUP = x.AQEDUP;
-  AQCDUP = x.AQCDUP;
-  IDUP = x.IDUP;
-  ISTUP = x.ISTUP;
-  MOTHUP = x.MOTHUP;
-  ICOLUP = x.ICOLUP;
-  PUP = x.PUP;
-  VTIMUP = x.VTIMUP;
-  SPINUP = x.SPINUP;
-  heprup = x.heprup;
-  scales = x.scales;
-  weights = x.weights;
-  weights_detailed = x.weights_detailed;
+  NUP                = x.NUP;
+  IDPRUP             = x.IDPRUP;
+  XWGTUP             = x.XWGTUP;
+  XPDWUP             = x.XPDWUP;
+  SCALUP             = x.SCALUP;
+  AQEDUP             = x.AQEDUP;
+  AQCDUP             = x.AQCDUP;
+  IDUP               = x.IDUP;
+  ISTUP              = x.ISTUP;
+  MOTHUP             = x.MOTHUP;
+  ICOLUP             = x.ICOLUP;
+  PUP                = x.PUP;
+  VTIMUP             = x.VTIMUP;
+  SPINUP             = x.SPINUP;
+  heprup             = x.heprup;
+  scalesSave         = x.scalesSave;
+  weightsSave        = x.weightsSave;
+  weights_detailed   = x.weights_detailed;
   weights_compressed = x.weights_compressed;
-  rwgt = x.rwgt;
-  attributes = x.attributes;
+  rwgtSave           = x.rwgtSave;
+  attributes         = x.attributes;
   return *this;
 
 }
@@ -494,9 +494,9 @@ void HEPEUP::reset() {
   NUP = 0;
   weights_detailed.clear();
   weights_compressed.clear();
-  weights.clear();
-  rwgt.clear();
-  scales.clear();
+  weightsSave.clear();
+  rwgtSave.clear();
+  scalesSave.clear();
   attributes.clear();
 }
 
@@ -705,6 +705,7 @@ bool Reader::readEvent(HEPEUP * peup) {
   HEPEUP & eup = (peup? *peup: hepeup);
   eup.clear();
   eup.heprup = &heprup;
+  weights_detailed_vec.clear();
 
   // Check if the initialization was successful. Otherwise we will
   // not read any events.
@@ -762,7 +763,7 @@ bool Reader::readEvent(HEPEUP * peup) {
 
   if ( file == NULL ) return false;
 
-  eup.scales = LHAscales(eup.SCALUP);
+  eup.scalesSave = LHAscales(eup.SCALUP);
 
   // Scan the init block for XML tags
   string leftovers;
@@ -787,7 +788,7 @@ bool Reader::readEvent(HEPEUP * peup) {
 
     if ( tag.name == "weights" ) {
       LHAweights wts(tag);
-      eup.weights = wts;
+      eup.weightsSave = wts;
 
       for ( int k = 0, M = int(wts.weights.size()); k < M; ++k ) {
         eup.weights_compressed.push_back(wts.weights[k]);
@@ -795,18 +796,19 @@ bool Reader::readEvent(HEPEUP * peup) {
 
     }
     else if ( tag.name == "scales" ) {
-      eup.scales = LHAscales(tag, eup.SCALUP);
+      eup.scalesSave = LHAscales(tag, eup.SCALUP);
     }
     else if ( tag.name == "rwgt" ) {
-      LHArwgt rwgt(tag);
-      eup.rwgt = rwgt;
+      LHArwgt rwgt0(tag);
+      eup.rwgtSave = rwgt0;
       string s;
-      vector<XMLTag*> tags2 = XMLTag::findXMLTags(rwgt.contents, &s);
+      vector<XMLTag*> tags2 = XMLTag::findXMLTags(rwgt0.contents, &s);
       for ( int k = 0, M = tags2.size(); k < M; ++k ) {
         const XMLTag & tagnow = *tags2[k];
         if ( tagnow.name == "wgt" ) {
           LHAwgt wt(tagnow);
           eup.weights_detailed.insert(make_pair(wt.id, wt.contents));
+          weights_detailed_vec.push_back(wt.contents);
         }
       }
       for ( int k = 0, M = tag.tags.size(); k < M; ++k ) {
@@ -814,6 +816,7 @@ bool Reader::readEvent(HEPEUP * peup) {
         if ( tagnow.name == "wgt" ) {
           LHAwgt wt(tagnow);
           eup.weights_detailed.insert(make_pair(wt.id, wt.contents));
+          weights_detailed_vec.push_back(wt.contents);
         }
       }
     }
@@ -927,9 +930,9 @@ bool Writer::writeEvent(HEPEUP * peup, int pDigits) {
   eventStream.str("");
 
   if ( version != 1 ) {
-    eup.rwgt.list(file);
-    eup.weights.list(file);
-    eup.scales.list(file);
+    eup.rwgtSave.list(file);
+    eup.weightsSave.list(file);
+    eup.scalesSave.list(file);
   }
 
   file << "</event>" << endl;

@@ -75,6 +75,12 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
+<td>virtual bool doChainDecay(...) {return</td>
+<td><a href="ExternalDecays.php#method3" target="page">false;}</a></td>
+<td>External Decays</td>
+</tr>
+
+<tr>
 <td>double</td>
 <td><a href="UserHooks.php#method43" target="page">getEnhancedEventWeight()</a></td>
 <td>User Hooks</td>
@@ -876,6 +882,12 @@ Many of them are only intended for experts, while undocumented ones are only for
 <td>void</td>
 <td><a href="ParticleDataScheme.php#method131" target="page">DecayChannel::setHasChanged(...)</a></td>
 <td>Particle Data Scheme</td>
+</tr>
+
+<tr>
+<td>virtual bool</td>
+<td><a href="ExternalDecays.php#method2" target="page">DecayHandler::chainDecay(...)</a></td>
+<td>External Decays</td>
 </tr>
 
 <tr>
@@ -4318,13 +4330,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
-<td><a href="HepMCInterface.php#method7" target="page">Pythia8ToHepMC::convert_gluon_to_0()</a></td>
-<td>HepMC Interface</td>
-</tr>
-
-<tr>
-<td>bool</td>
-<td><a href="HepMCInterface.php#method6" target="page">Pythia8ToHepMC::crash_on_problem()</a></td>
+<td><a href="HepMCInterface.php#method6" target="page">Pythia8ToHepMC::convert_gluon_to_0()</a></td>
 <td>HepMC Interface</td>
 </tr>
 
@@ -4342,7 +4348,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
-<td><a href="HepMCInterface.php#method5" target="page">Pythia8ToHepMC::free_parton_warnings()</a></td>
+<td><a href="HepMCInterface.php#method5" target="page">Pythia8ToHepMC::free_parton_exception()</a></td>
 <td>HepMC Interface</td>
 </tr>
 
@@ -4360,19 +4366,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="HepMCInterface.php#method7" target="page">Pythia8ToHepMC::set_convert_gluon_to_0(...)</a></td>
+<td><a href="HepMCInterface.php#method6" target="page">Pythia8ToHepMC::set_convert_gluon_to_0(...)</a></td>
 <td>HepMC Interface</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="HepMCInterface.php#method6" target="page">Pythia8ToHepMC::set_crash_on_problem(...)</a></td>
-<td>HepMC Interface</td>
-</tr>
-
-<tr>
-<td>void</td>
-<td><a href="HepMCInterface.php#method5" target="page">Pythia8ToHepMC::set_free_parton_warnings(...)</a></td>
+<td><a href="HepMCInterface.php#method5" target="page">Pythia8ToHepMC::set_free_parton_exception(...)</a></td>
 <td>HepMC Interface</td>
 </tr>
 
@@ -4384,37 +4384,37 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="HepMCInterface.php#method8" target="page">Pythia8ToHepMC::set_store_pdf(...)</a></td>
+<td><a href="HepMCInterface.php#method7" target="page">Pythia8ToHepMC::set_store_pdf(...)</a></td>
 <td>HepMC Interface</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="HepMCInterface.php#method9" target="page">Pythia8ToHepMC::set_store_proc(...)</a></td>
+<td><a href="HepMCInterface.php#method8" target="page">Pythia8ToHepMC::set_store_proc(...)</a></td>
 <td>HepMC Interface</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="HepMCInterface.php#method10" target="page">Pythia8ToHepMC::set_store_xsec(...)</a></td>
+<td><a href="HepMCInterface.php#method9" target="page">Pythia8ToHepMC::set_store_xsec(...)</a></td>
 <td>HepMC Interface</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="HepMCInterface.php#method8" target="page">Pythia8ToHepMC::store_pdf()</a></td>
+<td><a href="HepMCInterface.php#method7" target="page">Pythia8ToHepMC::store_pdf()</a></td>
 <td>HepMC Interface</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="HepMCInterface.php#method9" target="page">Pythia8ToHepMC::store_proc()</a></td>
+<td><a href="HepMCInterface.php#method8" target="page">Pythia8ToHepMC::store_proc()</a></td>
 <td>HepMC Interface</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="HepMCInterface.php#method10" target="page">Pythia8ToHepMC::store_xsec()</a></td>
+<td><a href="HepMCInterface.php#method9" target="page">Pythia8ToHepMC::store_xsec()</a></td>
 <td>HepMC Interface</td>
 </tr>
 
@@ -5637,7 +5637,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
-<td>virtual vector &lt;double&gt;</td>
+<td>virtual map &lt;string,double&gt;</td>
 <td><a href="ImplementNewShowers.php#method41" target="page">SpaceShower::getStateVariables(...)</a></td>
 <td>Implement New Showers</td>
 </tr>
@@ -5853,7 +5853,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
-<td>virtual vector &lt;double&gt;</td>
+<td>virtual map &lt;string,double&gt;</td>
 <td><a href="ImplementNewShowers.php#method22" target="page">TimeShower::getStateVariables(...)</a></td>
 <td>Implement New Showers</td>
 </tr>

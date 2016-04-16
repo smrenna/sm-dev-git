@@ -184,6 +184,12 @@ private:
   vector<int> codeLHA;
   vector<long> nTryLHA, nSelLHA, nAccLHA;
 
+  // More fine-grained event counting.
+  long nTryRequested, nSelRequested, nAccRequested;
+
+  // Temporary summand for handling (weighted) events when vetoes are applied.
+  double sigmaTemp;
+
   // Estimate integrated cross section and its uncertainty.
   void sigmaDelta();
 

@@ -62,7 +62,15 @@ bool ProcessContainer::init(bool isFirst, Info* infoPtrIn,
   lhaStratAbs = abs(lhaStrat);
   allowNegSig = sigmaProcessPtr->allowNegativeSigma();
 
+  // Switch to ensure that the scales set in a LH input event are
+  // respected, even in resonance showers.
   useStrictLHEFscales = settings.flag("Beams:strictLHEFscale");
+
+  // Maximal number of events for more in-depth control of
+  // how many events are selected/tried/accepted.
+  nTryRequested = settings.mode("Main:numberOfTriedEvents");
+  nSelRequested = settings.mode("Main:numberOfSelectedEvents");
+  nAccRequested = settings.mode("Main:numberOfAcceptedEvents");
 
   // Flag for maximum violation handling.
   increaseMaximum = settings.flag("PhaseSpace:increaseMaximum");
@@ -117,6 +125,9 @@ bool ProcessContainer::init(bool isFirst, Info* infoPtrIn,
   sigmaFin  = 0.;
   deltaFin  = 0.;
   wtAccSum  = 0.;
+
+  // Reset temporary cross section summand.
+  sigmaTemp  = 0.;
 
   // Initialize process and allowed incoming partons.
   sigmaProcessPtr->initProc();
@@ -174,10 +185,19 @@ bool ProcessContainer::trialProcess() {
     bool repeatSame = (iTry > 0);
     bool physical = phaseSpacePtr->trialKin(true, repeatSame);
 
+    // Flag to check if more events should be generated.
+    bool doTryNext = true;
+
     // Note if at end of Les Houches file, else do statistics.
     if (isLHA && !physical) infoPtr->setEndOfFile(true);
     else {
-      ++nTry;
+
+      // Check if the number of selected events should be limited.
+      if (nSelRequested > 0) doTryNext = (nTry < nSelRequested);
+
+      // Only add to counter if event should count towards cross section.
+      if (doTryNext) ++nTry;
+
       // Statistics for separate Les Houches process codes. Insert new codes.
       if (isLHA) {
         int codeLHANow = lhaUpPtr->idProcess();
@@ -185,7 +205,8 @@ bool ProcessContainer::trialProcess() {
         for (int i = 0; i < int(codeLHA.size()); ++i)
           if (codeLHANow == codeLHA[i]) iFill = i;
         if (iFill >= 0) {
-          ++nTryLHA[iFill];
+          // Only add to counter if event should count towards cross section.
+          if (doTryNext) ++nTryLHA[iFill];
         } else {
           codeLHA.push_back(codeLHANow);
           nTryLHA.push_back(1);
@@ -218,6 +239,10 @@ bool ProcessContainer::trialProcess() {
     // Also compensating weight from biased phase-space selection.
     double biasWeight = phaseSpacePtr->biasSelectionWeight();
     weightNow = sigmaWeight * biasWeight;
+
+    // Set event weight to zero if this event should not count.
+    if (!doTryNext) weightNow = 0.0;
+
     infoPtr->setWeight( weightNow, lhaStrat);
 
     // Check that not negative cross section when not allowed.
@@ -233,8 +258,17 @@ bool ProcessContainer::trialProcess() {
     // Cross section of process may come with a weight. Update sum.
     double sigmaAdd = sigmaNow * biasWeight;
     if (lhaStratAbs == 2 || lhaStratAbs == 3) sigmaAdd = sigmaSgn;
-    sigmaSum  += sigmaAdd;
-    sigma2Sum += pow2(sigmaAdd);
+
+    // Do not add event weight to the cross section if it should not count.
+    if (!doTryNext) {
+      sigmaAdd=0.;
+      // Reset stored weight.
+      sigmaTemp = 0.;
+    }
+
+    // Only update once an event is accepted, as is needed if the event weight
+    // can still change by a finite amount due to reweighting.
+    sigmaTemp  = sigmaAdd;
 
     // Check if maximum violated.
     newSigmaMx = phaseSpacePtr->newSigmaMax();
@@ -245,13 +279,16 @@ bool ProcessContainer::trialProcess() {
     if (lhaStratAbs < 3) select
       = (newSigmaMx || rndmPtr->flat() * abs(sigmaMx) < abs(sigmaNow));
     if (select) {
-      ++nSel;
-      if (isLHA) {
+      // Only add to counter if event should count towards cross section.
+      if (doTryNext)               ++nSel;
+
+     if (isLHA) {
         int codeLHANow = lhaUpPtr->idProcess();
         int iFill = -1;
         for (int i = 0; i < int(codeLHA.size()); ++i)
           if (codeLHANow == codeLHA[i]) iFill = i;
-        if (iFill >= 0) ++nSelLHA[iFill];
+        // Only add to counter if event should count towards cross section.
+        if (iFill >= 0 && doTryNext) ++nSelLHA[iFill];
       }
     }
     if (select || lhaStratAbs != 2) return select;
@@ -266,14 +303,24 @@ bool ProcessContainer::trialProcess() {
 
 void ProcessContainer::accumulate() {
 
-  ++nAcc;
-  wtAccSum += weightNow;
-  if (isLHA) {
-    int codeLHANow = lhaUpPtr->idProcess();
-    int iFill = -1;
-    for (int i = 0; i < int(codeLHA.size()); ++i)
-      if (codeLHANow == codeLHA[i]) iFill = i;
-    if (iFill >= 0) ++nAccLHA[iFill];
+  // Only update for non-vanishing weight - vanishing weight means
+  // event should not count as accepted.
+  double wgtNow = infoPtr->weight();
+  if (wgtNow != 0.0) {
+
+    ++nAcc;
+
+    // infoPtr->weight() performs coversion to pb if lhaStratAbs = 4
+    if (lhaStratAbs == 4) wgtNow /= 1e9;
+
+    wtAccSum += wgtNow;
+    if (isLHA) {
+      int codeLHANow = lhaUpPtr->idProcess();
+      int iFill = -1;
+      for (int i = 0; i < int(codeLHA.size()); ++i)
+        if (codeLHANow == codeLHA[i]) iFill = i;
+      if (iFill >= 0) ++nAccLHA[iFill];
+    }
   }
 
 }
@@ -1027,6 +1074,7 @@ void ProcessContainer::reset() {
   sigmaFin  = 0.;
   deltaFin  = 0.;
   wtAccSum  = 0.;
+  sigmaTemp = 0.;
 
 }
 
@@ -1043,14 +1091,29 @@ void ProcessContainer::sigmaDelta() {
   deltaFin = 0.;
   if (nAcc == 0) return;
 
+  // Only update once an event is accepted, as is needed if the event weight
+  // can still change by a finite amount due to reweighting.
+  double wgtNow = infoPtr->weight();
+  // infoPtr->weight() performs coversion to pb if lhaStratAbs = 4
+  if (lhaStrat    == 0) wgtNow  = sigmaTemp;
+  if (lhaStratAbs == 3) wgtNow *= sigmaTemp;
+  if (lhaStratAbs == 4) wgtNow /= 1e9;
+  sigmaSum += wgtNow;
+  sigma2Sum += pow2(wgtNow);
+
   // Average value. No error analysis unless at least two events.
   double nTryInv  = 1. / nTry;
   double nSelInv  = 1. / nSel;
   double nAccInv  = 1. / nAcc;
   sigmaAvg        = sigmaSum * nTryInv;
   double fracAcc  = nAcc * nSelInv;
+
+  // Now always simply add accepted event weights.
+  fracAcc = 1.;
+
   sigmaFin        = sigmaAvg * fracAcc;
   deltaFin        = sigmaFin;
+
   if (nAcc == 1) return;
 
   // Estimated error. Quadratic sum of cross section term and

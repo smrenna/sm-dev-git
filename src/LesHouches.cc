@@ -911,7 +911,8 @@ bool LHAupLHEF::setInitLHEF( istream & isIn, bool readHead ) {
   if (reader.version > 1) {
     infoPtr->setLHEF3InitInfo( reader.version,
       &reader.heprup.initrwgt, &(reader.heprup.generators),
-      &(reader.heprup.weightgroups), &(reader.heprup.weights));
+      &(reader.heprup.weightgroups), &(reader.heprup.weights),
+      reader.headerBlock);
   }
 
   // Reading worked.
@@ -1001,8 +1002,8 @@ bool LHAupLHEF::setNewEventLHEF() {
   // Set production scales from <scales> tag.
   if ( setScalesFromLHEF && reader.version > 1 ){
     for ( map<string,double>::const_iterator
-      it  = reader.hepeup.scales.attributes.begin();
-      it != reader.hepeup.scales.attributes.end(); ++it ) {
+      it  = reader.hepeup.scalesSave.attributes.begin();
+      it != reader.hepeup.scalesSave.attributes.end(); ++it ) {
       if ( it->first.find_last_of("_") != string::npos) {
         unsigned iFound = it->first.find_last_of("_") + 1;
         int iPos = atoi(it->first.substr(iFound).c_str());
@@ -1031,10 +1032,13 @@ bool LHAupLHEF::setNewEventLHEF() {
   if (reader.version > 1) {
     infoPtr->setLHEF3EventInfo( &reader.hepeup.attributes,
       &reader.hepeup.weights_detailed, &reader.hepeup.weights_compressed,
-      &reader.hepeup.scales, &reader.hepeup.weights, &reader.hepeup.rwgt);
+      &reader.hepeup.scalesSave, &reader.hepeup.weightsSave,
+      &reader.hepeup.rwgtSave, reader.weights_detailed_vector(),
+      reader.eventComments, reader.hepeup.XWGTUP);
   // Try to at least set the event attributes for 1.0
   } else {
-    infoPtr->setLHEF3EventInfo( &reader.hepeup.attributes, 0, 0, 0, 0, 0);
+    infoPtr->setLHEF3EventInfo( &reader.hepeup.attributes, 0, 0, 0, 0, 0,
+       vector<double>(), "", 1.0);
   }
 
   // Reading worked.
@@ -1508,20 +1512,20 @@ bool LHEF3FromPythia8::setEvent(int) {
 
   // The weights associated with this event, as given by the LHAweights tags.
   if (infoPtr->weights_compressed)
-    hepeup.weights_compressed = *(infoPtr->weights_compressed);
+    hepeup.weights_compressed              = *(infoPtr->weights_compressed);
 
   // Contents of the LHAscales tag
-  if (infoPtr->scales) hepeup.scales = *(infoPtr->scales);
+  if (infoPtr->scales) hepeup.scalesSave   = *(infoPtr->scales);
 
   // Contents of the LHAweights tag (compressed format)
-  if (infoPtr->weights) hepeup.weights = *(infoPtr->weights);
+  if (infoPtr->weights) hepeup.weightsSave = *(infoPtr->weights);
 
   // Contents of the LHArwgt tag (detailed format)
-  if (infoPtr->rwgt) hepeup.rwgt = *(infoPtr->rwgt);
+  if (infoPtr->rwgt) hepeup.rwgtSave       = *(infoPtr->rwgt);
 
   // Any other attributes.
   if (infoPtr->eventAttributes)
-    hepeup.attributes = *(infoPtr->eventAttributes);
+    hepeup.attributes                      = *(infoPtr->eventAttributes);
 
   // Not implemented yet:
   // Write event comments of input LHEF.

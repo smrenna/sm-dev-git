@@ -67,9 +67,10 @@ public:
   // Properties specific to current trial emission.
   int    flavour, iAunt;
   double mRad, m2Rad, mRec, m2Rec, mDip, m2Dip, m2DipCorr,
-         pT2, m2, z, mFlavour, asymPol, flexFactor;
+         pT2, m2, z, mFlavour, asymPol, flexFactor, pAccept;
+  string nameNow;
 
-} ;
+};
 
 //==========================================================================
 
@@ -159,35 +160,33 @@ public:
   // Please see the documentation under "Implement New Showers" for details.
 
   // Return clustering kinematics - as needed for merging.
-  virtual Event clustered( const Event&, int, int, int, string)
+  virtual Event clustered( const Event& , int , int , int , string )
     { return Event();}
 
-  // Return the evolution variable.
-  // Usage: getStateVariables( const Event& event,  int iRad, int iEmt,
-  //                   int iRec, string name)
-  // Important note:
-  //  - The first element of the return vector *must* be the value of the
-  //    shower evolution variable corresponding to the branching defined by
-  //    the integers.
-  //  - The second element of the return vector *must* be the value of the
-  //    shower evolution variable from which the shower would restart after
-  //    the branching (two values will often be identical).
-  virtual vector<double> getStateVariables (const Event&,int,int,int,string)
-    { return vector<double>();}
+  // Return the evolution variable(s).
+  // Important note: this map must contain the following entries
+  // - a key "t" for the value of the shower evolution variable;
+  // - a key "tRS" for the value of the shower evolution variable
+  //   from which the shower would be restarted after a branching;
+  // - a key "scaleAS" for the argument of alpha_s used for the branching;
+  // - a key "scalePDF" for the argument of the PDFs used for the branching.
+  // Usage: getStateVariables( event, iRad, iEmt, iRec,  name)
+  virtual map<string, double> getStateVariables (const Event& , int , int ,
+    int , string ) { return map<string,double>();}
 
   // Check if attempted clustering is handled by timelike shower
-  // Usage: isTimelike( const Event& event,  int iRad, int iEmt,
-  //                   int iRec, string name)
-  virtual bool isTimelike(const Event&, int, int, int, string)
+  // Usage: isTimelike( event, iRad, iEmt, iRec, name)
+  virtual bool isTimelike(const Event& , int , int , int , string )
     { return false; }
 
   // Return a string identifier of a splitting.
-  // Usage: getSplittingName( const Event& event, int iRad, int iEmt, int iRec)
-  virtual string getSplittingName( const Event&, int, int, int) { return "";}
+  // Usage: getSplittingName( event, iRad, iEmt, iRec)
+  virtual string getSplittingName( const Event& , int , int , int )
+    { return "";}
 
   // Return the splitting probability.
-  // Usage: getSplittingProb( const Event& event, int iRad, int iEmt, int iRec)
-  virtual double getSplittingProb( const Event&, int, int, int, string)
+  // Usage: getSplittingProb( event, iRad, iEmt, iRec)
+  virtual double getSplittingProb( const Event& , int , int , int , string )
     { return 0.;}
 
 protected:
@@ -242,7 +241,7 @@ private:
          allowRescatter, canVetoEmission, doHVshower, brokenHVsym,
          globalRecoil, useLocalRecoilNow, doSecondHard, hasUserHooks,
          singleWeakEmission, alphaSuseCMW, vetoWeakJets, allowMPIdipole,
-         weakExternal, recoilDeadCone;
+         weakExternal, recoilDeadCone, uVarMuSoftCorr;
   int    pTmaxMatch, pTdampMatch, alphaSorder, alphaSnfmax, nGluonToQuark,
          weightGluonToQuark, alphaEMorder, nGammaToQuark, nGammaToLepton,
          nCHV, idHV, nMaxGlobalRecoil, weakMode;
@@ -351,6 +350,9 @@ private:
   vector<Vec4> weakMomenta;
   vector<int> weak2to2lines;
   int weakHardSize;
+
+  // Store indices of uncertainty variations relevant to TimeShower
+  vector<int> iUVarQCD, iUVarQED;
 
 };
 

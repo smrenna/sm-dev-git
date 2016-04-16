@@ -172,6 +172,14 @@ bool Settings::init(string startFile, bool append) {
   int ppTune = mode("Tune:pp");
   if (ppTune > 0) initTunePP( ppTune);
 
+  // Reset number of uncertainty variations in Info, and store baseline label
+  if (!append) {
+    uvars.resize(0);
+    uvars.push_back(UVar("Baseline"));
+    infoPtr->setNWeights(uvars.size());
+    infoPtr->setWeightLabel(0,uvars[0].label());
+  }
+
   // Done.
   if (nError > 0) return false;
   isInit = true;
@@ -376,6 +384,7 @@ bool Settings::readString(string line, bool warn) {
   else if (isFVec(name)) inDataBase = 5;
   else if (isMVec(name)) inDataBase = 6;
   else if (isPVec(name)) inDataBase = 7;
+  else if (isUVar(name)) inDataBase = 8;
 
   // For backwards compatibility: old (parts of) names mapped onto new ones.
   // This code currently has no use, but is partly preserved for the day
@@ -503,6 +512,41 @@ bool Settings::readString(string line, bool warn) {
       return false;
     }
     pvec(name, value);
+
+  // Update uvar map (for auto-uncertainties)
+  } else if (inDataBase == 8) {
+    // First arg : variation label, has already been read into valueString
+    istringstream indexData(valueString);
+    string varLabel;
+    bool readFailed = false;
+    indexData >> varLabel;
+    if (!indexData) readFailed = true;
+    // Then read name and value combination(s) on remainder of line
+    while (!readFailed) {
+      string varName;
+      splitLine >> varName;
+      if (!splitLine) break;
+      double varParm;
+      splitLine >> varParm;
+      if (!splitLine) break;
+      // If not existing already, create a variation with this label.
+      if (uvarIndexMap.find(varLabel) == uvarIndexMap.end()) {
+        uvars.push_back(UVar(varLabel));
+        uvarIndexMap[varLabel]=uvars.size()-1;
+        infoPtr->setNWeights(uvars.size());
+        infoPtr->setWeightLabel(uvars.size()-1,varLabel);
+      }
+      int iVar = uvarIndexMap[varLabel];
+      // Add the requested variation type and size
+      uvars[iVar].addVar(varName,varParm);
+    }
+    // Sanity check that at least one variation type was defined
+    if (readFailed || uvarIndexMap.find(varLabel) == uvarIndexMap.end()) {
+      if (warn) cout << "\n PYTHIA Error: variable recognized, but its value"
+        <<" not meaningful:\n  "<< line << endl;
+      readingFailedSave = true;
+      return false;
+    }
   }
 
   // Done.

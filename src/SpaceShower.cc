@@ -111,7 +111,8 @@ void SpaceShower::init( BeamParticle* beamAPtrIn,
   pTdampFudge     = settingsPtr->parm("SpaceShower:pTdampFudge");
 
   // Optionally force emissions to be ordered in rapidity/angle.
-  doRapidityOrder = settingsPtr->flag("SpaceShower:rapidityOrder");
+  doRapidityOrder    = settingsPtr->flag("SpaceShower:rapidityOrder");
+  doRapidityOrderMPI = settingsPtr->flag("SpaceShower:rapidityOrderMPI");
 
   // Charm, bottom and lepton mass thresholds.
   mc              = max( MCMIN, particleDataPtr->m0(4));
@@ -248,6 +249,59 @@ void SpaceShower::init( BeamParticle* beamAPtrIn,
   splittingNameSel   = "";
   splittingNameNow   = "";
   enhanceFactors.clear();
+
+  // Populate lists of uncertainty variations related to SpaceShower,
+  // by keyword
+  iUVarQCD.resize(0);
+  iUVarQED.resize(0);
+  uVarMuSoftCorr = settingsPtr->flag("Uncertainties:muSoftCorr");
+  for (int iWeight=1; iWeight<settingsPtr->nUVar(); ++iWeight) {
+    UVar* uVarPtr = settingsPtr->getUVarPtr(iWeight);
+    if (uVarPtr == 0) continue;
+    // 1) Define and resolve any allowed shorthand notations
+    if (uVarPtr->hasVar("isr:muR")) {
+      double parm = uVarPtr->getVar("isr:muR");
+      uVarPtr->addVar("isr:G2GG:muR",parm);
+      uVarPtr->addVar("isr:Q2GQ:muR",parm);
+      uVarPtr->addVar("isr:Q2QG:muR",parm);
+      uVarPtr->addVar("isr:G2QQ:muR",parm);
+    }
+    if (uVarPtr->hasVar("isr:cNS")) {
+      double parm = uVarPtr->getVar("isr:cNS");
+      uVarPtr->addVar("isr:G2GG:cNS",parm);
+      uVarPtr->addVar("isr:Q2GQ:cNS",parm);
+      uVarPtr->addVar("isr:Q2QG:muR",parm);
+      uVarPtr->addVar("isr:G2QQ:cNS",parm);
+    }
+    if (uVarPtr->hasVar("isr:muRqed")) {
+      double parm = uVarPtr->getVar("isr:muRqed");
+      uVarPtr->addVar("isr:X2XA:muRqed",parm);
+      uVarPtr->addVar("isr:A2LL:muRqed",parm);
+      uVarPtr->addVar("isr:A2QQ:muRqed",parm);
+    }
+    if (uVarPtr->hasVar("isr:cNSqed")) {
+      double parm = uVarPtr->getVar("isr:cNSqed");
+      uVarPtr->addVar("isr:X2XA:cNSqed",parm);
+      uVarPtr->addVar("isr:A2LL:cNSqed",parm);
+      uVarPtr->addVar("isr:A2QQ:cNSqed",parm);
+    }
+    // 2.1) Populate list of QCD variations
+    if (uVarPtr->hasVar("isr:G2GG:muR") || uVarPtr->hasVar("isr:Q2GQ:muR")
+        || uVarPtr->hasVar("isr:G2QQ:muR") || uVarPtr->hasVar("isr:G2GG:cNS")
+        || uVarPtr->hasVar("isr:Q2QG:muR") || uVarPtr->hasVar("isr:Q2QG:cNS")
+        || uVarPtr->hasVar("isr:Q2GQ:cNS") || uVarPtr->hasVar("isr:G2QQ:cNS")
+        || uVarPtr->hasVar("isr:G2QQ:weight"))
+      iUVarQCD.push_back(iWeight);
+    // 2.2) Populate list of QED variations
+    if (uVarPtr->hasVar("isr:X2XA:muR") || uVarPtr->hasVar("isr:A2LL:muR")
+        || uVarPtr->hasVar("isr:A2QQ:muR") || uVarPtr->hasVar("isr:X2XA:cNS")
+        || uVarPtr->hasVar("isr:A2LL:nCNS") || uVarPtr->hasVar("isr:A2QQ:nCNS")
+        || uVarPtr->hasVar("isr:A2LL:weight")
+        || uVarPtr->hasVar("isr:A2QQ:weight"))
+      iUVarQED.push_back(iWeight);
+
+  // End loop over uncertainty variations
+  }
 
 }
 
@@ -526,6 +580,7 @@ double SpaceShower::pTnext( Event& event, double pTbegAll, double pTendAll,
     dipEndNow      = &dipEnd[iDipEnd];
     iSysNow        = dipEndNow->system;
     dipEndNow->pT2 = 0.;
+    dipEndNow->storeVars(1.0,"");
     double pTbegDip = min( pTbegAll, dipEndNow->pTmax );
 
     // Check whether dipole end should be allowed to shower.
@@ -655,6 +710,14 @@ void SpaceShower::pT2nextQCD( double pT2begDip, double pT2endDip) {
   double pT2corr        = 0.;
   double pT2PDF         = pT2;
   bool   needNewPDF     = true;
+
+  // Variables used by uncertainty evaluations:
+  int    nUVar         = iUVarQCD.size();
+  // Add more headRoom if doing uncertainty variations
+  // (to ensure at least a minimal number of failed branchings)
+  double overFac         = 1.0;
+  if (nUVar > 0) overFac = 1.6;
+  double pAccept         = 1.0;
 
   // Set default values for enhanced emissions.
   bool isEnhancedQ2QG, isEnhancedG2QQ, isEnhancedQ2GQ, isEnhancedG2GG;
@@ -983,8 +1046,15 @@ void SpaceShower::pT2nextQCD( double pT2begDip, double pT2endDip) {
     pT2corr = Q2 - z * (m2Dip + Q2) * (Q2 + m2Sister) / m2Dip;
     if (pT2corr < TINYPT2) { wt = 0.; continue; }
 
-    // Optionally veto emissions not ordered in rapidity (= angle).
-    if ( doRapidityOrder && dipEndNow->nBranch > 0
+    // For emissions in the hard scattering system, optionally veto
+    // emissions not ordered in rapidity (= angle).
+    if ( iSysNow == 0 && doRapidityOrder && dipEndNow->nBranch > 0
+      && pT2 > pow2( (1. - z) / (z * (1. - dipEndNow->zOld)) )
+      * dipEndNow->pT2Old ) { wt = 0.; continue; }
+
+    // For emissions in any secondary scattering system, optionally veto
+    // emissions not ordered in rapidity (= angle).
+    if ( iSysNow != 0 && doRapidityOrderMPI && dipEndNow->nBranch > 0
       && pT2 > pow2( (1. - z) / (z * (1. - dipEndNow->zOld)) )
       * dipEndNow->pT2Old ) { wt = 0.; continue; }
 
@@ -1038,6 +1108,12 @@ void SpaceShower::pT2nextQCD( double pT2begDip, double pT2endDip) {
       beam.xfISR(iSysNow, idMother, xMother, pdfScale2);
     wt *= xPDFmotherNew / xPDFdaughterNew;
 
+    // If doing uncertainty variations, postpone accept/reject to branch()
+    if( wt>0 && pT2 > pT2min && iUVarQCD.size() > 0) {
+      pAccept = wt;
+      wt      = 1.0;
+    }
+
     // Check that valence step does not cause problem.
     if (wt > 1. && pT2 > PT2MINWARN) infoPtr->errorMsg("Warning in "
       "SpaceShower::pT2nextQCD: weight above unity");
@@ -1057,6 +1133,7 @@ void SpaceShower::pT2nextQCD( double pT2begDip, double pT2endDip) {
   // Save values for (so far) acceptable branching.
   dipEndNow->store( idDaughter,idMother, idSister, x1Now, x2Now, m2Dip,
     pT2, z, xMother, Q2, mSister, m2Sister, pT2corr);
+  dipEndNow->storeVars(pAccept, nameNow);
 
 }
 
@@ -2085,8 +2162,11 @@ bool SpaceShower::branch( Event& event) {
   bool canMergeFirst = (mergingHooksPtr != 0)
                      ? mergingHooksPtr->canVetoEmission() : false;
 
+  bool doUncertaintyVar = (dipEndSel->pAccept != 1.0);
+
   // Save further properties to be restored.
-  if (canVetoEmission || canMergeFirst || canEnhanceET || doWeakShower) {
+  if (canVetoEmission || canMergeFirst || canEnhanceET || doWeakShower
+    || doUncertaintyVar) {
     for ( int iCopy = 0; iCopy < systemSizeOld; ++iCopy) {
       int iOldCopy    = partonSystemsPtr->getAll(iSysSel, iCopy);
       statusV.push_back( event[iOldCopy].status());
@@ -2412,6 +2492,125 @@ bool SpaceShower::branch( Event& event) {
       return false;
     }
   }
+
+  // Do delayed shower-accept probability here (when computing
+  // uncertainty variations).
+  if (doUncertaintyVar) {
+
+    int nUVarsQCD = (dipEndSel->colType != 0) ? iUVarQCD.size() : 0;
+    vector<double> uVarFac;
+    uVarFac.resize(0);
+
+    // 1) Compute QCD uncertainty variations
+    for (int i=0; i < nUVarsQCD; ++i) {
+
+      // Get pointer to UVar and initialize ratio-factor
+      int iWeight = iUVarQCD[i];
+      UVar* uVarPtr = settingsPtr->getUVarPtr(iWeight);
+      uVarFac.push_back(1.0);
+
+      // Compute alphaS variations (only for running alphaS)
+      string varName = splittingNameNow+":muR";
+      if ( uVarPtr->hasVar(varName) && alphaSorder >= 1) {
+        double muR2 = renormMultFac * (pT2+pT20);
+        // TO DO: change to MQQ if using alternative g->qq weight
+        double alphaSbaseline = alphaS.alphaS(muR2);
+        // Correction-factor alphaS
+        double facMu      = uVarPtr->getVar(varName);
+        double muR2var = max(1.1*Lambda3flav2, pow2(facMu) * muR2);
+        double alphaSratio = alphaS.alphaS(muR2var) / alphaSbaseline;
+        // Apply soft correction factor to X2XG
+        double facCorr = 1.;
+        if (mother.id() == 21 && uVarMuSoftCorr) {
+          // Use smallest alphaS and b0, to make the compensation conservative
+          int nf = 5;
+          if (pT2 < pow2(mc)) nf = 3;
+          else if (pT2 < pow2(mb)) nf = 4;
+          double alphaScorr = alphaS.alphaS(m2);
+          double facSoft    = alphaScorr*(33-2*nf)/6./M_PI;
+          double zeta = 1.-z;
+          if (daughter.id() == 21) zeta = min(zeta,1-zeta);
+          facCorr = 1. + (1.-zeta) * facSoft * log(facMu);
+        }
+        // Apply correction factor here for emission processes
+        double alphaSfac   = alphaSratio * facCorr;
+        // Limit absolute variation to +/- 0.2
+        if (alphaSfac > 1.)
+          alphaSfac = min(alphaSfac,(alphaSbaseline+0.2)/alphaSbaseline);
+        else if (alphaSbaseline > 0.2)
+          alphaSfac = max(alphaSfac,(alphaSbaseline-0.2)/alphaSbaseline);
+        uVarFac[i] = alphaSfac;
+      }
+
+      // Compute finite-term variations (only when no MECs)
+      varName = dipEndSel->nameNow+":cNS";
+      if ( uVarPtr->hasVar(varName) && dipEndSel->MEtype == 0) {
+        // Correction-factor alphaS
+        double tau = pT2/m2;
+        double num = tau * uVarPtr->getVar(varName);
+        double denom = 1.;
+        // G->GG
+        if (mother.id() == 21 && daughter.id() == 21)
+          denom = pow2(1. - z * (1.-z)) / (z*(1.-z));
+        // Q->QG
+        else if (mother.id() == 21)
+          denom = (1. + pow2(z)) / (1. - z);
+        // G->QQ
+        else
+          denom = pow2(z) + pow2(1. - z);
+        // Compute reweight ratio
+        uVarFac[i] *= 1. + num/denom;
+      }
+
+    }
+
+    // 2) Compute QED uncertainty variations
+
+    // 3) Matrix-Element Corrections already computed
+
+    // 4) Check whether to accept or reject branching
+    double pAccept = dipEndSel->pAccept;
+    // Ensure 0 < PacceptPrime < 1 (with small margins)
+    for (int i=0; i<nUVarsQCD; ++i) {
+      double pAcceptPrime = pAccept * uVarFac[i];
+      if (pAcceptPrime > 0.99) uVarFac[i] *= 0.99 / pAcceptPrime;
+    }
+
+    if ( pAccept < rndmPtr->flat() ) {
+      // Reject trial : apply uncertainty-variation Sudakov reweightings
+      for (int i=0; i < nUVarsQCD; ++i) {
+        int iWeight = iUVarQCD[i];
+        // Check for near-singular denominators (indicates too few failures,
+        // and hence would need to increase headroom)
+        double denom = 1.-pAccept;
+        if (denom < 0.1) cout<<" Warning: reject denom = "
+                             << denom << " iWeight = "<<iWeight<<endl;
+        // Reject reweighting factor (force > 0)
+        double reWtFail = max(0.01,(1. - uVarFac[i]*pAccept)/denom);
+        infoPtr->reWeight(iWeight,reWtFail);
+      }
+      // Fix up before rejecting
+      event.popBack( event.size() - eventSizeOld);
+      event[beamOff1].daughter1( ev1Dau1V);
+      event[beamOff2].daughter1( ev2Dau1V);
+      for ( int iCopy = 0; iCopy < systemSizeOld; ++iCopy) {
+        int iOldCopy = partonSystemsPtr->getAll(iSysSel, iCopy);
+        event[iOldCopy].status( statusV[iCopy]);
+        event[iOldCopy].mothers( mother1V[iCopy], mother2V[iCopy]);
+        event[iOldCopy].daughters( daughter1V[iCopy], daughter2V[iCopy]);
+      }
+      // Tell calling method that this trial was rejected
+      return false;
+
+    } else {
+      // Accept trial : apply uncertainty-variation Accept reweightings
+      for (int i=0; i < nUVarsQCD; ++i) {
+        int iWeight = iUVarQCD[i];
+        infoPtr->reWeight(iWeight,uVarFac[i]);
+      }
+    }
+  }
+  // End delayed shower-accept probability here
 
   // Allow veto of branching. If so restore event record to before emission.
   if ( (canVetoEmission

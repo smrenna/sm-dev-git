@@ -157,14 +157,16 @@ void Info::list() const {
 
 //--------------------------------------------------------------------------
 
-// Event weight and accumulated weight.
+// Event weights and accumulated weight.
 
-double Info::weight() const { return (abs(lhaStrategySave) == 4)
-  ? CONVERTMB2PB * weightSave : weightSave;
+double Info::weight(int iWeight) const {
+  double wt = (iWeight <= 0 || iWeight >= int(weightSave.size()))
+    ? weightSave[0] : weightSave[iWeight];
+  return (abs(lhaStrategySave) == 4) ? CONVERTMB2PB * wt : wt;
 }
 
-double Info::weightSum() const {return (abs(lhaStrategySave) == 4)
-  ? CONVERTMB2PB * wtAccSum : wtAccSum;
+double Info::weightSum() const {
+  return (abs(lhaStrategySave) == 4) ? CONVERTMB2PB * wtAccSum : wtAccSum;
 }
 
 //--------------------------------------------------------------------------
@@ -270,6 +272,7 @@ void Info::setLHEF3InitInfo() {
   generators   = 0;
   weightgroups = 0;
   init_weights = 0;
+  headerBlock  = "";
 }
 
 //--------------------------------------------------------------------------
@@ -279,12 +282,13 @@ void Info::setLHEF3InitInfo() {
 void Info::setLHEF3InitInfo( int LHEFversionIn, LHAinitrwgt *initrwgtIn,
   vector<LHAgenerator> *generatorsIn,
   map<string,LHAweightgroup> *weightgroupsIn,
-  map<string,LHAweight> *init_weightsIn ) {
+  map<string,LHAweight> *init_weightsIn, string headerBlockIn ) {
   LHEFversionSave = LHEFversionIn;
   initrwgt        = initrwgtIn;
   generators      = generatorsIn;
   weightgroups    = weightgroupsIn;
   init_weights    = init_weightsIn;
+  headerBlock     = headerBlockIn;
 }
 
 //--------------------------------------------------------------------------
@@ -298,6 +302,9 @@ void Info::setLHEF3EventInfo() {
   scales             = 0;
   weights            = 0;
   rwgt               = 0;
+  weights_detailed_vector.resize(0);
+  eventComments      = "";
+  eventWeightLHEF    = 1.0;
 }
 
 //--------------------------------------------------------------------------
@@ -305,17 +312,21 @@ void Info::setLHEF3EventInfo() {
 // Set the LHEF3 objects read from the event block.
 
 void Info::setLHEF3EventInfo( map<string, string> *eventAttributesIn,
-    map<string,double> *weights_detailedIn,
-    vector<double> *weights_compressedIn,
-    LHAscales *scalesIn, LHAweights *weightsIn,
-    LHArwgt *rwgtIn ) {
-    eventAttributes    = eventAttributesIn;
-    weights_detailed   = weights_detailedIn;
-    weights_compressed = weights_compressedIn;
-    scales             = scalesIn;
-    weights            = weightsIn;
-    rwgt               = rwgtIn;
-  }
+   map<string,double> *weights_detailedIn,
+   vector<double> *weights_compressedIn,
+   LHAscales *scalesIn, LHAweights *weightsIn,
+   LHArwgt *rwgtIn, vector<double> weights_detailed_vecIn,
+   string eventCommentsIn, double eventWeightLHEFIn ) {
+   eventAttributes    = eventAttributesIn;
+   weights_detailed   = weights_detailedIn;
+   weights_compressed = weights_compressedIn;
+   scales             = scalesIn;
+   weights            = weightsIn;
+   rwgt               = rwgtIn;
+   weights_detailed_vector = weights_detailed_vecIn;
+   eventComments      = eventCommentsIn;
+   eventWeightLHEF    = eventWeightLHEFIn;
+}
 
 //--------------------------------------------------------------------------
 

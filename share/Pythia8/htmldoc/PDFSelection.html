@@ -168,9 +168,11 @@ used instead.
 <br/><code>option </code><strong> LHAGrid1:filename</strong> : Use the internal implementation 
 of interpolation in <code>.dat</code> files in the default "lhagrid1" 
 LHAPDF6 format. This is a simplified implementation, with cubic 
-interpolation in <i>ln(x)</i> and linear in <i>ln(Q2)</i>. If 
+interpolation in <i>ln(x)</i> and in <i>ln(Q2)</i>. If 
 there are several <i>Q^2</i> subgrids they have to have the same 
-<i>x</i> grid. Other restrictions may also apply, so use with caution. 
+<i>x</i> grid. (Linear interpolation in <i>ln(Q2)</i> is used, 
+should a subgrid contain fewer than four <i>Q2</i> values.) 
+Other restrictions may also apply, so use with caution. 
 If the <code>filename</code> begins with a / it is supposed to contain 
 the absolute path to the file, and if not the file is supposed to be 
 located in the standard <code>share/Pythia8/xmldoc</code> directory. 
