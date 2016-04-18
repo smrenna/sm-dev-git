@@ -77,8 +77,8 @@ bool PartonLevel::init( Info* infoPtrIn, Settings& settings,
   if (mMinDiff > infoPtr->eCM()) doDiffraction = false;
 
   // Set whether photon inside lepton. Maximal resolved gamma virtuality.
-  beamAhasGamma      = beamAPtr->hasGamma();
-  beamBhasGamma      = beamBPtr->hasGamma();
+  beamAhasGamma      = (beamAPtr != 0) ? beamAPtr->hasGamma() : false;
+  beamBhasGamma      = (beamBPtr != 0) ? beamBPtr->hasGamma() : false;
   beamHasGamma       = beamAhasGamma && beamBhasGamma;
   Q2maxGamma         = settings.parm("Photon:Q2max");
 

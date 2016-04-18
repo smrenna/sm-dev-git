@@ -8,9 +8,10 @@
 // Mode: helper class with int modes.
 // Parm: (short for parameter) helper class with double parameters.
 // Word: helper class with string words.
+// FVec: vector of Flags (bools).
 // MVec: vector of Modes (integers).
 // PVec: vector of Parms (doubles).
-// UVar: uncertainty variation (mixed strings and doubles).
+// WVec: vector of Words (strings).
 // Settings: maps of flags, modes, parms and words with input/output.
 
 #ifndef Pythia8_Settings_H
@@ -167,81 +168,39 @@ public:
 
 };
 
-
 //==========================================================================
 
-// UVar class.
-// This class stores a single (set of) uncertainty variation definitions
-// Corresponds to one uncertainty weight E.g., can include simultaneous
-// ISR and FSR muR variation but only in a single (up or down) direction.
+// Class for vector of strings.
 
-class UVar {
+class WVec {
 
- public:
+public:
 
   // Constructor
-  UVar(string labelIn="") : labelSav(labelIn) { var.resize(0); keys.clear();}
+  WVec(string nameIn = " ", vector<string> defaultIn = vector<string>(1, " "))
+    : name(nameIn), valNow(defaultIn) , valDefault(defaultIn) { }
 
-  // Set and get label
-  void setLabel(string labelIn) { labelSav = labelIn;}
-  string label() {return labelSav;}
-
-  // Add a variation
-  bool addVar(string nameIn, double parameterIn) {
-    // Do not overwrite an existing entry
-    if (hasVar(nameIn)) return false;
-    var.push_back(parameterIn);
-    keys[nameIn]=var.size()-1;
-    return true;
-  }
-
-  // Check if this uncertainty contains a certain type of variation
-  bool hasVar(string nameIn) {
-    if (keys.find(nameIn) != keys.end()) return true;
-    else return false;
-  }
-
-  // Check if this uncertainty contains a certain type of variation
-  double getVar(string nameIn) {
-    if (hasVar(nameIn)) return var[keys[nameIn]];
-    else return -999;
-  }
-
-  // Get the names of all variations stored in this UVar
-  bool getVarNames(vector<string>& namesReturn) {
-    namesReturn.resize(0);
-    for (map<string,int>::iterator it = keys.begin(); it != keys.end(); it++)
-      namesReturn.push_back(it->first);
-    if (namesReturn.size() >= 1) return true;
-    else return false;
-  }
-
-  private:
-
-  string labelSav;
-  map<string,int> keys;
-  vector<double> var;
+  // Data members.
+  string name;
+  vector<string> valNow, valDefault;
 
 };
 
 //==========================================================================
 
 // This class holds info on flags (bool), modes (int), parms (double),
-// words (string), fvecs (vector of bool), mvecs (vector of int) and pvecs
-// (vector of double).
+// words (string), fvecs (vector of bool), mvecs (vector of int),
+// pvecs (vector of double) and wvecs (vector of string).
 
 class Settings {
 
 public:
 
   // Constructor.
-  Settings() : isInit(false), readingFailedSave(false) {}
+  Settings() : isInit(false), readingFailedSave(false), lineSaved(false) {}
 
   // Initialize Info pointer.
-  void initPtr(Info* infoPtrIn) {
-    infoPtr = infoPtrIn;
-    uvars.resize(0);
-    uvars.push_back(UVar("Baseline"));}
+  void initPtr(Info* infoPtrIn) {infoPtr = infoPtrIn;}
 
   // Read in database from specific file.
   bool init(string startFile = "../share/Pythia8/xmldoc/Index.xml",
@@ -255,9 +214,6 @@ public:
 
   // Read in one update from a single line.
   bool readString(string line, bool warn = true) ;
-
-  // Keep track whether any readings have failed, invalidating run setup.
-  bool readingFailed() {return readingFailedSave;}
 
   // Write updates or everything to user-defined file or to stream.
   bool writeFile(string toFile, bool writeAll = false) ;
@@ -291,11 +247,8 @@ public:
     return (mvecs.find(toLower(keyIn)) != mvecs.end()); }
   bool isPVec(string keyIn) {
     return (pvecs.find(toLower(keyIn)) != pvecs.end()); }
-  bool isUVar(string keyIn) {
-    if (toLower(keyIn) == "uvar" ||
-        toLower(keyIn) == "uncertaintyvariation") return true;
-    else return false;
-  }
+  bool isWVec(string keyIn) {
+    return (wvecs.find(toLower(keyIn)) != wvecs.end()); }
 
   // Add new entry.
   void addFlag(string keyIn, bool defaultIn) {
@@ -317,6 +270,8 @@ public:
    void addPVec(string keyIn, vector<double> defaultIn, bool hasMinIn,
     bool hasMaxIn, double minIn, double maxIn) { pvecs[toLower(keyIn)]
     = PVec(keyIn, defaultIn, hasMinIn, hasMaxIn, minIn, maxIn); }
+  void addWVec(string keyIn, vector<string> defaultIn) {
+    wvecs[toLower(keyIn)] = WVec(keyIn, defaultIn); }
 
   // Give back current value, with check that key exists.
   bool   flag(string keyIn);
@@ -326,6 +281,7 @@ public:
   vector<bool>   fvec(string keyIn);
   vector<int>    mvec(string keyIn);
   vector<double> pvec(string keyIn);
+  vector<string> wvec(string keyIn);
 
   // Give back default value, with check that key exists.
   bool   flagDefault(string keyIn);
@@ -335,6 +291,7 @@ public:
   vector<bool>   fvecDefault(string keyIn);
   vector<int>    mvecDefault(string keyIn);
   vector<double> pvecDefault(string keyIn);
+  vector<string> wvecDefault(string keyIn);
 
   // Give back a map of all entries whose names match the string "match".
   map<string, Flag> getFlagMap(string match);
@@ -344,6 +301,7 @@ public:
   map<string, FVec> getFVecMap(string match);
   map<string, MVec> getMVecMap(string match);
   map<string, PVec> getPVecMap(string match);
+  map<string, WVec> getWVecMap(string match);
 
   // Change current value, respecting limits.
   void flag(string keyIn, bool nowIn);
@@ -353,6 +311,7 @@ public:
   void fvec(string keyIn, vector<bool> nowIn);
   void mvec(string keyIn, vector<int> nowIn);
   void pvec(string keyIn, vector<double> nowIn);
+  void wvec(string keyIn, vector<string> nowIn);
 
   // Change current value, disregarding limits.
   void forceMode(string keyIn, int nowIn);
@@ -368,18 +327,16 @@ public:
   void resetFVec(string keyIn);
   void resetMVec(string keyIn);
   void resetPVec(string keyIn);
-
-  // Query number of uncertainty variations (for easy looping)
-  int nUVar() { return uvars.size(); }
-  // Return pointers to UVars, by index number or by label
-  UVar* getUVarPtr(int iVar) {
-    if (iVar >= 0 && iVar<nUVar()) return &uvars[iVar]; else return 0;}
-  UVar* getUVarPtr(string varLabel) {
-    if (uvarIndexMap.find(varLabel) != uvarIndexMap.end())
-    return &uvars[uvarIndexMap[varLabel]]; else return 0;}
+  void resetWVec(string keyIn);
 
   // Check initialisation status.
   bool getIsInit() {return isInit;}
+
+  // Keep track whether any readings have failed, invalidating run setup.
+  bool readingFailed() {return readingFailedSave;}
+
+  // Check whether input openend with { not yet closed with }.
+  bool unfinishedInput() {return lineSaved;}
 
 private:
 
@@ -407,12 +364,15 @@ private:
   // Map for vectors of double.
   map<string, PVec> pvecs;
 
-  // Map for uncertainty variations
-  vector<UVar>      uvars;
-  map<string,int>   uvarIndexMap;
+  // Map for vectors of string.
+  map<string, WVec> wvecs;
 
   // Flags that initialization has been performed; whether any failures.
   bool isInit, readingFailedSave;
+
+  // Store temporary line when searching for continuation line.
+  bool   lineSaved;
+  string savedLine;
 
   // Print out table of database, called from listAll and listChanged.
   void list(bool doListAll, bool doListString, string match);
@@ -438,6 +398,7 @@ private:
   vector<bool>   boolVectorAttributeValue(string line, string attribute);
   vector<int>    intVectorAttributeValue(string line, string attribute);
   vector<double> doubleVectorAttributeValue(string line, string attribute);
+  vector<string> stringVectorAttributeValue(string line, string attribute);
 
 };
 

@@ -42,11 +42,11 @@ class PartonEndVertexException : public Pythia8ToHepMCException {
 public:
 
   // Constructor and destructor.
-  PartonEndVertexException(int i, int pdg_id) : Pythia8ToHepMCException() {
+  PartonEndVertexException(int i, int pdg_idIn) : Pythia8ToHepMCException() {
     iSave  = i;
-    idSave = pdg_id;
+    idSave = pdg_idIn;
     std::stringstream ss;
-    ss << "Bad end vertex at " << i << " for flavour " << pdg_id;
+    ss << "Bad end vertex at " << i << " for flavour " << pdg_idIn;
     msg = ss.str();
   }
   virtual ~PartonEndVertexException() throw() {}

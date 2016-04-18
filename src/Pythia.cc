@@ -315,6 +315,9 @@ bool Pythia::readString(string line, bool warn) {
   // If empty line then done.
   if (line.find_first_not_of(" \n\t\v\b\r\f\a") == string::npos) return true;
 
+  // If Settings input stretches over several lines then continue with it.
+  if (settings.unfinishedInput()) return settings.readString(line, warn);
+
   // If first character is not a letter/digit, then taken to be a comment.
   int firstChar = line.find_first_not_of(" \n\t\v\b\r\f\a");
   if (!isalnum(line[firstChar])) return true;
@@ -484,6 +487,11 @@ bool Pythia::init() {
   doProcessLevel = settings.flag("ProcessLevel:all");
 
   // Check that changes in Settings and ParticleData have worked.
+  if (settings.unfinishedInput()) {
+    info.errorMsg("Abort from Pythia::init: opening { not matched by "
+      "closing }");
+    return false;
+  }
   if (settings.readingFailed()) {
     info.errorMsg("Abort from Pythia::init: some user settings "
       "did not make sense");
@@ -949,7 +957,8 @@ void Pythia::checkSettings() {
   }
 
   // No MPIs for photon-photon collisions.
-  if ( (idA == 22 && idB == 22) && settings.flag("PartonLevel:MPI") ) {
+  if ( ( (idA == 22 && idB == 22) || settings.flag("PDF:lepton2gamma") )
+    && settings.flag("PartonLevel:MPI") ) {
     info.errorMsg("Warning in Pythia::checkSettings: "
                   "MPI switched off for photon-photon collisions.");
     settings.flag("PartonLevel:MPI", false);

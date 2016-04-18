@@ -413,11 +413,11 @@ void ProcessLevel::accumulate( bool doAccumulate) {
     codeNow         = containerPtrs[i]->code();
     nTryNow         = containerPtrs[i]->nTried();
     nSelNow         = containerPtrs[i]->nSelected();
-    nAccNow         = containerPtrs[i]->nAccepted();
-    sigmaNow        = containerPtrs[i]->sigmaMC();
-    deltaNow        = containerPtrs[i]->deltaMC();
-    sigSelNow       = containerPtrs[i]->sigmaSelMC();
-    weightNow       = containerPtrs[i]->weightSum();
+    if (doAccumulate) nAccNow   = containerPtrs[i]->nAccepted();
+    if (doAccumulate) sigmaNow  = containerPtrs[i]->sigmaMC();
+    if (doAccumulate) deltaNow  = containerPtrs[i]->deltaMC();
+    if (doAccumulate) sigSelNow = containerPtrs[i]->sigmaSelMC();
+    if (doAccumulate) weightNow = containerPtrs[i]->weightSum();
     nTrySum        += nTryNow;
     nSelSum        += nSelNow;
     nAccSum        += nAccNow;
@@ -458,8 +458,8 @@ void ProcessLevel::accumulate( bool doAccumulate) {
   for (int i2 = 0; i2 < int(container2Ptrs.size()); ++i2)
   if (container2Ptrs[i2]->sigmaMax() != 0.) {
     nTrySum        += container2Ptrs[i2]->nTried();
-    sigma2Sum      += container2Ptrs[i2]->sigmaMC();
-    sig2SelSum     += container2Ptrs[i2]->sigmaSelMC();
+    if (doAccumulate) sigma2Sum  += container2Ptrs[i2]->sigmaMC();
+    if (doAccumulate) sig2SelSum += container2Ptrs[i2]->sigmaSelMC();
   }
 
   // Average impact-parameter factor and error.

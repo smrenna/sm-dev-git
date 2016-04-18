@@ -242,6 +242,7 @@ void TimeShower::init( BeamParticle* beamAPtrIn,
   splittingNameNow   = "";
   enhanceFactors.clear();
 
+  /*
   // Populate lists of uncertainty variations related to TimeShower, by keyword
   iUVarQCD.resize(0);
   iUVarQED.resize(0);
@@ -291,6 +292,7 @@ void TimeShower::init( BeamParticle* beamAPtrIn,
 
   // End loop over uncertainty variations
   }
+  */
 
 }
 
@@ -3220,6 +3222,7 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
     rad.pol( dipSel->weakPol );
   }
 
+  /*
   // ME corrections can lead to branching being rejected.
   // Also do delayed shower-accept probability here (when computing
   // uncertainty variations).
@@ -3341,6 +3344,7 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
       }
     }
   }
+  */
 
   // Rescatter: if the recoiling partner is not in the same system
   //            as the radiator, fix up intermediate systems (can lead

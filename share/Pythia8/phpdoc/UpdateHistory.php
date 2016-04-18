@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.218: 16 April 2016 
+<li>8.218: 18 April 2016 
 <ul> 
  
 <li>An interface to the Python programming language has been introduced, 
@@ -137,6 +137,12 @@ action to take. See further new/renamed <code>free_parton_exception</code>
 switch. The usage of exceptions for this specific task is by request 
 from ATLAS, and does not represent a general change of programming 
 style. Thanks to James Monk.</li> 
+ 
+<li>A class <code>WVec</code> has been introduced to store vectors of 
+strings. The delimiters { } are introduced to provide input with 
+embedded blanks, and broken up across several lines. See further the 
+<?php $filepath = $_GET["filepath"];
+echo "<a href='SettingsScheme.php?filepath=".$filepath."' target='page'>";?>Settings Scheme</a> description.</li> 
  
 <li>Remove many rarely (if ever) used <code>ostream& os = cout</code> 
 optional arguments in favour of hardcoded <code>cout</code> in the code. 

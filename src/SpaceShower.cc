@@ -250,6 +250,7 @@ void SpaceShower::init( BeamParticle* beamAPtrIn,
   splittingNameNow   = "";
   enhanceFactors.clear();
 
+  /*
   // Populate lists of uncertainty variations related to SpaceShower,
   // by keyword
   iUVarQCD.resize(0);
@@ -302,6 +303,7 @@ void SpaceShower::init( BeamParticle* beamAPtrIn,
 
   // End loop over uncertainty variations
   }
+  */
 
 }
 
@@ -2493,6 +2495,7 @@ bool SpaceShower::branch( Event& event) {
     }
   }
 
+  /*
   // Do delayed shower-accept probability here (when computing
   // uncertainty variations).
   if (doUncertaintyVar) {
@@ -2611,6 +2614,7 @@ bool SpaceShower::branch( Event& event) {
     }
   }
   // End delayed shower-accept probability here
+  */
 
   // Allow veto of branching. If so restore event record to before emission.
   if ( (canVetoEmission

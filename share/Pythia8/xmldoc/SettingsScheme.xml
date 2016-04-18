@@ -25,7 +25,7 @@ users probably will have little interaction with.
  
 <h3>Concepts</h3> 
  
-We distinguish seven kinds of user-modifiable variables, by the way 
+We distinguish eight kinds of user-modifiable variables, by the way 
 they have to be stored: 
 <ol> 
 <li>Flags are on/off switches, and are stored as <code>bool</code>.</li> 
@@ -35,28 +35,40 @@ and are stored as <code>int</code>.</li>
 <code>double</code>. The shorthand notation parm is used in the C++ 
 code and XML tags.</li> 
 <li>Words are simple character strings and are stored as 
-<code>string</code>. No blanks or double quotation marks (&quot;) may 
-appear inside a word, the former to simplify parsing of an input file 
-and the latter not to cause conflicts with XML attribute delimiters. 
-Currently the main application is to store file names.</li> 
+<code>string</code>. No double quotation marks &quot; or braces { } 
+may appear inside a word, and commas , will take a spcial role next 
+so should also be avoided. Normally the input string is expected not to 
+contain any blanks, but if it does it must be enclosed in braces { }.</li> 
 <li>Vectors of flags take a variable length, and are stored as 
 <code>vector&lt;bool&gt;</code>. The shorthand notation fvec is used 
-in the C++ code and XML tags. When the vector is input as a string, 
-all the values have to be given as a comma-separated list with no blanks, 
-to simplify parsing.</li> 
+in the C++ code and XML tags. When the vector is input as a string 
+it should be given as a comma-separated list, either containing 
+no blanks or else enclosed in braces { }.</li> 
 <li>Vectors of modes take a variable length, and are stored as 
 <code>vector&lt;int&gt;</code>. The shorthand notation mvec is used 
-in the C++ code and XML tags. When the vector is input as a string, 
-all the values have to be given as a comma-separated list with no blanks, 
-to simplify parsing.</li> 
+in the C++ code and XML tags. When the vector is input as a string 
+it should be given as a comma-separated list, either containing 
+no blanks or else enclosed in braces { }.</li> 
 <li>Vectors of parameters take a variable length and for each element 
 a continuum of values, and are stored as <code>vector&lt;double&gt;</code>. 
 The shorthand notation pvec is used in the C++ code and XML tag. 
-When the vector is input as a string, all the values have to be given 
-as a comma-separated list with no blanks, to simplify parsing.</li> 
+When the vector is input as a string it should be given as a comma-separated 
+list, either containing no blanks or else enclosed in braces { }.</li> 
+<li>Vectors of words take a variable length, and are stored as 
+<code>vector&lt;string&gt;</code>. The shorthand notation wvec is used 
+in the C++ code and XML tags. When the vector is input as a string 
+it should be given as a comma-separated list, either containing 
+no blanks or else enclosed in braces { }.</li> 
 </ol> 
-Note that all shorthands have been chosen four letters long. 
- 
+Note the special role played by the braces { } to enclose words or lists 
+that are allowed to contain blanks, and of commas , to separate the fields o 
+f the list, in analogy with how C++ arrays can be initialized. You should 
+not be using these three characters for any other purposes. Input of a 
+vector can be split across several lines, until a close brace } is found 
+that matches the open brace {. If no such is found the program will abort, 
+so beware. The double quotation mark &quot; is avoided since it is already 
+used for other purposes. Also note that all shorthands have been chosen 
+four letters long. 
 <p/> 
 In general, each variable stored in <code>Settings</code> is associated 
 with four kinds of information: 
@@ -74,7 +86,8 @@ to represent a reasonable choice.</li>
 requests.</li> 
 <li>An allowed range of values, represented by meaningful 
 minimum and maximum values. This has no sense for a <code>flag</code>, 
-an <code>fvec</code> or a <code>word</code> (and is not used there), is 
+an <code>fvec</code> a <code>word</code> or a <code>wvec</code> 
+(and is not used there), is 
 usually rather well-defined for a <code>mode</code> or <code>mvec</code>, 
 but less so for a <code>parm</code> or <code>pvec</code>. Often the allowed 
 range exaggerates the degree of our current knowledge, so as not to restrict 
@@ -97,7 +110,7 @@ of being reset to fall into the allowed range, without any warnings.</li>
  
 <p/> 
 Technically, the <code>Settings</code> class is implemented with the 
-help of seven separate maps, one for each kind of variable, with the 
+help of eight separate maps, one for each kind of variable, with the 
 variable <code>name</code> used as key. 
  
 <h3>Operation</h3> 
@@ -115,10 +128,10 @@ subdirectory.
 <p/> 
 In all of the files scanned, lines beginning with 
 <code>&lt;flag</code>, <code>&lt;mode</code>, <code>&lt;parm</code>, 
-<code>&lt;word</code>, <code>&lt;fvec</code>, <code>&lt;mvec</code> or 
-<code>&lt;pvec</code> are identified, and the information on such a line 
-is used to define a new flag, mode, parameter, word, or vector of flags, 
-modes or parameters. To exemplify, consider a line 
+<code>&lt;word</code>, <code>&lt;fvec</code>, <code>&lt;mvec</code>, 
+<code>&lt;pvec</code> or <code>&lt;wvec</code> are identified, and the 
+information on such a line is used to define a new flag, mode, parameter, 
+word, or vector of flags, modes or parameters. To exemplify, consider a line 
 <pre> 
 &lt;parm name="TimeShower:pTmin" default="0.5" min="0.1" max="2.0"> 
 </pre> 
@@ -169,7 +182,10 @@ b) The <code>Pythia</code> <code>readString(string)</code> method
 actually does not do changes itself, but sends on the string either 
 to the <code>Settings</code> class or to <code>ParticleData</code>. 
 The former holds if the string begins with a letter, the latter 
-if it begins with a digit. If desired, it is possible to communicate 
+if it begins with a digit. (The exception is if an input list has been 
+begun by an open brace { but no matching close brace } was present; 
+then all subsequent non-empty input is directed to <code>Settings</code> 
+until the close brace is found.) If desired, it is possible to communicate 
 directly with the corresponding <code>Settings</code> method: 
 <pre> 
     pythia.settings.readString("TimeShower:pTmin = 1.0"); 
@@ -425,6 +441,8 @@ reset all current values to their defaults.
 <methodmore name="bool Settings::isMVec(string key)"> 
 </methodmore> 
 <methodmore name="bool Settings::isPVec(string key)"> 
+</methodmore> 
+<methodmore name="bool Settings::isWVec(string key)"> 
 return true if an entry of the given name and kind 
 exists, else false. 
 </methodmore> 
@@ -450,6 +468,9 @@ int min, int max)">
 <methodmore name="void Settings::addPVec(string key, 
 vector&lt;double&gt; default, bool hasMin, bool hasMax, 
 double min, double max)"> 
+</methodmore> 
+<methodmore name="void Settings::addWVec(string key, 
+vector&lt;string&gt; default)"> 
 add an entry of the respective kind to the database. The name and default 
 value(s) always has to be supplied, for <code>Mode</code>, <code>Parm</code>, 
 <code>MVec</code> and <code>PVec</code> additionally if lower and/or 
@@ -469,11 +490,13 @@ upper limits are to be imposed and, if so, what those limit are.
 <methodmore name="vector&lt;int&gt; Settings::mvec(string key)"> 
 </methodmore> 
 <methodmore name="vector&lt;double&gt; Settings::pvec(string key)"> 
+</methodmore> 
+<methodmore name="vector&lt;string&gt; Settings::wvec(string key)"> 
 return the current value(s) of the respective setting. If the name 
 does not exist in the database, a value <code>false</code>, 
 <code>0</code>, <code>0.</code>, <code>&quot; &quot;</code>, or a 
-vector of length 1 and value <code>false</code>, <code>0</code> or 
-<code>0.</code>, respectively, is returned. 
+vector of length 1 and value <code>false</code>, <code>0</code>, 
+<code>0.</code> or <code>&quot; &quot;</code>, respectively, is returned. 
 </methodmore> 
  
 <method name="bool Settings::flagDefault(string key)"> 
@@ -489,26 +512,30 @@ vector of length 1 and value <code>false</code>, <code>0</code> or
 <methodmore name="vector&lt;int&gt; Settings::mvecDefault(string key)"> 
 </methodmore> 
 <methodmore name="vector&lt;double&gt; Settings::pvecDefault(string key)"> 
+</methodmore> 
+<methodmore name="vector&lt;string&gt; Settings::wvecDefault(string key)"> 
 return the default value(s) of the respective setting. If the name 
 does not exist in the database, a value <code>false</code>, 
 <code>0</code>, <code>0.</code>, <code>&quot; &quot;</code>, or a 
-vector of length 1 and value <code>false</code>, <code>0</code> or 
-<code>0.</code>, respectively, is returned. 
+vector of length 1 and value <code>false</code>, <code>0</code>, 
+<code>0.</code> or <code>&quot; &quot;</code>, respectively, is returned. 
 </methodmore> 
  
-<method name="map<string, Flag> Settings::getFlagMap(string match)"> 
+<method name="map&lt;string, Flag&gt; Settings::getFlagMap(string match)"> 
 </method> 
-<methodmore name="map<string, Mode> Settings::getModeMap(string match)"> 
+<methodmore name="map&lt;string, Mode&gt; Settings::getModeMap(string match)"> 
 </methodmore> 
-<methodmore name="map<string, Parm> Settings::getParmMap(string match)"> 
+<methodmore name="map&lt;string, Parm&gt; Settings::getParmMap(string match)"> 
 </methodmore> 
-<methodmore name="map<string, Word> Settings::getWordMap(string match)"> 
+<methodmore name="map&lt;string, Word&gt; Settings::getWordMap(string match)"> 
 </methodmore> 
-<methodmore name="map<string, FVec> Settings::getFVecMap(string match)"> 
+<methodmore name="map&lt;string, FVec&gt; Settings::getFVecMap(string match)"> 
 </methodmore> 
-<methodmore name="map<string, MVec> Settings::getMVecMap(string match)"> 
+<methodmore name="map&lt;string, MVec&gt; Settings::getMVecMap(string match)"> 
 </methodmore> 
-<methodmore name="map<string, PVec> Settings::getPVecMap(string match)"> 
+<methodmore name="map&lt;string, PVec&gt; Settings::getPVecMap(string match)"> 
+</methodmore> 
+<methodmore name="map&lt;string, WVec&gt; Settings::getWVecMap(string match)"> 
 return a map of all settings of the respective type that contain the 
 string "match" in its name. 
 </methodmore> 
@@ -526,6 +553,8 @@ string "match" in its name.
 <methodmore name="void Settings::mvec(string key, vector&lt;int&gt; now)"> 
 </methodmore> 
 <methodmore name="void Settings::pvec(string key, vector&lt;double&gt; now)"> 
+</methodmore> 
+<methodmore name="void Settings::wvec(string key, vector&lt;string&gt; now)"> 
 change the current value(s) of the respective setting to the provided 
 new value(s). If lower or upper limits have been set, input values 
 outside the allowed range are reinterpreted as being a the nearest 
@@ -558,11 +587,23 @@ value(s) can be put outside the intended borders.
 <methodmore name="void Settings::resetMVec(string key)"> 
 </methodmore> 
 <methodmore name="void Settings::resetPVec(string key)"> 
+</methodmore> 
+<methodmore name="void Settings::resetWVec(string key)"> 
 reset the current value to the default one. 
 </methodmore> 
  
 <method name="bool Settings::getIsInit()"> 
 return true if the database has been initialized, else false. 
+</method> 
+ 
+<method name="bool Settings::readingFailed()"> 
+return true if some input could not be parsed, else false. 
+</method> 
+ 
+<method name="bool Settings::unfinishedInput()"> 
+return true if input of a vector has been begun with am 
+open brace { but no matching closing brace } has been found 
+(so far), else false. 
 </method> 
  
 </chapter> 

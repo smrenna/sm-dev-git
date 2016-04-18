@@ -4923,6 +4923,12 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
+<td>void</td>
+<td><a href="SettingsScheme.php#method13" target="page">Settings::addWVec(...)</a></td>
+<td>Settings Scheme</td>
+</tr>
+
+<tr>
 <td>bool</td>
 <td><a href="SettingsScheme.php#method14" target="page">Settings::flag(...)</a></td>
 <td>Settings Scheme</td>
@@ -4983,13 +4989,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
-<td>map<string, Flag></td>
+<td>map&lt;string, Flag&gt;</td>
 <td><a href="SettingsScheme.php#method16" target="page">Settings::getFlagMap(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
-<td>map<string, FVec></td>
+<td>map&lt;string, FVec&gt;</td>
 <td><a href="SettingsScheme.php#method16" target="page">Settings::getFVecMap(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
@@ -5001,32 +5007,38 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
-<td>map<string, Mode></td>
+<td>map&lt;string, Mode&gt;</td>
 <td><a href="SettingsScheme.php#method16" target="page">Settings::getModeMap(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
-<td>map<string, MVec></td>
+<td>map&lt;string, MVec&gt;</td>
 <td><a href="SettingsScheme.php#method16" target="page">Settings::getMVecMap(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
-<td>map<string, Parm></td>
+<td>map&lt;string, Parm&gt;</td>
 <td><a href="SettingsScheme.php#method16" target="page">Settings::getParmMap(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
-<td>map<string, PVec></td>
+<td>map&lt;string, PVec&gt;</td>
 <td><a href="SettingsScheme.php#method16" target="page">Settings::getPVecMap(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
-<td>map<string, Word></td>
+<td>map&lt;string, Word&gt;</td>
 <td><a href="SettingsScheme.php#method16" target="page">Settings::getWordMap(...)</a></td>
+<td>Settings Scheme</td>
+</tr>
+
+<tr>
+<td>map&lt;string, WVec&gt;</td>
+<td><a href="SettingsScheme.php#method16" target="page">Settings::getWVecMap(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
@@ -5081,6 +5093,12 @@ Many of them are only intended for experts, while undocumented ones are only for
 <tr>
 <td>bool</td>
 <td><a href="SettingsScheme.php#method12" target="page">Settings::isWord(...)</a></td>
+<td>Settings Scheme</td>
+</tr>
+
+<tr>
+<td>bool</td>
+<td><a href="SettingsScheme.php#method12" target="page">Settings::isWVec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
@@ -5182,6 +5200,12 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
+<td><a href="SettingsScheme.php#method21" target="page">Settings::readingFailed()</a></td>
+<td>Settings Scheme</td>
+</tr>
+
+<tr>
+<td>bool</td>
 <td><a href="SettingsScheme.php#method6" target="page">Settings::readString(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
@@ -5241,8 +5265,20 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
+<td>void</td>
+<td><a href="SettingsScheme.php#method19" target="page">Settings::resetWVec(...)</a></td>
+<td>Settings Scheme</td>
+</tr>
+
+<tr>
 <td> </td>
 <td><a href="SettingsScheme.php#method1" target="page">Settings::Settings()</a></td>
+<td>Settings Scheme</td>
+</tr>
+
+<tr>
+<td>bool</td>
+<td><a href="SettingsScheme.php#method22" target="page">Settings::unfinishedInput()</a></td>
 <td>Settings Scheme</td>
 </tr>
 
@@ -5273,6 +5309,24 @@ Many of them are only intended for experts, while undocumented ones are only for
 <tr>
 <td>bool</td>
 <td><a href="SettingsScheme.php#method7" target="page">Settings::writeFile(...)</a></td>
+<td>Settings Scheme</td>
+</tr>
+
+<tr>
+<td>vector&lt;string&gt;</td>
+<td><a href="SettingsScheme.php#method14" target="page">Settings::wvec(...)</a></td>
+<td>Settings Scheme</td>
+</tr>
+
+<tr>
+<td>void</td>
+<td><a href="SettingsScheme.php#method17" target="page">Settings::wvec(...)</a></td>
+<td>Settings Scheme</td>
+</tr>
+
+<tr>
+<td>vector&lt;string&gt;</td>
+<td><a href="SettingsScheme.php#method15" target="page">Settings::wvecDefault(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
