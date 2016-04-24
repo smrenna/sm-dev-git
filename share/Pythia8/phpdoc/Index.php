@@ -88,6 +88,7 @@ echo "<a href='SaveSettings.php?returning=1&filename=".$filename."' target='page
 <a href='ResonanceDecays.php?filepath=".$filepath."' target='page'>Resonance Decays</a><br/> 
 <a href='TimelikeShowers.php?filepath=".$filepath."' target='page'>Timelike Showers</a><br/> 
 <a href='SpacelikeShowers.php?filepath=".$filepath."' target='page'>Spacelike Showers</a><br/> 
+<a href='Variations.php?filepath=".$filepath."' target='page'>Automated Shower Variations</a><br/> 
 <a href='WeakShowers.php?filepath=".$filepath."' target='page'>Weak Showers</a><br/> 
 <a href='MultipartonInteractions.php?filepath=".$filepath."' target='page'>Multiparton Interactions</a><br/> 
 <a href='BeamRemnants.php?filepath=".$filepath."' target='page'>Beam Remnants</a><br/> 
@@ -103,7 +104,6 @@ echo "<a href='SaveSettings.php?returning=1&filename=".$filename."' target='page
 <a href='ParticleData.php?filepath=".$filepath."' target='page'>Particle Data</a><br/> 
 <a href='ErrorChecks.php?filepath=".$filepath."' target='page'>Error Checks</a><br/> 
 <a href='Tunes.php?filepath=".$filepath."' target='page'>Tunes</a><br/> 
-<a href='Variations.php?filepath=".$filepath."' target='page'>Variations in ISR and FSR</a><br/> 
 
 ";?>
  

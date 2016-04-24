@@ -43,9 +43,14 @@ element for <i>Z^0</i>, <i>W^+-</i> and Higgs (in the
 <p/> 
 The normal user is not expected to call <code>SpaceShower</code> 
 directly, but only have it called from <code>Pythia</code>, 
-via <code>PartonLevel</code>. Some of the parameters below, 
+via <code>PartonLevel</code>. Nonetheless, some of the parameters below, 
 in particular <code>SpaceShower:alphaSvalue</code>, 
-would be of interest for a tuning exercise, however. 
+would be of interest for uncertainty estimates and tuning exercises. 
+Note that 
+PYTHIA also incorporates an 
+<?php $filepath = $_GET["filepath"];
+echo "<a href='Variations.php?filepath=".$filepath."' target='page'>";?>automated framework</a> for shower 
+uncertainty variations. 
  
 <h3>Main variables</h3> 
  
@@ -197,7 +202,10 @@ The natural scale for couplings and PDFs is <i>pT^2</i>. To explore
 uncertainties it is possibly to vary around this value, however, in 
 analogy with what can be done for 
 <?php $filepath = $_GET["filepath"];
-echo "<a href='CouplingsAndScales.php?filepath=".$filepath."' target='page'>";?>hard processes</a>. 
+echo "<a href='CouplingsAndScales.php?filepath=".$filepath."' target='page'>";?>hard processes</a>. (Note that 
+there is also an <?php $filepath = $_GET["filepath"];
+echo "<a href='Variations.php?filepath=".$filepath."' target='page'>";?>automated framework</a> for shower 
+uncertainties.) 
  
 <br/><br/><table><tr><td><strong>SpaceShower:renormMultFac </td><td></td><td> <input type="text" name="10" value="1." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.</strong></code>; <code>minimum = 0.1</code>; <code>maximum = 10.</code>)</td></tr></table>
 The default <i>pT^2</i> renormalization scale is multiplied by 

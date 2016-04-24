@@ -264,6 +264,12 @@ that you link to a LHAPDF set that includes the photon PDF.</li>
 implementations of the NNPDF 2.3 QCD+QED sets, for results and for 
 timing. Requires that LHAPDF is properly linked.</li> 
  
+<li><code>main55.cc</code> : exemplifies how you can use the internal 
+implementation of interpolation in an lhagrid1 .dat file, without linking 
+LHAPDF6. Also illustrates the topical issue of associated event properties 
+for an intermediate spinless resonance in 
+<ei>&gamma; + &gamma; &rarr; &gamma; + &gamma;</ei> at 750 GeV.</li> 
+ 
 <li><code>main61.cc</code> : exemplifies the generation of hard 
 diffractive processes.</li> 
  

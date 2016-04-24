@@ -38,7 +38,8 @@ code and XML tags.</li>
 <code>string</code>. No double quotation marks &quot; or braces { } 
 may appear inside a word, and commas , will take a spcial role next 
 so should also be avoided. Normally the input string is expected not to 
-contain any blanks, but if it does it must be enclosed in braces { }.</li> 
+contain any blanks or equal signs, but if it does it must be enclosed 
+in braces { }.</li> 
 <li>Vectors of flags take a variable length, and are stored as 
 <code>vector&lt;bool&gt;</code>. The shorthand notation fvec is used 
 in the C++ code and XML tags. When the vector is input as a string 
@@ -61,14 +62,14 @@ it should be given as a comma-separated list, either containing
 no blanks or else enclosed in braces { }.</li> 
 </ol> 
 Note the special role played by the braces { } to enclose words or lists 
-that are allowed to contain blanks, and of commas , to separate the fields o 
-f the list, in analogy with how C++ arrays can be initialized. You should 
-not be using these three characters for any other purposes. Input of a 
-vector can be split across several lines, until a close brace } is found 
-that matches the open brace {. If no such is found the program will abort, 
-so beware. The double quotation mark &quot; is avoided since it is already 
-used for other purposes. Also note that all shorthands have been chosen 
-four letters long. 
+that are allowed to contain blanks and equal signs, and of commas , to 
+separate the fields of the list, in analogy with how C++ arrays can be 
+initialized. You should not be using these three characters for any other 
+purposes. Input of a vector can be split across several lines, until a 
+close brace } is found that matches the open brace {. If no such is found 
+the program will abort, so beware. The double quotation mark &quot; is 
+avoided since it is already used for other purposes. Also note that all 
+shorthands have been chosen four letters long. 
 <p/> 
 In general, each variable stored in <code>Settings</code> is associated 
 with four kinds of information: 

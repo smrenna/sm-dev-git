@@ -215,7 +215,7 @@ private:
   void leaveHardDiff( Event& process, Event& event);
 
   // Photon beam inside lepton beam: set up the parton level generation.
-  void setupResolvedLeptonGamma( Event& process);
+  bool setupResolvedLeptonGamma( Event& process);
 
   // Photon beam inside lepton beam: recover the whole event and
   // add scattered leptons.

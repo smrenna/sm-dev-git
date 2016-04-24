@@ -1948,12 +1948,8 @@ int Pythia::readSubrun(string line, bool warn) {
     name.replace(firstColonColon, 2, ":");
   }
 
-
-  // Convert to lowercase.
-  for (int i = 0; i < int(name.length()); ++i) name[i] = tolower(name[i]);
-
-  // If no match then done.
-  if (name != "main:subrun") return subrunLine;
+  // Convert to lowercase. If no match then done.
+  if (toLower(name) != "main:subrun") return subrunLine;
 
   // Else find new subrun number and return it.
   splitLine >> subrunLine;
@@ -2307,7 +2303,8 @@ PDF* Pythia::getPDFPtr(int idIn, int sequence, string beam) {
     pStream >> pSet;
 
     // Use internal LHAgrid1 implementation for LHAPDF6 files.
-    if (pSet == 0 && isLHAGrid1(pWord))
+    if (pSet == 0 && pWord.length() > 9
+      && toLower(pWord).substr(0,9) == "lhagrid1:")
       tempPDFPtr = new LHAGrid1(idIn, pWord, xmlPath, &info);
 
     // Use sets from LHAPDF.
@@ -2333,7 +2330,8 @@ PDF* Pythia::getPDFPtr(int idIn, int sequence, string beam) {
     piStream >> piSet;
 
     // Use internal LHAgrid1 implementation for LHAPDF6 files.
-    if (piSet == 0 && isLHAGrid1(piWord))
+    if (piSet == 0 && piWord.length() > 9
+      && toLower(piWord).substr(0,9) == "lhagrid1:")
       tempPDFPtr = new LHAGrid1(idIn, piWord, xmlPath, &info);
 
     // Use sets from LHAPDF.
@@ -2353,7 +2351,8 @@ PDF* Pythia::getPDFPtr(int idIn, int sequence, string beam) {
     pomStream >> pomSet;
 
     // Use internal LHAgrid1 implementation for LHAPDF6 files.
-    if (pomSet == 0 && isLHAGrid1(pomWord))
+    if (pomSet == 0 && pomWord.length() > 9
+      && toLower(pomWord).substr(0,9) == "lhagrid1:")
       tempPDFPtr = new LHAGrid1(idIn, pomWord, xmlPath, &info);
 
     // Use sets from LHAPDF.
@@ -2414,7 +2413,7 @@ PDF* Pythia::getPDFPtr(int idIn, int sequence, string beam) {
       int lepton2gammaSet  = settings.mode("PDF:lepton2gammaSet");
       if (lepton2gammaSet == 1) {
         tempPDFPtr = new Lepton2gamma(idIn, m2lepton, Q2maxGamma,
-          tempGammaPDFPtr, &rndm);
+          tempGammaPDFPtr, &info, &rndm);
       } else tempPDFPtr = 0;
 
     }

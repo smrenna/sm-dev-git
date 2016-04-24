@@ -16,9 +16,13 @@ element for <ei>Z^0</ei>, <ei>W^+-</ei> and Higgs (in the
 <p/> 
 The normal user is not expected to call <code>SpaceShower</code> 
 directly, but only have it called from <code>Pythia</code>, 
-via <code>PartonLevel</code>. Some of the parameters below, 
+via <code>PartonLevel</code>. Nonetheless, some of the parameters below, 
 in particular <code>SpaceShower:alphaSvalue</code>, 
-would be of interest for a tuning exercise, however. 
+would be of interest for uncertainty estimates and tuning exercises. 
+Note that 
+PYTHIA also incorporates an 
+<aloc href="Variations">automated framework</aloc> for shower 
+uncertainty variations. 
  
 <h3>Main variables</h3> 
  
@@ -212,7 +216,9 @@ at the <ei>Z^0</ei> mass.
 The natural scale for couplings and PDFs is <ei>pT^2</ei>. To explore 
 uncertainties it is possibly to vary around this value, however, in 
 analogy with what can be done for 
-<aloc href="CouplingsAndScales">hard processes</aloc>. 
+<aloc href="CouplingsAndScales">hard processes</aloc>. (Note that 
+there is also an <aloc href="Variations">automated framework</aloc> for shower 
+uncertainties.) 
  
 <parm name="SpaceShower:renormMultFac" default="1." min="0.1" max="10."> 
 The default <ei>pT^2</ei> renormalization scale is multiplied by 

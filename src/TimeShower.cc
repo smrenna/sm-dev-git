@@ -60,6 +60,12 @@ const double TimeShower::WEAKPSWEIGHT = 5.;
 // Extra overestimate of g -> q qbar branching rate for DGLAP comparison.
 const double TimeShower::WG2QEXTRA = 20.;
 
+// Limit on size of number of rejections for uncertainty variations.
+const double TimeShower::REJECTFACTOR = 0.1;
+
+// Limit on probability for uncertainty variations.
+const double TimeShower::PROBLIMIT = 0.99;
+
 //--------------------------------------------------------------------------
 
 // Initialize alphaStrong, alphaEM and related pTmin parameters.
@@ -242,57 +248,11 @@ void TimeShower::init( BeamParticle* beamAPtrIn,
   splittingNameNow   = "";
   enhanceFactors.clear();
 
-  /*
-  // Populate lists of uncertainty variations related to TimeShower, by keyword
-  iUVarQCD.resize(0);
-  iUVarQED.resize(0);
-  uVarMuSoftCorr = settingsPtr->flag("Uncertainties:muSoftCorr");
-  cout<<"Total number of uncertainty bands : "<<settingsPtr->nUVar()<<endl;
-  for (int iWeight=1; iWeight<settingsPtr->nUVar(); ++iWeight) {
-    UVar* uVarPtr = settingsPtr->getUVarPtr(iWeight);
-    if (uVarPtr == 0) continue;
-    // 1) Define and resolve any allowed shorthand notations
-    if (uVarPtr->hasVar("fsr:muR")) {
-      double parm = uVarPtr->getVar("fsr:muR");
-      uVarPtr->addVar("fsr:G2GG:muR",parm);
-      uVarPtr->addVar("fsr:Q2QG:muR",parm);
-      uVarPtr->addVar("fsr:G2QQ:muR",parm);
-    }
-    if (uVarPtr->hasVar("fsr:cNS")) {
-      double parm = uVarPtr->getVar("fsr:cNS");
-      uVarPtr->addVar("fsr:G2GG:cNS",parm);
-      uVarPtr->addVar("fsr:Q2QG:cNS",parm);
-      uVarPtr->addVar("fsr:G2QQ:cNS",parm);
-    }
-    if (uVarPtr->hasVar("fsr:muRqed")) {
-      double parm = uVarPtr->getVar("fsr:muRqed");
-      uVarPtr->addVar("fsr:X2XA:muRqed",parm);
-      uVarPtr->addVar("fsr:A2LL:muRqed",parm);
-      uVarPtr->addVar("fsr:A2QQ:muRqed",parm);
-    }
-    if (uVarPtr->hasVar("fsr:cNSqed")) {
-      double parm = uVarPtr->getVar("fsr:cNSqed");
-      uVarPtr->addVar("fsr:X2XA:cNSqed",parm);
-      uVarPtr->addVar("fsr:A2LL:cNSqed",parm);
-      uVarPtr->addVar("fsr:A2QQ:cNSqed",parm);
-    }
-    // 2.1) Populate list of QCD variations
-    if (uVarPtr->hasVar("fsr:G2GG:muR") || uVarPtr->hasVar("fsr:Q2QG:muR")
-        || uVarPtr->hasVar("fsr:G2QQ:muR") || uVarPtr->hasVar("fsr:G2GG:cNS")
-        || uVarPtr->hasVar("fsr:Q2QG:cNS") || uVarPtr->hasVar("fsr:G2QQ:cNS")
-        || uVarPtr->hasVar("fsr:G2QQ:weight"))
-      iUVarQCD.push_back(iWeight);
-    // 2.2) Populate list of QED variations
-    if (uVarPtr->hasVar("fsr:X2XA:muR") || uVarPtr->hasVar("fsr:A2LL:muR")
-        || uVarPtr->hasVar("fsr:A2QQ:muR") || uVarPtr->hasVar("fsr:X2XA:cNS")
-        || uVarPtr->hasVar("fsr:A2LL:nCNS") || uVarPtr->hasVar("fsr:A2QQ:nCNS")
-        || uVarPtr->hasVar("fsr:A2LL:weight")
-        || uVarPtr->hasVar("fsr:A2QQ:weight"))
-      iUVarQED.push_back(iWeight);
-
-  // End loop over uncertainty variations
-  }
-  */
+  // Enable automated uncertainty variations.
+  nVarQCD              = 0;
+  bool doUncertainties = settingsPtr->flag("UncertaintyBands:doVariations");
+  doUncertaintiesNow   = doUncertainties && initUncertainties();
+  uVarNflavQ           = settingsPtr->mode("UncertaintyBands:nFlavQ");
 
 }
 
@@ -2097,12 +2057,9 @@ void TimeShower::pT2nextQCD(double pT2begDip, double pT2sel,
   double wt            = 0.;
   bool   mustFindRange = true;
 
-  // Variables used by uncertainty evaluations:
-  int    nUVar         = iUVarQCD.size();
   // Add more headRoom if doing uncertainty variations
-  // (to ensure at least a minimal number of failed branchings)
-  double overFac         = 1.0;
-  if (nUVar > 0) overFac = 2.0;
+  // (to ensure at least a minimal number of failed branchings).
+  double overFac = (nVarQCD > 0) ? 2.0 : 1.0;
 
   // Set default values for enhanced emissions.
   bool isEnhancedQ2QG, isEnhancedG2QQ, isEnhancedG2GG;
@@ -2351,11 +2308,11 @@ void TimeShower::pT2nextQCD(double pT2begDip, double pT2sel,
       }
     }
 
-    // If doing uncertainty variations, postpone accept/reject to branch()
-    if( wt>0 && dip.pT2 > pT2min && iUVarQCD.size() > 0) {
+    // If doing uncertainty variations, postpone accept/reject to branch().
+    if (wt > 0. && dip.pT2 > pT2min && doUncertaintiesNow) {
       dip.nameNow = nameNow;
       dip.pAccept = wt;
-      wt         = 1.0;
+      wt          = 1.0;
     }
 
   // Iterate until acceptable pT (or have fallen below pTmin).
@@ -3222,86 +3179,11 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
     rad.pol( dipSel->weakPol );
   }
 
-  /*
+  // Recover delayed shower-accept probability for uncertainty variations.
+  double pAccept = dipSel->pAccept;
+
   // ME corrections can lead to branching being rejected.
-  // Also do delayed shower-accept probability here (when computing
-  // uncertainty variations).
-  if (dipSel->MEtype > 0 || dipSel->pAccept != 1.0) {
-
-    int nUVarsQCD = (dipSel->colType != 0) ? iUVarQCD.size() : 0;
-    vector<double> uVarFac;
-    uVarFac.resize(0);
-
-    // 1) Compute QCD uncertainty variations
-    for (int i=0; i < nUVarsQCD; ++i) {
-
-      // Get pointer to UVar and initialize ratio-factor
-      int iWeight = iUVarQCD[i];
-      UVar* uVarPtr = settingsPtr->getUVarPtr(iWeight);
-      uVarFac.push_back(1.0);
-
-      // Compute alphaS variations (only for running alphaS)
-      string varName = dipSel->nameNow+":muR";
-      if ( uVarPtr->hasVar(varName) && alphaSorder >= 1) {
-        double muR2 = renormMultFac * dipSel->pT2;
-        // TO DO: change to MQQ if using alternative g->qq weight
-        double alphaSbaseline = alphaS.alphaS(muR2);
-        // Correction-factor alphaS
-        double facMu      = uVarPtr->getVar(varName);
-        double muR2var = max(1.1*Lambda3flav2, pow2(facMu) * muR2);
-        double alphaSratio = alphaS.alphaS(muR2var) / alphaSbaseline;
-        // Apply soft correction factor to X2XG
-        double facCorr = 1.;
-        if (emt.id() == 21 && uVarMuSoftCorr) {
-          // Use smallest alphaS and b0, to make the compensation conservative
-          int nf = 5;
-          if (dipSel->pT2 < pow2(mc)) nf = 3;
-          else if (dipSel->pT2 < pow2(mb)) nf = 4;
-          double alphaScorr = alphaS.alphaS(dipSel->m2Dip);
-          double facSoft    = alphaScorr*(33-2*nf)/6./M_PI;
-          double zeta = 1.-dipSel->z;
-          if (rad.id() == 21) zeta = min(dipSel->z,1-dipSel->z);
-          facCorr = 1. + (1.-zeta) * facSoft * log(facMu);
-        }
-        // Apply correction factor here for emission processes
-        double alphaSfac   = alphaSratio * facCorr;
-        // Limit absolute variation to +/- 0.2
-        if (alphaSfac > 1.)
-          alphaSfac = min(alphaSfac,(alphaSbaseline+0.2)/alphaSbaseline);
-        else if (alphaSbaseline > 0.2)
-          alphaSfac = max(alphaSfac,(alphaSbaseline-0.2)/alphaSbaseline);
-        uVarFac[i] = alphaSfac;
-      }
-
-      // Compute finite-term variations (only when no MECs)
-      varName = dipSel->nameNow+":cNS";
-      if ( uVarPtr->hasVar(varName) && dipSel->MEtype == 0) {
-        // Correction-factor alphaS
-        double z   = dipSel->z;
-        double Q2  = dipSel->m2;
-        // Virtuality for massive radiators
-        if (rad.idAbs() >= 4 && rad.id() != 21) Q2 = max(1.,Q2-rad.m2());
-        double yQ  = Q2/dipSel->m2Dip;
-        double num = yQ * uVarPtr->getVar(varName);
-        double denom = 1.;
-        // G->GG
-        if (idEmt == 21 && idRad == 21)
-          denom = pow2(1. - z * (1.-z)) / (z*(1.-z));
-        // Q->QG
-        else if (idEmt == 21)
-          denom = (1. + pow2(z)) / (1. - z);
-        // G->QQ
-        else
-          denom = pow2(z) + pow2(1. - z);
-        // Compute reweight ratio
-        uVarFac[i] *= 1. + num/denom;
-      }
-
-    }
-
-    // 2) Compute QED uncertainty variations
-
-    // 3) Compute Matrix-Element Corrections
+  if (dipSel->MEtype > 0) {
     double pMEC = 1.0;
     if (dipSel->MEtype > 0) {
       Particle& partner = (dipSel->iMEpartner == iRecBef)
@@ -3311,40 +3193,18 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
         pMEC *= findMEcorrWeak( dipSel, rad.p(), partner.p(), emt.p(),
           p3weak, p4weak, event[iRadBef].p(), event[iRecBef].p());
     }
-
-    // 4) Check whether to accept or reject branching
-    double pAccept = dipSel->pAccept * pMEC;
-    // Ensure 0 < PacceptPrime < 1 (with small margins)
-    for (int i=0; i<nUVarsQCD; ++i) {
-      double pAcceptPrime = pAccept * uVarFac[i];
-      if (pAcceptPrime > 0.99) uVarFac[i] *= 0.99 / pAcceptPrime;
-    }
-
-    if ( pAccept < rndmPtr->flat() ) {
-      // Reject trial : apply uncertainty-variation Sudakov reweightings
-      for (int i=0; i < nUVarsQCD; ++i) {
-        int iWeight = iUVarQCD[i];
-        // Check for near-singular denominators (indicates too few failures,
-        // and hence would need to increase headroom)
-        double denom = 1.-pAccept;
-        if (denom < 0.1) cout<<" Warning: reject denom = "
-                             << denom << " iWeight = "<<iWeight<<endl;
-        // Reject reweighting factor (force > 0)
-        double reWtFail = max(0.01,(1. - uVarFac[i]*pAccept)/denom);
-        infoPtr->reWeight(iWeight,reWtFail);
-      }
-      // Tell calling method that this trial was rejeced
-      return false;
-
-    } else {
-      // Accept trial : apply uncertainty-variation Accept reweightings
-      for (int i=0; i < nUVarsQCD; ++i) {
-        int iWeight = iUVarQCD[i];
-        infoPtr->reWeight(iWeight,uVarFac[i]);
-      }
-    }
+    pAccept *= pMEC;
   }
-  */
+
+  // Decide if we are going to accept or reject this branching.
+  bool acceptEvent = (rndmPtr->flat() < pAccept);
+
+  // If doing uncertainty variations, calculate accept/reject reweightings.
+  if (doUncertaintiesNow)
+    calcUncertainties( acceptEvent, pAccept, dipSel, &rad, &emt);
+
+  // Return false if we decided to reject this branching.
+  if( !acceptEvent ) return false;
 
   // Rescatter: if the recoiling partner is not in the same system
   //            as the radiator, fix up intermediate systems (can lead
@@ -3832,6 +3692,235 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
 }
 
 //--------------------------------------------------------------------------
+
+// Initialize the choices of uncertainty variations of the shower.
+
+bool TimeShower::initUncertainties() {
+
+  // Populate lists of uncertainty variations for TimeShower, by keyword.
+  uVarMuSoftCorr = settingsPtr->flag("UncertaintyBands:muSoftCorr");
+
+  // Reset uncertainty variation maps.
+  varG2GGmuRfac.clear();    varG2GGcNS.clear();
+  varQ2QGmuRfac.clear();    varQ2QGcNS.clear();
+  varX2XGmuRfac.clear();    varX2XGcNS.clear();
+  varG2QQmuRfac.clear();    varG2QQcNS.clear();
+
+  // Get uncertainty variations from Settings (as list of strings to parse).
+  vector<string> uVars = settingsPtr->wvec("UncertaintyBands:List");
+  nUncertaintyVariations = int(uVars.size());
+  if (nUncertaintyVariations == 0) return false;
+  if (infoPtr->nWeights() < 1.) {
+    infoPtr->setNWeights( nUncertaintyVariations + 1 );
+    infoPtr->setWeightLabel( 0, "Baseline");
+    for(int iWeight = 1; iWeight <= nUncertaintyVariations; ++iWeight) {
+      string uVarString = uVars[iWeight - 1];
+      int iEnd = uVarString.find(" ", 0);
+      string valueString = uVarString.substr(0, iEnd);
+      infoPtr->setWeightLabel(iWeight, valueString);
+    }
+  }
+
+  // List of keywords recognised by TimeShower.
+  vector<string> keys;
+  keys.push_back("fsr:muRfac");
+  keys.push_back("fsr:G2GG:muRfac");
+  keys.push_back("fsr:Q2QG:muRfac");
+  keys.push_back("fsr:X2XG:muRfac");
+  keys.push_back("fsr:G2QQ:muRfac");
+  keys.push_back("fsr:cNS");
+  keys.push_back("fsr:G2GG:cNS");
+  keys.push_back("fsr:Q2QG:cNS");
+  keys.push_back("fsr:X2XG:cNS");
+  keys.push_back("fsr:G2QQ:cNS");
+
+  // Store number of QCD variations (as separator to QED ones).
+  int nKeysQCD=keys.size();
+
+  // Parse each string in uVars to look for recognised keywords.
+  for (int iWeight = 1; iWeight <= int(uVars.size()); ++iWeight) {
+    string uVarString = toLower(uVars[iWeight - 1]);
+    if (uVarString == "") continue;
+
+    // Loop over all keywords.
+    int nRecognizedQCD = 0;
+    for (int iWord = 0; iWord < int(keys.size()); ++iWord) {
+      // Transform string to lowercase to avoid case-dependence.
+      string key = toLower(keys[iWord]);
+      // Skip if empty or keyword not found.
+      if (uVarString.find(key) == string::npos) continue;
+      // Extract variation value/factor.
+      int iKey = uVarString.find(key);
+      int iBeg = uVarString.find("=", iKey) + 1;
+      int iEnd = uVarString.find(" ", iBeg);
+      string valueString = uVarString.substr(iBeg, iEnd - iBeg);
+      stringstream ss(valueString);
+      double value;
+      ss >> value;
+      if (!ss) continue;
+
+      // Store (iWeight,value) pairs
+      // RECALL: use lowercase for all keys here (since converted above).
+      if (key == "fsr:murfac" || key == "fsr:g2gg:murfac")
+        varG2GGmuRfac[iWeight] = value;
+      if (key == "fsr:murfac" || key == "fsr:q2qg:murfac")
+        varQ2QGmuRfac[iWeight] = value;
+      if (key == "fsr:murfac" || key == "fsr:x2xg:murfac")
+        varX2XGmuRfac[iWeight] = value;
+      if (key == "fsr:murfac" || key == "fsr:g2qq:murfac")
+        varG2QQmuRfac[iWeight] = value;
+       if (key == "fsr:cns" || key == "fsr:g2gg:cns")
+        varG2GGcNS[iWeight] = value;
+      if (key == "fsr:cns" || key == "fsr:q2qg:cns")
+        varQ2QGcNS[iWeight] = value;
+      if (key == "fsr:cns" || key == "fsr:x2xg:cns")
+        varX2XGcNS[iWeight] = value;
+      if (key == "fsr:cns" || key == "fsr:g2qq:cns")
+        varG2QQcNS[iWeight] = value;
+      // Tell that we found at least one recognized and parseable keyword.
+      if (iWord < nKeysQCD) nRecognizedQCD++;
+    } // End loop over QCD keywords
+
+    // Tell whether this uncertainty variation contained >= 1 QCD variation.
+    if (nRecognizedQCD > 0) ++nVarQCD;
+  } // End loop over UVars.
+
+  // Let the calling function know if we found anything.
+  return (nVarQCD > 0);
+}
+
+
+//==========================================================================
+
+// Calculate uncertainties for the current event.
+
+void TimeShower::calcUncertainties(bool accept, double pAccept,
+  TimeDipoleEnd* dip, Particle* radPtr, Particle* emtPtr) {
+
+  // Define pointer and iterator to loop over the contents of each
+  // (iWeight,value) map.
+  map<int,double>* varPtr=0;
+  map<int,double>::iterator itVar;
+  // Make sure we have a dummy to point to if no map to be used.
+  map<int,double> dummy;     dummy.clear();
+
+  // Store uncertainty variation factors, initialised to unity.
+  // Make vector sizes + 1 since 0 = default and variations start at 1.
+  vector<double> uVarFac(nUncertaintyVariations + 1, 1.0);
+  vector<bool> doVar(nUncertaintyVariations + 1, false);
+
+  // Extract relevant quantities.
+  int idEmt = emtPtr->id();
+  int idRad = radPtr->id();
+
+  // QCD variations.
+  if (dip->colType != 0) {
+
+    // QCD renormalization-scale variations.
+    if (alphaSorder == 0) varPtr = &dummy;
+    else if (idEmt == 21 && idRad == 21) varPtr = &varG2GGmuRfac;
+    else if (idEmt == 21 && abs(idRad) <= uVarNflavQ)
+      varPtr = &varQ2QGmuRfac;
+    else if (idEmt == 21) varPtr = &varX2XGmuRfac;
+    else if (abs(idRad) <= nGluonToQuark && abs(idEmt) <= nGluonToQuark)
+      varPtr = &varG2QQmuRfac;
+    else varPtr = &dummy;
+    for (itVar = varPtr->begin(); itVar != varPtr->end(); ++itVar) {
+      int iWeight   = itVar->first;
+      double valFac = itVar->second;
+      double muR2 = renormMultFac * dip->pT2;
+      double alphaSbaseline = alphaS.alphaS(muR2);
+      // Correction-factor alphaS.
+      double muR2var = max(1.1 * Lambda3flav2, pow2(valFac) * muR2);
+      double alphaSratio = alphaS.alphaS(muR2var) / alphaSbaseline;
+      // Apply soft correction factor to X2XG.
+      double facCorr = 1.;
+      if (idEmt == 21 && uVarMuSoftCorr) {
+        // Use smallest alphaS and b0, to make the compensation conservative.
+        int nf = 5;
+        if (dip->pT2 < pow2(mc)) nf = 3;
+        else if (dip->pT2 < pow2(mb)) nf = 4;
+        double alphaScorr = alphaS.alphaS(dip->m2Dip);
+        double facSoft    = alphaScorr * (33. - 2. * nf) / (6. * M_PI);
+        double zeta = 1. - dip->z;
+        if (idRad == 21) zeta = min(dip->z, 1. - dip->z);
+        facCorr = 1. + (1. - zeta) * facSoft * log(valFac);
+      }
+      // Apply correction factor here for emission processes.
+      double alphaSfac   = alphaSratio * facCorr;
+      // Limit absolute variation to +/- 0.2.
+      if (alphaSfac > 1.)
+        alphaSfac = min(alphaSfac, (alphaSbaseline + 0.2) / alphaSbaseline);
+      else if (alphaSbaseline > 0.2)
+        alphaSfac = max(alphaSfac, (alphaSbaseline - 0.2) / alphaSbaseline);
+      uVarFac[iWeight] *= alphaSfac;
+      doVar[iWeight] = true;
+    }
+
+    // QCD finite-term variations (only when no MECs).
+    if (dip->MEtype != 0) varPtr = &dummy;
+    else if (idEmt == 21 && idRad == 21) varPtr = &varG2GGcNS;
+    else if (idEmt == 21 && abs(idRad) <= 8) varPtr = &varQ2QGcNS;
+    else if (idEmt == 21) varPtr = &varX2XGcNS;
+    else if (idRad == 21 && abs(idEmt) <= 8) varPtr = &varG2QQcNS;
+    else varPtr = &dummy;
+    for (itVar = varPtr->begin(); itVar != varPtr->end(); ++itVar) {
+      int iWeight   = itVar->first;
+      double valFac = itVar->second;
+      // Correction-factor alphaS.
+      double z   = dip->z;
+      double Q2  = dip->m2;
+      // Virtuality for massive radiators.
+      if (abs(idRad) >= 4 && idRad != 21) Q2 = max(1., Q2-radPtr->m2());
+      double yQ  = Q2 / dip->m2Dip;
+      double num = yQ * valFac;
+      double denom = 1.;
+      // G->GG.
+      if (idEmt == 21 && idRad == 21)
+        denom = pow2(1. - z * (1.-z)) / (z*(1.-z));
+      // Q->QG.
+      else if (idEmt == 21)
+          denom = (1. + pow2(z)) / (1. - z);
+      // G->QQ.
+      else
+          denom = pow2(z) + pow2(1. - z);
+      // Compute reweight ratio.
+      uVarFac[iWeight] *= 1. + num / denom;
+      doVar[iWeight] = true;
+    }
+  }
+
+  // Ensure 0 < PacceptPrime < 1 (with small margins).
+  for (int iWeight = 1; iWeight<=nUncertaintyVariations; ++iWeight) {
+    if (!doVar[iWeight]) continue;
+    double pAcceptPrime = pAccept * uVarFac[iWeight];
+    if (pAcceptPrime > PROBLIMIT) uVarFac[iWeight] *= PROBLIMIT / pAcceptPrime;
+  }
+
+  // Apply reject or accept reweighting factors according to input decision.
+  for (int iWeight = 1; iWeight <= nUncertaintyVariations; ++iWeight) {
+    if (!doVar[iWeight]) continue;
+    // If trial accepted: apply ratio of accept probabilities.
+    if (accept) infoPtr->reWeight(iWeight, uVarFac[iWeight]);
+    // If trial rejected : apply Sudakov reweightings.
+    else {
+      // Check for near-singular denominators (indicates too few failures,
+      // and hence would need to increase headroom).
+      double denom = 1. - pAccept;
+      if (denom < REJECTFACTOR) {
+        stringstream message;
+        message << iWeight;
+        infoPtr->errorMsg("Warning in TimeShower: reject denom for iWeight = ",
+          message.str());
+      }
+      // Force reweighting factor > 0.
+      double reWtFail = max(0.01, (1. - uVarFac[iWeight] * pAccept) / denom);
+      infoPtr->reWeight(iWeight, reWtFail);
+    }
+  }
+}
+
+//==========================================================================
 
 // Rescatter: If a dipole stretches between two different systems, those
 //            systems will no longer locally conserve momentum. These

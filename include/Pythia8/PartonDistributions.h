@@ -799,10 +799,9 @@ public:
 
   // Constructor.
   Lepton2gamma(int idBeamIn, double m2leptonIn, double Q2maxGamma,
-      PDF* gammaPDFPtrIn, Rndm* rndmPtrIn) : PDF(idBeamIn) {
-      m2lepton = m2leptonIn; Q2max = Q2maxGamma; gammaPDFPtr = gammaPDFPtrIn;
-      rndmPtr = rndmPtrIn; hasGammaInLepton = true;
-      xGamMax = Q2max/(2*m2lepton)*(sqrt(1 + 4*m2lepton/Q2max) - 1); }
+    PDF* gammaPDFPtrIn, Info* infoPtrIn, Rndm* rndmPtrIn) : PDF(idBeamIn) {
+    m2lepton = m2leptonIn; Q2max = Q2maxGamma; gammaPDFPtr = gammaPDFPtrIn;
+    infoPtr = infoPtrIn; rndmPtr = rndmPtrIn; hasGammaInLepton = true; }
 
   // Override the member function definitions where relevant.
   void xfUpdate(int id, double x, double Q2);
@@ -813,13 +812,16 @@ private:
 
   // Parameters for convolution.
   static const double ALPHAEM, Q2MIN;
-  double m2lepton, Q2max, xGamMax, xGm;
+  double m2lepton, Q2max, xGm;
 
   // Photon PDFs with the photon flux is convoluted with.
   PDF* gammaPDFPtr;
 
   // Pointer to random number generator used for sampling x_gamma.
   Rndm* rndmPtr;
+
+  // Pointer to info, needed to get sqrt(s) to fix x_gamma limits.
+  Info* infoPtr;
 
 };
 

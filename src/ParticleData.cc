@@ -289,7 +289,7 @@ void ParticleDataEntry::initBWmass() {
   mThr = (bRatSum == 0.) ? 0. : mThrSum / bRatSum;
 
   // Switch off Breit-Wigner if very close to threshold.
-  if (mThr + NARROWMASS > m0Save) {
+  if (mThr + NARROWMASS > m0Save && !isResonanceSave) {
     modeBWnow = 0;
     bool knownProblem = false;
     for (int i = 0; i < 3; ++i) if (idSave == KNOWNNOWIDTH[i])
@@ -1242,7 +1242,7 @@ void ParticleData::listFF(string outFile) {
   string property;
   istringstream getWord(line);
   getWord >> idTmp >> property;
-  property = toLower(property);
+  toLowerRep(property);
 
   // Check that valid particle.
   if ( (!isParticle(idTmp) && property  != "all" && property  != "new")
@@ -1495,7 +1495,7 @@ void ParticleData::listFF(string outFile) {
       istringstream getChannel(property);
       getChannel >> channel;
       getWord >> property;
-      property = toLower(property);
+      toLowerRep(property);
     }
 
     // Check that channel exists.

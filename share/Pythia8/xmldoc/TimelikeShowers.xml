@@ -15,9 +15,13 @@ in the standard model and its minimal supersymmetric extension
  
 <p/> 
 The normal user is not expected to call <code>TimeShower</code> directly, 
-but only have it called from <code>Pythia</code>. Some of the parameters 
+but only have it called from <code>Pythia</code>. Nonetheless, 
+some of the parameters 
 below, in particular <code>TimeShower:alphaSvalue</code>, would be of 
-interest for a tuning exercise, however. 
+interest for uncertainty estimates and tuning exercises. Note that 
+PYTHIA also incorporates an 
+<aloc href="Variations">automated framework</aloc> 
+for shower uncertainty variations. 
  
 <h3>Main variables</h3> 
  
@@ -218,7 +222,10 @@ at the <ei>Z^0</ei> mass.
 The natural scale for couplings, and PDFs for dipoles stretching out 
 to the beam remnants, is <ei>pT^2</ei>. To explore uncertainties it 
 is possibly to vary around this value, however, in analogy with what 
-can be done for <aloc href="CouplingsAndScales">hard processes</aloc>. 
+can be done for <aloc href="CouplingsAndScales">hard 
+processes</aloc>. (Note that there is also an 
+<aloc href="Variations">automated framework</aloc> for shower 
+uncertainties.) 
  
 <parm name="TimeShower:renormMultFac" default="1." min="0.1" max="10."> 
 The default <ei>pT^2</ei> renormalization scale is multiplied by 

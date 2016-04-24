@@ -366,8 +366,11 @@ bool Settings::readString(string line, bool warn) {
   int firstChar = lineNow.find_first_not_of(" \n\t\v\b\r\f\a");
   if (!isalpha(lineNow[firstChar])) return true;
 
-  // Replace an equal sign by a blank to make parsing simpler.
-  while (lineNow.find("=") != string::npos) {
+  // Replace an equal sign by a blank to make parsing simpler, except after {.
+  size_t iBrace = (line.find_first_of("{") == string::npos) ? line.size()
+    : line.find_first_of("{");
+  while (lineNow.find("=") != string::npos
+    && lineNow.find_first_of("=") < iBrace) {
     int firstEqual = lineNow.find_first_of("=");
     lineNow.replace(firstEqual, 1, " ");
   }
@@ -633,8 +636,7 @@ bool Settings::writeFile(ostream& os, bool writeAll) {
         os << modeEntry->second.name << " = " << valNow << "\n";
       ++modeEntry;
 
-    // Else check if parm is next, and if so print it;
-    // fixed or scientific depending on value.
+    // Else check if parm is next, and if so print it; fixed or scientific.
     } else if ( parmEntry != parms.end()
       && ( wordEntry == words.end() || parmEntry->first < wordEntry->first )
       && ( fvecEntry == fvecs.end() || parmEntry->first < fvecEntry->first )
@@ -701,7 +703,7 @@ bool Settings::writeFile(ostream& os, bool writeAll) {
       }
       ++mvecEntry;
 
-    // Else check if pvec is next; print fixed or scientific depending on value.
+    // Else check if pvec is next; print fixed or scientific.
     } else if ( pvecEntry != pvecs.end()
       && ( wvecEntry == wvecs.end() || pvecEntry->first < wvecEntry->first )
       ) {
@@ -797,8 +799,7 @@ bool Settings::writeFileXML(ostream& os) {
       os << "</mode>" << endl;
       ++modeEntry;
 
-    // Else check if parm is next, and if so print it;
-    // fixed or scientific depending on value.
+    // Else check if parm is next, and if so print it; fixed or scientific.
     } else if ( parmEntry != parms.end()
       && ( wordEntry == words.end() || parmEntry->first < wordEntry->first )
       && ( fvecEntry == fvecs.end() || parmEntry->first < fvecEntry->first )
@@ -883,7 +884,7 @@ bool Settings::writeFileXML(ostream& os) {
       os << "</mvec>" << endl;
       ++mvecEntry;
 
-    // Else check if pvec is next; print fixed or scientific depending on value.
+    // Else check if pvec is next; print fixed or scientific.
     } else if ( pvecEntry != pvecs.end()
       && ( wvecEntry == wvecs.end() || pvecEntry->first < wvecEntry->first )
       ) {
@@ -965,7 +966,7 @@ void Settings::list(bool doListAll,  bool doListString, string match) {
        << "               |                                      | \n";
 
   // Convert input string to lowercase for match.
-  match = toLower(match);
+  toLowerRep(match);
   if (match == "") match = "             ";
 
   // Iterators for the flag, mode and parm tables.
@@ -1031,8 +1032,7 @@ void Settings::list(bool doListAll,  bool doListString, string match) {
       }
       ++modeEntry;
 
-    // Else check if parm is next, and if so print it;
-    // fixed or scientific depending on value.
+    // Else check if parm is next, and if so print it; fixed or scientific.
     } else if ( parmEntry != parms.end()
       && ( wordEntry == words.end() || parmEntry->first < wordEntry->first )
       && ( fvecEntry == fvecs.end() || parmEntry->first < fvecEntry->first )
@@ -1161,7 +1161,7 @@ void Settings::list(bool doListAll,  bool doListString, string match) {
       }
       ++mvecEntry;
 
-    // Else check if pvec is next; print fixed or scientific depending on value.
+    // Else check if pvec is next; print fixed or scientific.
     } else if ( pvecEntry != pvecs.end()
       && ( wvecEntry == wvecs.end() || pvecEntry->first < wvecEntry->first )
       ) {
@@ -1475,7 +1475,7 @@ vector<string> Settings::wvecDefault(string keyIn) {
 
 map<string, Flag> Settings::getFlagMap(string match) {
   // Make the match string lower case. Start with an empty map.
-  match = toLower(match);
+  toLowerRep(match);
   map<string, Flag> flagMap;
   // Loop over the flag map (using iterator).
   for (map<string,Flag>::iterator flagEntry = flags.begin();
@@ -1487,7 +1487,7 @@ map<string, Flag> Settings::getFlagMap(string match) {
 
 map<string, Mode> Settings::getModeMap(string match) {
   // Make the match string lower case. Start with an empty map.
-  match = toLower(match);
+  toLowerRep(match);
   map<string, Mode> modeMap;
   // Loop over the mode map (using iterator).
   for (map<string,Mode>::iterator modeEntry = modes.begin();
@@ -1499,7 +1499,7 @@ map<string, Mode> Settings::getModeMap(string match) {
 
 map<string, Parm> Settings::getParmMap(string match) {
   // Make the match string lower case. Start with an empty map.
-  match = toLower(match);
+  toLowerRep(match);
   map<string, Parm> parmMap;
   // Loop over the parm map (using iterator).
   for (map<string,Parm>::iterator parmEntry = parms.begin();
@@ -1511,7 +1511,7 @@ map<string, Parm> Settings::getParmMap(string match) {
 
 map<string, Word> Settings::getWordMap(string match) {
   // Make the match string lower case. Start with an empty map.
-  match = toLower(match);
+  toLowerRep(match);
   map<string, Word> wordMap;
   // Loop over the word map (using iterator).
   for (map<string,Word>::iterator wordEntry = words.begin();
@@ -1523,7 +1523,7 @@ map<string, Word> Settings::getWordMap(string match) {
 
 map<string, FVec> Settings::getFVecMap(string match) {
   // Make the match string lower case. Start with an empty map.
-  match = toLower(match);
+  toLowerRep(match);
   map<string, FVec> fvecMap;
   // Loop over the fvec map (using iterator).
   for (map<string,FVec>::iterator fvecEntry = fvecs.begin();
@@ -1535,7 +1535,7 @@ map<string, FVec> Settings::getFVecMap(string match) {
 
 map<string, MVec> Settings::getMVecMap(string match) {
   // Make the match string lower case. Start with an empty map.
-  match = toLower(match);
+  toLowerRep(match);
   map<string, MVec> mvecMap;
   // Loop over the mvec map (using iterator).
   for (map<string,MVec>::iterator mvecEntry = mvecs.begin();
@@ -1547,7 +1547,7 @@ map<string, MVec> Settings::getMVecMap(string match) {
 
 map<string, PVec> Settings::getPVecMap(string match) {
   // Make the match string lower case. Start with an empty map.
-  match = toLower(match);
+  toLowerRep(match);
   map<string, PVec> pvecMap;
   // Loop over the pvec map (using iterator).
   for (map<string,PVec>::iterator pvecEntry = pvecs.begin();
@@ -1559,7 +1559,7 @@ map<string, PVec> Settings::getPVecMap(string match) {
 
 map<string, WVec> Settings::getWVecMap(string match) {
   // Make the match string lower case. Start with an empty map.
-  match = toLower(match);
+  toLowerRep(match);
   map<string, WVec> wvecMap;
   // Loop over the wvec map (using iterator).
   for (map<string,WVec>::iterator wvecEntry = wvecs.begin();
@@ -2863,25 +2863,6 @@ void Settings::initTunePP( int ppTune) {
     }
 
   }
-
-}
-
-//--------------------------------------------------------------------------
-
-// Convert string to lowercase for case-insensitive comparisons.
-// Also remove initial and trailing blanks, if any.
-
-string Settings::toLower(const string& name) {
-
-  // Copy string without initial and trailing blanks.
-  if (name.find_first_not_of(" \n\t\v\b\r\f\a") == string::npos) return "";
-  int firstChar = name.find_first_not_of(" \n\t\v\b\r\f\a");
-  int lastChar  = name.find_last_not_of(" \n\t\v\b\r\f\a");
-  string temp   = name.substr( firstChar, lastChar + 1 - firstChar);
-
-  // Convert to lowercase letter by letter.
-  for (int i = 0; i < int(temp.length()); ++i) temp[i] = tolower(temp[i]);
-  return temp;
 
 }
 

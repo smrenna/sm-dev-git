@@ -127,7 +127,8 @@ bool ProcessContainer::init(bool isFirst, Info* infoPtrIn,
   wtAccSum  = 0.;
 
   // Reset temporary cross section summand.
-  sigmaTemp  = 0.;
+  sigmaTemp   = 0.;
+  sigma2Temp  = 0.;
 
   // Initialize process and allowed incoming partons.
   sigmaProcessPtr->initProc();
@@ -263,12 +264,19 @@ bool ProcessContainer::trialProcess() {
     if (!doTryNext) {
       sigmaAdd=0.;
       // Reset stored weight.
-      sigmaTemp = 0.;
+      sigmaTemp  = 0.;
+      sigma2Temp = 0.;
     }
 
     // Only update once an event is accepted, as is needed if the event weight
     // can still change by a finite amount due to reweighting.
-    sigmaTemp  = sigmaAdd;
+    if (lhaStratAbs >= 3 ) {
+      sigmaTemp  = sigmaAdd;
+      sigma2Temp = pow2(sigmaAdd);
+    } else {
+      sigmaTemp  += sigmaAdd;
+      sigma2Temp += pow2(sigmaAdd);
+    }
 
     // Check if maximum violated.
     newSigmaMx = phaseSpacePtr->newSigmaMax();
@@ -1075,6 +1083,7 @@ void ProcessContainer::reset() {
   deltaFin  = 0.;
   wtAccSum  = 0.;
   sigmaTemp = 0.;
+  sigma2Temp= 0.;
 
 }
 
@@ -1099,7 +1108,15 @@ void ProcessContainer::sigmaDelta() {
   if (lhaStratAbs == 3) wgtNow *= sigmaTemp;
   if (lhaStratAbs == 4) wgtNow /= 1e9;
   sigmaSum += wgtNow;
-  sigma2Sum += pow2(wgtNow);
+
+  double wgtNow2 = 1.0;
+  if (lhaStrat    == 0) wgtNow2 = sigma2Temp;
+  if (lhaStratAbs == 3) wgtNow2 = pow2(wgtNow)*sigma2Temp;
+  if (lhaStratAbs == 4) wgtNow2 = pow2(wgtNow/1e9);
+  sigma2Sum += wgtNow2;
+
+  sigmaTemp  = 0.0;
+  sigma2Temp = 0.0;
 
   // Average value. No error analysis unless at least two events.
   double nTryInv  = 1. / nTry;
@@ -1108,8 +1125,9 @@ void ProcessContainer::sigmaDelta() {
   sigmaAvg        = sigmaSum * nTryInv;
   double fracAcc  = nAcc * nSelInv;
 
-  // Now always simply add accepted event weights.
-  fracAcc = 1.;
+  // If Pythia should not perform the unweighting, always simply add accepted
+  // event weights.
+  if (lhaStratAbs >= 3 ) fracAcc = 1.;
 
   sigmaFin        = sigmaAvg * fracAcc;
   deltaFin        = sigmaFin;

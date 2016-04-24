@@ -640,6 +640,7 @@ bool convertFile(string nameRoot, string convType) {
     if ( line.find("<fvec") != string::npos) tagVal = "fvec";
     if ( line.find("<mvec") != string::npos) tagVal = "mvec";
     if ( line.find("<pvec") != string::npos) tagVal = "pvec";
+    if ( line.find("<wvec") != string::npos) tagVal = "wvec";
     if ( line.find("<file") != string::npos) tagVal = "file";
     if ( line.find("<class") != string::npos) tagVal = "class";
     if ( line.find("<method") != string::npos) tagVal = "method";
@@ -812,6 +813,8 @@ bool convertFile(string nameRoot, string convType) {
       line.replace( line.find("</mvecfix>"), 10, "  ");
     while (line.find("</pvec>") != string::npos)
       line.replace( line.find("</pvec>"), 7, "  ");
+    while (line.find("</wvec>") != string::npos)
+      line.replace( line.find("</wvec>"), 7, "  ");
     while (line.find("</pvecfix>") != string::npos)
       line.replace( line.find("</pvecfix>"), 10, "  ");
     while (line.find("</file>") != string::npos)

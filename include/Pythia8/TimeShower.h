@@ -142,6 +142,13 @@ public:
   // ME corrections and kinematics that may give failure.
   virtual bool branch( Event& event, bool isInterleaved = false);
 
+  // Initialize data members for calculation of uncertainty bands.
+  bool initUncertainties();
+
+  // Calculate uncertainty-band weights for accepted/rejected trial branching.
+  void calcUncertainties(bool accept, double pAccept,
+    TimeDipoleEnd* dip, Particle* radPtr, Particle* emtPtr);
+
   // Tell which system was the last processed one.
   virtual int system() const {return iSysSel;};
 
@@ -228,7 +235,8 @@ private:
 
   // Constants: could only be changed in the code itself.
   static const double MCMIN, MBMIN, SIMPLIFYROOT, XMARGIN, XMARGINCOMB,
-         TINYPDF, LARGEM2, THRESHM2, LAMBDA3MARGIN, WEAKPSWEIGHT, WG2QEXTRA;
+         TINYPDF, LARGEM2, THRESHM2, LAMBDA3MARGIN, WEAKPSWEIGHT, WG2QEXTRA,
+         REJECTFACTOR, PROBLIMIT;
   // Rescatter: try to fix up recoil between systems
   static const bool   FIXRESCATTER, VETONEGENERGY;
   static const double MAXVIRTUALITYFRACTION, MAXNEGENERGYFRACTION;
@@ -241,7 +249,7 @@ private:
          allowRescatter, canVetoEmission, doHVshower, brokenHVsym,
          globalRecoil, useLocalRecoilNow, doSecondHard, hasUserHooks,
          singleWeakEmission, alphaSuseCMW, vetoWeakJets, allowMPIdipole,
-         weakExternal, recoilDeadCone, uVarMuSoftCorr;
+         weakExternal, recoilDeadCone, doUncertaintiesNow, uVarMuSoftCorr;
   int    pTmaxMatch, pTdampMatch, alphaSorder, alphaSnfmax, nGluonToQuark,
          weightGluonToQuark, alphaEMorder, nGammaToQuark, nGammaToLepton,
          nCHV, idHV, nMaxGlobalRecoil, weakMode;
@@ -351,8 +359,10 @@ private:
   vector<int> weak2to2lines;
   int weakHardSize;
 
-  // Store indices of uncertainty variations relevant to TimeShower
-  vector<int> iUVarQCD, iUVarQED;
+  // Store uncertainty variations relevant to TimeShower.
+  int nUncertaintyVariations, nVarQCD, uVarNflavQ;
+  map<int,double> varG2GGmuRfac, varQ2QGmuRfac, varG2QQmuRfac, varX2XGmuRfac;
+  map<int,double> varG2GGcNS, varQ2QGcNS, varG2QQcNS, varX2XGcNS;
 
 };
 

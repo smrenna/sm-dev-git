@@ -368,11 +368,6 @@ private:
   bool initSLHA ();
   stringstream particleDataBuffer;
 
-  // Small helper to identify LHAGrid1 input command.
-  bool isLHAGrid1(string pdfSet) { if (pdfSet.length() < 10) return false;
-    for (int i = 0; i < 8; ++i) pdfSet[i] = tolower(pdfSet[i]);
-    return (pdfSet.substr(0,9) == "lhagrid1:") ? true : false; }
-
 };
 
 //==========================================================================

@@ -188,7 +188,7 @@ private:
   long nTryRequested, nSelRequested, nAccRequested;
 
   // Temporary summand for handling (weighted) events when vetoes are applied.
-  double sigmaTemp;
+  double sigmaTemp, sigma2Temp;
 
   // Estimate integrated cross section and its uncertainty.
   void sigmaDelta();

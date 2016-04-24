@@ -3174,12 +3174,8 @@ double CJKL::hadronlikeB(double x, double s, double Q2) {
 void LHAGrid1::init(string pdfWord, string xmlPath, Info* infoPtr) {
 
   // Identify whether file number or name.
-  if (pdfWord.length() > 9) {
-    string pdfTmp = pdfWord;
-    for (int i = 0; i < 8; ++i) pdfTmp[i] = tolower(pdfTmp[i]);
-    if (pdfTmp.substr(0,9) == "lhagrid1:")
-      pdfWord = pdfWord.substr(9, pdfWord.length() - 9);
-  }
+  if (pdfWord.length() > 9 && toLower(pdfWord).substr(0,9) == "lhagrid1:")
+    pdfWord = pdfWord.substr(9, pdfWord.length() - 9);
   istringstream pdfStream(pdfWord);
   int pdfSet = 0;
   pdfStream >> pdfSet;
@@ -3500,14 +3496,35 @@ void Lepton2gamma::xfUpdate(int , double x, double Q2){
   // Freeze scale at Q^2 < Q^2_min.
   if(Q2 < Q2MIN) Q2 = Q2MIN;
 
+  // Find the maximum x value at given Q2max and sqrt(s).
+  double sCM = infoPtr->s();
+  double xGamMax = Q2max / (2. * m2lepton)
+    * (sqrt( (1. + 4. * m2lepton / Q2max) * (1. - 4. * m2lepton / sCM) ) - 1.);
+
+  // If outside allowed x values set PDFs to zero.
+  if ( x > xGamMax ) {
+    xg     = 0.;
+    xd     = 0.;
+    xu     = 0.;
+    xs     = 0.;
+    xc     = 0.;
+    xb     = 0.;
+    xubar  = 0.;
+    xdbar  = 0.;
+    xsbar  = 0.;
+    xGm    = 1.;
+    return;
+  }
+
   // Pre-calculate some logs.
-  double log2x    = pow2( log( Q2max/(m2lepton*pow2(x)) ) );
-  double log2xMax = pow2( log( Q2max/(m2lepton*pow2(xGamMax)) ) );
+  double log2x    = pow2( log( Q2max / (m2lepton * pow2(x)) ) );
+  double log2xMax = pow2( log( Q2max / (m2lepton * pow2(xGamMax)) ) );
 
   // Sample x_gamma.
-  xGm = sqrt( Q2max/m2lepton*exp( - sqrt( log2x + rndmPtr->flat()*
-            ( log2xMax - log2x ) ) ) );
+  xGm = sqrt( (Q2max / m2lepton)
+    * exp( -sqrt( log2x + rndmPtr->flat() * (log2xMax - log2x) ) ) );
 
+  // Evaluate the PDFs at x/x_gamma.
   double xInGamma = x/xGm;
   double xgGm = gammaPDFPtr->xf(21, xInGamma, Q2);
   double xdGm = gammaPDFPtr->xf(1 , xInGamma, Q2);
@@ -3516,18 +3533,23 @@ void Lepton2gamma::xfUpdate(int , double x, double Q2){
   double xcGm = gammaPDFPtr->xf(4 , xInGamma, Q2);
   double xbGm = gammaPDFPtr->xf(5 , xInGamma, Q2);
 
-  // Correct with weight.
-  double alphaLog = ALPHAEM/(2*M_PI)*( 1 + pow2(1-xGm) )
-    * ( log2x - log2xMax )*0.25
-    * log( ( Q2max*(1 - xGm) )/( m2lepton*pow2(xGm) ) )
-    / log( ( Q2max )/( m2lepton*pow2(xGm) ) );
+  // Calculate the Q^2_min for sampled x_gamma.
+  double m2s = 4. * m2lepton / sCM;
+  double Q2min = 0.5 * sCM * ( 1. - xGm - m2s
+    - sqrt(1. - m2s) * sqrt( pow2(1. - xGm) - m2s ) );
 
-  xg = alphaLog*xgGm;
-  xd = alphaLog*xdGm;
-  xu = alphaLog*xuGm;
-  xs = alphaLog*xsGm;
-  xc = alphaLog*xcGm;
-  xb = alphaLog*xbGm;
+  // Correct with weight.
+  double alphaLog = (ALPHAEM / (2. * M_PI)) * (1. + pow2(1. - xGm) )
+    * 0.25 * (log2x - log2xMax) * log(Q2max / Q2min)
+    / log( Q2max / ( m2lepton * pow2(xGm) ) );
+
+  // Calculate the PDF value.
+  xg = alphaLog * xgGm;
+  xd = alphaLog * xdGm;
+  xu = alphaLog * xuGm;
+  xs = alphaLog * xsGm;
+  xc = alphaLog * xcGm;
+  xb = alphaLog * xbGm;
   xubar  = xu;
   xdbar  = xd;
   xsbar  = xs;
@@ -3550,24 +3572,32 @@ double Lepton2gamma::xfMax(int id, double x, double Q2){
   // Freeze scale at Q^2 < Q^2_min.
   if(Q2 < Q2MIN) Q2 = Q2MIN;
 
+  // Find the maximum x value at given Q2max and sqrt(s).
+  double sCM = infoPtr->s();
+  double xGamMax = Q2max / (2. * m2lepton)
+    * (sqrt( (1. + 4. * m2lepton / Q2max) * (1. - 4. * m2lepton / sCM) ) - 1.);
+
+  // Set PDFs to zero outside allowed x values.
+  if ( x > xGamMax ) return 0;
+
   // Pre-calculate some logs.
-  double log2x    = pow2( log( Q2max/(m2lepton*pow2(x)) ) );
-  double log2xMax = pow2( log( Q2max/(m2lepton*pow2(xGamMax)) ) );
+  double log2x    = pow2( log( Q2max / (m2lepton * pow2(x)) ) );
+  double log2xMax = pow2( log( Q2max / (m2lepton * pow2(xGamMax)) ) );
 
   // Find approximate x-behaviour for each flavour. Optimized for CJKL.
   double xApprox = 0.;
   int idAbs = abs(id);
-  if ( idAbs == 21 || idAbs == 0 ) xApprox = 2.35;
-  else if ( idAbs == 1 ) xApprox = (pow(x,0.2) + pow(1-x,-0.15))*0.8;
-  else if ( idAbs == 2 ) xApprox = (pow(x,1.0) + pow(1-x,-0.4))*0.4;
-  else if ( idAbs == 3 ) xApprox = (pow(x,0.2) + pow(1-x,-0.5))*0.5;
-  else if ( idAbs == 4 ) xApprox = (pow(x,1.0) + pow(1-x,-0.4))*0.7;
-  else if ( idAbs == 5 ) xApprox = (pow(x,0.2) + pow(1-x,-0.5))*0.5;
+  if      (idAbs == 21 || idAbs == 0) xApprox = 2.35;
+  else if (idAbs == 1) xApprox = (pow(x, 0.2) + pow(1. - x, -0.15)) * 0.8;
+  else if (idAbs == 2) xApprox = (pow(x, 1.0) + pow(1. - x, -0.4))  * 0.4;
+  else if (idAbs == 3) xApprox = (pow(x, 0.2) + pow(1. - x, -0.5))  * 0.5;
+  else if (idAbs == 4) xApprox = (pow(x, 1.0) + pow(1. - x, -0.4))  * 0.7;
+  else if (idAbs == 5) xApprox = (pow(x, 0.2) + pow(1.  -x, -0.5))  * 0.5;
   else xApprox = 0.;
 
   // Return the approximation.
-  return ALPHAEM/(2*M_PI)*( log2x - log2xMax )*0.5*gammaPDFPtr->xf(id, x, Q2)
-    /(xApprox);
+  return (ALPHAEM / (2. * M_PI)) * (log2x - log2xMax) * 0.5
+    * gammaPDFPtr->xf(id, x, Q2) / xApprox;
 }
 
 //==========================================================================
