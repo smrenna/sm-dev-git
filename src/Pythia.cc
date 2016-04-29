@@ -23,7 +23,7 @@ namespace Pythia8 {
 
 // The current Pythia (sub)version number, to agree with XML version.
 const double Pythia::VERSIONNUMBERHEAD = PYTHIA_VERSION;
-const double Pythia::VERSIONNUMBERCODE = 8.218;
+const double Pythia::VERSIONNUMBERCODE = 8.219;
 
 //--------------------------------------------------------------------------
 
@@ -2289,7 +2289,7 @@ PDF* Pythia::getPDFPtr(int idIn, int sequence, string beam) {
   PDF* tempPDFPtr = 0;
 
   // One option is to treat a Pomeron like a pi0.
-  if (idIn == 990 && settings.mode("PDF:PomSet") == 2) idIn = 111;
+  if (idIn == 990 && settings.word("PDF:PomSet") == "2") idIn = 111;
 
   // Proton beam, normal or hard choice. Also used for neutron.
   if (abs(idIn) == 2212 || abs(idIn) == 2112) {

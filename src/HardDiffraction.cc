@@ -41,7 +41,6 @@ void HardDiffraction::init(Info* infoPtrIn, Settings& settingsPtrIn,
   beamPomBPtr = beamPomBPtrIn;
 
   // Set diffraction parameters.
-  pomSet      = settings.mode("PDF:PomSet");
   pomFlux     = settings.mode("Diffraction:PomFlux");
 
   // Read out some properties of beams to allow shorthand.
