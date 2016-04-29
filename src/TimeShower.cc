@@ -249,10 +249,12 @@ void TimeShower::init( BeamParticle* beamAPtrIn,
   enhanceFactors.clear();
 
   // Enable automated uncertainty variations.
-  nVarQCD              = 0;
-  bool doUncertainties = settingsPtr->flag("UncertaintyBands:doVariations");
-  doUncertaintiesNow   = doUncertainties && initUncertainties();
-  uVarNflavQ           = settingsPtr->mode("UncertaintyBands:nFlavQ");
+  nVarQCD            = 0;
+  doUncertainties    = settingsPtr->flag("UncertaintyBands:doVariations")
+                    && initUncertainties();
+  doUncertaintiesNow = doUncertainties;
+  uVarNflavQ         = settingsPtr->mode("UncertaintyBands:nFlavQ");
+  cNSpTmin           = settingsPtr->parm("UncertaintyBands:cNSpTmin");
 
 }
 
@@ -2059,7 +2061,10 @@ void TimeShower::pT2nextQCD(double pT2begDip, double pT2sel,
 
   // Add more headRoom if doing uncertainty variations
   // (to ensure at least a minimal number of failed branchings).
-  double overFac = (nVarQCD > 0) ? 2.0 : 1.0;
+  doUncertaintiesNow   = doUncertainties;
+  if (!uVarMPIshowers && dip.system != 0
+    && partonSystemsPtr->getInA(dip.system) != 0) doUncertaintiesNow = false;
+  double overFac       = doUncertaintiesNow ? 2.0 : 1.0;
 
   // Set default values for enhanced emissions.
   bool isEnhancedQ2QG, isEnhancedG2QQ, isEnhancedG2GG;
@@ -2261,8 +2266,8 @@ void TimeShower::pT2nextQCD(double pT2begDip, double pT2sel,
                 / log(scaleGluonToQuark * dip.m2 / Lambda2);
         }
 
-        // Cancel out headroom factor
-        if (overFac != 1.0 && overFac > 0.) wt /= overFac;
+        // Cancel out extra uncertainty-band headroom factors.
+        wt /= overFac;
 
         // Suppression factors for dipole to beam remnant.
         if (dip.isrType != 0 && useLocalRecoilNow) {
@@ -2310,7 +2315,6 @@ void TimeShower::pT2nextQCD(double pT2begDip, double pT2sel,
 
     // If doing uncertainty variations, postpone accept/reject to branch().
     if (wt > 0. && dip.pT2 > pT2min && doUncertaintiesNow) {
-      dip.nameNow = nameNow;
       dip.pAccept = wt;
       wt          = 1.0;
     }
@@ -3197,9 +3201,14 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
   }
 
   // Decide if we are going to accept or reject this branching.
-  bool acceptEvent = (rndmPtr->flat() < pAccept);
+  // (Without wasting time generating random numbers if pAccept = 1.)
+  bool acceptEvent = true;
+  if (pAccept < 1.0) acceptEvent = (rndmPtr->flat() < pAccept);
 
   // If doing uncertainty variations, calculate accept/reject reweightings.
+  doUncertaintiesNow = doUncertainties;
+  if (!uVarMPIshowers && iSysSel != 0 && partonSystemsPtr->getInA(iSysSel) != 0)
+    doUncertaintiesNow = false;
   if (doUncertaintiesNow)
     calcUncertainties( acceptEvent, pAccept, dipSel, &rad, &emt);
 
@@ -3699,6 +3708,7 @@ bool TimeShower::initUncertainties() {
 
   // Populate lists of uncertainty variations for TimeShower, by keyword.
   uVarMuSoftCorr = settingsPtr->flag("UncertaintyBands:muSoftCorr");
+  dASmax         = settingsPtr->parm("UncertaintyBands:deltaAlphaSmax");
 
   // Reset uncertainty variation maps.
   varG2GGmuRfac.clear();    varG2GGcNS.clear();
@@ -3739,8 +3749,16 @@ bool TimeShower::initUncertainties() {
 
   // Parse each string in uVars to look for recognised keywords.
   for (int iWeight = 1; iWeight <= int(uVars.size()); ++iWeight) {
+    // Convert to lowercase (to be case-insensitive). Also remove "=" signs
+    // and extra spaces, so "key=value", "key = value" mapped to "key value"
     string uVarString = toLower(uVars[iWeight - 1]);
-    if (uVarString == "") continue;
+    while (uVarString.find("=") != string::npos) {
+      int firstEqual = uVarString.find_first_of("=");
+      uVarString.replace(firstEqual, 1, " ");
+    }
+    while (uVarString.find("  ") != string::npos)
+      uVarString.erase( uVarString.find("  "), 1);
+    if (uVarString == "" || uVarString == " ") continue;
 
     // Loop over all keywords.
     int nRecognizedQCD = 0;
@@ -3751,7 +3769,7 @@ bool TimeShower::initUncertainties() {
       if (uVarString.find(key) == string::npos) continue;
       // Extract variation value/factor.
       int iKey = uVarString.find(key);
-      int iBeg = uVarString.find("=", iKey) + 1;
+      int iBeg = uVarString.find(" ", iKey) + 1;
       int iEnd = uVarString.find(" ", iBeg);
       string valueString = uVarString.substr(iBeg, iEnd - iBeg);
       stringstream ss(valueString);
@@ -3796,6 +3814,10 @@ bool TimeShower::initUncertainties() {
 
 void TimeShower::calcUncertainties(bool accept, double pAccept,
   TimeDipoleEnd* dip, Particle* radPtr, Particle* emtPtr) {
+
+  // Sanity check.
+  if (!doUncertainties || !doUncertaintiesNow || nUncertaintyVariations <= 0)
+    return;
 
   // Define pointer and iterator to loop over the contents of each
   // (iWeight,value) map.
@@ -3848,21 +3870,22 @@ void TimeShower::calcUncertainties(bool accept, double pAccept,
       }
       // Apply correction factor here for emission processes.
       double alphaSfac   = alphaSratio * facCorr;
-      // Limit absolute variation to +/- 0.2.
+      // Limit absolute variation to +/- deltaAlphaSmax.
       if (alphaSfac > 1.)
-        alphaSfac = min(alphaSfac, (alphaSbaseline + 0.2) / alphaSbaseline);
-      else if (alphaSbaseline > 0.2)
-        alphaSfac = max(alphaSfac, (alphaSbaseline - 0.2) / alphaSbaseline);
+        alphaSfac = min(alphaSfac, (alphaSbaseline + dASmax) / alphaSbaseline);
+      else if (alphaSbaseline > dASmax)
+        alphaSfac = max(alphaSfac, (alphaSbaseline - dASmax) / alphaSbaseline);
       uVarFac[iWeight] *= alphaSfac;
       doVar[iWeight] = true;
     }
 
-    // QCD finite-term variations (only when no MECs).
-    if (dip->MEtype != 0) varPtr = &dummy;
+    // QCD finite-term variations (only when no MECs and above pT threshold).
+    if (dip->MEtype != 0 || dip->pT2 < pow2(cNSpTmin) ) varPtr = &dummy;
     else if (idEmt == 21 && idRad == 21) varPtr = &varG2GGcNS;
-    else if (idEmt == 21 && abs(idRad) <= 8) varPtr = &varQ2QGcNS;
+    else if (idEmt == 21 && abs(idRad) <= uVarNflavQ) varPtr = &varQ2QGcNS;
     else if (idEmt == 21) varPtr = &varX2XGcNS;
-    else if (idRad == 21 && abs(idEmt) <= 8) varPtr = &varG2QQcNS;
+    else if (abs(idRad) <= nGluonToQuark && abs(idEmt) <= nGluonToQuark)
+      varPtr = &varG2QQcNS;
     else varPtr = &dummy;
     for (itVar = varPtr->begin(); itVar != varPtr->end(); ++itVar) {
       int iWeight   = itVar->first;

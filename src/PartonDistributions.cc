@@ -3534,9 +3534,9 @@ void Lepton2gamma::xfUpdate(int , double x, double Q2){
   double xbGm = gammaPDFPtr->xf(5 , xInGamma, Q2);
 
   // Calculate the Q^2_min for sampled x_gamma.
-  double m2s = 4. * m2lepton / sCM;
-  double Q2min = 0.5 * sCM * ( 1. - xGm - m2s
-    - sqrt(1. - m2s) * sqrt( pow2(1. - xGm) - m2s ) );
+  double m2s   = 4. * m2lepton / sCM;
+  double Q2min = 2. * m2lepton * pow2(xGm)
+    / ( 1. - xGm - m2s + sqrt(1. - m2s) * sqrt( pow2(1. - xGm) - m2s ) );
 
   // Correct with weight.
   double alphaLog = (ALPHAEM / (2. * M_PI)) * (1. + pow2(1. - xGm) )

@@ -68,7 +68,6 @@ public:
   int    flavour, iAunt;
   double mRad, m2Rad, mRec, m2Rec, mDip, m2Dip, m2DipCorr,
          pT2, m2, z, mFlavour, asymPol, flexFactor, pAccept;
-  string nameNow;
 
 };
 
@@ -249,7 +248,8 @@ private:
          allowRescatter, canVetoEmission, doHVshower, brokenHVsym,
          globalRecoil, useLocalRecoilNow, doSecondHard, hasUserHooks,
          singleWeakEmission, alphaSuseCMW, vetoWeakJets, allowMPIdipole,
-         weakExternal, recoilDeadCone, doUncertaintiesNow, uVarMuSoftCorr;
+         weakExternal, recoilDeadCone, doUncertainties, uVarMuSoftCorr,
+         uVarMPIshowers;
   int    pTmaxMatch, pTdampMatch, alphaSorder, alphaSnfmax, nGluonToQuark,
          weightGluonToQuark, alphaEMorder, nGammaToQuark, nGammaToLepton,
          nCHV, idHV, nMaxGlobalRecoil, weakMode;
@@ -261,7 +261,7 @@ private:
          pTweakCut, pT2weakCut, mMaxGamma, m2MaxGamma, octetOniumFraction,
          octetOniumColFac, mZ, gammaZ, thetaWRat, mW, gammaW, CFHV,
          alphaHVfix, pThvCut, pT2hvCut, mHV, pTmaxFudgeMPI,
-         weakEnhancement, vetoWeakDeltaR2;
+         weakEnhancement, vetoWeakDeltaR2, dASmax, cNSpTmin;
 
   // alphaStrong and alphaEM calculations.
   AlphaStrong alphaS;
@@ -272,7 +272,8 @@ private:
   double pT2damp, kRad, kEmt, pdfScale2;
 
   // Bookkeeping of enhanced  actual or trial emissions (see EPJC (2013) 73).
-  bool doTrialNow, canEnhanceEmission, canEnhanceTrial, canEnhanceET;
+  bool doTrialNow, canEnhanceEmission, canEnhanceTrial, canEnhanceET,
+       doUncertaintiesNow;
   string splittingNameNow, splittingNameSel;
   map< double, pair<string,double> > enhanceFactors;
   void storeEnhanceFactor(double pT2, string name, double enhanceFactorIn)

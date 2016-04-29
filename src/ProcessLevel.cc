@@ -413,11 +413,11 @@ void ProcessLevel::accumulate( bool doAccumulate) {
     codeNow         = containerPtrs[i]->code();
     nTryNow         = containerPtrs[i]->nTried();
     nSelNow         = containerPtrs[i]->nSelected();
-    if (doAccumulate) nAccNow   = containerPtrs[i]->nAccepted();
-    if (doAccumulate) sigmaNow  = containerPtrs[i]->sigmaMC();
-    if (doAccumulate) deltaNow  = containerPtrs[i]->deltaMC();
-    if (doAccumulate) sigSelNow = containerPtrs[i]->sigmaSelMC();
-    if (doAccumulate) weightNow = containerPtrs[i]->weightSum();
+    nAccNow         = containerPtrs[i]->nAccepted();
+    sigmaNow        = containerPtrs[i]->sigmaMC(doAccumulate);
+    deltaNow        = containerPtrs[i]->deltaMC(doAccumulate);
+    sigSelNow       = containerPtrs[i]->sigmaSelMC(doAccumulate);
+    weightNow       = containerPtrs[i]->weightSum();
     nTrySum        += nTryNow;
     nSelSum        += nSelNow;
     nAccSum        += nAccNow;

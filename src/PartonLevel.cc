@@ -1770,12 +1770,12 @@ bool PartonLevel::setupResolvedLeptonGamma( Event& process) {
   double m2BeamB  = pow2(beamBPtr->m());
 
   // Calculate Q2 limit for given x_gamma.
-  double Q2min1 = 0.5 * sCM * ( 1. - xGamma1 - 4. * m2BeamA / sCM
-    - sqrt( (1. - 4. * m2BeamA / sCM)
-    * ( pow2(1. - xGamma1) - 4. * m2BeamA / sCM) ) );
-  double Q2min2 = 0.5 * sCM * ( 1. - xGamma2 - 4. * m2BeamB / sCM
-    - sqrt( (1. - 4. * m2BeamB / sCM)
-    * ( pow2(1. - xGamma2) - 4. * m2BeamB / sCM) ) );
+  double m2sA   = 4. * m2BeamA / sCM;
+  double m2sB   = 4. * m2BeamB / sCM;
+  double Q2min1 = 2. * m2BeamA * pow2(xGamma1) / ( 1. - xGamma1 - m2sA
+    + sqrt(1. - m2sA) * sqrt( pow2(1. - xGamma1) - m2sA ) );
+  double Q2min2 = 2. * m2BeamB * pow2(xGamma2) / ( 1. - xGamma2 - m2sB
+    + sqrt(1. - m2sB) * sqrt( pow2(1. - xGamma2) - m2sB ) );
 
   // Sample Q2_gamma values for each beam.
   double Q2gamma1 = Q2min1 * pow( Q2maxGamma / Q2min1, rndmPtr->flat() );

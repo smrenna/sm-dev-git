@@ -54,9 +54,6 @@ public:
     pT2 = pT2In; z = zIn; xMo = xMoIn; Q2 = Q2In; mSister = mSisterIn;
     m2Sister = m2SisterIn; pT2corr = pT2corrIn;}
 
-  void storeVars( double pAcceptIn, string nameNowIn ) {
-    pAccept = pAcceptIn; nameNow = nameNowIn; }
-
   // Basic properties related to evolution and matrix element corrections.
   int    system, side, iRadiator, iRecoiler;
   double pTmax;
@@ -71,7 +68,6 @@ public:
 
   // Properties needed for the evaluation of parameter variations
   double pAccept;
-  string nameNow;
 
 } ;
 
@@ -128,6 +124,13 @@ public:
 
   // ME corrections and kinematics that may give failure.
   virtual bool branch( Event& event);
+
+  // Initialize data members for calculation of uncertainty bands.
+  bool initUncertainties();
+
+  // Calculate uncertainty-band weights for accepted/rejected trial branching.
+  void calcUncertainties(bool accept, double pAcceptIn, double pT20in,
+    SpaceDipoleEnd* dip, Particle* radPtr, Particle* emtPtr);
 
   // Tell which system was the last processed one.
   virtual int system() const {return iSysSel;}
@@ -223,7 +226,7 @@ private:
          TINYPDF, TINYKERNELPDF, TINYPT2, HEAVYPT2EVOL, HEAVYXEVOL,
          EXTRASPACEQ, LAMBDA3MARGIN, PT2MINWARN, LEPTONXMIN, LEPTONXMAX,
          LEPTONPT2MIN, LEPTONFUDGE, WEAKPSWEIGHT, HEADROOMQ2Q, HEADROOMQ2G,
-         HEADROOMG2G, HEADROOMG2Q, HEADROOMHQG;
+         HEADROOMG2G, HEADROOMG2Q, HEADROOMHQG, REJECTFACTOR, PROBLIMIT;
 
   // Initialization data, normally only set once.
   bool   doQCDshower, doQEDshowerByQ, doQEDshowerByL, useSamePTasMPI,
@@ -231,7 +234,7 @@ private:
          doPhiPolAsymHard, doPhiIntAsym, doRapidityOrder, useFixedFacScale,
          doSecondHard, canVetoEmission, hasUserHooks, alphaSuseCMW,
          singleWeakEmission, vetoWeakJets, weakExternal, doRapidityOrderMPI,
-         uVarMuSoftCorr;
+         doUncertainties, uVarMuSoftCorr, uVarMPIshowers;
   int    pTmaxMatch, pTdampMatch, alphaSorder, alphaSnfmax, alphaEMorder,
          nQuarkIn, enhanceScreening, weakMode;
   double pTdampFudge, mc, mb, m2c, m2b, renormMultFac, factorMultFac,
@@ -240,14 +243,15 @@ private:
          ecmRef, ecmPow, pTmin, sCM, eCM, pT0, pTminChgQ, pTminChgL, pT20,
          pT2min, pT2minChgQ, pT2minChgL, pTweakCut, pT2weakCut, pTmaxFudgeMPI,
          strengthIntAsym, weakEnhancement, mZ, gammaZ, thetaWRat, mW, gammaW,
-         weakMaxWt, vetoWeakDeltaR2;
+    weakMaxWt, vetoWeakDeltaR2, dASmax, cNSpTmin;
 
   // alphaStrong and alphaEM calculations.
   AlphaStrong alphaS;
   AlphaEM alphaEM;
 
   // Some current values.
-  bool   sideA, dopTlimit1, dopTlimit2, dopTdamp, hasWeaklyRadiated, tChannel;
+  bool   sideA, dopTlimit1, dopTlimit2, dopTdamp, hasWeaklyRadiated, tChannel,
+         doUncertaintiesNow;
   int    iNow, iRec, idDaughter, nRad, idResFirst, idResSecond;
   double xDaughter, x1Now, x2Now, m2Dip, m2Rec, pT2damp, pTbegRef, pdfScale2;
 
@@ -308,8 +312,11 @@ private:
   // Pointer to MergingHooks object for NLO merging.
   MergingHooks* mergingHooksPtr;
 
-  // Store indices of uncertainty variations relevant to SpaceShower
-  vector<int> iUVarQCD, iUVarQED;
+  // Store uncertainty variations relevant to TimeShower.
+  int nUncertaintyVariations, nVarQCD, uVarNflavQ;
+  map<int,double> varG2GGmuRfac, varQ2QGmuRfac, varQ2GQmuRfac, varG2QQmuRfac,
+    varX2XGmuRfac;
+  map<int,double> varG2GGcNS, varQ2QGcNS, varQ2GQcNS, varG2QQcNS, varX2XGcNS;
 
 };
 

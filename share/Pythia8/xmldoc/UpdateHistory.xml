@@ -12,13 +12,24 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.218: 24 April 2016 
+<li>8.218: 29 April 2016 
 <ul> 
  
 <li>An interface to the Python programming language has been introduced, 
 see <aloc href="APythonInterface">A Python Interface</aloc> for details. 
 Various minor changes in the C++ code have been done in order to permit 
 the automatic generation of the interface.</li> 
+ 
+<li>Included a new framework for automated parton-shower uncertainty bands. 
+Variations of the QCD renormalisation scale for both initial- and 
+final-state showers can now be computed by Pythia on the fly, and are 
+provided as a list of alternative weights for each event, representing 
+the probability that the given event would have occurred under different 
+shower assumptions. So-called "nonsingular terms" can also be added to 
+the splitting kernels to estimate the possible effect of missing 
+matrix-element corrections. Full documentation is found on the 
+<aloc href="Variations">Automated Shower Variations</aloc> page, 
+and a paper is due to appear on arXiv shortly.</li> 
  
 <li>When a final-state <ei>g &rarr; g g</ei> branching happens with 
 a massive recoiler, radiation in the recoiler direction is now 
@@ -152,6 +163,9 @@ had been set larger than normally assumed.</li>
  
 <li>Fixed typo potentially giving incorrect colour flow in resonance 
 decays.</li> 
+ 
+<li>Fixed an out-of-bounds array access in HelicityMatrixElements. 
+Thanks to Vittorio Zecca.</li> 
  
 <li>Fixed problem with the SLHAinterface not being zeroed-out when 
 using repeated subruns.</li> 
