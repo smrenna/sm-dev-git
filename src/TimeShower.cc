@@ -254,6 +254,7 @@ void TimeShower::init( BeamParticle* beamAPtrIn,
                     && initUncertainties();
   doUncertaintiesNow = doUncertainties;
   uVarNflavQ         = settingsPtr->mode("UncertaintyBands:nFlavQ");
+  uVarMPIshowers     = settingsPtr->flag("UncertaintyBands:MPIshowers");
   cNSpTmin           = settingsPtr->parm("UncertaintyBands:cNSpTmin");
 
 }
