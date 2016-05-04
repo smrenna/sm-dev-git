@@ -578,6 +578,7 @@ bool BeamParticle::gammaInitiatorIsVal(int iResolved, double Q2) {
 bool BeamParticle::gammaInitiatorIsVal(int idInit, double x, double Q2) {
 
   // Gluon is not a valence parton.
+  initiatorValence = false;
   if ( idInit == 0 || abs(idInit) == 21 ) return false;
 
   else {

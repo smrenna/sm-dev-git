@@ -2472,7 +2472,7 @@ bool SpaceShower::branch( Event& event) {
 
   // If doing uncertainty variations, calculate accept/reject reweightings.
   if (doUncertaintiesNow) calcUncertainties( acceptEvent, pAccept, pT20,
-    dipEndSel, &mother, &daughter);
+    dipEndSel, &mother, &sister);
 
   // Return false if we decided to reject this branching.
   if( !acceptEvent ) {
@@ -2842,7 +2842,7 @@ bool SpaceShower::initUncertainties() {
   vector<string> uVars = settingsPtr->wvec("UncertaintyBands:List");
   nUncertaintyVariations = int(uVars.size());
   if (nUncertaintyVariations == 0) return false;
-  if (infoPtr->nWeights() < 1.) {
+  if (infoPtr->nWeights() <= 1.) {
     infoPtr->setNWeights( nUncertaintyVariations + 1 );
     infoPtr->setWeightLabel( 0, "Baseline");
     for(int iWeight = 1; iWeight <= nUncertaintyVariations; ++iWeight) {
@@ -2940,7 +2940,7 @@ bool SpaceShower::initUncertainties() {
 // Calculate uncertainties for the current event.
 
 void SpaceShower::calcUncertainties(bool accept, double pAccept, double pT20in,
-  SpaceDipoleEnd* dip, Particle* radPtr, Particle* emtPtr) {
+  SpaceDipoleEnd* dip, Particle* motPtr, Particle* sisPtr) {
 
   // Sanity check.
   if (!doUncertainties || !doUncertaintiesNow || nUncertaintyVariations <= 0)
@@ -2958,19 +2958,19 @@ void SpaceShower::calcUncertainties(bool accept, double pAccept, double pT20in,
   vector<double> uVarFac(nUncertaintyVariations + 1, 1.0);
   vector<bool> doVar(nUncertaintyVariations + 1, false);
 
-  // Extract relevant quantities.
-  int idEmt = emtPtr->id();
-  int idRad = radPtr->id();
+  // Extract IDs, with standard ISR nomenclature: mot -> dau(Q2) + sis
+  int idSis = sisPtr->id();
+  int idMot = motPtr->id();
 
   // QCD variations.
   if (dip->colType != 0) {
 
     // QCD renormalization-scale variations.
     if (alphaSorder == 0) varPtr = &dummy;
-    else if (idRad == 21 && idEmt == 21) varPtr = &varG2GGmuRfac;
-    else if (idRad == 21 && abs(idEmt) <= nQuarkIn) varPtr = &varG2QQmuRfac;
-    else if (abs(idRad) <= nQuarkIn) {
-      if (abs(idRad) <= uVarNflavQ) varPtr = &varQ2QGmuRfac;
+    else if (idMot == 21 && idSis == 21) varPtr = &varG2GGmuRfac;
+    else if (idMot == 21 && abs(idSis) <= nQuarkIn) varPtr = &varG2QQmuRfac;
+    else if (abs(idMot) <= nQuarkIn) {
+      if (abs(idMot) <= uVarNflavQ) varPtr = &varQ2QGmuRfac;
       else varPtr = &varX2XGmuRfac;
     }
     else varPtr = &dummy;
@@ -2982,17 +2982,17 @@ void SpaceShower::calcUncertainties(bool accept, double pAccept, double pT20in,
       // Correction-factor alphaS.
       double muR2var = max(1.1 * Lambda3flav2, pow2(valFac) * muR2);
       double alphaSratio = alphaS.alphaS(muR2var) / alphaSbaseline;
-      // Apply soft correction factor to X2XG.
+      // Apply soft correction factor only for (on-shell) gluon emission
       double facCorr = 1.;
-      if (idEmt == 21 && uVarMuSoftCorr) {
+      if (idSis == 21 && uVarMuSoftCorr) {
         // Use smallest alphaS and b0, to make the compensation conservative.
         int nf = 5;
         if (dip->pT2 < pow2(mc)) nf = 3;
         else if (dip->pT2 < pow2(mb)) nf = 4;
         double alphaScorr = alphaS.alphaS(dip->m2Dip);
         double facSoft    = alphaScorr * (33. - 2. * nf) / (6. * M_PI);
+	// Zeta is energy fraction of emitted (on-shell) gluon = 1 - z
         double zeta = 1. - dip->z;
-        if (idRad == 21) zeta = min(dip->z, 1. - dip->z);
         facCorr = 1. + (1. - zeta) * facSoft * log(valFac);
       }
       // Apply correction factor here for emission processes.
@@ -3008,10 +3008,10 @@ void SpaceShower::calcUncertainties(bool accept, double pAccept, double pT20in,
 
     // QCD finite-term variations (only when no MECs and above pT threshold).
     if (dip->MEtype != 0 || dip->pT2 < pow2(cNSpTmin) ) varPtr = &dummy;
-    else if (idRad == 21 && idEmt == 21) varPtr = &varG2GGcNS;
-    else if (idRad == 21 && abs(idEmt) <= nQuarkIn) varPtr = &varG2QQcNS;
-    else if (abs(idRad) <= nQuarkIn) {
-      if (abs(idRad) <= uVarNflavQ) varPtr = &varQ2QGcNS;
+    else if (idMot == 21 && idSis == 21) varPtr = &varG2GGcNS;
+    else if (idMot == 21 && abs(idSis) <= nQuarkIn) varPtr = &varG2QQcNS;
+    else if (abs(idMot) <= nQuarkIn) {
+      if (abs(idMot) <= uVarNflavQ) varPtr = &varQ2QGcNS;
       else varPtr = &varX2XGcNS;
     }
     else varPtr = &dummy;
@@ -3022,21 +3022,21 @@ void SpaceShower::calcUncertainties(bool accept, double pAccept, double pT20in,
       double z   = dip->z;
       double Q2  = dip->pT2;
       // Virtuality for off-shell massive quarks.
-      if (idRad == 21 && abs(idEmt) >= 4 && idEmt != 21)
-        Q2 = max(1., Q2+pow2(emtPtr->m0()));
-      else if (idEmt == 21 && abs(idRad) >= 4 && idRad != 21)
-        Q2 = max(1., Q2+pow2(radPtr->m0()));
+      if (idMot == 21 && abs(idSis) >= 4 && idSis != 21)
+        Q2 = max(1., Q2+pow2(sisPtr->m0()));
+      else if (idSis == 21 && abs(idMot) >= 4 && idMot != 21)
+        Q2 = max(1., Q2+pow2(motPtr->m0()));
       double yQ  = Q2 / dip->m2Dip;
       double num = yQ * valFac;
       double denom = 1.;
       // G->GG.
-      if (idEmt == 21 && idRad == 21)
+      if (idSis == 21 && idMot == 21)
         denom = pow2(1. - z * (1.-z)) / (z*(1.-z));
       // Q->QG.
-      else if (idEmt == 21)
+      else if (idSis == 21)
         denom = (1. + pow2(z)) / (1. - z);
       // Q->GQ.
-      else if (idRad == idEmt)
+      else if (idMot == idSis)
         denom = (1. + pow2(1. - z)) / z;
       // G->QQ.
       else

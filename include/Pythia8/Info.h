@@ -34,7 +34,7 @@ public:
     weights_detailed(NULL), weights_compressed(NULL), scales(NULL),
     weights(NULL), rwgt(NULL), eCMSave(0.), lowPTmin(false), a0MPISave(0.),
     abortPartonLevel(false), weightCKKWLSave(1.), weightFIRSTSave(0.) {
-    for (int i = 0; i < 40; ++i) counters[i] = 0; weightSave.reserve(1000);}
+    for (int i = 0; i < 40; ++i) counters[i] = 0; setNWeights(1);}
 
   // Listing of most available information on current event.
   void   list() const;
@@ -555,10 +555,11 @@ private:
   // Set info whether reading of Les Houches Accord file at end.
   void setEndOfFile( bool atEOFin) {atEOF = atEOFin;}
 
-  // Set number and labels of weights (for uncertainty evaluations)
+  // Set number and labels of weights (for uncertainty evaluations).
   void setNWeights(int mWeights) {
-    weightSave.resize(max(1,mWeights));
-    weightLabelSave.resize(max(1,mWeights));
+    mWeights = max(1,mWeights);
+    weightSave.resize(mWeights);
+    weightLabelSave.resize(mWeights);
     for (int i=1; i<mWeights; ++i) weightLabelSave[i]="";
   }
   void setWeightLabel(int iWeight, string labelIn) {
@@ -566,17 +567,17 @@ private:
       weightLabelSave[iWeight] = labelIn;
   }
 
-  // Set event weight; currently only for Les Houches description.
+  // Set event weight, either for LHEF3 or for uncertainty bands.
   void setWeight( double weightIn, int lhaStrategyIn) {
     for (int i=0; i<nWeights(); ++i) weightSave[i] = weightIn;
     if (nWeights() == 0) weightSave.push_back(weightIn);
     lhaStrategySave = lhaStrategyIn;}
 
-  // Apply weight modification (used for automated uncertainty variations)
+  // Apply weight modification (used for automated uncertainty variations).
   void reWeight( int iWeight, double rwIn) {
     if (iWeight >= 0 || iWeight < nWeights()) weightSave[iWeight] *= rwIn;}
 
-  // Save merging weight (i.e.  CKKW-L-type weight, summed O(\alpha_s) weight)
+  // Save merging weight (i.e.  CKKW-L-type weight, summed O(\alpha_s) weight).
   double weightCKKWLSave, weightFIRSTSave;
 
   // Set info on resolved processes.

@@ -130,7 +130,7 @@ public:
 
   // Calculate uncertainty-band weights for accepted/rejected trial branching.
   void calcUncertainties(bool accept, double pAcceptIn, double pT20in,
-    SpaceDipoleEnd* dip, Particle* radPtr, Particle* emtPtr);
+    SpaceDipoleEnd* dip, Particle* motherPtr, Particle* sisterPtr);
 
   // Tell which system was the last processed one.
   virtual int system() const {return iSysSel;}

@@ -1307,6 +1307,7 @@ bool Pythia::next() {
     // Provide the hard process that starts it off. Only one try.
     info.clear();
     process.clear();
+    partonSystems.clear();
     // Reset the event information. Necessary if the previous event was read
     // from LHEF, while the current event is not read from LHEF.
     info.setLHEF3EventInfo();

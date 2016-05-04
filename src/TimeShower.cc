@@ -3721,7 +3721,7 @@ bool TimeShower::initUncertainties() {
   vector<string> uVars = settingsPtr->wvec("UncertaintyBands:List");
   nUncertaintyVariations = int(uVars.size());
   if (nUncertaintyVariations == 0) return false;
-  if (infoPtr->nWeights() < 1.) {
+  if (infoPtr->nWeights() <= 1.) {
     infoPtr->setNWeights( nUncertaintyVariations + 1 );
     infoPtr->setWeightLabel( 0, "Baseline");
     for(int iWeight = 1; iWeight <= nUncertaintyVariations; ++iWeight) {
