@@ -691,8 +691,7 @@ bool ProcessLevel::nextOne( Event& process) {
     // Check that enough room for beam remnants in the photon beams and
     // set the valence content for photon beams.
     if ( (beamAPtr->isGamma() && beamBPtr->isGamma())
-      || (beamAPtr->hasGamma() && beamGamAPtr->isGamma()
-       && beamBPtr->hasGamma() && beamGamBPtr->isGamma()) ) {
+      || (beamAPtr->hasGamma() && beamBPtr->hasGamma()) ) {
       if ( !roomForRemnants() ) {
         physical = false;
         continue;
