@@ -758,7 +758,7 @@ void SpaceShower::pT2nextQCD( double pT2begDip, double pT2endDip) {
         if (doMEcorrections) g2gInt *= calcMEmax(MEtype, 21, 21);
         // Optionally enhanced branching rate.
         if (canEnhanceET) g2gInt *= userHooksPtr->enhanceFactor("isr:G2GG");
-        q2gInt = HEADROOMQ2G * (16./3.)
+        q2gInt = overFac * HEADROOMQ2G * (16./3.)
           * (1./sqrt(zMinAbs) - 1./sqrt(zMaxAbs));
         if (doMEcorrections) q2gInt *= calcMEmax(MEtype, 1, 21);
         // Optionally enhanced branching rate.
@@ -783,7 +783,7 @@ void SpaceShower::pT2nextQCD( double pT2begDip, double pT2endDip) {
       } else if (isValence) {
         zRootMin = (1. + sqrt(zMinAbs)) / (1. - sqrt(zMinAbs));
         zRootMax = (1. + sqrt(zMaxAbs)) / (1. - sqrt(zMaxAbs));
-        q2qInt = (8./3.) * log( zRootMax / zRootMin );
+        q2qInt = overFac * (8./3.) * log( zRootMax / zRootMin );
         if (doMEcorrections) q2qInt *= calcMEmax(MEtype, 1, 1);
         // Optionally enhanced branching rate.
         if (canEnhanceET) q2qInt *= userHooksPtr->enhanceFactor("isr:Q2QG");
@@ -1206,6 +1206,8 @@ void SpaceShower::pT2nearThreshold( BeamParticle& beam,
 
   // Save values for (so far) acceptable branching.
   double mSister = (abs(idDaughter) == 4) ? mc : mb;
+
+  splittingNameNow = "isr:G2QQ";
   dipEndNow->store( idDaughter, idMother, -idDaughter, x1Now, x2Now, m2Dip,
     pT2, z, xMother, Q2, mSister, pow2(mSister), pT2corr);
 
@@ -2991,7 +2993,7 @@ void SpaceShower::calcUncertainties(bool accept, double pAccept, double pT20in,
         else if (dip->pT2 < pow2(mb)) nf = 4;
         double alphaScorr = alphaS.alphaS(dip->m2Dip);
         double facSoft    = alphaScorr * (33. - 2. * nf) / (6. * M_PI);
-	// Zeta is energy fraction of emitted (on-shell) gluon = 1 - z
+        // Zeta is energy fraction of emitted (on-shell) gluon = 1 - z.
         double zeta = 1. - dip->z;
         facCorr = 1. + (1. - zeta) * facSoft * log(valFac);
       }
@@ -3042,7 +3044,8 @@ void SpaceShower::calcUncertainties(bool accept, double pAccept, double pT20in,
       else
         denom = pow2(z) + pow2(1. - z);
       // Compute reweight ratio.
-      uVarFac[iWeight] *= 1. + num / denom;
+      double minReWeight =  max( 1. + num / denom, REJECTFACTOR );
+      uVarFac[iWeight] *= minReWeight;
       doVar[iWeight] = true;
     }
   }

@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.219: 4 May 2016 
+<li>8.219: 10 May 2016 
 <ul> 
  
 <li>An interface to the Python programming language has been introduced, 
@@ -199,8 +199,8 @@ decays.</li>
  
 <li>Fixed an out-of-bounds array access in HelicityMatrixElements. 
 Thanks to Vittorio Zecca.</li> 
-
-<li>Fixes in <code>main80.cc</code> and <code>main89.cc</code>.</li>
+ 
+<li>Fixes in <code>main80.cc</code> and <code>main89.cc</code>.</li> 
  
 <li>Fixed problem with the SLHAinterface not being zeroed-out when 
 using repeated subruns.</li> 
