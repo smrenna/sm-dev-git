@@ -23,7 +23,7 @@ namespace Pythia8 {
 
 // The current Pythia (sub)version number, to agree with XML version.
 const double Pythia::VERSIONNUMBERHEAD = PYTHIA_VERSION;
-const double Pythia::VERSIONNUMBERCODE = 8.219;
+const double Pythia::VERSIONNUMBERCODE = 8.220;
 
 //--------------------------------------------------------------------------
 
@@ -1007,6 +1007,9 @@ bool Pythia::checkBeams() {
                 || (idAabs == 211)  || (idA == 990);
   bool isHadronB = (idBabs == 2212) || (idBabs == 2112) || (idB == 111)
                 || (idBabs == 211)  || (idB == 990);
+  int modeUnresolvedHadron = settings.mode("BeamRemnants:unresolvedHadron");
+  if (isHadronA && modeUnresolvedHadron%2 == 1) isUnresolvedA = true;
+  if (isHadronB && modeUnresolvedHadron > 1)    isUnresolvedB = true;
   if (isHadronA && isHadronB) return true;
 
   // Photon-photon collisions OK.
@@ -1819,18 +1822,18 @@ void Pythia::banner() {
        << "E-223 62 Lund, Sweden;                |  | \n"
        << " |  |      e-mail: torbjorn@thep.lu.se       "
        << "                                      |  | \n"
-       << " |  |   Jesper Roy Christiansen;  Department "
-       << "of Astronomy and Theoretical Physics, |  | \n"
-       << " |  |      Lund University, Solvegatan 14A, S"
-       << "E-223 62 Lund, Sweden;                |  | \n"
-       << " |  |      e-mail: Jesper.Roy.Christiansen@th"
-       << "ep.lu.se                              |  | \n"
        << " |  |   Nishita Desai;  Institut fuer Theoret"
        << "ische Physik,                         |  | \n"
        << " |  |     Universitaet Heidelberg, Philosophe"
        << "nweg 16, D-69120 Heidelberg, Germany; |  | \n"
        << " |  |      e-mail: n.desai@thphys.uni-heidelb"
        << "erg.de                                |  | \n"
+       << " |  |   Nadine Fischer;  School of Physics,  "
+       << "                                      |  | \n"
+       << " |  |      Monash University, PO Box 27, 3800"
+       << " Melbourne, Australia;                |  | \n"
+       << " |  |      e-mail: nadine.fischer@monash.edu "
+       << "                                      |  | \n"
        << " |  |   Ilkka Helenius;  Department of Astron"
        << "omy and Theoretical Physics,          |  | \n"
        << " |  |      Lund University, Solvegatan 14A, S"
@@ -1842,6 +1845,12 @@ void Pythia::banner() {
        << " |  |      77 Massachusetts Ave, Cambridge, M"
        << "A 02139, USA;                         |  | \n"
        << " |  |      e-mail: philten@cern.ch           "
+       << "                                      |  | \n"
+       << " |  |   Leif Lonnblad;  Department of Astrono"
+       << "my and Theoretical Physics,           |  | \n"
+       << " |  |      Lund University, Solvegatan 14A, S"
+       << "E-223 62 Lund, Sweden;                |  | \n"
+       << " |  |      e-mail: leif.lonnblad@thep.lu.se  "
        << "                                      |  | \n"
        << " |  |   Stephen Mrenna;  Computing Division, "
        << "Simulations Group,                    |  | \n"

@@ -92,8 +92,12 @@ provides an example of this and is comprised of the following files:
  
 <br/> 
 The example may be compiled and run with as usual. Afterwards, the new 
-<code>pytree.root</code> file will contain the PYTHIA events. Note that 
-files can become quite large when many events are generated. 
+<code>pytree.root</code> file will contain the PYTHIA events. Note 
+that files can become quite large when many events are generated. To 
+open these files within the ROOT interpreter the PYTHIA class 
+dictionary must be loaded, <code>.L main92.so</code>. In compiled 
+code, the PYTHIA class dictionary <code>main92.so</code> must be 
+linked against, to either read or write PYTHIA events to a ROOT file. 
  
 <h4>Error notice</h4> 
  
@@ -105,7 +109,7 @@ your <code>PythiaStdlib.h</code> file:
    // Stdlib header file for dynamic library loading. 
    #ifndef __CINT__ 
    #define dlsym __ 
-   #include &lt;lfcn.h&gt; 
+   #include &lt;dlfcn.h&gt; 
    #undef dlsym 
    #endif 
 </pre> 

@@ -2633,7 +2633,7 @@ void Settings::initTunePP( int ppTune) {
     // See R.D. Field, presentation at MPI@LHC 2014, Krakow, Poland.
     if (ppTune == 18) {
       parm("MultipartonInteractions:pT0Ref",    2.4024);
-      parm("MultipartonInteractions:ecmPow",    0.2521);
+      parm("MultipartonInteractions:ecmPow",    0.25208);
       parm("MultipartonInteractions:expPow",    1.60  );
     }
 

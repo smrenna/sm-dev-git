@@ -356,11 +356,11 @@ public:
     double xMaxIn = 1.) {
     book(titleIn, nBinIn, xMinIn, xMaxIn);}
   Hist(const Hist& h)
-    : title(h.title), nBin(h.nBin), nFill(h.nFill), xMin(h.xMin),
+    : titleSave(h.titleSave), nBin(h.nBin), nFill(h.nFill), xMin(h.xMin),
     xMax(h.xMax), dx(h.dx), under(h.under), inside(h.inside),
     over(h.over), res(h.res) { }
   Hist(string titleIn, const Hist& h)
-    : title(titleIn), nBin(h.nBin), nFill(h.nFill), xMin(h.xMin),
+    : titleSave(titleIn), nBin(h.nBin), nFill(h.nFill), xMin(h.xMin),
     xMax(h.xMax), dx(h.dx), under(h.under), inside(h.inside),
     over(h.over), res(h.res) { }
   Hist& operator=(const Hist& h) { if(this != &h) {
@@ -373,7 +373,7 @@ public:
     double xMaxIn = 1.) ;
 
   // Set title of a histogram.
-  void name(string titleIn = "  ") {title = titleIn; }
+  void title(string titleIn = "  ") {titleSave = titleIn; }
 
   // Reset bin contents.
   void null() ;
@@ -396,6 +396,9 @@ public:
     bool printOverUnder, bool xMidBin) ;
   friend void table(const Hist& h1, const Hist& h2, string fileName,
     bool printOverUnder, bool xMidBin) ;
+
+  // Return title of histogram.
+  string getTitle() const {return titleSave;}
 
   // Return content of specific bin: 0 gives underflow and nBin+1 overflow.
   double getBinContent(int iBin) const;
@@ -444,7 +447,7 @@ private:
   static const char   NUMBER[];
 
   // Properties and contents of a histogram.
-  string title;
+  string titleSave;
   int    nBin, nFill;
   double xMin, xMax, dx, under, inside, over;
   vector<double> res;

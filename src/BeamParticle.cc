@@ -638,6 +638,13 @@ int BeamParticle::gammaValSeaComp(int iResolved) {
 
 bool BeamParticle::remnantFlavours(Event& event, bool isDIS) {
 
+  // Elastically scattered beam, e.g. for coherent photon from proton.
+  if (isHadronBeam && isUnresolvedBeam) {
+    append( 0, idBeam, 0., -1);
+    resolved[1].m( particleDataPtr->m0( idBeamAbs ) );
+    return true;
+  }
+
   // A baryon will have a junction, unless a diquark is formed later.
   hasJunctionBeam = (isBaryon());
 

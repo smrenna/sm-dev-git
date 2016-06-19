@@ -853,7 +853,7 @@ const char NUMBER[] = {'0', '1', '2', '3', '4', '5',
 void Hist::book(string titleIn, int nBinIn, double xMinIn,
   double xMaxIn) {
 
-  title = titleIn;
+  titleSave = titleIn;
   nBin  = nBinIn;
   if (nBinIn < 1) nBin = 1;
   if (nBinIn > NBINMAX) nBin = NBINMAX;
@@ -908,7 +908,7 @@ ostream& operator<<(ostream& os, const Hist& h) {
   time_t t = time(0);
   char date[18];
   strftime(date,18,"%Y-%m-%d %H:%M",localtime(&t));
-  os << "\n\n  " << date << "       " << h.title << "\n\n";
+  os << "\n\n  " << date << "       " << h.titleSave << "\n\n";
 
   // Group bins, where required, to make printout have fewer columns.
   // Avoid overflow.

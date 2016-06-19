@@ -48,8 +48,5 @@
 #pragma link C++ class Pythia8::ResonanceWRight+;
 #pragma link C++ class Pythia8::ResonanceHchgchgLeft+;
 #pragma link C++ class Pythia8::ResonanceHchgchgRight+;
-#pragma link C++ class Pythia8::ResonanceWidths+;
 #pragma link C++ class Pythia8::SigmaProcess+;
-#pragma link C++ class std::vector<ResonanceWidths>+;
-#pragma link C++ class std::pair<int,ParticleDataEntry>+;
 #endif

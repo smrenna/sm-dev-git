@@ -173,7 +173,7 @@ define a histogram that previously was only declared;
 see above for the meaning of the arguments. 
 </method> 
  
-<method name="void Hist::name(string title)"> 
+<method name="void Hist::title(string title)"> 
 change the title of a histogram, but keep other properties unchanged. 
 </method> 
  
@@ -235,6 +235,10 @@ The optional last two arguments allows also underflow and overflow
 contents to be printed, and the <ei>x</ei> to refer to the beginning 
 of the bin rather than the center; see above. 
 </methodmore> 
+ 
+<method name="string Hist::getTitle()"> 
+return the title of the histogram. 
+</method> 
  
 <method name="double Hist::getBinContent(int iBin)"> 
 return the value in bin <code>iBin</code>, ranging from 1 through 

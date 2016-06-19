@@ -2012,12 +2012,12 @@ bool PartonLevel::resonanceShowers( Event& process, Event& event,
     ++nRes;
     int iBegin = nHardDone;
 
-    // In first call (skipForR = true) skip over resonances
-    // that should form R-hadrons, and their daughters.
+    // In first call (skipForR = true) skip over daughters
+    // of resonances that should form R-hadrons
     if (allowRH) {
       if (skipForR) {
         bool comesFromR = false;
-        int iTraceUp = iBegin;
+        int iTraceUp = process[iBegin].mother1();
         do {
           if ( rHadronsPtr->givesRHadron(process[iTraceUp].id()) )
             comesFromR = true;
