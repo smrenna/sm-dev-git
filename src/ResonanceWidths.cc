@@ -1751,16 +1751,16 @@ void ResonanceExcited::calcWidth(bool) {
       }
     }
 
-    // 3-particle phase-space factor integrated with squared contact 
+    // 3-particle phase-space factor integrated with squared contact
     // ME  = 2 * \bar f_L \gamma^\mu f_L^*  \bar q_L \gamma_\mu q_L;
     // quark mass correction for f^* -> t tbar f (code by Oleg Zenin).
     double a2 = 0.;
-    if ( (id1Abs == id2Abs && id1Abs != id3Abs) 
+    if ( (id1Abs == id2Abs && id1Abs != id3Abs)
       || (id1Abs == id3Abs && id1Abs != id2Abs) )  a2 = 4. * mr1;
     else if (id2Abs == id3Abs && id2Abs != id1Abs) a2 = 4. * mr2;
     if (a2 > 0.) {
-      widNow *= sqrt(1. - a2) * ( 1. - (7./2.) * a2 - (1./8.) * pow2(a2) 
-        - (3./16.) * pow3(a2) ) + 3. * pow2(a2) * (1. - (1./16.) * pow2(a2)) 
+      widNow *= sqrt(1. - a2) * ( 1. - (7./2.) * a2 - (1./8.) * pow2(a2)
+        - (3./16.) * pow3(a2) ) + 3. * pow2(a2) * (1. - (1./16.) * pow2(a2))
         * log( sqrt(1./a2) * (1. + sqrt(1. - a2)) ) ;
     }
   }

@@ -212,12 +212,23 @@ void TimeShower::init( BeamParticle* beamAPtrIn,
   doHVshower         = settingsPtr->flag("HiddenValley:FSR");
   nCHV               = settingsPtr->mode("HiddenValley:Ngauge");
   alphaHVfix         = settingsPtr->parm("HiddenValley:alphaFSR");
+  alphaHVorder       = (nCHV > 1 )
+                     ? settingsPtr->mode("HiddenValley:alphaOrder") : 0;
+  nFlavHV            = settingsPtr->mode("HiddenValley:nFlav");
+  LambdaHV           = settingsPtr->parm("HiddenValley:Lambda");
   pThvCut            = settingsPtr->parm("HiddenValley:pTminFSR");
-  pT2hvCut           = pThvCut * pThvCut;
   CFHV               = (nCHV == 1) ? 1. : (nCHV * nCHV - 1.)/(2. * nCHV);
   idHV               = (nCHV == 1) ? 4900022 : 4900021;
   mHV                = particleDataPtr->m0(idHV);
   brokenHVsym        = (nCHV == 1 && mHV > 0.);
+  if (pThvCut < LambdaHV) {
+    pThvCut         = LAMBDA3MARGIN * LambdaHV;
+    ostringstream newPTcolCut;
+    newPTcolCut << fixed << setprecision(3) << pThvCut;
+    infoPtr->errorMsg("Warning in TimeShower::init: Hidden Valley pTmin ",
+                      "too low, raised to " + newPTcolCut.str() );
+  }
+  pT2hvCut           = pThvCut * pThvCut;
 
   // Possibility of two predetermined hard emissions in event.
   doSecondHard    = settingsPtr->flag("SecondHard:generate");
@@ -2755,12 +2766,14 @@ void TimeShower::pT2nextHV(double pT2begDip, double pT2sel,
   // C_F * alpha_HV/2 pi.
   int    colvTypeAbs = abs(dip.colvType);
   double colvFac     = (colvTypeAbs == 1) ? CFHV : 0.5 * nCHV;
-  double alphaHV2pi  = colvFac * (alphaHVfix / (2. * M_PI));
+  double alphaHV2pi  = alphaHVfix / (2. * M_PI);
+  double b0HV        = (11. /6. * nCHV - 2. / 6. * nFlavHV);
 
   // Determine overestimated z range. Find evolution coefficient.
   double zMinAbs = 0.5 - sqrtpos( 0.25 - pT2endDip / dip.m2DipCorr );
   if (zMinAbs < SIMPLIFYROOT) zMinAbs = pT2endDip / dip.m2DipCorr;
-  double emitCoefTot = alphaHV2pi * 2. * log(1. / zMinAbs - 1.);
+  double emitCoefTot = colvFac * 2. * log(1. / zMinAbs - 1.);
+  double LambdaHV2 = pow2(LambdaHV);
 
   // Variables used inside evolution loop.
   dip.pT2 = pT2begDip;
@@ -2783,8 +2796,14 @@ void TimeShower::pT2nextHV(double pT2begDip, double pT2sel,
     enhanceNow = 1.;
     nameNow = "";
 
-    // Pick pT2 (in overestimated z range).
-    dip.pT2 = dip.pT2 * pow(rndmPtr->flat(), 1. / emitCoefTot);
+    // Pick pT2 (in overestimated z range), fixed or first-order alpha_strong.
+    if (alphaHVorder == 0) {
+      dip.pT2 = dip.pT2 * pow( rndmPtr->flat(),
+        1. / (alphaHV2pi * emitCoefTot) );
+    } else if (alphaHVorder == 1) {
+      dip.pT2 = LambdaHV2 * pow( dip.pT2 / LambdaHV2,
+        pow( rndmPtr->flat(), b0HV / emitCoefTot) );
+    }
     wt = 0.;
 
     // Abort evolution if below cutoff scale, or below another branching.

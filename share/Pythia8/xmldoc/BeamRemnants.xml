@@ -310,7 +310,7 @@ in the colour configuration of the scattered partons.
 Switch to to force either or both of the beam remnants to collapse to a 
 single hadron, namely the original incoming one. Must only be used when this 
 is physically meaningful, e.g. when a photon can be viewed as emitted from 
-a proton that does not break up in the process.
+a proton that does not break up in the process. 
 <option value="0"> Both hadronic beams are resolved. </option> 
 <option value="1"> Beam A is unresolved, beam B resolved. </option> 
 <option value="2"> Beam A is resolved, beam B unresolved. </option> 

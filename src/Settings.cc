@@ -1859,6 +1859,7 @@ void Settings::resetTunePP() {
   resetParm("SpaceShower:pTmaxFudge");
   resetParm("SpaceShower:pTdampFudge");
   resetFlag("SpaceShower:rapidityOrder");
+  resetFlag("SpaceShower:rapidityOrderMPI");
   resetFlag("SpaceShower:phiPolAsym");
   resetFlag("SpaceShower:phiIntAsym");
 
@@ -2160,6 +2161,7 @@ void Settings::initTunePP( int ppTune) {
     parm("SpaceShower:pTmaxFudge",              1.0   );
     parm("SpaceShower:pTdampFudge",             1.0   );
     flag("SpaceShower:rapidityOrder",           false );
+    flag("SpaceShower:rapidityOrderMPI",        false );
     flag("SpaceShower:phiPolAsym",              false );
     flag("SpaceShower:phiIntAsym",              false );
     parm("MultipartonInteractions:alphaSvalue", 0.127 );
@@ -2196,6 +2198,7 @@ void Settings::initTunePP( int ppTune) {
     parm("SpaceShower:pTmaxFudge",              1.0   );
     parm("SpaceShower:pTdampFudge",             1.0   );
     flag("SpaceShower:rapidityOrder",           false );
+    flag("SpaceShower:rapidityOrderMPI",        false );
     flag("SpaceShower:phiPolAsym",              false );
     flag("SpaceShower:phiIntAsym",              false );
     parm("MultipartonInteractions:alphaSvalue", 0.127 );
@@ -2232,6 +2235,7 @@ void Settings::initTunePP( int ppTune) {
     parm("SpaceShower:pTmaxFudge",              1.0   );
     parm("SpaceShower:pTdampFudge",             1.0   );
     flag("SpaceShower:rapidityOrder",           true  );
+    flag("SpaceShower:rapidityOrderMPI",        true  );
     flag("SpaceShower:phiPolAsym",              true  );
     flag("SpaceShower:phiIntAsym",              true  );
     parm("MultipartonInteractions:alphaSvalue", 0.135 );
@@ -2268,6 +2272,7 @@ void Settings::initTunePP( int ppTune) {
     parm("SpaceShower:pTmaxFudge",              1.0   );
     parm("SpaceShower:pTdampFudge",             1.0   );
     flag("SpaceShower:rapidityOrder",           true  );
+    flag("SpaceShower:rapidityOrderMPI",        true  );
     flag("SpaceShower:phiPolAsym",              true  );
     flag("SpaceShower:phiIntAsym",              true  );
     parm("MultipartonInteractions:alphaSvalue", 0.127 );
@@ -2307,6 +2312,7 @@ void Settings::initTunePP( int ppTune) {
     parm("SpaceShower:pTmaxFudge",              1.0   );
     parm("SpaceShower:pTdampFudge",             1.0   );
     flag("SpaceShower:rapidityOrder",           true  );
+    flag("SpaceShower:rapidityOrderMPI",        true  );
     flag("SpaceShower:phiPolAsym",              true  );
     flag("SpaceShower:phiIntAsym",              true  );
     parm("MultipartonInteractions:alphaSvalue", 0.135 );
@@ -2346,6 +2352,7 @@ void Settings::initTunePP( int ppTune) {
     parm("SpaceShower:pTmaxFudge",              1.0   );
     parm("SpaceShower:pTdampFudge",             1.0   );
     flag("SpaceShower:rapidityOrder",           true  );
+    flag("SpaceShower:rapidityOrderMPI",        true  );
     flag("SpaceShower:phiPolAsym",              true  );
     flag("SpaceShower:phiIntAsym",              true  );
     parm("MultipartonInteractions:alphaSvalue", 0.135 );
@@ -2385,6 +2392,7 @@ void Settings::initTunePP( int ppTune) {
     parm("SpaceShower:pTmaxFudge",              1.0   );
     parm("SpaceShower:pTdampFudge",             1.0   );
     flag("SpaceShower:rapidityOrder",           true  );
+    flag("SpaceShower:rapidityOrderMPI",        true  );
     flag("SpaceShower:phiPolAsym",              true  );
     flag("SpaceShower:phiIntAsym",              true  );
     parm("MultipartonInteractions:alphaSvalue", 0.130 );   // same as PDF
@@ -2423,6 +2431,7 @@ void Settings::initTunePP( int ppTune) {
     parm("SpaceShower:pTmaxFudge",              1.0   );
     parm("SpaceShower:pTdampFudge",             1.0   );
     flag("SpaceShower:rapidityOrder",           true );
+    flag("SpaceShower:rapidityOrderMPI",        true  );
     flag("SpaceShower:phiPolAsym",              true  );
     flag("SpaceShower:phiIntAsym",              true  );
     parm("MultipartonInteractions:alphaSvalue", 0.135 );
@@ -2449,6 +2458,7 @@ void Settings::initTunePP( int ppTune) {
         word("PDF:pSet",             "LHAPDF6:cteq6l1");
       else word("PDF:pSet",                     "8"   );
       flag("SpaceShower:rapidityOrder",         false );
+      flag("SpaceShower:rapidityOrderMPI",      false );
       parm("MultipartonInteractions:pT0Ref",    2.18  );
       parm("MultipartonInteractions:ecmPow",    0.22  );
       mode("MultipartonInteractions:bProfile",  4     );
@@ -2465,6 +2475,7 @@ void Settings::initTunePP( int ppTune) {
         word("PDF:pSet",      "LHAPDF6:MSTW2008lo68cl");
       else word("PDF:pSet",                     "5"   );
       flag("SpaceShower:rapidityOrder",         false );
+      flag("SpaceShower:rapidityOrderMPI",      false );
       parm("MultipartonInteractions:pT0Ref",    1.90  );
       parm("MultipartonInteractions:ecmPow",    0.30  );
       mode("MultipartonInteractions:bProfile",  4     );
@@ -2481,6 +2492,7 @@ void Settings::initTunePP( int ppTune) {
         word("PDF:pSet",             "LHAPDF6:cteq6l1");
       else word("PDF:pSet",                     "8"   );
       flag("SpaceShower:rapidityOrder",         false );
+      flag("SpaceShower:rapidityOrderMPI",      false );
       parm("MultipartonInteractions:pT0Ref",    2.13  );
       parm("MultipartonInteractions:ecmPow",    0.21  );
       mode("MultipartonInteractions:bProfile",  4     );
@@ -2497,6 +2509,7 @@ void Settings::initTunePP( int ppTune) {
         word("PDF:pSet",      "LHAPDF6:MSTW2008lo68cl");
       else word("PDF:pSet",                     "5"   );
       flag("SpaceShower:rapidityOrder",         false );
+      flag("SpaceShower:rapidityOrderMPI",      false );
       parm("MultipartonInteractions:pT0Ref",    1.87  );
       parm("MultipartonInteractions:ecmPow",    0.28  );
       mode("MultipartonInteractions:bProfile",  4     );
@@ -2512,6 +2525,7 @@ void Settings::initTunePP( int ppTune) {
       else
         word("PDF:pSet",         "LHAPDF5:CT10.LHgrid");
       flag("SpaceShower:rapidityOrder",         false );
+      flag("SpaceShower:rapidityOrderMPI",      false );
       parm("MultipartonInteractions:pT0Ref",    1.70  );
       parm("MultipartonInteractions:ecmPow",    0.16  );
       mode("MultipartonInteractions:bProfile",  4     );
@@ -2528,6 +2542,7 @@ void Settings::initTunePP( int ppTune) {
         word("PDF:pSet",       "LHAPDF6:MRST2007lomod");
       else word("PDF:pSet",                     "3"   );
       flag("SpaceShower:rapidityOrder",         false );
+      flag("SpaceShower:rapidityOrderMPI",      false );
       parm("MultipartonInteractions:pT0Ref",    2.39  );
       parm("MultipartonInteractions:ecmPow",    0.24  );
       mode("MultipartonInteractions:bProfile",  4     );
@@ -2544,6 +2559,7 @@ void Settings::initTunePP( int ppTune) {
         word("PDF:pSet",            "LHAPDF6:MRSTMCal");
       else word("PDF:pSet",                     "4"   );
       flag("SpaceShower:rapidityOrder",         false );
+      flag("SpaceShower:rapidityOrderMPI",      false );
       parm("MultipartonInteractions:pT0Ref",    2.57  );
       parm("MultipartonInteractions:ecmPow",    0.23  );
       mode("MultipartonInteractions:bProfile",  4     );
@@ -2613,6 +2629,7 @@ void Settings::initTunePP( int ppTune) {
     parm("SpaceShower:pTmaxFudge",              1.0   );
     parm("SpaceShower:pTdampFudge",             1.0   );
     flag("SpaceShower:rapidityOrder",           true  );
+    flag("SpaceShower:rapidityOrderMPI",        true  );
     flag("SpaceShower:phiPolAsym",              true  );
     flag("SpaceShower:phiIntAsym",              true  );
     parm("MultipartonInteractions:alphaSvalue", 0.130 );   // same as PDF

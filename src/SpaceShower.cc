@@ -3070,8 +3070,8 @@ void SpaceShower::calcUncertainties(bool accept, double pAccept, double pT20in,
       if (denom < REJECTFACTOR) {
         stringstream message;
         message << iWeight;
-        infoPtr->errorMsg("Warning in SpaceShower: reject denom for iWeight = ",
-          message.str());
+        infoPtr->errorMsg("Warning in SpaceShower: reject denom for"
+          " iWeight = ", message.str());
       }
       // Force reweighting factor > 0.
       double reWtFail = max(0.01, (1. - uVarFac[iWeight] * pAccept) / denom);

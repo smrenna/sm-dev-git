@@ -12,15 +12,23 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.220: 19 June 2016 
+<li>8.220: 8 September 2016 
 <ul> 
  
 <li>Nadine Fischer and Leif L&ouml;nnblad join as co-authors, 
 while Jesper Roy Christiansen leaves.</li> 
-
+ 
 <li>New mode <code>BeamRemnants:unresolvedHadron</code> can be used to 
 let original hadron remain as beam remnant, e.g. for coherent emission 
-of photons.</li>
+of photons.</li> 
+ 
+<li>New option with running coupling in Hidden Valley scenarios.</li> 
+ 
+<li>Fix in the setup of tunes with <code>SpaceShower:rapidityOrder = off</code>. 
+The new (in 8.219) <code>SpaceShower:rapidityOrderMPI</code> then also 
+ought to have been set off, but this was missed, giving small inconsistencies 
+(around 2% reduction of the charged multiplicity). 
+Thanks to James Monk.</li> 
  
 <li>New method <code>string Hist::getTitle()</code> to get the title 
 of a histogram, while <code>void Hist::title(string )</code> sets it. 
@@ -34,10 +42,10 @@ alerting us.
 <li>Minor updates so that <code>main91</code> and <code>main92</code> 
 examples work also with ROOT 6, in addition to the existing ROOT 5 
 support. Thanks to Li Huang.</li> 
-
-<li>Include correct mass suppression for excited fermion three-body
-decays <ei>F^* &rarr; F Fbar f</ei>, primarily for <ei>F = t</ei>.
-Thanks to Olya Igonkina and Oleg Zenin.</li>
+ 
+<li>Include correct mass suppression for excited fermion three-body 
+decays <ei>F^* &rarr; F Fbar f</ei>, primarily for <ei>F = t</ei>. 
+Thanks to Olya Igonkina and Oleg Zenin.</li> 
  
 <li>Bring the <code>FJcore</code> package inside the <code>Pythia8</code> 
 namespace to avoid potential name clashes with user code. Thanks to 
