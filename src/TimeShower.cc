@@ -3227,8 +3227,8 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
 
   // If doing uncertainty variations, calculate accept/reject reweightings.
   doUncertaintiesNow = doUncertainties;
-  if (!uVarMPIshowers && iSysSel != 0 && partonSystemsPtr->getInA(iSysSel) != 0)
-    doUncertaintiesNow = false;
+  if (!uVarMPIshowers && iSysSel != 0
+    && partonSystemsPtr->getInA(iSysSel) != 0) doUncertaintiesNow = false;
   if (doUncertaintiesNow)
     calcUncertainties( acceptEvent, pAccept, dipSel, &rad, &emt);
 
@@ -3249,14 +3249,14 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
     BeamParticle& beamRec = (isrTypeNow == 1) ? *beamAPtr : *beamBPtr;
     if ( beamRec.isGamma() ) {
       // If recoiler kinematics fixed by ISR can't act as recoiler.
-      if ( !beamRec.getGammaRemnants() ) return false;
+      if ( !beamRec.resolvedGamma() ) return false;
       BeamParticle& beamOther = (isrTypeNow == 1) ? *beamBPtr : *beamAPtr;
       bool physical   = true;
       double xRec     = 2. * pRec.e() / (beamRec.e() + beamOther.e());
       double sCM      = m2( beamRec.p(), beamOther.p());
       double eCM      = sqrt(sCM);
       // One-remnant system.
-      if ( !beamOther.getGammaRemnants() ) {
+      if ( !beamOther.resolvedGamma() ) {
         physical = beamRec.roomFor1Remnant(beamRec[0].id(), xRec, eCM);
       // Two-remnants systems.
       } else {

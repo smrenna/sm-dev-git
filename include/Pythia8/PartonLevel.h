@@ -105,7 +105,7 @@ private:
          hasTwoLeptonBeams, hasPointLeptons, canVetoPT, canVetoStep,
          canVetoMPIStep, canVetoEarly, canSetScale, allowRH, earlyResDec,
          vetoWeakJets, canReconResSys, doReconnect, doHardDiff,
-         forceResonanceCR;
+         forceResonanceCR, showUnresGamma;
   int    pTmaxMatchMPI;
   double mMinDiff, mWidthDiff, pMaxDiff, vetoWeakDeltaR2;
 
@@ -220,6 +220,9 @@ private:
   // Photon beam inside lepton beam: recover the whole event and
   // add scattered leptons.
   void leaveResolvedLeptonGamma( Event& process, Event& event);
+
+  // Photon beam inside lepton beam: set up the parton level generation.
+  void cleanEventFromGamma( Event& event);
 
   // Pointer to MergingHooks object for user interaction with the merging.
   MergingHooks* mergingHooksPtr;

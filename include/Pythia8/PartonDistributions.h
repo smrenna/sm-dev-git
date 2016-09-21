@@ -84,8 +84,11 @@ public:
   // Sample the valence content for photons.
   virtual int sampleGammaValFlavor(double) { return 0.; }
 
+  // The total x-integrated PDFs. Relevant for MPIs with photon beams.
+  virtual double xfIntegratedTotal(double) { return 0.; }
+
   // Return the sampled value for x_gamma.
-  virtual double xGamma(int){ return 1; }
+  virtual double xGamma(int){ return 1.; }
 
   // Normal PDFs unless gamma inside lepton -> an overestimate for sampling.
   virtual double xfMax(int id, double x, double Q2) { return xf( id, x, Q2); }
@@ -700,6 +703,9 @@ public:
 
   // Set the valence content for photons.
   int sampleGammaValFlavor(double Q2);
+
+  // The total x-integrated PDFs. Relevant for MPIs with photon beams.
+  double xfIntegratedTotal(double Q2);
 
 private:
 

@@ -617,7 +617,7 @@ bool Pythia::init() {
 
       // Set up MergingHooks object.
       bool inputMergingHooks = (mergingHooksPtr != 0);
-      if (doMerging && !inputMergingHooks){
+      if (doMerging && !inputMergingHooks) {
         if (hasOwnMergingHooks && mergingHooksPtr) delete mergingHooksPtr;
         mergingHooksPtr = new MergingHooks();
         hasOwnMergingHooks = true;
@@ -782,18 +782,10 @@ bool Pythia::init() {
   }
 
   // Further checks for photon-photon events as not all features included yet.
-  if ( idA == 22 && idB == 22 ) {
-    if (settings.flag("SoftQCD:nonDiffractive")){
-      info.errorMsg("Abort from Pythia::init: "
-        "Soft QCD events not implemented for photon-photon collisions");
-      return false;
-    }
-
-    if ( doDiffraction || doHardDiff ){
-      info.errorMsg("Abort from Pythia::init: "
-        "Diffractive events not implemented for photon-photon collisions");
-      return false;
-    }
+  if ( ( idA == 22 && idB == 22 ) && ( doDiffraction || doHardDiff ) ) {
+    info.errorMsg("Abort from Pythia::init: "
+      "Diffractive events not implemented for photon-photon collisions");
+    return false;
   }
 
   // Do not set up beam kinematics when no process level.
@@ -835,6 +827,20 @@ bool Pythia::init() {
     if ( beamB.hasGamma() ) beamGamB.init( 22, -0.5 * eCM, 0.5 * eCM, 0.,
       &info, settings, &particleData, &rndm, pdfGamBPtr, pdfGamBPtr, false,
       flavSelPtr);
+
+    // No soft QCD or diffraction for gamma+gamma in e+e-.
+    if ( beamA.hasGamma() && beamB.hasGamma() ) {
+      if (settings.flag("SoftQCD:nonDiffractive")) {
+        info.errorMsg("Abort from Pythia::init: "
+          "Soft QCD events not implemented for photon-photon collisions");
+        return false;
+      }
+      if ( doDiffraction || doHardDiff ) {
+        info.errorMsg("Abort from Pythia::init: "
+          "Diffractive events not implemented for photon-photon collisions");
+        return false;
+      }
+    }
   }
 
   // Send info/pointers to process level for initialization.
@@ -956,11 +962,10 @@ void Pythia::checkSettings() {
     settings.flag("MultipartonInteractions:allowDoubleRescatter", false);
   }
 
-  // No MPIs for photon-photon collisions.
-  if ( ( (idA == 22 && idB == 22) || settings.flag("PDF:lepton2gamma") )
-    && settings.flag("PartonLevel:MPI") ) {
+  // No MPIs for e+e- -> gamma+gamma -> X collisions.
+  if ( settings.flag("PDF:lepton2gamma") && settings.flag("PartonLevel:MPI") ){
     info.errorMsg("Warning in Pythia::checkSettings: "
-                  "MPI switched off for photon-photon collisions.");
+                  "MPI switched off for photon-photon processes.");
     settings.flag("PartonLevel:MPI", false);
   }
 
@@ -1395,7 +1400,6 @@ bool Pythia::next() {
       beamGamA.clear();
       beamGamB.clear();
       partonSystems.clear();
-
 
       // Parton-level evolution: ISR, FSR, MPI.
       if ( !partonLevel.next( process, event) ) {
@@ -1834,12 +1838,12 @@ void Pythia::banner() {
        << " Melbourne, Australia;                |  | \n"
        << " |  |      e-mail: nadine.fischer@monash.edu "
        << "                                      |  | \n"
-       << " |  |   Ilkka Helenius;  Department of Astron"
-       << "omy and Theoretical Physics,          |  | \n"
-       << " |  |      Lund University, Solvegatan 14A, S"
-       << "E-223 62 Lund, Sweden;                |  | \n"
-       << " |  |      e-mail: ilkka.helenius@thep.lu.se "
-       << "                                      |  | \n"
+       << " |  |   Ilkka Helenius;  Institute for Theore"
+       << "tical Physics,                        |  | \n"
+       << " |  |     Tuebingen University, Auf der Morge"
+       << "nstelle 14, 72076 Tuebingen, Germany; |  | \n"
+       << " |  |      e-mail: ilkka.helenius@uni-tuebing"
+       << "en.de                                 |  | \n"
        << " |  |   Philip Ilten;  Massachusetts Institut"
        << "e of Technology,                      |  | \n"
        << " |  |      77 Massachusetts Ave, Cambridge, M"

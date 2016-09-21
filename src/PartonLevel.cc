@@ -82,6 +82,9 @@ bool PartonLevel::init( Info* infoPtrIn, Settings& settings,
   beamHasGamma       = beamAhasGamma && beamBhasGamma;
   Q2maxGamma         = settings.parm("Photon:Q2max");
 
+  // Show the copies of beam photon if found in ISR.
+  showUnresGamma     = settings.flag("Photon:showUnres");
+
   // Need MPI initialization for soft QCD processes, even if only first MPI.
   // But no need to initialize MPI if never going to use it.
   doMPI              = settings.flag("PartonLevel:MPI");
@@ -409,9 +412,13 @@ bool PartonLevel::next( Event& process, Event& event) {
     pTsaveISR  = 0.;
     pTsaveFSR  = 0.;
 
-    // Set remnants on for photon beams. Can be switched off by ISR.
-    beamAPtr->setGammaRemnants( beamAPtr->isGamma() );
-    beamBPtr->setGammaRemnants( beamBPtr->isGamma() );
+    // Reset nMPI and nISR for showers.
+    infoPtr->setPartEvolved(nMPI, nISR);
+
+    // Reset parameters related to valence content and remnants of photon
+    // beam if ISR or MPI generated.
+    if (beamAPtr->isGamma() && ( doMPI || doISR ) ) beamAPtr->resetGamma();
+    if (beamBPtr->isGamma() && ( doMPI || doISR ) ) beamBPtr->resetGamma();
 
     // Identify hard interaction system for showers.
     setupHardSys( process, event);
@@ -453,6 +460,11 @@ bool PartonLevel::next( Event& process, Event& event) {
     double pTmaxFSR = (limitPTmaxFSR) ? timesPtr->enhancePTmax() * pTscaleRad
                                       : infoPtr->eCM();
 
+    // Store the starting scale to use it for valence selection for gamma
+    // beam. In case of MPIs use the pT scale of the last one.
+    beamAPtr->pTMPI( process.scale() );
+    beamBPtr->pTMPI( process.scale() );
+
     // Potentially reset up starting scales for matrix element merging.
     if ( hasMergingHooks && (doTrial || canRemoveEvent || canRemoveEmission) )
       mergingHooksPtr->setShowerStartingScales( doTrial,
@@ -485,6 +497,13 @@ bool PartonLevel::next( Event& process, Event& event) {
       typeVetoStep = 0;
       nRad         =  nISR + nFSRinProc;
 
+      // Check whether the beam photon has unresolved during the evolution.
+      bool unresolvedGammaA = (beamAPtr->isGamma()
+        && !(beamAPtr->resolvedGamma()) );
+      bool unresolvedGammaB = (beamBPtr->isGamma()
+        && !(beamBPtr->resolvedGamma()) );
+      bool unresolvedGamma  = unresolvedGammaA || unresolvedGammaB;
+
       // Find next pT value for FSR, MPI and ISR.
       // Order calls to minimize time expenditure.
       double pTgen = 0.;
@@ -492,7 +511,8 @@ bool PartonLevel::next( Event& process, Event& event) {
         ? timesPtr->pTnext( event, pTmaxFSR, pTgen, isFirstTrial, doTrial)
         : -1.;
       pTgen = max( pTgen, pTtimes);
-      double pTmulti = (doMPI)
+      // No MPIs for unresolved photons.
+      double pTmulti = (doMPI && !unresolvedGamma)
         ? multiPtr->pTnext( pTmaxMPI, pTgen, event) : -1.;
       pTgen = max( pTgen, pTmulti);
       double pTspace = (doISR)
@@ -547,7 +567,10 @@ bool PartonLevel::next( Event& process, Event& event) {
       // Do an initial-state emission (if allowed).
       else if (pTspace > 0. && pTspace > pTtimes) {
         infoPtr->addCounter(24);
-        if (spacePtr->branch( event)) {
+
+        // If MPIs, construct the gamma->qqbar branching in beamRemnants.
+        if (spacePtr->branch( event)
+            && ( !(nMPI > 1 && spacePtr->wasGamma2qqbar()) ) ) {
           typeLatest = 2;
           iSysNow = spacePtr->system();
           ++nISR;
@@ -698,7 +721,7 @@ bool PartonLevel::next( Event& process, Event& event) {
       if (!isDiff) infoPtr->setPartEvolved( nMPI, nISR);
 
       // Handle potential merging veto.
-      if ( canRemoveEvent && nISRhard + nFSRhard == 1 ){
+      if ( canRemoveEvent && nISRhard + nFSRhard == 1 ) {
         // Simply check, and possibly reset weights.
         mergingHooksPtr->doVetoStep( process, event );
       }
@@ -777,7 +800,7 @@ bool PartonLevel::next( Event& process, Event& event) {
         }
 
         // Handle potential merging veto.
-        if ( canRemoveEvent && nISRhard + nFSRhard == 1 ){
+        if ( canRemoveEvent && nISRhard + nFSRhard == 1 ) {
           // Simply check, and possibly reset weights.
           mergingHooksPtr->doVetoStep( process, event );
         }
@@ -860,6 +883,12 @@ bool PartonLevel::next( Event& process, Event& event) {
   }
   if (isDiff) leaveResolvedDiff( iHardLoop, process, event);
 
+  // If beam photon unresolved during evolution remove the copies of the
+  // beam particle from the event record.
+  if ( ( beamAPtr->isGamma() || beamBPtr->isGamma() )
+       && ( !beamAPtr->resolvedGamma() || !beamBPtr->resolvedGamma() ) )
+    if (!showUnresGamma) cleanEventFromGamma( event);
+
   // After parton level generation, restore the whole event.
   if (beamHasGamma) leaveResolvedLeptonGamma( process, event);
 
@@ -874,7 +903,7 @@ bool PartonLevel::next( Event& process, Event& event) {
 
   // If no additional MPI has been found then set up the diffractive
   // system the first time around.
-  if (isHardDiff && sampleTypeDiff%2 == 0 && iHardDiffLoop == 1 && nMPI == 1){
+  if (isHardDiff && sampleTypeDiff%2 == 0 && iHardDiffLoop == 1 && nMPI == 1) {
     event.clear();
     beamAPtr->clear();
     beamBPtr->clear();
@@ -1522,7 +1551,7 @@ void PartonLevel::leaveResolvedDiff( int iHardLoop, Event& process,
   for (int i = sizeProcess; i < process.size(); ++i)
     process[i].rotbst( MtoCM);
   int iFirst = (iHardLoop == 1) ? 5 + sizeEvent - sizeProcess : sizeEvent;
-  if(isDiffC)  iFirst = 6 + sizeEvent - sizeProcess;
+  if (isDiffC)  iFirst = 6 + sizeEvent - sizeProcess;
   for (int i = iFirst; i < event.size(); ++i)
     event[i].rotbst( MtoCM);
 
@@ -1643,7 +1672,7 @@ void PartonLevel::setupHardDiff( Event& process) {
     process[hardParton[i]].rotbst(MtoCM);
 
   // Change mothers and daughters after appending hard process.
-  for (unsigned int j = 0; j < hardParton.size(); ++j){
+  for (unsigned int j = 0; j < hardParton.size(); ++j) {
     int mother1 = (tmpProcess[j+3].mother1() == 0)
       ? 0 : tmpProcess[j+3].mother1() + 4;
     int mother2 = (tmpProcess[j+3].mother2() == 0)
@@ -1664,7 +1693,7 @@ void PartonLevel::setupHardDiff( Event& process) {
     if (abs(process[i].id()) == 2212 && process[i].status() == 13) iProton = i;
   }
 
-  if (isHardDiffB){
+  if (isHardDiffB) {
     process[iPomeron].daughters(hardParton[0], 0);
     process[iProton].daughters(hardParton[1],0);
     process[hardParton[0]].mothers(iPomeron,0);
@@ -1706,6 +1735,9 @@ void PartonLevel::setupHardDiff( Event& process) {
   if      (isHardDiffA) multiPtr = &multiSDA;
   else if (isHardDiffB) multiPtr = &multiSDB;
 
+  // Set the beam offset for MPIs.
+  multiPtr->setBeamOffset(beamOffset);
+
   // Done.
   infoPtr->setHasPomPsystem( true);
 
@@ -1746,6 +1778,9 @@ void PartonLevel::leaveHardDiff( Event& process, Event& event) {
   spacePtr->reassignBeamPtrs( beamAPtr, beamBPtr, 0);
   remnants.reassignBeamPtrs(  beamAPtr, beamBPtr, 0);
   colourReconnection.reassignBeamPtrs(  beamAPtr, beamBPtr);
+
+  // Reset the beam offset to normal.
+  multiPtr->setBeamOffset(0);
 
   // Restore multiparton interactions pointer to default object.
   multiPtr = &multiMB;
@@ -1962,7 +1997,7 @@ void PartonLevel::leaveResolvedLeptonGamma( Event& process, Event& event) {
   }
 
   // Add the scattered leptons if remnants are constructed.
-  if ( doRemnants ){
+  if ( doRemnants ) {
     int iPosLepton1 = event.append(beamAPtr->id(), 63, 1, 0, 0, 0, 0, 0,
       pLepton1scat, beamAPtr->m());
     int iPosLepton2 = event.append(beamBPtr->id(), 63, 2, 0, 0, 0, 0, 0,
@@ -1981,6 +2016,73 @@ void PartonLevel::leaveResolvedLeptonGamma( Event& process, Event& event) {
   remnants.reassignBeamPtrs(  beamAPtr, beamBPtr, 0);
   colourReconnection.reassignBeamPtrs(  beamAPtr, beamBPtr);
 
+}
+
+//--------------------------------------------------------------------------
+
+// Remove the copies of the beam photon from the event record.
+
+void PartonLevel::cleanEventFromGamma( Event& event) {
+
+  // Offset to normal beam position when photons emitted from a lepton beam.
+  int beamOffset = 0;
+  if (beamAhasGamma) ++beamOffset;
+  if (beamBhasGamma) ++beamOffset;
+  int iPosBeam1  = 1 + beamOffset;
+  int iPosBeam2  = 2 + beamOffset;
+
+  // Go through the event record from the end and find the copies.
+  int iPosGamma1 = 0;
+  int iPosGamma2 = 0;
+  for (int i = event.size() - 1; i > 0; --i) {
+    if ( event[i].id() == 22 && event[i].mother1() == iPosBeam1 )
+      iPosGamma1 = i;
+    if ( event[i].id() == 22 && event[i].mother1() == iPosBeam2 )
+      iPosGamma2 = i;
+  }
+
+  // Check how many unresolved photons are present in the event.
+  int nGamma = 0;
+  if (iPosGamma1 > 0) ++nGamma;
+  if (iPosGamma2 > 0) ++nGamma;
+
+  // Exit if no copies found.
+  if ( nGamma == 0 ) return;
+
+  // Loop over two beams if required.
+  for (int i = 0; i < nGamma; ++i) {
+
+    // Set the positions to match the beam.
+    int iPosGamma = (iPosGamma1 > 0 && i == 0) ? iPosGamma1 : iPosGamma2;
+    int iPosBeam  = (iPosGamma1 > 0 && i == 0) ? iPosBeam1  : iPosBeam2;
+
+    // Go through the history of the beam photon.
+    while ( iPosGamma > iPosBeam ) {
+      int iDaughter1 = event[iPosGamma].daughter1();
+      int iDaughter2 = event[iPosGamma].daughter2();
+      int iMother1   = event[iPosGamma].mother1();
+      int iMother2   = event[iPosGamma].mother2();
+
+      // If equal daughters photon just a carbon copy.
+      if ( iDaughter1 == iDaughter2 ) {
+        event[iDaughter1].mothers( iMother1, iMother2 );
+        event.remove( iPosGamma, iPosGamma);
+        iPosGamma = iDaughter1;
+
+      // If non-equal daughters the photon from ISR branching.
+      } else {
+        event[iMother1].daughters( iDaughter1, iDaughter2 );
+        event[iDaughter1].mother1( iMother1 );
+        event[iDaughter2].mother1( iMother1 );
+        event.remove( iPosGamma, iPosGamma);
+        iPosGamma = iMother1;
+      }
+
+      // If both beams unresolved fix the position of the latter one.
+      if ( (i == 0 && nGamma > 1) && iPosGamma2 > iPosGamma ) --iPosGamma2;
+
+    }
+  }
 }
 
 //--------------------------------------------------------------------------

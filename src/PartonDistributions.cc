@@ -45,10 +45,10 @@ void PDF::setValenceContent() {
     idVal2 = -1;
   }
 
-  // Photon, to start off. Modified later.
+  // Photon not fixed until at Process-/PartonLevel.
   if (idBeamAbs == 22) {
-    idVal1 =  2;
-    idVal2 = -2;
+    idVal1 =  10;
+    idVal2 = -10;
   }
 
 }
@@ -2782,6 +2782,36 @@ int CJKL::sampleGammaValFlavor(double Q2) {
   }
 
   return idVal1;
+}
+
+//--------------------------------------------------------------------------
+
+// Sum of integrated PDFs \int dx x f(x,Q^2) at given scale Q^2.
+// Integrals parametrized as a0 + a1*log(Q^2/Q0^2).
+
+double CJKL::xfIntegratedTotal(double Q2){
+
+  // Freeze the scale below the initial scale.
+  if(Q2 < Q02) Q2 = Q02;
+
+  // Set the reference scales and relative contributions.
+  // Gluons and u/d quarks has some non-perturbative contribution, others
+  // only radiative contributions. Derived by fitting by eye to
+  // a0 + a1*log(Q^2/Q0^2).
+  double fq0[6] = { 0.0018, 0.0006, 0.0006, 0., 0., 0. };
+  double mq2[6] = { Q02, Q02, Q02, Q02, pow2(MC), pow2(MB) };
+  double eq2[6] = { 3.0/9.0, 1.0/9.0, 4.0/9.0, 1.0/9.0, 4.0/9.0, 1.0/9.0 };
+  double a1 = 0.000981;
+
+  // Logarithmic Q^2 evolution for each flavor. quarks two times, gluon
+  // coefficents scaled appropriately.
+  double xIntegrated = 0;
+  for(int i = 0;i < 6;++i) {
+    xIntegrated += fq0[i] + 2*a1*eq2[i]*max(0.0,log(Q2/mq2[i]));
+  }
+
+  return xIntegrated;
+
 }
 
 //--------------------------------------------------------------------------

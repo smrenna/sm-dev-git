@@ -39,11 +39,21 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.220: 8 September 2016 
+<li>8.220: 20 September 2016 
 <ul> 
  
 <li>Nadine Fischer and Leif L&ouml;nnblad join as co-authors, 
-while Jesper Roy Christiansen leaves.</li> 
+while Jesper Roy Christiansen leaves. Ilkka Helenius has new 
+affiliation.</li> 
+ 
+<li>The machinery for &gamma;&gamma; collisions has been extended, 
+such that now soft processes and MPIs can be simulated. (But not 
+yet diffraction, and not when embedded in an <i>e^+e^-</i> 
+collision. Also some further improvements have been introduced, see 
+the <?php $filepath = $_GET["filepath"];
+echo "<a href='PhotonPhoton.php?filepath=".$filepath."' target='page'>";?>Photon-photon Interactions</a> 
+description. This implies several changes in different parts of 
+the code.</li> 
  
 <li>New mode <code>BeamRemnants:unresolvedHadron</code> can be used to 
 let original hadron remain as beam remnant, e.g. for coherent emission 
@@ -51,10 +61,14 @@ of photons.</li>
  
 <li>New option with running coupling in Hidden Valley scenarios.</li> 
  
-<li>Fix in the setup of tunes with <code>SpaceShower:rapidityOrder = off</code>. 
+<li>New behaviour of <code>Event::remove</code>, where mother and 
+daughter indices now are updated by default.</li> 
+ 
+<li>Fix in the setup of tunes with 
+<code>SpaceShower:rapidityOrder = off</code>. 
 The new (in 8.219) <code>SpaceShower:rapidityOrderMPI</code> then also 
-ought to have been set off, but this was missed, giving small inconsistencies 
-(around 2% reduction of the charged multiplicity). 
+ought to have been set off, but this was missed, giving small 
+inconsistencies (around 2% reduction of the charged multiplicity). 
 Thanks to James Monk.</li> 
  
 <li>New method <code>string Hist::getTitle()</code> to get the title 
@@ -77,6 +91,8 @@ Thanks to Olya Igonkina and Oleg Zenin.</li>
 <li>Bring the <code>FJcore</code> package inside the <code>Pythia8</code> 
 namespace to avoid potential name clashes with user code. Thanks to 
 Andy Buckley.</li> 
+ 
+<li>Small fix in the parsing code of <code>LHEF3.h</code>.</li> 
  
 </ul> 
 </li> 

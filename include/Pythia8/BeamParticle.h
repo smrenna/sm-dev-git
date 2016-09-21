@@ -212,12 +212,24 @@ public:
   int sizeInit() const {return nInit;}
 
   // Clear list of resolved partons.
-  void clear() {resolved.resize(0); nInit = 0;}
+  void clear() {resolved.resize(0); nInit = 0;;}
+
+  // Reset variables related to photon beam.
+  void resetGamma() {iGamVal = -1; iPosVal = -1; isResolvedGamma = isGammaBeam;
+    pT2gm2qqbar = 0.;}
+
+  // Reset variables related to photon beam inside a lepton.
+  void resetGammaInLepton() {xGm = 1.; kTgamma = 0.; phiGamma = 0.;}
 
   // Add a resolved parton to list.
   int append( int iPos, int idIn, double x, int companion = -1)
     {resolved.push_back( ResolvedParton( iPos, idIn, x, companion) );
     return resolved.size() - 1;}
+
+  // Remove the last particle from the beam. Reset companion code if needed.
+  void popBack() { int iComp = resolved.back().companion();
+    resolved.pop_back(); if ( iComp > 0 ) { iSkipSave = iComp;
+      idSave = resolved[iComp].id(); pickValSeaComp(); } }
 
   // Print extracted parton list; for debug mainly.
   void list() const;
@@ -272,30 +284,42 @@ public:
 
   vector<pair <int,int> > getColUpdates() {return colUpdates;}
 
-  // Set valence content for photon beams using hard process.
-  bool gammaInitiatorIsVal(int id, double x, double Q2);
+  // Set valence content for photon beams and position of first valence quark.
+  bool gammaInitiatorIsVal(int iResolved, int id, double x, double Q2);
   bool gammaInitiatorIsVal(int iResolved, double Q2);
   int  getGammaValFlavour() { return abs(idVal[0]); }
   int  gammaValSeaComp(int iResolved);
-  void initiatorVal(bool isValence) { initiatorValence = isValence; }
-  void setGammaRemnants(bool remnants) { gammaRemnants = remnants; }
-  bool getGammaRemnants() { return gammaRemnants; }
+  void posVal(int iPosValIn) { iPosVal = iPosValIn; }
+  void gamVal(int iGamValIn)          {iGamVal = iGamValIn;}
+  int  gamVal()                       {return iGamVal;}
+  void resolvedGamma(bool isResolved) {isResolvedGamma = isResolved;}
+  bool resolvedGamma()                {return isResolvedGamma;}
+
+  // Store the pT2 value of gamma->qqbar splitting.
+  void   pT2gamma2qqbar(double pT2in) {pT2gm2qqbar = pT2in;}
+  double pT2gamma2qqbar()             {return pT2gm2qqbar;}
+
+  // Store the pT value for the latest MPI.
+  void   pTMPI(double pTminMPIin)     {pTminMPI = pTminMPIin;}
 
   // Check whether room for beam remnants.
   bool roomFor1Remnant(double eCM);
   bool roomFor1Remnant(int id1, double x1, double eCM);
   bool roomFor2Remnants(int id1, double x1, double eCM);
+  bool roomForRemnants(BeamParticle beamOther);
 
   // Functions to approximate pdfs for ISR.
   double gammaPDFxDependence(int flavour, double x)
     { return pdfBeamPtr->gammaPDFxDependence(flavour, x); }
   double gammaPDFRefScale(int flavour)
     { return pdfBeamPtr->gammaPDFRefScale(flavour); }
+  double xIntegratedPDFs(double Q2)
+    { return pdfBeamPtr->xfIntegratedTotal(Q2); }
 
   // Returns the x_gamma value for last PDF call. Used to set up the value.
   double xGammaPDF(int idParton) { return pdfBeamPtr->xGamma(idParton); }
   void newxGamma(double xGmIn) { xGm = xGmIn; }
-  // Returns saved x_gamma value. Used after the value is set previously.
+  // Returns saved x_gamma value. Used after the value is set above.
   double xGamma() { return xGm; }
 
   // Set and get the direction and magnitude of kT for photons inside leptons.
@@ -338,6 +362,7 @@ private:
   int    idBeam, idBeamAbs;
   Vec4   pBeam;
   double mBeam;
+
   // Beam kind. Valence flavour content for hadrons.
   bool   isUnresolvedBeam, isLeptonBeam, isHadronBeam, isMesonBeam,
          isBaryonBeam, isGammaBeam;
@@ -347,12 +372,12 @@ private:
   int    idSave, iSkipSave, nValLeft[3];
   double xqgTot, xqVal, xqgSea, xqCompSum;
 
-  // Variables related to photon beams.
-  bool   doISR, gammaRemnants, initiatorValence, lepton2gamma,
-         hasGammaInLepton;
-  double pTminISR;
+  // Variables related to photon beams (also inside lepton).
+  bool   doISR, doMPI, isResolvedGamma, lepton2gamma, hasGammaInLepton;
+  double pTminISR, pTminMPI, pT2gm2qqbar;
+  int    iGamVal, iPosVal;
 
-  // Kinematic variables for photon from lepton.
+  // Variables for photon from lepton.
   double xGm, kTgamma, phiGamma;
 
   // The list of resolved partons.

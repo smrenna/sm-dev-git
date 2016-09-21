@@ -88,10 +88,11 @@ public:
   void reset();
 
   // Process name and code, and the number of final-state particles.
-  string name()        const {return sigmaProcessPtr->name();}
-  int    code()        const {return sigmaProcessPtr->code();}
-  int    nFinal()      const {return sigmaProcessPtr->nFinal();}
-  bool   isSUSY()      const {return sigmaProcessPtr->isSUSY();}
+  string name()             const {return sigmaProcessPtr->name();}
+  int    code()             const {return sigmaProcessPtr->code();}
+  int    nFinal()           const {return sigmaProcessPtr->nFinal();}
+  bool   isSUSY()           const {return sigmaProcessPtr->isSUSY();}
+  bool   isNonDiffractive() const {return isNonDiff;}
 
   // Member functions for info on generation process.
   bool   newSigmaMax() const {return newSigmaMx;}

@@ -83,9 +83,11 @@ bool ProcessLevel::init( Info* infoPtrIn, Settings& settings,
   doResDecays   = settings.flag("ProcessLevel:resonanceDecays");
   startColTag   = settings.mode("Event:startColTag");
 
-  // Check whether ISR applied. Affects processes with photon beams.
-  doISR         = ( settings.flag("PartonLevel:ISR") &&
-                    settings.flag("PartonLevel:all") );
+  // Check whether ISR or MPI applied. Affects processes with photon beams.
+  doISR         = ( settings.flag("PartonLevel:ISR")
+                &&  settings.flag("PartonLevel:all") );
+  doMPI         = ( settings.flag("PartonLevel:MPI")
+                &&  settings.flag("PartonLevel:all") );
 
   // Check whether lepton2gamma is set on.
   isLepton2gamma = settings.flag("PDF:lepton2gamma");
@@ -178,7 +180,7 @@ bool ProcessLevel::init( Info* infoPtrIn, Settings& settings,
     if (containerPtrs[i]->isSUSY()) hasSUSY = true;
 
   // If SUSY processes requested but no SUSY couplings present
-  if(hasSUSY && !couplingsPtr->isSUSY) {
+  if (hasSUSY && !couplingsPtr->isSUSY) {
     infoPtr->errorMsg("Error in ProcessLevel::init: "
       "SUSY process switched on but no SUSY couplings found");
     return false;
@@ -673,14 +675,14 @@ bool ProcessLevel::nextOne( Event& process) {
     if (physical) findJunctions( process);
 
     // Set the photon beam momenta according to the process.
-    if ( beamAPtr->hasGamma() ){
+    if ( beamAPtr->hasGamma() ) {
       double pzGamma = process[3].pz();
       double eGamma  = process[3].e();
       xGamma1 = containerPtrs[iContainer]->xGamma1();
       beamAPtr->newxGamma(xGamma1);
       beamGamAPtr->newPzE(pzGamma, eGamma);
     }
-    if ( beamBPtr->hasGamma() ){
+    if ( beamBPtr->hasGamma() ) {
       double pzGamma = process[4].pz();
       double eGamma  = process[4].e();
       xGamma2 = containerPtrs[iContainer]->xGamma2();
@@ -690,8 +692,10 @@ bool ProcessLevel::nextOne( Event& process) {
 
     // Check that enough room for beam remnants in the photon beams and
     // set the valence content for photon beams.
-    if ( (beamAPtr->isGamma() && beamBPtr->isGamma())
-      || (beamAPtr->hasGamma() && beamBPtr->hasGamma()) ) {
+    /// Do not check for softQCD processes.
+    if ( ( (beamAPtr->isGamma() && beamBPtr->isGamma())
+        || (beamAPtr->hasGamma() && beamBPtr->hasGamma()) )
+        && !(containerPtrs[iContainer]->isNonDiffractive()) ) {
       if ( !roomForRemnants() ) {
         physical = false;
         continue;
@@ -881,8 +885,8 @@ bool ProcessLevel::roomForRemnants() {
   BeamParticle* tmpBeamBPtr = beamBhasGamma ? beamGamBPtr : beamBPtr;
 
   // Clear the previous choice.
-  tmpBeamAPtr->initiatorVal(false);
-  tmpBeamBPtr->initiatorVal(false);
+  tmpBeamAPtr->posVal(-1);
+  tmpBeamBPtr->posVal(-1);
 
   // Store the relevant information.
   int id1 = containerPtrs[iContainer]->id1();
@@ -899,7 +903,7 @@ bool ProcessLevel::roomForRemnants() {
     eCMgmgm *= xGamma1;
     x1 = x1/xGamma1;
   }
-  if (beamBhasGamma){
+  if (beamBhasGamma) {
     eCMgmgm *= xGamma2;
     x2 = x2/xGamma2;
   }
@@ -908,8 +912,8 @@ bool ProcessLevel::roomForRemnants() {
 
   bool physical = false;
 
-  // If no ISR decide the valence content according to the hard process.
-  if (!doISR) {
+  // If no ISR or MPI decide the valence content according to the hard process.
+  if ( !doISR && !doMPI) {
 
     // For physical process a few tries for the valence content should suffice.
     int nTry = 0, maxTry = 4;
@@ -918,8 +922,8 @@ bool ProcessLevel::roomForRemnants() {
 
       // Check whether the hard parton is a valence quark and if not use the
       // parametrization for the valence flavor ratios.
-      bool init1Val = tmpBeamAPtr->gammaInitiatorIsVal(id1, x1, Q2);
-      bool init2Val = tmpBeamBPtr->gammaInitiatorIsVal(id2, x2, Q2);
+      bool init1Val = tmpBeamAPtr->gammaInitiatorIsVal(0, id1, x1, Q2);
+      bool init2Val = tmpBeamBPtr->gammaInitiatorIsVal(0, id2, x2, Q2);
 
       // If no ISR is generated must leave room for beam remnants.
       // Calculate the required amount of energy for three different cases:
@@ -930,13 +934,13 @@ bool ProcessLevel::roomForRemnants() {
         m1 = particleDataPtr->m0(id1);
       } else {
         m1 = 2*( particleDataPtr->m0( tmpBeamAPtr->getGammaValFlavour() ) );
-        if(id1 != 21) m1 += particleDataPtr->m0(id1);
+        if (id1 != 21) m1 += particleDataPtr->m0(id1);
       }
       if (init2Val) {
         m2 = particleDataPtr->m0(id2);
       } else {
         m2 = 2*( particleDataPtr->m0( tmpBeamBPtr->getGammaValFlavour() ) );
-        if(id2 != 21) m2 += particleDataPtr->m0(id2);
+        if (id2 != 21) m2 += particleDataPtr->m0(id2);
       }
       physical = ( (m1 + m2) < mTRem );
 
@@ -957,8 +961,8 @@ bool ProcessLevel::roomForRemnants() {
       }
     }
 
-  // With ISR the initiator can change flavour so reject only process
-  // that will surely fail.
+  // With ISR or MPI the initiator list can change so reject only
+  // process which will surely fail.
   } else {
 
     // Do not allow processes that ISR cannot turn into physical one.

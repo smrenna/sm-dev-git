@@ -466,11 +466,9 @@ public:
     else {int newSize = max( 0, size() - nRemove);
     entry.resize(newSize);} }
 
-  // Remove entries from iFirst to iLast, including endpoints.
-  void remove(int iFirst, int iLast) {
-    if (iFirst < 0 || iLast >= int(entry.size()) || iLast < iFirst) return;
-    entry.erase( entry.begin() + iFirst, entry.begin() + iLast + 1);
-  }
+  // Remove entries from iFirst to iLast, including endpoints, anf fix history.
+  // (To the extent possible; history pointers in removed range are zeroed.)
+  void remove(int iFirst, int iLast, bool shiftHistory = true);
 
   // Restore all ParticleDataEntry* pointers in the Particle vector.
   // Useful when a persistent copy of the event record is read back in.

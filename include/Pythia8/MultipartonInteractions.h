@@ -151,6 +151,11 @@ public:
   int    getVSC1()   const {return vsc1;}
   int    getVSC2()   const {return vsc2;}
 
+  // Set the offset wrt. to normal beam particle positions for hard diffraction
+  // and for photon beam from lepton.
+  int  getBeamOffset()       const {return beamOffset;}
+  void setBeamOffset(int offsetIn) {beamOffset = offsetIn;}
+
   // Update and print statistics on number of processes.
   // Note: currently only valid for nondiffractive systems, not diffraction??
   void accumulate() { int iBeg = (infoPtr->isNonDiffractive()) ? 0 : 1;
@@ -234,6 +239,9 @@ private:
          kNowSave[5], bAvgSave[5], bDivSave[5], probLowBSave[5],
          fracAhighSave[5], fracBhighSave[5], fracChighSave[5],
          fracABChighSave[5], cDivSave[5], cMaxSave[5];
+
+  // Beam offset wrt. normal situation.
+  int    beamOffset;
 
   // Pointer to various information on the generation.
   Info*          infoPtr;

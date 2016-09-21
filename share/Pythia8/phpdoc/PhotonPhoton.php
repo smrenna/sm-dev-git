@@ -30,22 +30,22 @@ echo "<font color='red'>NO FILE SELECTED YET.. PLEASE DO SO </font><a href='Save
 <h2>Photon-photon Interactions</h2> 
  
 From version 8.214 on, also resolved photon-photon interactions can be 
-simulated. Currently quark and gluon initiated hard-processes with parton 
-showers and hadronization can be generated, but MPIs and soft interactions 
-are not included. Only new parameter is the selection of the 
+simulated. Currently quark and gluon initiated processes with parton 
+showers and hadronization can be generated, including soft QCD processes and 
+MPIs. The PDF set for resolved photons is selected in the 
 <?php $filepath = $_GET["filepath"];
-echo "<a href='PDFSelection.php?filepath=".$filepath."' target='page'>";?>PDF set for photons</a>. This page describes 
-some of the special features related to these collisions. 
+echo "<a href='PDFSelection.php?filepath=".$filepath."' target='page'>";?>PDF selection</a>. 
+This page describes some of the special features related to these collisions. 
  
 <h3>Resolved photon</h3> 
  
-Photons can either interact directly as an unresolved particle or they 
-can form a hadronic state. In the latter case the hard process can be 
-simulated using PDFs to describe the partonic structure of the resolved 
-photon. The evolution equations for photons include an additional term 
-that corresponds to <i>gamma &rarr; q qbar</i> splittings. Due to this, 
-the PDFs are somewhat different for photons than for hadrons and some parts 
-of event generation need special attention. 
+Photons can either interact directly as an unresolved particle or as a 
+hadronic state ("Vector Meson Dominance"). In the latter case the hard 
+process can be simulated using PDFs to describe the partonic structure 
+of the resolved photon. The evolution equations for photons include an 
+additional term that corresponds to <i>gamma &rarr; q qbar</i> splittings. 
+Due to this, the PDFs are somewhat different for photons than for hadrons 
+and some parts of event generation need special attention. 
  
 <h4>Process-level generation</h4> 
  
@@ -55,7 +55,7 @@ momentum. In these cases it may happen that, after the hard process, there is
 no energy left to construct the beam remnants. This is true especially if 
 a heavy quark is taken out from the beam and a corresponding massive 
 antiquark needs to be added to the remnant system to conserve flavour. Even 
-though these events are allowed based on the PDFs, they are not physical 
+though these events are allowed based on the PDFs alone, they are not physical 
 and should be rejected. Therefore some amount of errors can be expected when 
 generating events close to the edge of phase space, e.g. when collision 
 energy is low. 
@@ -68,7 +68,7 @@ a few modifications are needed for the ISR algorithm.
 <ul> 
 <li> 
 The additional term corresponds to a possibility to find the original beam 
-photon during the backwards evolution, which is added to QED part of the 
+photon during the backwards evolution, which is added to the QED part of the 
 spacelike shower evolution. If this splitting happens there is no need to 
 construct the beam remnants for the given beam. 
 </li> 
@@ -86,6 +86,50 @@ room for the beam remnants are not allowed.
 </li> 
 </ul> 
  
+<h4>MPIs in photon-photon</h4> 
+ 
+<p> 
+Multiparton interactions with resolved photon beams are generated as with 
+hadron beams. The only difference follows again from the additional 
+<i>gamma &rarr; q qbar</i> splittings where the beam photon becomes 
+unresolved. If this splitting happens during the interleaved evolution 
+for either of the photon beams no further MPIs below the branching scale 
+<i>pT</i> are allowed since the photon is not resolved anymore. 
+</p> 
+ 
+<p> 
+If there have been multiple interactions and a <i>gamma &rarr; q qbar 
+</i> splitting occur, the kinematics of this branching are not constructed 
+in the spacelike shower. Instead the <i>pT</i> scale of the branching is 
+stored and the relevant momenta are then fixed in the beam remnant handling. 
+Therefore the status codes for the partons related to this splitting 
+actually refer to beam remnants. 
+</p> 
+ 
+<p> 
+If there are no MPIs before the <i>gamma &rarr; q qbar</i> splitting, 
+this splitting is constructed in the spacelike shower in the usual way, 
+but the mother beam photon is not added to the event record, since a copy 
+of it already exists at the top of the event record. This is unlike the 
+documentation of other ISR splittings, where the mother of the branching 
+is shown, but consistent with the photon not being added (a second time) 
+for events that contain several MPIs. Optionally the photon can be shown, 
+using the following flag. 
+ 
+<br/><br/><strong>Photon:showUnres</strong>  <input type="radio" name="1" value="on"><strong>On</strong>
+<input type="radio" name="1" value="off" checked="checked"><strong>Off</strong>
+ &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
+Show the evolution steps of the beam photon in the event record, if on. 
+</p> 
+ 
+<p> 
+Currently the default values for the parameters related to multiparton 
+interactions are the same as in hadronic collision so no tuning for the 
+MPIs in photon-photon has been done. This holds also for the parameters 
+related to the impact-parameter dependence. The total cross section for 
+photon-photon collisions is paramerized as in [<a href="Bibliography.php" target="page">Sch97</a>]. 
+</p> 
+ 
 <h4>Beam Remnants</h4> 
  
 To construct the beam remnants, one should know whether the parton 
@@ -95,7 +139,7 @@ splittings of the original beam photon and the valence partons from the
 hadron-like part of the PDF. In either case, the flavour of the valence 
 quarks can fluctuate. Unfortunately the decomposition to the different 
 components are typically not provided in the PDF sets and some further 
-assumptions are needed to decide for the valence content. 
+assumptions are needed to decide the valence content. 
  
 </p> 
 When ISR is applied for photon beams it is possible to end up to the original 
@@ -121,12 +165,18 @@ of the other side are already fixed. In these cases the momenta are balanced
 between the scattered system and the remnants. 
  
 </p> 
-As the primordial <i>kT</i> increases the invariant mass of the remnants 
+Since the primordial <i>kT</i> increases the invariant mass of the remnants 
 and the scattered system, it may again happen that there is no room for the 
 remnant partons after <i>kT</i> is added, so the kinematics can not be 
 constructed. In this case new values for <i>kT</i> are sampled. If this 
 does not work, a new shower is generated and in some rare cases the 
-parton-level generation fails and the hard process is rejected. 
+parton-level generation fails and the hard process is rejected. The inclusion 
+of additional MPIs increases the invariant mass of the remnants and takes 
+more momentum from the beam particles. Even though the MPIs that would 
+not leave enough room for the remnants are rejected, these can still lead 
+to a situation where the kinematics cannot be constructed due to the added 
+primordial <i>kT</i>. 
+ 
  
 <h3>Photon-photon in lepton-lepton</h3> 
  
@@ -140,9 +190,13 @@ photon virtuality needs to be set. This can be done with the parameter
 the upper limit for the <i>k_T</i> of the photon, which in turn will 
 be the same as the <i>k_T</i> of the scattered lepton. 
  
-<br/><br/><table><tr><td><strong>Photon:Q2max </td><td></td><td> <input type="text" name="1" value="1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.0</strong></code>; <code>minimum = 0.5</code>; <code>maximum = 2.0</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>Photon:Q2max </td><td></td><td> <input type="text" name="2" value="1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.0</strong></code>; <code>minimum = 0.01</code>; <code>maximum = 2.0</code>)</td></tr></table>
 Upper limit for (quasi-)real photon virtuality in <i>GeV^2</i>. 
    
+ 
+</p> 
+Currently only hard processes are available for the photon-photon interactions 
+in leptonic collisions so soft QCD processes or MPIs cannot be generated. 
  
 <input type="hidden" name="saved" value="1"/>
 
@@ -159,9 +213,14 @@ if($_POST["saved"] == 1)
 $filepath = $_POST["filepath"];
 $handle = fopen($filepath, 'a');
 
-if($_POST["1"] != "1.0")
+if($_POST["1"] != "off")
 {
-$data = "Photon:Q2max = ".$_POST["1"]."\n";
+$data = "Photon:showUnres = ".$_POST["1"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["2"] != "1.0")
+{
+$data = "Photon:Q2max = ".$_POST["2"]."\n";
 fwrite($handle,$data);
 }
 fclose($handle);

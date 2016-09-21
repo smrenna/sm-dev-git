@@ -25,7 +25,7 @@ namespace Pythia8 {
 // =  5 : phi + p;   =  6 : J/psi + p;
 // =  7 : rho + rho; =  8 : rho + phi;   =  9 : rho + J/psi;
 // = 10 : phi + phi; = 11 : phi + J/psi; = 12 : J/psi + J/psi.
-// = 13 : Pom + p (preliminary).
+// = 13 : Pom + p (preliminary); 14 : gamma + gamma (preliminary).
 // For now a neutron is treated like a proton.
 
 //--------------------------------------------------------------------------
@@ -220,13 +220,24 @@ bool SigmaTotal::calc( int idA, int idB, double eCM) {
     if (idAbsA > 300) iProc                       = 10;
     if (idAbsA > 300 && idAbsB > 400) iProc       = 11;
     if (idAbsA > 400) iProc                       = 12;
-  }
+  } else if (idAbsA == 22 && idAbsB == 22) iProc  = 14;
   if (iProc == -1) return false;
 
   // Primitive implementation of Pomeron + p.
   if (iProc == 13) {
     s      = eCM*eCM;
     sigTot = sigmaPomP * pow( eCM / mPomP, pPomP);
+    sigND  = sigTot;
+    isCalc = true;
+    return true;
+  }
+
+  // Primitive implementation of gamma + gamma.
+  if (iProc == 14) {
+    s           = eCM*eCM;
+    double sEps = pow( s, EPSILON);
+    double sEta = pow( s, ETA);
+    sigTot = 211e-6 * sEps + 215e-6 * sEta;
     sigND  = sigTot;
     isCalc = true;
     return true;

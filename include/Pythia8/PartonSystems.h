@@ -84,6 +84,9 @@ public:
   // List all current systems.
   void list() const;
 
+  // Remove the last system.
+  void popBack() { systems.pop_back(); }
+
 private:
 
   // List of all separate partonic subsystems.

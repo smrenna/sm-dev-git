@@ -87,7 +87,7 @@ private:
 
   // Generic info for process generation.
   bool   doSecondHard, doSameCuts, allHardSame, noneHardSame,
-         someHardSame, cutsAgree, cutsOverlap, doResDecays, doISR;
+         someHardSame, cutsAgree, cutsOverlap, doResDecays, doISR, doMPI;
   int    nImpact, startColTag;
   double mHatMin1, mHatMax1, pTHatMin1, pTHatMax1, mHatMin2, mHatMax2,
          pTHatMin2, pTHatMax2, sigmaND, sumImpactFac, sum2ImpactFac;

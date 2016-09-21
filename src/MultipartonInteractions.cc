@@ -439,6 +439,9 @@ bool MultipartonInteractions::init( bool doMPIinit, int iDiffSysIn,
   mMinPertDiff   = settings.parm("Diffraction:mMinPert");
   bSelHard       = settings.mode("Diffraction:bSelHard");
 
+  // Beam particles might not be found from the usual positions.
+  beamOffset = 0;
+
   // Possibility to allow user veto of MPI
   canVetoMPI = (userHooksPtr != 0) ? userHooksPtr->canVetoMPIEmission()
              : false;
@@ -494,9 +497,9 @@ bool MultipartonInteractions::init( bool doMPIinit, int iDiffSysIn,
          << " |                                                        "
          << "          | \n";
     if (isNonDiff)
-      cout << " |                   sigmaNonDiffractive = " << fixed
-           << setprecision(2) << setw(7) << sigmaND << " mb               |"
-           << " \n";
+      cout << " |                   sigmaNonDiffractive = " << setprecision(2)
+           << ((sigmaND > 1.) ? fixed : scientific) << setw(8) << sigmaND
+           << " mb              | \n";
     else if (iDiffSys == 1)
       cout << " |                          diffraction XB                "
            << "          | \n";
@@ -587,8 +590,9 @@ bool MultipartonInteractions::init( bool doMPIinit, int iDiffSysIn,
 
     // Output for accepted pT0.
     if (showMPI) cout << fixed << setprecision(2) << " |    pT0 = "
-      << setw(5) << pT0 << " gives sigmaInteraction = "<< setw(7)
-      << sigmaInt << " mb: accepted     | \n";
+      << setw(5) << pT0 << " gives sigmaInteraction = "<< setw(8)
+      << ((sigmaInt > 1.) ? fixed : scientific) << sigmaInt
+      << " mb: accepted    | \n";
 
     // Calculate factor relating matter overlap and interaction rate.
     overlapInit();
@@ -988,8 +992,7 @@ bool MultipartonInteractions::limitPTmax( Event& event) {
   double scaleLimit1 = 0.;
   double scaleLimit2 = 0.;
   int  n21           = 0;
-  int iBegin         = 5;
-  if (infoPtr->isHardDiffractive()) iBegin = 9;
+  int iBegin         = 5 + beamOffset;
   for (int i = iBegin; i < event.size(); ++i) {
     if (event[i].status() == -21) ++n21;
     else if (n21 == 0) {
@@ -1287,6 +1290,29 @@ bool MultipartonInteractions::scatter( Event& event) {
       if (event[i].acol() == colLost) event[i].acol( colLeft );
     }
   }
+
+  // With gamma+gamma check that room for beam remnants for current scattering.
+  // Otherwise take the partons out from event record.
+  // roomForRemnants treats both beam equally so need to do only once.
+  if ( beamAPtr->isGamma() && beamBPtr->isGamma() ) {
+    if ( !beamAPtr->roomForRemnants(*beamBPtr) ) {
+
+      // Remove the partons associated to the latest scattering from the
+      // event record.
+      event.popBack(4);
+      beamAPtr->popBack();
+      beamBPtr->popBack();
+      partonSystemsPtr->popBack();
+
+      infoPtr->errorMsg("Error in MultipartonInteractions::scatter:"
+          " No room for remnants for given scattering");
+      return false;
+    }
+  }
+
+  // Store the pT value for valence decision of resolved photons.
+  beamA.pTMPI(sqrtpos(pT2));
+  beamB.pTMPI(sqrtpos(pT2));
 
   // Store info on subprocess code and rescattered partons.
   int    codeMPI = dSigmaDtSel->code();
