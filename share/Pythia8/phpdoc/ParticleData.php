@@ -3235,7 +3235,7 @@ echo "<a href='ParticleDecays.php?filepath=".$filepath."' target='page'>";?>here
  <br/>      channel: onMode="1" bRatio="1.0000000" products="531 22" 
  
 <p/>particle: id="535" name="B*_2s0" antiName="B*_2sbar0" spinType="5" chargeType="0" colType="0" 
-          m0="5.83970" mWidth="0.02000" mMin="5.87000" mMax="6.27000" 
+          m0="5.83970" mWidth="0.02000" mMin="5.81970" mMax="5.85970" 
  <br/>      channel: onMode="1" bRatio="0.1700000" products="513 311" 
  <br/>      channel: onMode="1" bRatio="0.1700000" products="523 -321" 
  <br/>      channel: onMode="1" bRatio="0.3300000" products="511 311" 
@@ -4433,7 +4433,7 @@ echo "<a href='ParticleDecays.php?filepath=".$filepath."' target='page'>";?>here
  <br/>      channel: onMode="1" bRatio="0.5000000" products="511 -311" 
  
 <p/>particle: id="10533" name="B_1s0" antiName="B_1sbar0" spinType="3" chargeType="0" colType="0" 
-          m0="5.97000" mWidth="0.05000" mMin="5.87000" mMax="6.07000" 
+          m0="5.82900" mWidth="0.05000" mMin="5.77900" mMax="5.87900" 
  <br/>      channel: onMode="1" bRatio="0.5000000" products="523 -321" 
  <br/>      channel: onMode="1" bRatio="0.5000000" products="513 -311" 
  
