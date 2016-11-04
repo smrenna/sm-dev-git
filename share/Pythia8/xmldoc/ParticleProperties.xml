@@ -178,13 +178,18 @@ In detail, the list of used or foreseen status codes is:
   <li>105 : partons or particles formed together with the R-hadron during 
             the fragmentation treatment</li> 
   <li>106 : subdivision of an R-hadron into its flavour content, with 
-           momentum split accordingly, in preparation of the decay of 
-           the heavy new particle, if it is unstable</li> 
+            momentum split accordingly, in preparation of the decay of 
+            the heavy new particle, if it is unstable</li> 
   <li>107 : two temporary leftover gluons joined into one in the formation 
-          of a gluino-gluon R-hadron.</li> 
+            of a gluino-gluon R-hadron</li> 
   </ul> 
-<li>111 - 199 : reserved for future expansion</li> 
-<li>201 - : free to be used by anybody</li> 
+<li>111 - 119 : hadrons with changed momentum due to hadron (re)scattering</li> 
+  <ul> 
+  <li>111 : first time scattering</li> 
+  <li>112 : second or more time scattering</li> 
+  </ul> 
+<li>121 - 199 : reserved for future expansion</li> 
+<li>201 - : free to be used by anybody.</li> 
 </ul> 
 <note>Note:</note> a clarification on the role of the "hardest" vs. the 
 "subsequent" subprocesses, the 20'ies and 30'ies status code series, 

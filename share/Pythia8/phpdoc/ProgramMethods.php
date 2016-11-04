@@ -160,19 +160,19 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>friend Hist</td>
-<td><a href="Histograms.php#method25" target="page">operator*(...)</a></td>
+<td><a href="Histograms.php#method26" target="page">operator*(...)</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
 <td>friend Hist</td>
-<td><a href="Histograms.php#method25" target="page">operator*(...)</a></td>
+<td><a href="Histograms.php#method26" target="page">operator*(...)</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
 <td>friend Hist</td>
-<td><a href="Histograms.php#method25" target="page">operator*(...)</a></td>
+<td><a href="Histograms.php#method26" target="page">operator*(...)</a></td>
 <td>Histograms</td>
 </tr>
 
@@ -184,19 +184,19 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>friend Hist</td>
-<td><a href="Histograms.php#method23" target="page">operator+(...)</a></td>
+<td><a href="Histograms.php#method24" target="page">operator+(...)</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
 <td>friend Hist</td>
-<td><a href="Histograms.php#method23" target="page">operator+(...)</a></td>
+<td><a href="Histograms.php#method24" target="page">operator+(...)</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
 <td>friend Hist</td>
-<td><a href="Histograms.php#method23" target="page">operator+(...)</a></td>
+<td><a href="Histograms.php#method24" target="page">operator+(...)</a></td>
 <td>Histograms</td>
 </tr>
 
@@ -208,19 +208,19 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>friend Hist</td>
-<td><a href="Histograms.php#method24" target="page">operator-(...)</a></td>
+<td><a href="Histograms.php#method25" target="page">operator-(...)</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
 <td>friend Hist</td>
-<td><a href="Histograms.php#method24" target="page">operator-(...)</a></td>
+<td><a href="Histograms.php#method25" target="page">operator-(...)</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
 <td>friend Hist</td>
-<td><a href="Histograms.php#method24" target="page">operator-(...)</a></td>
+<td><a href="Histograms.php#method25" target="page">operator-(...)</a></td>
 <td>Histograms</td>
 </tr>
 
@@ -232,19 +232,19 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>friend Hist</td>
-<td><a href="Histograms.php#method26" target="page">operator/(...)</a></td>
+<td><a href="Histograms.php#method27" target="page">operator/(...)</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
 <td>friend Hist</td>
-<td><a href="Histograms.php#method26" target="page">operator/(...)</a></td>
+<td><a href="Histograms.php#method27" target="page">operator/(...)</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
 <td>friend Hist</td>
-<td><a href="Histograms.php#method26" target="page">operator/(...)</a></td>
+<td><a href="Histograms.php#method27" target="page">operator/(...)</a></td>
 <td>Histograms</td>
 </tr>
 
@@ -322,13 +322,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>friend void</td>
-<td><a href="Histograms.php#method12" target="page">table(...)</a></td>
+<td><a href="Histograms.php#method13" target="page">table(...)</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
 <td>friend void</td>
-<td><a href="Histograms.php#method12" target="page">table(...)</a></td>
+<td><a href="Histograms.php#method13" target="page">table(...)</a></td>
 <td>Histograms</td>
 </tr>
 
@@ -1120,19 +1120,19 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="Histograms.php#method14" target="page">Hist::getBinContent(...)</a></td>
+<td><a href="Histograms.php#method15" target="page">Hist::getBinContent(...)</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="Histograms.php#method15" target="page">Hist::getEntries()</a></td>
+<td><a href="Histograms.php#method16" target="page">Hist::getEntries()</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
 <td>string</td>
-<td><a href="Histograms.php#method13" target="page">Hist::getTitle()</a></td>
+<td><a href="Histograms.php#method14" target="page">Hist::getTitle()</a></td>
 <td>Histograms</td>
 </tr>
 
@@ -1168,49 +1168,49 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>Hist&</td>
-<td><a href="Histograms.php#method20" target="page">Hist::operator*=(...)</a></td>
+<td><a href="Histograms.php#method21" target="page">Hist::operator*=(...)</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
 <td>Hist&</td>
-<td><a href="Histograms.php#method22" target="page">Hist::operator*=(...)</a></td>
+<td><a href="Histograms.php#method23" target="page">Hist::operator*=(...)</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
 <td>Hist&</td>
-<td><a href="Histograms.php#method22" target="page">Hist::operator*=(...)</a></td>
+<td><a href="Histograms.php#method23" target="page">Hist::operator*=(...)</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
 <td>Hist&</td>
-<td><a href="Histograms.php#method19" target="page">Hist::operator+=(...)</a></td>
+<td><a href="Histograms.php#method20" target="page">Hist::operator+=(...)</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
 <td>Hist&</td>
-<td><a href="Histograms.php#method21" target="page">Hist::operator+=(...)</a></td>
+<td><a href="Histograms.php#method22" target="page">Hist::operator+=(...)</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
 <td>Hist&</td>
-<td><a href="Histograms.php#method19" target="page">Hist::operator-=(...)</a></td>
+<td><a href="Histograms.php#method20" target="page">Hist::operator-=(...)</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
 <td>Hist&</td>
-<td><a href="Histograms.php#method21" target="page">Hist::operator-=(...)</a></td>
+<td><a href="Histograms.php#method22" target="page">Hist::operator-=(...)</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
 <td>Hist&</td>
-<td><a href="Histograms.php#method20" target="page">Hist::operator/=(...)</a></td>
+<td><a href="Histograms.php#method21" target="page">Hist::operator/=(...)</a></td>
 <td>Histograms</td>
 </tr>
 
@@ -1221,8 +1221,20 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
+<td>void</td>
+<td><a href="Histograms.php#method12" target="page">Hist::rivetTable(...)</a></td>
+<td>Histograms</td>
+</tr>
+
+<tr>
+<td>void</td>
+<td><a href="Histograms.php#method12" target="page">Hist::rivetTable(...)</a></td>
+<td>Histograms</td>
+</tr>
+
+<tr>
 <td>bool</td>
-<td><a href="Histograms.php#method16" target="page">Hist::sameSize(...)</a></td>
+<td><a href="Histograms.php#method17" target="page">Hist::sameSize(...)</a></td>
 <td>Histograms</td>
 </tr>
 
@@ -1240,13 +1252,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="Histograms.php#method17" target="page">Hist::takeLog(...)</a></td>
+<td><a href="Histograms.php#method18" target="page">Hist::takeLog(...)</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="Histograms.php#method18" target="page">Hist::takeSqrt()</a></td>
+<td><a href="Histograms.php#method19" target="page">Hist::takeSqrt()</a></td>
 <td>Histograms</td>
 </tr>
 

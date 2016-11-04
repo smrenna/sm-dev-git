@@ -1056,6 +1056,25 @@ void Hist::table(ostream& os, bool printOverUnder, bool xMidBin) const {
 
 //--------------------------------------------------------------------------
 
+// Print histogram contents as a table, in Rivet's *.dat style.
+
+void Hist::rivetTable(ostream& os, bool printError) const {
+
+  // Print histogram vector bin by bin, with x range in first two columns
+  // and +- error in last two (assuming that contents is number of events).
+  os << scientific << setprecision(4);
+  double xBeg = xMin;
+  double xEnd = xMin+dx;
+  for (int ix = 0; ix < nBin; ++ix) {
+    double err = (printError) ? sqrtpos(res[ix]) : 0.0;
+    os << setw(12) << xBeg + ix * dx << setw(12) << xEnd + ix * dx
+       << setw(12) << res[ix] << setw(12) << err << setw(12) << err << "\n";
+  }
+
+}
+
+//--------------------------------------------------------------------------
+
 // Print a table out of two histograms with same x axis  (e.g. for Gnuplot).
 
 void table(const Hist& h1, const Hist& h2, ostream& os, bool printOverUnder,

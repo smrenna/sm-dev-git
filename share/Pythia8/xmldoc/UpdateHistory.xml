@@ -12,7 +12,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.220: 1 October 2016 
+<li>8.221: 4 November 2016 
 <ul> 
  
 <li>Nadine Fischer and Leif L&ouml;nnblad join as co-authors, 
@@ -26,6 +26,34 @@ collision.) Also some further improvements have been introduced, see
 the <aloc href="PhotonPhoton">Photon-photon Interactions</aloc> 
 description. This implies several changes in different parts of 
 the code, mainly related to beam remnants and beam particles.</li> 
+ 
+<li>A new alternative "thermal hadronization" option is introduced, 
+wherein an exponential <ei>exp(-pT / T)</ei> hadronic transverse 
+momentum spectrum replaces the default Gaussian one, with a 
+"temperature" <ei>T</ei> as free parameter. Given this <ei>pT</ei>, 
+the next hadron (consistent with local flavour conservation) is picked 
+among the possibilities with an <ei>exp(-mT / T)</ei> weight. 
+This option is accessed with <code>StringPT:thermalModel = on</code>. 
+See further the <aloc href="Fragmentation">Fragmentation</aloc> and 
+<aloc href="FlavourSelection">Flavour Selection</aloc> descriptions 
+and the article <ref>Fis16</ref>.</li> 
+ 
+<li>A new option <code>StringPT:closePacking = on</code> allows to 
+enhance the <ei>pT</ei> width in regions where there is a high 
+density of partly overlapping strings. This works both for the 
+default Gaussian and the alternative exponential (see above) 
+<ei>pT</ei> description; in the latter case it will also enhance the 
+rate of heavier-particle production. See further the 
+<aloc href="Fragmentation">Fragmentation</aloc> description 
+and the article <ref>Fis16</ref>.</li> 
+ 
+<li>A new simple model for hadronic rescattering is introduced, 
+with two variants, as described in <ref>Fis16</ref>. A new master 
+switch <code>HadronLevel:HadronScatter</code>, by default off, and 
+<code>HadronScatter:mode</code> to pick among them and the old one. 
+See the <aloc href="HadronScattering">Hadron Scattering</aloc> page 
+for further details and parameters. New status codes 111 and 112 
+introduced for rescattered hadrons.</li> 
  
 <li>New mode <code>BeamRemnants:unresolvedHadron</code> can be used to 
 let original hadron remain as beam remnant, e.g. for coherent emission 
@@ -60,9 +88,21 @@ support. Thanks to Li Huang.</li>
 decays <ei>F^* &rarr; F Fbar f</ei>, primarily for <ei>F = t</ei>. 
 Thanks to Olya Igonkina and Oleg Zenin.</li> 
  
+<li>Two new <code>Hist::rivetTable</code> methods allow histograms to 
+be written on file in a format that Rivet understands.</li> 
+ 
+<li>New particle data method <code>nQuarksInCode(int idQ)</code> counts 
+how many copies of the requested quark code <code>idQ</code> that a 
+quark, diquark, meson or baryon code contains.</li> 
+ 
 <li>Bring the <code>FJcore</code> package inside the <code>Pythia8</code> 
 namespace to avoid potential name clashes with user code. Thanks to 
 Andy Buckley.</li> 
+ 
+<li>New <code>#define PYTHIA_VERSION_INTEGER 82xx</code> in 
+<code>Pythia.h</code> matches already existing 
+<code>#define PYTHIA_VERSION 8.2xx</code>, for more convenient 
+matching using integers. Thanks to Andrii Verbytskyi.</li> 
  
 <li>Two minor particle data fixes.</li> 
  

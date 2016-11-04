@@ -36,10 +36,10 @@ public:
   ~HVStringFlav() {}
 
   // Initialize data members.
-  void init(Settings& settings, Rndm* rndmPtrIn);
+  void init(Settings& settings, ParticleData*, Rndm* rndmPtrIn, Info*);
 
   // Pick a new flavour (including diquarks) given an incoming one.
-  FlavContainer pick(FlavContainer& flavOld);
+  FlavContainer pick(FlavContainer& flavOld, double, double);
 
   // Combine two flavours (including diquarks) to produce a hadron.
   int combine(FlavContainer& flav1, FlavContainer& flav2);
@@ -67,7 +67,8 @@ public:
   ~HVStringPT() {}
 
   // Initialize data members.
-  void init(Settings& settings, ParticleData& particleData, Rndm* rndmPtrIn);
+  void init(Settings& settings, ParticleData* particleDataPtrIn,
+    Rndm* rndmPtrIn, Info*);
 
 };
 

@@ -384,12 +384,15 @@ public:
   // Print a histogram with overloaded << operator.
   friend ostream& operator<<(ostream& os, const Hist& h) ;
 
-  // Print histogram contents as a table (e.g. for Gnuplot).
+  // Print histogram contents as a table (e.g. for Gnuplot or Rivet).
   void table(ostream& os = cout, bool printOverUnder = false,
     bool xMidBin = true) const ;
   void table(string fileName, bool printOverUnder = false,
     bool xMidBin = true) const { ofstream streamName(fileName.c_str());
     table(streamName, printOverUnder, xMidBin);}
+  void rivetTable(ostream& os = cout, bool printError = false) const ;
+  void rivetTable(string fileName, bool printError = false) const {
+    ofstream streamName(fileName.c_str()); rivetTable(streamName, printError);}
 
   // Print a table out of two histograms with same x axis.
   friend void table(const Hist& h1, const Hist& h2, ostream& os,

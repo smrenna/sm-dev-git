@@ -91,6 +91,10 @@ public:
   // List all currently identified singlets.
   void list() const;
 
+  // Rapidity range [y_min, y_max] of all string pieces in all singlets.
+  // Only used when stringPT:closePacking is on.
+  vector< vector< pair<double,double> > > rapPairs;
+
 private:
 
   // Constants: could only be changed in the code itself.

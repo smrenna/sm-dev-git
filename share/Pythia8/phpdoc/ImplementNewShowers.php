@@ -449,7 +449,7 @@ with the splitting,
 <br/>- the key <code>tRS</code> gives the evolution variable at 
 which the shower should be restarted after a branching, 
 <br/>- the key <code>scaleAS</code> gives the argument of 
-<i>&alpha;<sub>s</sub> used for the branching, and 
+<i>&alpha;<sub>s</sub></i> used for the branching, and 
 <br/>- the key <code>scalePDF</code> gives the argument of PDF factors 
 used for the branching. 
 <br/>All other entries are optional and may be auxiliary variables related 

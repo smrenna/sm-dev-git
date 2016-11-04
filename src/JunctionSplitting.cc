@@ -50,9 +50,9 @@ void JunctionSplitting::init( Info* infoPtrIn, Settings& settings,
   stringLength.init(infoPtrIn, settings);
 
   // Initialize auxiliary fragmentation classes.
-  flavSel.init(settings, rndmPtr);
-  pTSel.init(settings, *particleDataPtrIn, rndmPtr);
-  zSel.init(settings, *particleDataPtrIn, rndmPtr);
+  flavSel.init(settings,  particleDataPtrIn, rndmPtr, infoPtr);
+  pTSel.init(  settings,  particleDataPtrIn, rndmPtr, infoPtr);
+  zSel.init(   settings, *particleDataPtrIn, rndmPtr);
 
   // Initialize string and ministring fragmentation.
   stringFrag.init(infoPtr, settings, particleDataPtrIn, rndmPtr,

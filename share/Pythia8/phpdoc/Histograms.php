@@ -258,6 +258,24 @@ default midpoint value.
    
  
 <a name="method12"></a>
+<p/><strong>void Hist::rivetTable(ostream& os = cout, bool printError = false) &nbsp;</strong> <br/>
+   
+<strong>void Hist::rivetTable(string fileName, bool printError = false) &nbsp;</strong> <br/>
+print a five-column table, where the first two columns give the lower 
+and upper borders of each bin, the third one the bin contents, and the 
+fourth and fifth the error (up and down) associated with the contents. 
+This format matches the one that Rivet uses for its histograms. 
+The choice between the two methods is the same as above for the 
+<code>table</code> methods. 
+<br/>The error bins are put to zero by default, since the PYTHIA 
+histogramming is not sophisticated enough to compensate for rescalings 
+or other operations, or for weighted events. With the optional 
+<code>printError = true</code> the error will be taken as the 
+square root of the bin content, as is relevant if this content has 
+the same unit weight for each entry to it. 
+   
+ 
+<a name="method13"></a>
 <p/><strong>friend void table(const Hist& h1, const Hist& h2, ostream& os = cout, bool printOverUnder = false, bool xMidBin = true) &nbsp;</strong> <br/>
    
 <strong>friend void table(const Hist& h1, const Hist& h2, string fileName, bool printOverUnder = false, bool xMidBin = true) &nbsp;</strong> <br/>
@@ -270,31 +288,31 @@ contents to be printed, and the <i>x</i> to refer to the beginning
 of the bin rather than the center; see above. 
    
  
-<a name="method13"></a>
+<a name="method14"></a>
 <p/><strong>string Hist::getTitle() &nbsp;</strong> <br/>
 return the title of the histogram. 
    
  
-<a name="method14"></a>
+<a name="method15"></a>
 <p/><strong>double Hist::getBinContent(int iBin) &nbsp;</strong> <br/>
 return the value in bin <code>iBin</code>, ranging from 1 through 
 <code>numberOfBins</code>, with <code>0</code> for underflow and 
 <code>numberOfBins + 1</code> for overflow. 
    
  
-<a name="method15"></a>
+<a name="method16"></a>
 <p/><strong>int Hist::getEntries() &nbsp;</strong> <br/>
 return the number of entries, i.e. the number of time that 
 <code>fill(...)</code> has been called. 
    
  
-<a name="method16"></a>
+<a name="method17"></a>
 <p/><strong>bool Hist::sameSize(const Hist& h) &nbsp;</strong> <br/>
 checks that the number of bins and upper and lower limits are the 
 same as in the histogram in the argument. 
    
  
-<a name="method17"></a>
+<a name="method18"></a>
 <p/><strong>void Hist::takeLog(bool tenLog = true) &nbsp;</strong> <br/>
 by default take 10-logarithm of current contents bin by bin. With 
 optional argument <code>false</code> instead take <i>e</i>-logarithm 
@@ -302,13 +320,13 @@ of contents bin by bin. If to be used, then right before the
 histogram is output. 
    
  
-<a name="method18"></a>
+<a name="method19"></a>
 <p/><strong>void Hist::takeSqrt() &nbsp;</strong> <br/>
 take square root of current contents bin by bin, with negative contents 
 set to zero. 
    
  
-<a name="method19"></a>
+<a name="method20"></a>
 <p/><strong>Hist& Hist::operator+=(const Hist& h) &nbsp;</strong> <br/>
    
 <strong>Hist& Hist::operator-=(const Hist& h) &nbsp;</strong> <br/>
@@ -317,7 +335,7 @@ histogram in the argument if <code>sameSize(...)</code> is true,
 else does nothing. 
    
  
-<a name="method20"></a>
+<a name="method21"></a>
 <p/><strong>Hist& Hist::operator*=(const Hist& h) &nbsp;</strong> <br/>
    
 <strong>Hist& Hist::operator/=(const Hist& h) &nbsp;</strong> <br/>
@@ -326,21 +344,21 @@ histogram in the argument if <code>sameSize(...)</code> is true,
 else does nothing. 
    
  
-<a name="method21"></a>
+<a name="method22"></a>
 <p/><strong>Hist& Hist::operator+=(double f) &nbsp;</strong> <br/>
    
 <strong>Hist& Hist::operator-=(double f) &nbsp;</strong> <br/>
 adds or subtracts each bin content by the common offset <i>f</i>. 
    
  
-<a name="method22"></a>
+<a name="method23"></a>
 <p/><strong>Hist& Hist::operator*=(double f) &nbsp;</strong> <br/>
    
 <strong>Hist& Hist::operator*=(double f) &nbsp;</strong> <br/>
 multiplies or divides each bin content by the common factor <i>f</i>. 
    
  
-<a name="method23"></a>
+<a name="method24"></a>
 <p/><strong>friend Hist operator+(double f, const Hist& h1) &nbsp;</strong> <br/>
    
 <strong>friend Hist operator+(const Hist& h1, double f) &nbsp;</strong> <br/>
@@ -349,7 +367,7 @@ multiplies or divides each bin content by the common factor <i>f</i>.
 add a constant to a histogram or two histograms to each other, bin by bin. 
    
  
-<a name="method24"></a>
+<a name="method25"></a>
 <p/><strong>friend Hist operator-(double f, const Hist& h1) &nbsp;</strong> <br/>
    
 <strong>friend Hist operator-(const Hist& h1, double f) &nbsp;</strong> <br/>
@@ -359,7 +377,7 @@ subtract a histogram from a constant, a constant from a histogram,
 or two histograms from each other, bin by bin. 
    
  
-<a name="method25"></a>
+<a name="method26"></a>
 <p/><strong>friend Hist operator*(double f, const Hist& h1) &nbsp;</strong> <br/>
    
 <strong>friend Hist operator*(const Hist& h1, double f) &nbsp;</strong> <br/>
@@ -369,7 +387,7 @@ multiply a constant by a histogram or two histograms by each other,
 bin by bin. 
    
  
-<a name="method26"></a>
+<a name="method27"></a>
 <p/><strong>friend Hist operator/(double f, const Hist& h1) &nbsp;</strong> <br/>
    
 <strong>friend Hist operator/(const Hist& h1, double f) &nbsp;</strong> <br/>

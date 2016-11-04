@@ -275,6 +275,7 @@ public:
       && idSave < 9960000; }
   int    heaviestQuark(int idIn = 1)    const;
   int    baryonNumberType(int idIn = 1) const;
+  int    nQuarksInCode(int idQIn)       const;
 
   // Reset to empty decay table.
   void clearChannels() {channels.resize(0);}
@@ -579,6 +580,8 @@ public:
     return isParticle(idIn) ? pdt[abs(idIn)].heaviestQuark(idIn) : 0 ; }
   int baryonNumberType(int idIn) {
     return isParticle(idIn) ? pdt[abs(idIn)].baryonNumberType(idIn) : 0 ; }
+  int nQuarksInCode(int idIn, int idQIn) {
+    return isParticle(idIn) ? pdt[abs(idIn)].nQuarksInCode(idQIn) : 0 ; }
 
   // Change branching ratios.
   void rescaleBR(int idIn, double newSumBR = 1.) {

@@ -2607,7 +2607,8 @@ void Settings::initTunePP( int ppTune) {
     }
   }
 
-  // Several ATLAS and CMS tunes start out from Monash 2013 tune.
+  // Several ATLAS and CMS tunes and tunes close-packing of strings
+  // and hadron rescattering with start out from Monash 2013 tune.
   else if (ppTune >= 18) {
     word("PDF:pSet",                            "13"  );   // NNPDF
     parm("SigmaProcess:alphaSvalue",            0.130 );   // same as PDF
@@ -2877,6 +2878,41 @@ void Settings::initTunePP( int ppTune) {
       parm("MultipartonInteractions:pT0Ref",    2.09  );
       parm("BeamRemnants:primordialKThard",     1.88  );
       parm("ColourReconnection:range",          1.71  );
+    }
+
+    // Tune with close-packing of strings and rescattering (November 2016).
+    // Gaussian pT.
+    else if (ppTune == 33) {
+      parm("MultipartonInteractions:pT0Ref",    2.34 );
+      parm("ColourReconnection:range",          1.8  );
+      flag("StringPT:thermalModel",             false);
+      parm("StringPT:sigma",                    0.33 );
+      parm("StringPT:widthPreStrange",          1.2  );
+      parm("StringPT:widthPreDiquark",          1.2  );
+      parm("StringPT:enhancedFraction",         0.0  );
+      flag("StringPT:closePacking",             true );
+      parm("StringPT:expNSP",                   0.01 );
+      parm("StringPT:expMPI",                   0.0  );
+      flag("HadronLevel:HadronScatter",         true );
+      mode("HadronScatter:mode",                0    );
+      parm("HadronScatter:maxProbDS",           0.25 );
+    }
+
+    // Tune with close-packing of strings and rescattering (November 2016).
+    // Thermodynamical pT.
+    else if (ppTune == 34) {
+      parm("MultipartonInteractions:pT0Ref",    2.5  );
+      parm("ColourReconnection:range",          1.1  );
+      flag("StringPT:thermalModel",             true );
+      parm("StringPT:temperature",              0.21 );
+      parm("StringFlav:BtoMratio",              0.357);
+      parm("StringFlav:StrangeSuppression",     0.5  );
+      flag("StringPT:closePacking",             true );
+      parm("StringPT:expNSP",                   0.13 );
+      parm("StringPT:expMPI",                   0.0  );
+      flag("HadronLevel:HadronScatter",         true );
+      mode("HadronScatter:mode",                0    );
+      parm("HadronScatter:maxProbDS",           0.5  );
     }
 
   }

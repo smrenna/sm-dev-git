@@ -11,8 +11,7 @@ also still missed a few relevant features. This has changed over the
 years since then, and the release of 8.200 marks the end of a transition 
 period. PYTHIA 8.2 has a significantly extended physics scope, notably 
 for LHC physics, relative to what PYTHIA 6.4 could offer. There are only 
-a few areas left, such as &gamma;&gamma; physics, where 6.4 still has a 
-role to fill. 
+a few areas left where 6.4 still has a role to fill. 
  
 <h2>Documentation</h2> 
  

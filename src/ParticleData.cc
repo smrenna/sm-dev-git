@@ -245,6 +245,48 @@ int ParticleDataEntry::baryonNumberType(int idIn) const {
 
 //--------------------------------------------------------------------------
 
+// Find number of quarks of given kind inside quark, diquark or hadron.
+// Note: naive answer for flavour-diagonal meson mixing.
+
+int ParticleDataEntry::nQuarksInCode(int idQIn) const {
+
+  // Do not keep track of sign.
+  int idQ   = abs(idQIn);
+  int idNow = abs(idSave);
+  int nQ    = 0;
+
+  // Quarks.
+  if (isQuark()) return (idQ == idNow) ? 1 : 0;
+
+  // Diquarks.
+  if (isDiquark()) {
+    if ( (idNow/1000) % 10 == idQ) ++nQ;
+    if ( (idNow/100)  % 10 == idQ) ++nQ;
+    return nQ;
+  }
+
+  // Mesons.
+  if (isMeson()) {
+    if ( (idNow/100) % 10 == idQ) ++nQ;
+    if ( (idNow/10)  % 10 == idQ) ++nQ;
+    return nQ;
+  }
+
+  // Baryons.
+  if (isBaryon()) {
+    if ( (idNow/1000) % 10 == idQ) ++nQ;
+    if ( (idNow/100)  % 10 == idQ) ++nQ;
+    if ( (idNow/10)   % 10 == idQ) ++nQ;
+    return nQ;
+  }
+
+  // Done. Room for improvements e.g. w.r.t. R-hadrons.
+  return 0;
+
+}
+
+//--------------------------------------------------------------------------
+
 // Prepare the Breit-Wigner mass selection by precalculating
 // frequently-used expressions.
 

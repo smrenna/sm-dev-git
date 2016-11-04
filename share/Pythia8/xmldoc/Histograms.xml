@@ -222,6 +222,25 @@ just below or above the regular histogram bins.)
 default midpoint value. 
 </methodmore> 
  
+<method name="void Hist::rivetTable(ostream& os = cout, 
+bool printError = false)"> 
+</method> 
+<methodmore name="void Hist::rivetTable(string fileName, 
+bool printError = false)"> 
+print a five-column table, where the first two columns give the lower 
+and upper borders of each bin, the third one the bin contents, and the 
+fourth and fifth the error (up and down) associated with the contents. 
+This format matches the one that Rivet uses for its histograms. 
+The choice between the two methods is the same as above for the 
+<code>table</code> methods. 
+<br/>The error bins are put to zero by default, since the PYTHIA 
+histogramming is not sophisticated enough to compensate for rescalings 
+or other operations, or for weighted events. With the optional 
+<code>printError = true</code> the error will be taken as the 
+square root of the bin content, as is relevant if this content has 
+the same unit weight for each entry to it. 
+</methodmore> 
+ 
 <method name="friend void table(const Hist& h1, const Hist& h2, 
 ostream& os = cout, bool printOverUnder = false, bool xMidBin = true)"> 
 </method> 
