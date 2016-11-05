@@ -363,17 +363,17 @@ double SigmaProcess::sigmaPDF(bool initPS) {
       inBeamA[j].pdf = beamAPtr->xfMax( inBeamA[j].id, x1Save, Q2FacSave);
     else
       inBeamA[j].pdf = beamAPtr->xfHard( inBeamA[j].id, x1Save, Q2FacSave);
-    if ( beamAPtr->hasGamma() )
-      inBeamA[j].xGamma = beamAPtr->xGammaPDF(inBeamA[j].id);
   }
   for (int j = 0; j < sizeBeamB(); ++j){
     if ( initPS)
       inBeamB[j].pdf = beamBPtr->xfMax( inBeamB[j].id, x2Save, Q2FacSave);
     else
       inBeamB[j].pdf = beamBPtr->xfHard( inBeamB[j].id, x2Save, Q2FacSave);
-    if ( beamBPtr->hasGamma() )
-      inBeamB[j].xGamma = beamBPtr->xGammaPDF(inBeamB[j].id);
   }
+
+  // Save the x_gamma values after PDFs are called.
+  if ( beamAPtr->hasGamma() ) beamAPtr->xGammaPDF();
+  if ( beamBPtr->hasGamma() ) beamBPtr->xGammaPDF();
 
   // Loop over allowed incoming channels.
   sigmaSumSave = 0.;
@@ -388,14 +388,12 @@ double SigmaProcess::sigmaPDF(bool initPS) {
     if (inPair[i].idA == inBeamA[j].id) {
       inPair[i].pdfA      = inBeamA[j].pdf;
       inPair[i].pdfSigma *= inBeamA[j].pdf;
-      if ( beamAPtr->hasGamma() ) inPair[i].xGammaA = inBeamA[j].xGamma;
       break;
     }
     for (int j = 0; j < sizeBeamB(); ++j)
     if (inPair[i].idB == inBeamB[j].id) {
       inPair[i].pdfB      = inBeamB[j].pdf;
       inPair[i].pdfSigma *= inBeamB[j].pdf;
-      if ( beamBPtr->hasGamma() ) inPair[i].xGammaB = inBeamB[j].xGamma;
       break;
     }
 
@@ -430,10 +428,6 @@ void SigmaProcess::pickInState(int id1in, int id2in) {
       id2      = inPair[i].idB;
       pdf1Save = inPair[i].pdfA;
       pdf2Save = inPair[i].pdfB;
-
-      // Set also correct x_gamma values.
-      xGamma1Save = beamAPtr->hasGamma() ? inPair[i].xGammaA : 1.;
-      xGamma2Save = beamBPtr->hasGamma() ? inPair[i].xGammaB : 1.;
       break;
     }
   }

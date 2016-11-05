@@ -112,6 +112,7 @@ void BeamParticle::init( int idIn, double pzIn, double eIn, double mIn,
   diffLargeMassSuppress = settings.parm("Diffraction:largeMassSuppress");
 
   // Check if ISR for photon collisions is applied and set pTmin.
+  doND              = settings.flag("SoftQCD:nonDiffractive");
   doISR             = settings.flag("PartonLevel:ISR");
   doMPI             = settings.flag("PartonLevel:MPI");
   pTminISR          = settings.parm("SpaceShower:pTmin");
@@ -677,7 +678,7 @@ bool BeamParticle::remnantFlavours(Event& event, bool isDIS) {
       // Set the initiator companion code after the valence content is fixed.
       gammaValSeaComp(0);
 
-    } else if ( doMPI ) {
+    } else if ( doMPI || doND ) {
 
       // If ISR is applied, use the min. scale of evolution for the valence
       // parton decision. Otherwise use the pT of latest MPI (set in scatter).

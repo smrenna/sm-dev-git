@@ -367,6 +367,29 @@ diffractive process.
 The momentum transfer <ei>t</ei> in the hard diffractive process. 
 </methodmore> 
  
+<h3>Photon-photon in lepton-lepton</h3> 
+ 
+Information about the kinematics of photon-photon collisions from lepton 
+beams. 
+<method name="double Info::eCMsub()"> 
+Collision energy of the <ei>gamma-gamma</ei> sub-system. 
+</method> 
+<method name="double Info::xGammaA()"> 
+</method> 
+<methodmore name="double Info::xGammaB()"> 
+<ei>x</ei> fractions of lepton momenta carried by the photons. 
+</methodmore> 
+<method name="double Info::Q2GammaA()"> 
+</method> 
+<methodmore name="double Info::Q2GammaB()"> 
+Virtualities of the photons emitted by the leptons. 
+</methodmore> 
+<method name="double Info::thetaScatLepA()"> 
+</method> 
+<methodmore name="double Info::thetaScatLepB()"> 
+Scattering angles of the leptons wrt. the beam direction. 
+</methodmore> 
+ 
 <h3>Event weight and activity</h3> 
  
 <method name="double Info::weight()"> 

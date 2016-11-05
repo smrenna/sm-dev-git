@@ -228,7 +228,7 @@ public:
 
   // Remove the last particle from the beam. Reset companion code if needed.
   void popBack() { int iComp = resolved.back().companion();
-    resolved.pop_back(); if ( iComp > 0 ) { iSkipSave = iComp;
+    resolved.pop_back(); if ( iComp >= 0 ) { iSkipSave = iComp;
       idSave = resolved[iComp].id(); pickValSeaComp(); } }
 
   // Print extracted parton list; for debug mainly.
@@ -289,18 +289,18 @@ public:
   bool gammaInitiatorIsVal(int iResolved, double Q2);
   int  getGammaValFlavour() { return abs(idVal[0]); }
   int  gammaValSeaComp(int iResolved);
-  void posVal(int iPosValIn) { iPosVal = iPosValIn; }
-  void gamVal(int iGamValIn)          {iGamVal = iGamValIn;}
-  int  gamVal()                       {return iGamVal;}
-  void resolvedGamma(bool isResolved) {isResolvedGamma = isResolved;}
-  bool resolvedGamma()                {return isResolvedGamma;}
+  void posVal(int iPosValIn)          { iPosVal = iPosValIn; }
+  void gamVal(int iGamValIn)          { iGamVal = iGamValIn; }
+  int  gamVal()                       { return iGamVal; }
+  void resolvedGamma(bool isResolved) { isResolvedGamma = isResolved; }
+  bool resolvedGamma()                { return isResolvedGamma; }
 
   // Store the pT2 value of gamma->qqbar splitting.
-  void   pT2gamma2qqbar(double pT2in) {pT2gm2qqbar = pT2in;}
-  double pT2gamma2qqbar()             {return pT2gm2qqbar;}
+  void   pT2gamma2qqbar(double pT2in) { pT2gm2qqbar = pT2in; }
+  double pT2gamma2qqbar()             { return pT2gm2qqbar; }
 
   // Store the pT value for the latest MPI.
-  void   pTMPI(double pTminMPIin)     {pTminMPI = pTminMPIin;}
+  void   pTMPI(double pTminMPIin)     { pTminMPI = pTminMPIin; }
 
   // Check whether room for beam remnants.
   bool roomFor1Remnant(double eCM);
@@ -316,17 +316,20 @@ public:
   double xIntegratedPDFs(double Q2)
     { return pdfBeamPtr->xfIntegratedTotal(Q2); }
 
-  // Returns the x_gamma value for last PDF call. Used to set up the value.
-  double xGammaPDF(int idParton) { return pdfBeamPtr->xGamma(idParton); }
-  void newxGamma(double xGmIn) { xGm = xGmIn; }
-  // Returns saved x_gamma value. Used after the value is set above.
-  double xGamma() { return xGm; }
-
-  // Set and get the direction and magnitude of kT for photons inside leptons.
+  // Save the x_gamma value after latest PDF call or set it later if ND.
+  void xGammaPDF()            { xGm = pdfBeamPtr->xGamma(); }
+  void xGamma(double xGmIn)   { xGm = xGmIn; }
+  void Q2Gamma(double Q2GmIn) { Q2gm = Q2GmIn; }
   void newGammaKTPhi(double kTIn, double phiIn)
     { kTgamma = kTIn; phiGamma = phiIn; }
-  double gammaKTx() { return kTgamma*cos(phiGamma); }
-  double gammaKTy() { return kTgamma*sin(phiGamma); }
+
+  // Get the kinematics related photons form lepton beams.
+  double xGamma()   const { return xGm; }
+  double Q2Gamma()  const { return Q2gm; }
+  double gammaKTx() const { return kTgamma*cos(phiGamma); }
+  double gammaKTy() const { return kTgamma*sin(phiGamma); }
+  double gammaKT()  const { return kTgamma; }
+  double gammaPhi() const { return phiGamma; }
 
 private:
 
@@ -373,12 +376,12 @@ private:
   double xqgTot, xqVal, xqgSea, xqCompSum;
 
   // Variables related to photon beams (also inside lepton).
-  bool   doISR, doMPI, isResolvedGamma, lepton2gamma, hasGammaInLepton;
+  bool   doISR, doMPI, doND, isResolvedGamma, lepton2gamma, hasGammaInLepton;
   double pTminISR, pTminMPI, pT2gm2qqbar;
   int    iGamVal, iPosVal;
 
   // Variables for photon from lepton.
-  double xGm, kTgamma, phiGamma;
+  double xGm, Q2gm, kTgamma, phiGamma;
 
   // The list of resolved partons.
   vector<ResolvedParton> resolved;

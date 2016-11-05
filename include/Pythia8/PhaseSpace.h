@@ -24,6 +24,7 @@
 #include "Pythia8/Settings.h"
 #include "Pythia8/StandardModel.h"
 #include "Pythia8/UserHooks.h"
+#include "Pythia8/GammaKinematics.h"
 
 namespace Pythia8 {
 
@@ -449,6 +450,36 @@ public:
   virtual bool finalKin() {return true;}
 
 private:
+
+};
+
+//==========================================================================
+
+// A derived class for nondiffractive events in l+l- -> gm+gm.
+// The process is still generated in MultipartonInteraction but the sampling
+// of the sub-collision is done here to allow cuts for the phase space.
+
+class PhaseSpace2to2nondiffractiveGamma : public PhaseSpace {
+
+public:
+
+  // Constructor.
+  PhaseSpace2to2nondiffractiveGamma() {}
+
+  // Construct the trial or final event kinematics.
+  virtual bool setupSampling();
+  virtual bool trialKin(bool inEvent = true, bool = false);
+  virtual bool finalKin() {gammaKin.finalize(); return true;}
+
+private:
+
+  // Pointer to object that samples photon kinematics from leptons.
+  GammaKinematics gammaKin;
+
+  // Parameters.
+  double Q2maxGamma, Wmin, sigmaNDestimate, sigmaNDmax, sCM, alphaEM,
+    m2BeamA, m2BeamB, m2sA, m2sB, log2xMinA, log2xMaxA, log2xMinB, log2xMaxB,
+    xGamma1, xGamma2, Q2gamma1, Q2gamma2, mGmGm, Q2min1, Q2min2;
 
 };
 

@@ -104,7 +104,8 @@ public:
     Settings& settings, ParticleData* particleDataPtr, Rndm* rndmPtrIn,
     BeamParticle* beamAPtrIn, BeamParticle* beamBPtrIn,
     Couplings* couplingsPtrIn, PartonSystems* partonSystemsPtrIn,
-    SigmaTotal* sigmaTotPtrIn, UserHooks* userHooksPtrIn);
+    SigmaTotal* sigmaTotPtrIn, UserHooks* userHooksPtrIn,
+    bool hasGammaIn = false);
 
   // Reset impact parameter choice and update the CM energy.
   void reset();
@@ -240,8 +241,10 @@ private:
          fracAhighSave[5], fracBhighSave[5], fracChighSave[5],
          fracABChighSave[5], cDivSave[5], cMaxSave[5];
 
-  // Beam offset wrt. normal situation.
+  // Beam offset wrt. normal situation and other photon-related parameters.
   int    beamOffset;
+  double mGmGmMin, mGmGmMax;
+  bool   hasGamma;
 
   // Pointer to various information on the generation.
   Info*          infoPtr;

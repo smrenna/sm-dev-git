@@ -60,11 +60,12 @@ bool ProcessLevel::init( Info* infoPtrIn, Settings& settings,
   userHooksPtr     = userHooksPtrIn;
   slhaInterfacePtr = slhaInterfacePtrIn;
 
+  // Check whether lepton2gamma is set on.
+  isLepton2gamma   = settings.flag("PDF:lepton2gamma");
+
   // Initialize variables related photon-inside-lepton.
   beamGamAPtr      = beamGamAPtrIn;
   beamGamBPtr      = beamGamBPtrIn;
-  xGamma1          = 1.;
-  xGamma2          = 1.;
 
   // Send on some input pointers.
   resonanceDecays.init( infoPtr, particleDataPtr, rndmPtr);
@@ -74,7 +75,8 @@ bool ProcessLevel::init( Info* infoPtrIn, Settings& settings,
   int    idA = infoPtr->idA();
   int    idB = infoPtr->idB();
   double eCM = infoPtr->eCM();
-  sigmaTotPtr->calc( idA, idB, eCM);
+  if (isLepton2gamma) sigmaTotPtr->calc( 22, 22, eCM);
+  else sigmaTotPtr->calc( idA, idB, eCM);
   sigmaND = sigmaTotPtr->sigmaND();
 
   // Options to allow second hard interaction and resonance decays.
@@ -88,9 +90,6 @@ bool ProcessLevel::init( Info* infoPtrIn, Settings& settings,
                 &&  settings.flag("PartonLevel:all") );
   doMPI         = ( settings.flag("PartonLevel:MPI")
                 &&  settings.flag("PartonLevel:all") );
-
-  // Check whether lepton2gamma is set on.
-  isLepton2gamma = settings.flag("PDF:lepton2gamma");
 
   // Second interaction not to be combined with biased phase space.
   if (doSecondHard && userHooksPtr != 0
@@ -674,27 +673,11 @@ bool ProcessLevel::nextOne( Event& process) {
     // Add any junctions to the process event record list.
     if (physical) findJunctions( process);
 
-    // Set the photon beam momenta according to the process.
-    if ( beamAPtr->hasGamma() ) {
-      double pzGamma = process[3].pz();
-      double eGamma  = process[3].e();
-      xGamma1 = containerPtrs[iContainer]->xGamma1();
-      beamAPtr->newxGamma(xGamma1);
-      beamGamAPtr->newPzE(pzGamma, eGamma);
-    }
-    if ( beamBPtr->hasGamma() ) {
-      double pzGamma = process[4].pz();
-      double eGamma  = process[4].e();
-      xGamma2 = containerPtrs[iContainer]->xGamma2();
-      beamBPtr->newxGamma(xGamma2);
-      beamGamBPtr->newPzE(pzGamma, eGamma);
-    }
-
     // Check that enough room for beam remnants in the photon beams and
     // set the valence content for photon beams.
-    /// Do not check for softQCD processes.
-    if ( ( (beamAPtr->isGamma() && beamBPtr->isGamma())
-        || (beamAPtr->hasGamma() && beamBPtr->hasGamma()) )
+    // Do not check for softQCD processes since no initiators yet.
+    if ( ( ( beamAPtr->isGamma()  && beamBPtr->isGamma() )
+        || ( beamAPtr->hasGamma() && beamBPtr->hasGamma() ) )
         && !(containerPtrs[iContainer]->isNonDiffractive()) ) {
       if ( !roomForRemnants() ) {
         physical = false;
@@ -883,6 +866,10 @@ bool ProcessLevel::roomForRemnants() {
   bool beamBhasGamma = beamBPtr->hasGamma();
   BeamParticle* tmpBeamAPtr = beamAhasGamma ? beamGamAPtr : beamAPtr;
   BeamParticle* tmpBeamBPtr = beamBhasGamma ? beamGamBPtr : beamBPtr;
+
+  // Get the x_gamma values from beam particle.
+  double xGamma1 = beamAPtr->xGamma();
+  double xGamma2 = beamBPtr->xGamma();
 
   // Clear the previous choice.
   tmpBeamAPtr->posVal(-1);

@@ -105,7 +105,7 @@ private:
          hasTwoLeptonBeams, hasPointLeptons, canVetoPT, canVetoStep,
          canVetoMPIStep, canVetoEarly, canSetScale, allowRH, earlyResDec,
          vetoWeakJets, canReconResSys, doReconnect, doHardDiff,
-         forceResonanceCR, showUnresGamma;
+         forceResonanceCR, doNDgamma, doMPIgmgm, showUnresGamma;
   int    pTmaxMatchMPI;
   double mMinDiff, mWidthDiff, pMaxDiff, vetoWeakDeltaR2;
 
@@ -125,6 +125,9 @@ private:
   double eCMsave;
   vector<bool> inRHadDecay;
   vector<int>  iPosBefShow;
+
+  // Variables for photon inside electron.
+  bool   beamAhasGamma, beamBhasGamma, beamHasGamma;
 
   // Pointer to various information on the generation.
   Info*          infoPtr;
@@ -170,13 +173,10 @@ private:
   MultipartonInteractions  multiSDB;
   MultipartonInteractions  multiCD;
   MultipartonInteractions* multiPtr;
+  MultipartonInteractions  multiGmGm;
 
   // The generator class to construct beam-remnant kinematics.
   BeamRemnants remnants;
-
-  // Variables for photon inside electron.
-  bool   beamAhasGamma, beamBhasGamma, beamHasGamma;
-  double Q2maxGamma;
 
   // The RHadrons class is used to fragment off and decay R-hadrons.
   RHadrons*    rHadronsPtr;

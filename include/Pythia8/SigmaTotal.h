@@ -95,7 +95,7 @@ private:
   bool   isCalc, setTotal, zeroAXB, doDampen, setElastic;
   double sigAXB2TeV, sigTotOwn, sigElOwn, sigXBOwn, sigAXOwn, sigXXOwn,
          sigAXBOwn, maxXBOwn, maxAXOwn, maxXXOwn, maxAXBOwn, bSlope, rho,
-         lambda, tAbsMin, alphaEM0, sigmaPomP, mPomP, pPomP;
+         lambda, tAbsMin, alphaEM0, sigmaPomP, mPomP, pPomP, fracSigmaNDgamma;
 
   // Parameters of MBR model.
   double MBReps, MBRalpha, MBRbeta0, MBRsigma0, m2min, dyminSDflux,

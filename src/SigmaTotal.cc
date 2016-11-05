@@ -176,6 +176,8 @@ void SigmaTotal::init(Info* infoPtrIn, Settings& settings,
   dyminSigDD  = settings.parm("Diffraction:MBRdyminSigDD");
   dyminSigCD  = settings.parm("Diffraction:MBRdyminSigCD");
 
+  // Parameters for gamma+gamma total cross section.
+  fracSigmaNDgamma = settings.parm("Photon:sigmaNDfrac");
 }
 
 //--------------------------------------------------------------------------
@@ -238,7 +240,7 @@ bool SigmaTotal::calc( int idA, int idB, double eCM) {
     double sEps = pow( s, EPSILON);
     double sEta = pow( s, ETA);
     sigTot = 211e-6 * sEps + 215e-6 * sEta;
-    sigND  = sigTot;
+    sigND  = fracSigmaNDgamma * sigTot;
     isCalc = true;
     return true;
   }

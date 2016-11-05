@@ -88,7 +88,7 @@ public:
   virtual double xfIntegratedTotal(double) { return 0.; }
 
   // Return the sampled value for x_gamma.
-  virtual double xGamma(int){ return 1.; }
+  virtual double xGamma(){ return 1.; }
 
   // Normal PDFs unless gamma inside lepton -> an overestimate for sampling.
   virtual double xfMax(int id, double x, double Q2) { return xf( id, x, Q2); }
@@ -811,7 +811,7 @@ public:
 
   // Override the member function definitions where relevant.
   void xfUpdate(int id, double x, double Q2);
-  double xGamma(int){ return xGm; }
+  double xGamma(){ return xGm; }
   double xfMax(int id, double x, double Q2);
 
 private:

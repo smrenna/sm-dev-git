@@ -116,8 +116,6 @@ public:
   double Q2Fac()       const {return sigmaProcessPtr->Q2Fac();}
   double mHat()        const {return sqrtpos(phaseSpacePtr->sHat());}
   double pTHat()       const {return phaseSpacePtr->pTHat();}
-  double xGamma1()     const {return sigmaProcessPtr->xGamma1();}
-  double xGamma2()     const {return sigmaProcessPtr->xGamma2();}
 
   // Tell whether container is for Les Houches events.
   bool   isLHAContainer() const {return isLHA;}
@@ -164,6 +162,13 @@ private:
   // Pointer to LHAup for generating external events.
   LHAup*           lhaUpPtr;
 
+  // Pointers to the two incoming beams.
+  BeamParticle*    beamAPtr;
+  BeamParticle*    beamBPtr;
+
+  // Pointer to the phase space generator of photons from leptons.
+  GammaKinematics  gammaKin;
+
   // Possibility to modify Les Houches input.
   bool   matchInOut;
   int    idRenameBeams, setLifetime, setQuarkMass, setLeptonMass, idNewM[9];
@@ -182,7 +187,7 @@ private:
          sigmaFin, deltaFin, weightNow, wtAccSum;
 
   // Flags to store whether beam has a gamma beam inside.
-  bool   beamAhasGamma, beamBhasGamma;
+  bool   beamAhasGamma, beamBhasGamma, beamHasGamma;
 
   // Statistics for Les Houches event classification.
   vector<int> codeLHA;

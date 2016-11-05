@@ -23,7 +23,7 @@ namespace Pythia8 {
 
 // The current Pythia (sub)version number, to agree with XML version.
 const double Pythia::VERSIONNUMBERHEAD = PYTHIA_VERSION;
-const double Pythia::VERSIONNUMBERCODE = 8.221;
+const double Pythia::VERSIONNUMBERCODE = 8.222;
 
 //--------------------------------------------------------------------------
 
@@ -830,11 +830,6 @@ bool Pythia::init() {
 
     // No soft QCD or diffraction for gamma+gamma in e+e-.
     if ( beamA.hasGamma() && beamB.hasGamma() ) {
-      if (settings.flag("SoftQCD:nonDiffractive")) {
-        info.errorMsg("Abort from Pythia::init: "
-          "Soft QCD events not implemented for photon-photon collisions");
-        return false;
-      }
       if ( doDiffraction || doHardDiff ) {
         info.errorMsg("Abort from Pythia::init: "
           "Diffractive events not implemented for photon-photon collisions");
@@ -962,13 +957,6 @@ void Pythia::checkSettings() {
     settings.flag("MultipartonInteractions:allowDoubleRescatter", false);
   }
 
-  // No MPIs for e+e- -> gamma+gamma -> X collisions.
-  if ( settings.flag("PDF:lepton2gamma") && settings.flag("PartonLevel:MPI") ){
-    info.errorMsg("Warning in Pythia::checkSettings: "
-                  "MPI switched off for photon-photon processes.");
-    settings.flag("PartonLevel:MPI", false);
-  }
-
 }
 
 //--------------------------------------------------------------------------
@@ -983,11 +971,12 @@ bool Pythia::checkBeams() {
   if (!doProcessLevel) return true;
 
   // Neutrino beams always unresolved, charged lepton ones conditionally.
-  bool isLeptonA  = (idAabs > 10 && idAabs < 17);
-  bool isLeptonB  = (idBabs > 10 && idBabs < 17);
-  bool isUnresLep = !settings.flag("PDF:lepton");
-  isUnresolvedA   = isLeptonA && (idAabs%2 == 0 || isUnresLep);
-  isUnresolvedB   = isLeptonB && (idBabs%2 == 0 || isUnresLep);
+  bool isLeptonA    = (idAabs > 10 && idAabs < 17);
+  bool isLeptonB    = (idBabs > 10 && idBabs < 17);
+  bool isUnresLep   = !settings.flag("PDF:lepton");
+  bool lepton2gamma = settings.flag("PDF:lepton2gamma");
+  isUnresolvedA     = isLeptonA && (idAabs%2 == 0 || isUnresLep);
+  isUnresolvedB     = isLeptonB && (idBabs%2 == 0 || isUnresLep);
 
   // Equate Dark Matter "beams" with incoming neutrinos.
   if (idAabs > 50 && idAabs < 61) isLeptonA = isUnresolvedA = true;
@@ -1015,7 +1004,16 @@ bool Pythia::checkBeams() {
   int modeUnresolvedHadron = settings.mode("BeamRemnants:unresolvedHadron");
   if (isHadronA && modeUnresolvedHadron%2 == 1) isUnresolvedA = true;
   if (isHadronB && modeUnresolvedHadron > 1)    isUnresolvedB = true;
-  if (isHadronA && isHadronB) return true;
+  if (isHadronA && isHadronB) {
+    // lepton2gamma flag with hadron beams may cause problems.
+    if (lepton2gamma) {
+      info.errorMsg("Error in Pythia::init: lepton2gamma should be off for"
+        " hadron+hadron collision");
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   // Photon-photon collisions OK.
   if ( (idAabs == 22) && (idBabs == 22) ) return true;
@@ -1028,7 +1026,6 @@ bool Pythia::checkBeams() {
               || settings.flag("WeakBosonExchange:ff2ff(t:gmZ)")
               || settings.flag("WeakBosonExchange:ff2ff(t:W)")
               || (frameType == 4);
-    bool lepton2gamma = settings.flag("PDF:lepton2gamma");
     if (doDIS && !lepton2gamma) return true;
   }
 

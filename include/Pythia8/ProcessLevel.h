@@ -94,7 +94,6 @@ private:
 
   // Variables for gamma-inside-lepton collisions.
   bool   isLepton2gamma;
-  double xGamma1, xGamma2;
 
   // Vector of containers of internally-generated processes.
   vector<ProcessContainer*> containerPtrs;

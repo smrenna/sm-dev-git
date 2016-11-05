@@ -341,7 +341,7 @@ bool MultipartonInteractions::init( bool doMPIinit, int iDiffSysIn,
   Info* infoPtrIn, Settings& settings, ParticleData* particleDataPtr,
   Rndm* rndmPtrIn, BeamParticle* beamAPtrIn, BeamParticle* beamBPtrIn,
   Couplings* couplingsPtrIn, PartonSystems* partonSystemsPtrIn,
-  SigmaTotal* sigmaTotPtrIn, UserHooks* userHooksPtrIn) {
+  SigmaTotal* sigmaTotPtrIn, UserHooks* userHooksPtrIn, bool hasGammaIn) {
 
   // Store input pointers for future use. Done if no initialization.
   iDiffSys         = iDiffSysIn;
@@ -353,6 +353,7 @@ bool MultipartonInteractions::init( bool doMPIinit, int iDiffSysIn,
   partonSystemsPtr = partonSystemsPtrIn;
   sigmaTotPtr      = sigmaTotPtrIn;
   userHooksPtr     = userHooksPtrIn;
+  hasGamma         = hasGammaIn;
   if (!doMPIinit) return false;
 
   // If both beams are baryons then softer PDF's than for mesons/Pomerons.
@@ -483,6 +484,11 @@ bool MultipartonInteractions::init( bool doMPIinit, int iDiffSysIn,
   mMaxPertDiff = eCM;
   eCMsave      = eCM;
 
+  // Limits on invariant mass of gm+gm system.
+  mGmGmMin     = settings.parm("Photon:Wmin");
+  mGmGmMax     = settings.parm("Photon:Wmax");
+  if ( mGmGmMax < mGmGmMin ) mGmGmMax = eCM;
+
   // Get the total inelastic and nondiffractive cross section.
   if (!sigmaTotPtr->hasSigmaTot()) return false;
   bool isNonDiff = (iDiffSys == 0);
@@ -496,7 +502,7 @@ bool MultipartonInteractions::init( bool doMPIinit, int iDiffSysIn,
          << "---------* \n"
          << " |                                                        "
          << "          | \n";
-    if (isNonDiff)
+    if (isNonDiff && !hasGamma)
       cout << " |                   sigmaNonDiffractive = " << setprecision(2)
            << ((sigmaND > 1.) ? fixed : scientific) << setw(8) << sigmaND
            << " mb              | \n";
@@ -509,6 +515,9 @@ bool MultipartonInteractions::init( bool doMPIinit, int iDiffSysIn,
     else if (iDiffSys == 3)
       cout << " |                          diffraction AXB               "
            << "          | \n";
+    else if (hasGamma)
+      cout << " |                       l+l- -> gamma+gamma -> X         "
+           << "          | \n";
     cout << " |                                                        "
          << "          | \n";
   }
@@ -517,18 +526,39 @@ bool MultipartonInteractions::init( bool doMPIinit, int iDiffSysIn,
   nStep     = (iDiffSys == 0) ? 1 : 5;
   eStepSize = (nStep < 2) ? 1.
             : log(mMaxPertDiff / mMinPertDiff) / (nStep - 1.);
+
+  // For photons from lepton cover range of gm+gm invariant masses.
+  if (hasGamma){
+    nStep     = 5;
+    eStepSize = log(mGmGmMax / mGmGmMin) / (nStep - 1.);
+  }
+
   for (int iStep = 0; iStep < nStep; ++iStep) {
 
     // Update and output current diffractive mass and
     // fictitious Pomeron-proton cross section for normalization.
     if (nStep > 1) {
-      eCM = mMinPertDiff * pow( mMaxPertDiff / mMinPertDiff,
-            iStep / (nStep - 1.) );
+      if (!hasGamma) eCM = mMinPertDiff * pow( mMaxPertDiff / mMinPertDiff,
+                           iStep / (nStep - 1.) );
+      else eCM = mGmGmMin * pow( mGmGmMax / mGmGmMin, iStep / (nStep - 1.) );
       sCM = eCM * eCM;
-      sigmaND = sigmaPomP * pow( eCM / mPomP, pPomP);
-      if (showMPI) cout << " |    diffractive mass = " << scientific
-        << setprecision(3) << setw(9) << eCM << " GeV and sigmaNorm = "
-        << fixed << setw(6) << sigmaND << " mb    | \n";
+
+      // MPI for Diffractive events.
+      if (!hasGamma) {
+        sigmaND = sigmaPomP * pow( eCM / mPomP, pPomP);
+        if (showMPI) cout << " |    diffractive mass = " << scientific
+          << setprecision(3) << setw(9) << eCM << " GeV and sigmaNorm = "
+          << fixed << setw(6) << sigmaND << " mb    | \n";
+
+      // MPI with gamma+gamma in l+l-.
+      } else {
+        sigmaTotPtr->calc( 22, 22, eCM );
+        sigmaND = sigmaTotPtr->sigmaND();
+        if (showMPI) cout << " |    gamma+gamma eCM = " << scientific
+          << setprecision(3) << setw(9) << eCM << " GeV and sigmaNorm = "
+          << scientific << setw(6) << sigmaND << " mb  | \n";
+      }
+
     }
 
     // Set current pT0 scale.
@@ -621,7 +651,7 @@ bool MultipartonInteractions::init( bool doMPIinit, int iDiffSysIn,
       cMaxSave[iStep]         = cMax;
    }
 
-  // End of loop over diffractive masses.
+  // End of loop over diffractive/invariant gamma+gamma masses.
   }
 
   // Output details for x-dependent matter profile.
@@ -689,11 +719,17 @@ void MultipartonInteractions::reset( ) {
   if (nStep == 1 || abs( eCM / eCMsave - 1.) < ECMDEV) return;
 
   // Set fictitious Pomeron-proton cross section for diffractive system.
-  sigmaND = sigmaPomP * pow( eCM / mPomP, pPomP);
+  if (!hasGamma) sigmaND = sigmaPomP * pow( eCM / mPomP, pPomP);
+  // For photons from leptons calculate sigmaND at updated CM energy.
+  else {
+    sigmaTotPtr->calc( 22, 22, eCM );
+    sigmaND = sigmaTotPtr->sigmaND();
+  }
 
   // Current interpolation point.
   eCMsave   = eCM;
-  eStepSave = log(eCM / mMinPertDiff) / eStepSize;
+  if (!hasGamma) eStepSave = log(eCM / mMinPertDiff) / eStepSize;
+  else eStepSave = log(eCM / mGmGmMin) / eStepSize;
   iStepFrom = max( 0, min( nStep - 2, int( eStepSave) ) );
   iStepTo   = iStepFrom + 1;
   eStepTo   = max( 0., min( 1., eStepSave - iStepFrom) );
@@ -1304,7 +1340,7 @@ bool MultipartonInteractions::scatter( Event& event) {
       beamBPtr->popBack();
       partonSystemsPtr->popBack();
 
-      infoPtr->errorMsg("Error in MultipartonInteractions::scatter:"
+      infoPtr->errorMsg("Warning in MultipartonInteractions::scatter:"
           " No room for remnants for given scattering");
       return false;
     }

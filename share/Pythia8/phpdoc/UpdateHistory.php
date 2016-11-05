@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.221: 4 November 2016 
+<li>8.222: 5 November 2016 
 <ul> 
  
 <li>Nadine Fischer and Leif L&ouml;nnblad join as co-authors, 
@@ -47,13 +47,26 @@ while Jesper Roy Christiansen leaves. Ilkka Helenius has new
 affiliation.</li> 
  
 <li>The machinery for &gamma;&gamma; collisions has been extended, 
-such that now soft processes and MPIs can be simulated. (But not 
-yet diffraction, and not when embedded in an <i>e^+e^-</i> 
-collision.) Also some further improvements have been introduced, see 
+such that now soft processes and MPIs can be simulated, also when 
+embedded in <i>l^+l^-</i> collisions. (But not yet diffraction.) 
+Also some further improvements have been introduced, see 
 the <?php $filepath = $_GET["filepath"];
 echo "<a href='PhotonPhoton.php?filepath=".$filepath."' target='page'>";?>Photon-photon Interactions</a> 
 description. This implies several changes in different parts of 
 the code, mainly related to beam remnants and beam particles.</li> 
+ 
+<li>The kinematics of &gamma;&gamma; have been revised to include all 
+mass corrections and to handle also non-equal leptons. A new class 
+<code>GammaKinematics</code> is introduced to handle the sampling of 
+the kinematics.</li> 
+ 
+<li>New cuts for the kinematics of &gamma;&gamma; interactions in 
+<i>l^+l^-</i> collisions are introduced, for details see 
+<?php $filepath = $_GET["filepath"];
+echo "<a href='PhotonPhoton.php?filepath=".$filepath."' target='page'>";?>Photon-photon Interactions</a>. 
+Matching new kinematics output methods, see 
+<?php $filepath = $_GET["filepath"];
+echo "<a href='EventInformation.php?filepath=".$filepath."' target='page'>";?>Event Information</a>. 
  
 <li>A new alternative "thermal hadronization" option is introduced, 
 wherein an exponential <i>exp(-pT / T)</i> hadronic transverse 
@@ -135,6 +148,9 @@ Andy Buckley.</li>
 <code>Pythia.h</code> matches already existing 
 <code>#define PYTHIA_VERSION 8.2xx</code>, for more convenient 
 matching using integers. Thanks to Andrii Verbytskyi.</li> 
+ 
+<li>A minor fix for <code>BeamParticle::popBack()</code> method to reset 
+companion choice also if <code>iComp = 0</code>.</li> 
  
 <li>Two minor particle data fixes.</li> 
  

@@ -57,9 +57,6 @@ public:
   int    id;
   double pdf;
 
-  // Need to add here since sampled when PDFs are called.
-  double xGamma;
-
 };
 
 //==========================================================================
@@ -77,9 +74,6 @@ public:
   // Values.
   int    idA, idB;
   double pdfA, pdfB, pdfSigma;
-
-  // x_gamma values for each beam sampled with the PDF calls.
-  double xGammaA, xGammaB;
 
 };
 
@@ -250,10 +244,6 @@ public:
   double pdf1()             const {return pdf1Save;}
   double pdf2()             const {return pdf2Save;}
 
-  // Give back the saved x_gamma values.
-  double xGamma1()          const {return xGamma1Save;}
-  double xGamma2()          const {return xGamma2Save;}
-
   // Give back angles; relevant only for multipe-interactions processes.
   double thetaMPI()         const {return atan2( sinTheta, cosTheta);}
   double phiMPI()           const {return phi;}
@@ -359,9 +349,6 @@ protected:
   int      idSave[12], colSave[12], acolSave[12];
   double   mSave[12], cosTheta, sinTheta, phi, sHMass, sHBeta, pT2Mass, pTFin;
   Particle parton[12];
-
-  // x_gamma values when photon in lepton.
-  double   xGamma1Save, xGamma2Save;
 
   // Minimal set of saved kinematics for trial interactions when
   // using the x-dependent matter profile of multiparton interactions.
