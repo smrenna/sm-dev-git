@@ -1169,7 +1169,8 @@ bool ParticleDecays::pickHadrons() {
     }
 
     // Optional: check that this decay mode is not explicitly defined.
-    if ( (meMode > 61 && meMode <= 80) && mDiff > mSafety && !diquarkClash ) {
+    if ( ( (meMode > 51 && meMode <= 60) || (meMode > 71 && meMode <= 80) )
+      && mDiff > mSafety && !diquarkClash ) {
       int idMatch[10], idPNow;
       usedChannel = false;
       bool matched = false;

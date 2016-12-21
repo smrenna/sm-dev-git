@@ -33,6 +33,10 @@ A <code>Particle</code> corresponds to one entry/slot in the
 event record. Its properties therefore is a mix of ones belonging 
 to a particle-as-such, like its identity code or four-momentum, 
 and ones related to the event-as-a-whole, like which mother it has. 
+Recall that energies, momenta and masses are all given in GeV, and 
+space-time coordinates all in mm, i.e. units are chosen such that 
+the speed of light <i>c</i> is unity. In particular, times are 
+also in mm, <b>not</b> in seconds. 
  
 <p/> 
 What is stored for each particle is 
@@ -398,11 +402,12 @@ which of course then should be reinterpreted as above.
  
 <a name="method13"></a>
 <p/><strong>double Particle::tau() &nbsp;</strong> <br/>
-the proper lifetime, in mm/c. It is assigned for all hadrons with 
-positive nominal <i>tau</i>, <i>tau_0 > 0</i>, because it can be used 
-by PYTHIA to decide whether a particle should or should not be allowed 
-to decay, e.g. based on the decay vertex distance to the primary interaction 
-vertex. 
+the proper lifetime, in mm/c. (Since c = 3 * 10^11 mm/s, 
+<code>Particle::tau()</code>/(3 * 10^11) is the lifetime in seconds.) 
+It is assigned for all hadrons with positive nominal <i>tau</i>, 
+<i>tau_0 > 0</i>, because it can be used by PYTHIA to decide whether 
+a particle should or should not be allowed to decay, e.g. based on 
+the decay vertex distance to the primary interaction vertex. 
    
  
 <h3>Input methods</h3> 

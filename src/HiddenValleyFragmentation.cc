@@ -84,10 +84,12 @@ int HVStringFlav::combine(FlavContainer& flav1, FlavContainer& flav2) {
 // Initialize data members of the string pT selection.
 
 void HVStringPT::init(Settings& settings, ParticleData* particleDataPtrIn,
-  Rndm* rndmPtrIn, Info*) {
+  Rndm* rndmPtrIn, Info* infoPtrIn) {
 
   // Save pointer.
-  rndmPtr        = rndmPtrIn;
+  particleDataPtr = particleDataPtrIn;
+  rndmPtr         = rndmPtrIn;
+  infoPtr         = infoPtrIn;
 
   // Parameter of the pT width. No enhancement, since this is finetuning.
   double sigmamqv  = settings.parm("HiddenValley:sigmamqv");

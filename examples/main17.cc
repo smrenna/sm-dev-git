@@ -116,7 +116,7 @@ int main() {
   // Set up to do a user veto and send it in.
   // First argument: multiplies the pT0 of multiparton interactions
   // to define the pT dampeing scale.
-  // Second argument: howe many powers of alpha_strong to
+  // Second argument: how many powers of alpha_strong to
   // reweight with new (larger) argument.
   // Third argument: choice of process scale two different ways;
   // probably does not make much difference.

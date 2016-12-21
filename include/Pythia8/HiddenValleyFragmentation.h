@@ -68,7 +68,7 @@ public:
 
   // Initialize data members.
   void init(Settings& settings, ParticleData* particleDataPtrIn,
-    Rndm* rndmPtrIn, Info*);
+    Rndm* rndmPtrIn, Info* infoPtrIn);
 
 };
 

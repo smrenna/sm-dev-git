@@ -3379,7 +3379,6 @@ bool PhaseSpace2to3diffractive::finalKin() {
 bool PhaseSpace2to2nondiffractiveGamma::setupSampling() {
 
   // Initialize the GammaKinematics object.
-  gammaKin = GammaKinematics();
   gammaKin.init(infoPtr, settingsPtr, rndmPtr, beamAPtr, beamBPtr);
 
   // Initialize relevant cuts.
