@@ -121,11 +121,18 @@ void PhaseSpace::init(bool isFirst, SigmaProcess* sigmaProcessPtrIn,
   hasOneLeptonBeam = (hasLeptonBeamA || hasLeptonBeamB) && !hasTwoLeptonBeams;
   bool hasPointLepton = (hasLeptonBeamA && beamAPtr->isUnresolved())
                      || (hasLeptonBeamB && beamBPtr->isUnresolved());
-  hasOnePointLepton   = hasOneLeptonBeam  && hasPointLepton;
-  hasTwoPointLeptons  = hasTwoLeptonBeams && hasPointLepton;
+
+  // Flags also for unresolved photons.
+  hasPointGammaA       = beamAPtr->isGamma() && beamAPtr->isUnresolved();
+  hasPointGammaB       = beamBPtr->isGamma() && beamBPtr->isUnresolved();
+  hasOnePointParticle  = (hasOneLeptonBeam  && hasPointLepton)
+    || ( hasPointGammaA && !hasPointGammaB)
+    || (!hasPointGammaA &&  hasPointGammaB);
+  hasTwoPointParticles = (hasTwoLeptonBeams && hasPointLepton)
+    || ( hasPointGammaA && hasPointGammaB);
 
   // Flag if photons from leptons.
-  bool beamHasGamma = beamAPtr->hasGamma() && beamBPtr->hasGamma();
+  bool beamHasResGamma = beamAPtr->hasResGamma() && beamBPtr->hasResGamma();
 
   // Standard phase space cuts.
   if (isFirst || settingsPtr->flag("PhaseSpace:sameForSecond")) {
@@ -143,7 +150,7 @@ void PhaseSpace::init(bool isFirst, SigmaProcess* sigmaProcessPtrIn,
   }
 
   // For photons from lepton beams match the cuts to gm+gm system cuts.
-  if ( beamHasGamma ) {
+  if ( beamHasResGamma ) {
     double Wmax         = settingsPtr->parm("Photon:Wmax");
     if ( (mHatGlobalMax > Wmax) || mHatGlobalMax < 0.) mHatGlobalMax = Wmax;
   }
@@ -544,8 +551,8 @@ bool PhaseSpace::setupSampling123(bool is2, bool is3) {
   sigmaNeg = 0.;
 
   // Number of used coefficients/points for each dimension: tau, y, c.
-  nTau = (hasTwoPointLeptons) ? 1 : 2;
-  nY   = (hasOnePointLepton || hasTwoPointLeptons) ? 1 : 5;
+  nTau = (hasTwoPointParticles) ? 1 : 2;
+  nY   = (hasOnePointParticle || hasTwoPointParticles) ? 1 : 5;
   nZ   = (is2) ? 5 : 1;
 
   // Identify if any resonances contribute in s-channel.
@@ -571,19 +578,19 @@ bool PhaseSpace::setupSampling123(bool is2, bool is3) {
   }
 
   // More sampling in tau if resonances in s-channel.
-  if (idResA !=0 && !hasTwoPointLeptons) {
+  if (idResA !=0 && !hasTwoPointParticles) {
     nTau += 2;
     tauResA = mResA * mResA / s;
     widResA = mResA * GammaResA / s;
   }
-  if (idResB != 0 && !hasTwoPointLeptons) {
+  if (idResB != 0 && !hasTwoPointParticles) {
     nTau += 2;
     tauResB = mResB * mResB / s;
     widResB = mResB * GammaResB / s;
   }
 
   // More sampling in tau (and different in y) if incoming lepton beams.
-  if (hasTwoLeptonBeams && !hasTwoPointLeptons) ++nTau;
+  if (hasTwoLeptonBeams && !hasTwoPointParticles) ++nTau;
 
   // Special case when both resonances have same mass.
   sameResMass = false;
@@ -661,7 +668,7 @@ bool PhaseSpace::setupSampling123(bool is2, bool is3) {
         if (sigmaTmp < 0.) sigmaTmp = 0.;
 
         // Sum up tau cross-section pieces in points used.
-        if (!hasTwoPointLeptons) {
+        if (!hasTwoPointParticles) {
           binTau[iTau]      += 1;
           vecTau[iTau]      += sigmaTmp;
           matTau[iTau][0]   += 1. / intTau0;
@@ -681,7 +688,7 @@ bool PhaseSpace::setupSampling123(bool is2, bool is3) {
         }
 
         // Sum up y cross-section pieces in points used.
-        if (!hasOnePointLepton && !hasTwoPointLeptons) {
+        if (!hasOnePointParticle && !hasTwoPointParticles) {
           binY[iY]      += 1;
           vecY[iY]      += sigmaTmp;
           matY[iY][0]   += (yMax / intY0) / cosh(y);
@@ -730,9 +737,10 @@ bool PhaseSpace::setupSampling123(bool is2, bool is3) {
     return false;
   }
 
+
   // Solve respective equation system for better phase space coefficients.
-  if (!hasTwoPointLeptons) solveSys( nTau, binTau, vecTau, matTau, tauCoef);
-  if (!hasOnePointLepton && !hasTwoPointLeptons)
+  if (!hasTwoPointParticles) solveSys( nTau, binTau, vecTau, matTau, tauCoef);
+  if (!hasOnePointParticle && !hasTwoPointParticles)
     solveSys( nY, binY, vecY, matY, yCoef);
   if (is2) solveSys( nZ, binZ, vecZ, matZ, zCoef);
   if (showSearch) cout << "\n";
@@ -843,8 +851,8 @@ bool PhaseSpace::setupSampling123(bool is2, bool is3) {
 
   // Read out starting position for search.
   sigmaMx = sigMax[0];
-  int beginVar = (hasTwoPointLeptons) ? 2 : 0;
-  if (hasOnePointLepton) beginVar = 1;
+  int beginVar = (hasTwoPointParticles) ? 2 : 0;
+  if (hasOnePointParticle) beginVar = 1;
   for (int iMax = 0; iMax < nMax; ++iMax) {
     int iTau = iMaxTau[iMax];
     int iY = iMaxY[iMax];
@@ -1004,11 +1012,11 @@ bool PhaseSpace::trialKin123(bool is2, bool is3, bool inEvent) {
     s         = eCM * eCM;
 
     // Find shifted tauRes values.
-    if (idResA !=0 && !hasTwoPointLeptons) {
+    if (idResA !=0 && !hasTwoPointParticles) {
       tauResA = mResA * mResA / s;
       widResA = mResA * GammaResA / s;
     }
-    if (idResB != 0 && !hasTwoPointLeptons) {
+    if (idResB != 0 && !hasTwoPointParticles) {
       tauResB = mResB * mResB / s;
       widResB = mResB * GammaResB / s;
     }
@@ -1023,7 +1031,7 @@ bool PhaseSpace::trialKin123(bool is2, bool is3, bool inEvent) {
   // + (c6/I6) * tau / (1 - tau).
   if (!limitTau(is2, is3)) return false;
   int iTau = 0;
-  if (!hasTwoPointLeptons) {
+  if (!hasTwoPointParticles) {
     double rTau = rndmPtr->flat();
     while (rTau > tauCoefSum[iTau]) ++iTau;
   }
@@ -1036,7 +1044,7 @@ bool PhaseSpace::trialKin123(bool is2, bool is3, bool inEvent) {
   // + (c5/I5) * 1 / (1 - exp(y-ymax)) + (c6/I6) * 1 / (1 - exp(ymin-y)).
   if (!limitY()) return false;
   int iY = 0;
-  if (!hasOnePointLepton && !hasTwoPointLeptons) {
+  if (!hasOnePointParticle && !hasTwoPointParticles) {
     double rY = rndmPtr->flat();
     while (rY > yCoefSum[iY]) ++iY;
   }
@@ -1144,7 +1152,7 @@ bool PhaseSpace::trialKin123(bool is2, bool is3, bool inEvent) {
 bool PhaseSpace::limitTau(bool is2, bool is3) {
 
   // Trivial reply for unresolved lepton beams.
-  if (hasTwoPointLeptons) {
+  if (hasTwoPointParticles) {
     tauMin = 1.;
     tauMax = 1.;
     return true;
@@ -1173,14 +1181,14 @@ bool PhaseSpace::limitTau(bool is2, bool is3) {
 bool PhaseSpace::limitY() {
 
   // Trivial reply for unresolved lepton beams.
-  if (hasTwoPointLeptons) {
+  if (hasTwoPointParticles) {
     yMax = 1.;
     return true;
   }
 
   // Requirements from selected tau value. Trivial for one unresolved beam.
   yMax = -0.5 * log(tau);
-  if (hasOnePointLepton) return true;
+  if (hasOnePointParticle) return true;
 
   // For lepton beams requirements from cutoff for f_e^e.
   double yMaxMargin = (hasTwoLeptonBeams) ? yMax + LEPTONXLOGMAX : yMax;
@@ -1214,7 +1222,7 @@ bool PhaseSpace::limitZ() {
 void PhaseSpace::selectTau(int iTau, double tauVal, bool is2) {
 
   // Trivial reply for unresolved lepton beams.
-  if (hasTwoPointLeptons) {
+  if (hasTwoPointParticles) {
     tau = 1.;
     wtTau = 1.;
     sH = s;
@@ -1311,7 +1319,7 @@ void PhaseSpace::selectTau(int iTau, double tauVal, bool is2) {
 void PhaseSpace::selectY(int iY, double yVal) {
 
   // Trivial reply for two unresolved lepton beams.
-  if (hasTwoPointLeptons) {
+  if (hasTwoPointParticles) {
     y = 0.;
     wtY = 1.;
     x1H = 1.;
@@ -1320,8 +1328,8 @@ void PhaseSpace::selectY(int iY, double yVal) {
   }
 
   // Trivial replies for one unresolved lepton beam.
-  if (hasOnePointLepton) {
-    if (hasLeptonBeamA) {
+  if (hasOnePointParticle) {
+    if (hasLeptonBeamA || hasPointGammaA) {
       y   = yMax;
       x1H = 1.;
       x2H = tau;
@@ -2286,6 +2294,78 @@ bool PhaseSpace2to2tauyz::constrainedM4() {
   m4 = m4WtMax;
   return foundNonZero;
 
+}
+
+//--------------------------------------------------------------------------
+
+// Calculate the cross section with rescaled sHat.
+
+void PhaseSpace2to2tauyz::rescaleSigma(double sHatNew){
+
+  // With massless matrix element derive tHat without masses.
+  if ( idMass[3] == 0 ) s3 = 0.;
+  if ( idMass[4] == 0 ) s4 = 0.;
+
+  // Update variables according to new sHat.
+  sH    = sHatNew;
+  double sH34 = -0.5 * (sH - s3 - s4);
+  p2Abs = 0.25 * (pow2(sH - s3 - s4) - 4. * s3 * s4) / sH;
+  pAbs  = sqrtpos( p2Abs );
+  mHat  = sqrt(sH);
+  tH    = sH34 + mHat * pAbs * z;
+  uH    = sH34 - mHat * pAbs * z;
+  pTH   = sqrtpos( (tH * uH - s3 * s4) / sH);
+
+  // Calculate the cross section for the process with rescaled kinematics
+  // if original cross section non-zero.
+  if (sigmaNw > TINY) {
+    sigmaProcessPtr->set2Kin( x1H, x2H, sH, tH, m3, m4, runBW3H, runBW4H);
+    sigmaNw  = sigmaProcessPtr->sigmaPDF(false, true);
+    sigmaNw *= wtTau * wtY * wtZ * wtBW;
+    if (canBias2Sel) sigmaNw *= pow( pTH / bias2SelRef, bias2SelPow);
+  }
+
+}
+
+//--------------------------------------------------------------------------
+
+// Rescales the momenta of incoming and outgoing partons according to
+// new sHat sampled in GammaKinematics.
+
+void PhaseSpace2to2tauyz::rescaleMomenta( double sHatNew){
+
+  // Loop over initial and final partons.
+  for (int i = 0; i <= 1; ++i){
+
+    // Either final or initial partons.
+    int iPartonA = (i == 0) ? 1 : 3;
+    int iPartonB = (i == 0) ? 2 : 4;
+
+    // Original momenta of partons.
+    Vec4 pA = p( iPartonA);
+    Vec4 pB = p( iPartonB);
+
+    // Calculate new momenta in CM-frame.
+    double m2A = pow2( m( iPartonA) );
+    double m2B = pow2( m( iPartonB) );
+    double eA  = 0.5 * ( sHatNew + m2A - m2B) / sqrt( sHatNew);
+    double eB  = 0.5 * ( sHatNew + m2B - m2A) / sqrt( sHatNew);
+    double pz  = 0.5 * sqrtpos( pow2(sHatNew - m2A - m2B) - 4.0 * m2A * m2B )
+               / sqrt( sHatNew);
+    Vec4 pANew( 0, 0,  pz, eA );
+    Vec4 pBNew( 0, 0, -pz, eB );
+
+    // Find boost to original frame.
+    RotBstMatrix MtoCMinc;
+    MtoCMinc.toCMframe( pA, pB);
+    MtoCMinc.invert();
+
+    // Boost outgoing partons to original frame and replace the momenta.
+    pANew.rotbst( MtoCMinc);
+    pBNew.rotbst( MtoCMinc);
+    setP( iPartonA, pANew);
+    setP( iPartonB, pBNew);
+  }
 }
 
 //==========================================================================
@@ -3378,9 +3458,6 @@ bool PhaseSpace2to3diffractive::finalKin() {
 
 bool PhaseSpace2to2nondiffractiveGamma::setupSampling() {
 
-  // Initialize the GammaKinematics object.
-  gammaKin.init(infoPtr, settingsPtr, rndmPtr, beamAPtr, beamBPtr);
-
   // Initialize relevant cuts.
   Q2maxGamma = settingsPtr->parm("Photon:Q2max");
   Wmin       = settingsPtr->parm("Photon:Wmin");
@@ -3449,14 +3526,14 @@ bool PhaseSpace2to2nondiffractiveGamma::trialKin(bool , bool) {
   beamBPtr->xGamma(xGamma2);
 
   // Sample the kT of photons.
-  if ( !(gammaKin.sampleKTgamma() ) ) return false;
+  if ( !(gammaKinPtr->sampleKTgamma() ) ) return false;
 
   // Obtain the sampled values.
-  Q2gamma1 = gammaKin.getQ2gamma1();
-  Q2gamma2 = gammaKin.getQ2gamma2();
-  Q2min1   = gammaKin.getQ2min1();
-  Q2min2   = gammaKin.getQ2min2();
-  mGmGm    = gammaKin.eCMsub();
+  Q2gamma1 = gammaKinPtr->getQ2gamma1();
+  Q2gamma2 = gammaKinPtr->getQ2gamma2();
+  Q2min1   = gammaKinPtr->getQ2min1();
+  Q2min2   = gammaKinPtr->getQ2min2();
+  mGmGm    = gammaKinPtr->eCMsub();
 
   // Correct for x1 and x2 oversampling.
   double wt1 = ( 0.5 * ( 1. + pow2(1 - xGamma1) ) ) * log( Q2maxGamma/Q2min1 )

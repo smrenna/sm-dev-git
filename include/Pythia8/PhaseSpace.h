@@ -87,6 +87,9 @@ public:
   Vec4   p(int i)   const {return pH[i];}
   double m(int i)   const {return mH[i];}
 
+  // Reset the four-momentum.
+  void   setP(int i, Vec4 pNew) { pH[i] = pNew; }
+
   // Give back other event properties.
   double ecm()      const {return eCM;}
   double x1()       const {return x1H;}
@@ -103,6 +106,14 @@ public:
 
   // Inform whether beam particles are resolved in partons or scatter directly.
   virtual bool isResolved() const {return true;}
+
+  // Functions to rescale momenta and cross section for new sHat.
+  // Currently implemented only for PhaseSpace2to2tauyz class.
+  virtual void rescaleSigma( double){}
+  virtual void rescaleMomenta( double){}
+
+  // Set the GammaKinematics pointer. Implemented for non-diffractive gm+gm.
+  virtual void setGammaKinPtr( GammaKinematics*){}
 
 protected:
 
@@ -140,7 +151,7 @@ protected:
   BeamParticle* beamBPtr;
 
   // Pointer to Standard Model couplings.
-  Couplings*         couplingsPtr;
+  Couplings*    couplingsPtr;
 
   // Pointer to the total/elastic/diffractive cross section object.
   SigmaTotal*   sigmaTotPtr;
@@ -161,10 +172,11 @@ protected:
   // Information on incoming beams.
   int    idA, idB;
   double mA, mB, eCM, s;
-  bool   hasLeptonBeamA, hasLeptonBeamB, hasOneLeptonBeam,
-         hasTwoLeptonBeams, hasOnePointLepton, hasTwoPointLeptons;
+  bool   hasLeptonBeamA, hasLeptonBeamB, hasOneLeptonBeam, hasTwoLeptonBeams,
+         hasPointGammaA, hasPointGammaB, hasOnePointParticle,
+         hasTwoPointParticles;
 
- // Cross section information.
+  // Cross section information.
   bool   newSigmaMx, canModifySigma, canBiasSelection, canBias2Sel;
   int    gmZmode;
   double bias2SelPow, bias2SelRef, wtBW, sigmaNw, sigmaMx, sigmaPos,
@@ -302,6 +314,13 @@ public:
 
   // Construct the final event kinematics.
   virtual bool finalKin();
+
+  // Rescales the momenta of incoming and outgoing partons according to
+  // new sHat.
+  virtual void rescaleMomenta ( double sHatNew);
+
+  // Recalculates cross section with rescaled sHat.
+  virtual void rescaleSigma ( double sHatNew);
 
 private:
 
@@ -469,12 +488,16 @@ public:
   // Construct the trial or final event kinematics.
   virtual bool setupSampling();
   virtual bool trialKin(bool inEvent = true, bool = false);
-  virtual bool finalKin() {gammaKin.finalize(); return true;}
+  virtual bool finalKin() {gammaKinPtr->finalize(); return true;}
+
+  // Set the pointer to GammaKinematics.
+  virtual void setGammaKinPtr( GammaKinematics* gammaKinPtrIn) {
+    gammaKinPtr = gammaKinPtrIn; }
 
 private:
 
   // Pointer to object that samples photon kinematics from leptons.
-  GammaKinematics gammaKin;
+  GammaKinematics* gammaKinPtr;
 
   // Parameters.
   double Q2maxGamma, Wmin, sigmaNDestimate, sigmaNDmax, sCM, alphaEM,

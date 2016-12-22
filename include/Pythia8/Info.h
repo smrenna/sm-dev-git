@@ -111,6 +111,7 @@ public:
   double eCMsub()             const {return eCMsubSave;}
   double thetaScatLepA()      const {return thetaLepton1;}
   double thetaScatLepB()      const {return thetaLepton2;}
+  double sHatNew()            const {return sHatNewSave;}
 
   // Mandelstam variables (notation as if subcollision).
   double mHat(int i = 0)      const {return sqrt(sH[i]);}
@@ -422,7 +423,7 @@ private:
 
   // Variables related to photon kinematics.
   double x1GammaSave, x2GammaSave, Q2Gamma1Save, Q2Gamma2Save, eCMsubSave,
-    thetaLepton1, thetaLepton2;
+    thetaLepton1, thetaLepton2, sHatNewSave;
 
   // Vector of various loop counters.
   int    counters[50];
@@ -468,6 +469,7 @@ private:
   void setTheta1( double theta1In)    { thetaLepton1 = theta1In;  }
   void setTheta2( double theta2In)    { thetaLepton2 = theta2In;  }
   void setECMsub( double eCMsubIn)    { eCMsubSave   = eCMsubIn;  }
+  void setsHatNew( double sHatNewIn)  { sHatNewSave  = sHatNewIn; }
 
   // Reset info for current event: only from Pythia class.
   void clear() {

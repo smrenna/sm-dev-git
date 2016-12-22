@@ -3,14 +3,40 @@
 <h2>Photon-photon Interactions</h2> 
  
 <p> 
-From version 8.214 on, also resolved photon-photon interactions can be 
-simulated. Currently quark and gluon initiated processes with parton 
-showers and hadronization can be generated, including soft QCD processes and 
-MPIs. The PDF set for resolved photons is selected in the 
+Interactions of two photons, either in photon-photon collision or between 
+photons emitted from lepton beams. Includes both direct and resolved 
+contributions and also soft QCD and MPIs for events with two resolved photons. 
+Only (quasi-)real photons are considered so virtuality of the photons is 
+restricted. The PDF set for resolved photons is selected in the 
 <aloc href="PDFSelection">PDF selection</aloc>. 
 This page describes some of the special features related to these collisions 
 and introduces the relevant parameters. 
 </p> 
+ 
+<h3>Types of photon-photon interactions</h3> 
+ 
+<p> 
+Since photons can be either resolved or act as point-like particles (direct), 
+there are four different contributions, resolved-resolved, resolved-direct, 
+direct-resolved and direct-direct. Currently these are not automatically 
+mixed, but the user has to generate the relevant processes separately and 
+combine them for the final result. This is illustrated in sample main program 
+<code>main69.cc</code>. 
+</p> 
+ 
+<modepick name="Photon:ProcessType" default="1" min="1" max="4"> 
+Sets desired contribution for photon-photon interactions. 
+<option value="1"> Resolved-Resolved: Both colliding photons are 
+resolved and the partonic content is given by the PDFs. Hard processes 
+and non-diffractive events can be generated. </option> 
+<option value="2"> Resolved-Direct: Photon A is resolved and photon B 
+unresolved, i.e. act as an initiator for the hard process. Hard processes 
+with a parton and a photon in the initial state can be generated.</option> 
+<option value="3"> Direct-Resolved: As above but now photon A is unresolved 
+and photon B resolved. </option> 
+<option value="4"> Direct-Direct: Both photons are unresolved. Hard 
+processes with two photon initiators can be generated.</option> 
+</modepick> 
  
 <h3>Resolved photon</h3> 
  
@@ -216,8 +242,9 @@ As above but for lepton B.
 The invariant mass of <ei>gamma-gamma</ei> system from lepton beams will vary. 
 Therefore, to generate MPIs and non-diffractive events in <ei>gamma-gamma</ei> 
 collisions from lepton beams, the MPI framework is initialized with five 
-values of <ei>W</ei> from <code>Photon:Wmin</code> to <code>Photon:Wmax</code>. 
-The parameter values are then interpolated for the sampled <ei>W</ei>. 
+values of <ei>W</ei> from <code>Photon:Wmin</code> to 
+<code>Photon:Wmax</code>. The parameter values are then interpolated 
+for the sampled <ei>W</ei>. 
 </p> 
  
 </chapter> 

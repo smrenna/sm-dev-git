@@ -127,7 +127,8 @@ private:
   vector<int>  iPosBefShow;
 
   // Variables for photon inside electron.
-  bool   beamAhasGamma, beamBhasGamma, beamHasGamma;
+  bool   beamHasGamma, beamAhasResGamma, beamBhasResGamma, beamHasResGamma;
+  int    gammaMode;
 
   // Pointer to various information on the generation.
   Info*          infoPtr;
@@ -147,6 +148,7 @@ private:
   BeamParticle*  beamHadBPtr;
   BeamParticle*  beamPomAPtr;
   BeamParticle*  beamPomBPtr;
+
   // Pointers to photon beams inside lepton beams.
   BeamParticle*  beamGamAPtr;
   BeamParticle*  beamGamBPtr;
@@ -219,7 +221,8 @@ private:
 
   // Photon beam inside lepton beam: recover the whole event and
   // add scattered leptons.
-  void leaveResolvedLeptonGamma( Event& process, Event& event);
+  void leaveResolvedLeptonGamma( Event& process, Event& event,
+    bool physical = true);
 
   // Photon beam inside lepton beam: set up the parton level generation.
   void cleanEventFromGamma( Event& event);

@@ -92,9 +92,6 @@ private:
   double mHatMin1, mHatMax1, pTHatMin1, pTHatMax1, mHatMin2, mHatMax2,
          pTHatMin2, pTHatMax2, sigmaND, sumImpactFac, sum2ImpactFac;
 
-  // Variables for gamma-inside-lepton collisions.
-  bool   isLepton2gamma;
-
   // Vector of containers of internally-generated processes.
   vector<ProcessContainer*> containerPtrs;
   int    iContainer, iLHACont;
@@ -142,6 +139,9 @@ private:
 
   // ResonanceDecay object does sequential resonance decays.
   ResonanceDecays resonanceDecays;
+
+  // Samples photon kinematics from leptons.
+  GammaKinematics gammaKin;
 
   // Generate the next event with one interaction.
   bool nextOne( Event& process);

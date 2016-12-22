@@ -30,15 +30,35 @@ echo "<font color='red'>NO FILE SELECTED YET.. PLEASE DO SO </font><a href='Save
 <h2>Photon-photon Interactions</h2> 
  
 <p> 
-From version 8.214 on, also resolved photon-photon interactions can be 
-simulated. Currently quark and gluon initiated processes with parton 
-showers and hadronization can be generated, including soft QCD processes and 
-MPIs. The PDF set for resolved photons is selected in the 
+Interactions of two photons, either in photon-photon collision or between 
+photons emitted from lepton beams. Includes both direct and resolved 
+contributions and also soft QCD and MPIs for events with two resolved photons. 
+Only (quasi-)real photons are considered so virtuality of the photons is 
+restricted. The PDF set for resolved photons is selected in the 
 <?php $filepath = $_GET["filepath"];
 echo "<a href='PDFSelection.php?filepath=".$filepath."' target='page'>";?>PDF selection</a>. 
 This page describes some of the special features related to these collisions 
 and introduces the relevant parameters. 
 </p> 
+ 
+<h3>Types of photon-photon interactions</h3> 
+ 
+<p> 
+Since photons can be either resolved or act as point-like particles (direct), 
+there are four different contributions, resolved-resolved, resolved-direct, 
+direct-resolved and direct-direct. Currently these are not automatically 
+mixed, but the user has to generate the relevant processes separately and 
+combine them for the final result. This is illustrated in sample main program 
+<code>main69.cc</code>. 
+</p> 
+ 
+<br/><br/><table><tr><td><strong>Photon:ProcessType  </td><td>  &nbsp;&nbsp;(<code>default = <strong>1</strong></code>; <code>minimum = 1</code>; <code>maximum = 4</code>)</td></tr></table>
+Sets desired contribution for photon-photon interactions. 
+<br/>
+<input type="radio" name="1" value="1" checked="checked"><strong>1 </strong>:  Resolved-Resolved: Both colliding photons are  resolved and the partonic content is given by the PDFs. Hard processes  and non-diffractive events can be generated. <br/>
+<input type="radio" name="1" value="2"><strong>2 </strong>:  Resolved-Direct: Photon A is resolved and photon B  unresolved, i.e. act as an initiator for the hard process. Hard processes  with a parton and a photon in the initial state can be generated.<br/>
+<input type="radio" name="1" value="3"><strong>3 </strong>:  Direct-Resolved: As above but now photon A is unresolved  and photon B resolved. <br/>
+<input type="radio" name="1" value="4"><strong>4 </strong>:  Direct-Direct: Both photons are unresolved. Hard  processes with two photon initiators can be generated.<br/>
  
 <h3>Resolved photon</h3> 
  
@@ -125,8 +145,8 @@ is shown, but consistent with the photon not being added (a second time)
 for events that contain several MPIs. Optionally the photon can be shown, 
 using the following flag. 
  
-<br/><br/><strong>Photon:showUnres</strong>  <input type="radio" name="1" value="on"><strong>On</strong>
-<input type="radio" name="1" value="off" checked="checked"><strong>Off</strong>
+<br/><br/><strong>Photon:showUnres</strong>  <input type="radio" name="2" value="on"><strong>On</strong>
+<input type="radio" name="2" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
 Show the evolution steps of the beam photon in the event record, if on. 
    
@@ -143,7 +163,7 @@ diffractive events, a multiplicative factor is introduced to control
 the non-diffractive component. 
 </p> 
  
-<br/><br/><table><tr><td><strong>Photon:sigmaNDfrac </td><td></td><td> <input type="text" name="2" value="0.7" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.7</strong></code>; <code>minimum = 0.5</code>; <code>maximum = 1.0</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>Photon:sigmaNDfrac </td><td></td><td> <input type="text" name="3" value="0.7" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.7</strong></code>; <code>minimum = 0.5</code>; <code>maximum = 1.0</code>)</td></tr></table>
 Fraction of non-diffractive cross section of the total cross section. 
 Default value is motivated by earlier Pythia 6 studies. 
    
@@ -214,28 +234,28 @@ the upper limit for the <i>k_T</i> of the photon, which in turn will
 be the same as the <i>k_T</i> of the scattered lepton. Also some other 
 cuts can be imposed. 
  
-<br/><br/><table><tr><td><strong>Photon:Q2max </td><td></td><td> <input type="text" name="3" value="1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.0</strong></code>; <code>minimum = 0.01</code>; <code>maximum = 2.0</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>Photon:Q2max </td><td></td><td> <input type="text" name="4" value="1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.0</strong></code>; <code>minimum = 0.01</code>; <code>maximum = 2.0</code>)</td></tr></table>
 Upper limit for (quasi-)real photon virtuality in <i>GeV^2</i>. 
    
  
-<br/><br/><table><tr><td><strong>Photon:Wmin </td><td></td><td> <input type="text" name="4" value="10.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>10.0</strong></code>; <code>minimum = 5.0</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>Photon:Wmin </td><td></td><td> <input type="text" name="5" value="10.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>10.0</strong></code>; <code>minimum = 5.0</code>)</td></tr></table>
 Lower limit for invariant mass of <i>gamma-gamma</i> system in <i>GeV</i>. 
    
  
-<br/><br/><table><tr><td><strong>Photon:Wmax </td><td></td><td> <input type="text" name="5" value="-1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>-1.0</strong></code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>Photon:Wmax </td><td></td><td> <input type="text" name="6" value="-1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>-1.0</strong></code>)</td></tr></table>
 Upper limit for invariant mass of <i>gamma-gamma</i> system in <i>GeV</i>. 
 A value below <code>Photon:Wmin</code> means that the invariant mass of 
 the original <i>l+l-</i> pair is used as an upper limit. 
    
  
-<br/><br/><table><tr><td><strong>Photon:thetaAMax </td><td></td><td> <input type="text" name="6" value="-1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>-1.0</strong></code>; <code>maximum = 3.141593</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>Photon:thetaAMax </td><td></td><td> <input type="text" name="7" value="-1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>-1.0</strong></code>; <code>maximum = 3.141593</code>)</td></tr></table>
 Upper limit for scattering angle of lepton A in <i>rad</i>. A negative 
 value means that no cut is applied. Since <i>k_T</i> depends on virtuality 
 of the emitted photon, the <code>Photon:Q2max</code> cut is usually more 
 restrictive unless a very small angle is used. 
    
  
-<br/><br/><table><tr><td><strong>Photon:thetaBMax </td><td></td><td> <input type="text" name="7" value="-1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>-1.0</strong></code>; <code>maximum = 3.141593</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>Photon:thetaBMax </td><td></td><td> <input type="text" name="8" value="-1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>-1.0</strong></code>; <code>maximum = 3.141593</code>)</td></tr></table>
 As above but for lepton B. 
    
  
@@ -247,8 +267,9 @@ As above but for lepton B.
 The invariant mass of <i>gamma-gamma</i> system from lepton beams will vary. 
 Therefore, to generate MPIs and non-diffractive events in <i>gamma-gamma</i> 
 collisions from lepton beams, the MPI framework is initialized with five 
-values of <i>W</i> from <code>Photon:Wmin</code> to <code>Photon:Wmax</code>. 
-The parameter values are then interpolated for the sampled <i>W</i>. 
+values of <i>W</i> from <code>Photon:Wmin</code> to 
+<code>Photon:Wmax</code>. The parameter values are then interpolated 
+for the sampled <i>W</i>. 
 </p> 
  
 <input type="hidden" name="saved" value="1"/>
@@ -266,39 +287,44 @@ if($_POST["saved"] == 1)
 $filepath = $_POST["filepath"];
 $handle = fopen($filepath, 'a');
 
-if($_POST["1"] != "off")
+if($_POST["1"] != "1")
 {
-$data = "Photon:showUnres = ".$_POST["1"]."\n";
+$data = "Photon:ProcessType = ".$_POST["1"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["2"] != "0.7")
+if($_POST["2"] != "off")
 {
-$data = "Photon:sigmaNDfrac = ".$_POST["2"]."\n";
+$data = "Photon:showUnres = ".$_POST["2"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["3"] != "1.0")
+if($_POST["3"] != "0.7")
 {
-$data = "Photon:Q2max = ".$_POST["3"]."\n";
+$data = "Photon:sigmaNDfrac = ".$_POST["3"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["4"] != "10.0")
+if($_POST["4"] != "1.0")
 {
-$data = "Photon:Wmin = ".$_POST["4"]."\n";
+$data = "Photon:Q2max = ".$_POST["4"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["5"] != "-1.0")
+if($_POST["5"] != "10.0")
 {
-$data = "Photon:Wmax = ".$_POST["5"]."\n";
+$data = "Photon:Wmin = ".$_POST["5"]."\n";
 fwrite($handle,$data);
 }
 if($_POST["6"] != "-1.0")
 {
-$data = "Photon:thetaAMax = ".$_POST["6"]."\n";
+$data = "Photon:Wmax = ".$_POST["6"]."\n";
 fwrite($handle,$data);
 }
 if($_POST["7"] != "-1.0")
 {
-$data = "Photon:thetaBMax = ".$_POST["7"]."\n";
+$data = "Photon:thetaAMax = ".$_POST["7"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["8"] != "-1.0")
+{
+$data = "Photon:thetaBMax = ".$_POST["8"]."\n";
 fwrite($handle,$data);
 }
 fclose($handle);

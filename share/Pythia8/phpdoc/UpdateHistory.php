@@ -39,14 +39,14 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.222: 21 December 2016 
+<li>8.222: 22 December 2016 
 <ul> 
  
 <li>Nadine Fischer and Leif L&ouml;nnblad join as co-authors, 
-while Jesper Roy Christiansen leaves. Ilkka Helenius and Stefan Prestel 
-has new affiliation.</li> 
+while Jesper Roy Christiansen leaves. Nishista Desai, Ilkka Helenius 
+and Stefan Prestel have new affiliations.</li> 
  
-<li>The machinery for &gamma;&gamma; collisions has been extended, 
+<li>The machinery for resolved &gamma;&gamma; collisions has been extended, 
 such that now soft processes and MPIs can be simulated, also when 
 embedded in <i>l^+l^-</i> collisions. (But not yet diffraction.) 
 Also some further improvements have been introduced, see 
@@ -55,10 +55,21 @@ echo "<a href='PhotonPhoton.php?filepath=".$filepath."' target='page'>";?>Photon
 description. This implies several changes in different parts of 
 the code, mainly related to beam remnants and beam particles.</li> 
  
+<li> 
+Also direct-resolved and direct-direct processes are included for 
+&gamma;&gamma; interactions, with photon beams and within lepton beams. 
+This involves new subprocesses where one initiator is a photon and the 
+other a parton. A new sample main program (<code>main69.cc</code>) 
+illustrates how the different classes of &gamma;&gamma; interactions 
+are combined.</li> 
+ 
 <li>The kinematics of &gamma;&gamma; have been revised to include all 
 mass corrections and to handle also non-equal leptons. A new class 
 <code>GammaKinematics</code> is introduced to handle the sampling of 
-the kinematics.</li> 
+the kinematics. A fix for the <code>ProcessLevel::roomForRemnants()</code> 
+function, which rejected a bit too many processes when photon-photon 
+collisions were generated within lepton beams. 
+</li> 
  
 <li>New cuts for the kinematics of &gamma;&gamma; interactions in 
 <i>l^+l^-</i> collisions are introduced, for details see 
@@ -66,7 +77,15 @@ the kinematics.</li>
 echo "<a href='PhotonPhoton.php?filepath=".$filepath."' target='page'>";?>Photon-photon Interactions</a>. 
 Matching new kinematics output methods, see 
 <?php $filepath = $_GET["filepath"];
-echo "<a href='EventInformation.php?filepath=".$filepath."' target='page'>";?>Event Information</a>. 
+echo "<a href='EventInformation.php?filepath=".$filepath."' target='page'>";?>Event Information</a>.</li> 
+ 
+<li> 
+A PDF for point-like photon is included. In case of lepton PDFs, the 
+photon contribution has now restricted virtuality and also more accurate 
+lower limit for the virtuality. A new option to use separate PDFs for 
+hard processes, with photon PDFs obtained from LHAPDF5. CJKL PDFs are 
+modified so that, instead of freezing the scale below its minimum, 
+the scale evolution is approximated with <i>log(Q^2)</i>.</li> 
  
 <li>A new alternative "thermal hadronization" option is introduced, 
 wherein an exponential <i>exp(-pT / T)</i> hadronic transverse 

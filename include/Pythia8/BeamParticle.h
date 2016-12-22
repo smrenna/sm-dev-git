@@ -127,7 +127,7 @@ public:
   void init( int idIn, double pzIn, double eIn, double mIn,
     Info* infoPtrIn, Settings& settings, ParticleData* particleDataPtrIn,
     Rndm* rndmPtrIn, PDF* pdfInPtr, PDF* pdfHardInPtr, bool isUnresolvedIn,
-    StringFlav* flavSelPtrIn);
+    StringFlav* flavSelPtrIn, bool hasResGammaIn = false);
 
   // Initialize only the two pdf pointers.
   void initPDFPtr(PDF* pdfInPtr, PDF* pdfHardInPtr) {
@@ -153,11 +153,11 @@ public:
   bool isLepton() const {return isLeptonBeam;}
   bool isUnresolved() const {return isUnresolvedBeam;}
   // As hadrons here we only count those we know how to handle remnants for.
-  bool isHadron() const {return isHadronBeam;}
-  bool isMeson()  const {return isMesonBeam;}
-  bool isBaryon() const {return isBaryonBeam;}
-  bool isGamma()  const {return isGammaBeam;}
-  bool hasGamma() const {return hasGammaInLepton;}
+  bool isHadron()    const {return isHadronBeam;}
+  bool isMeson()     const {return isMesonBeam;}
+  bool isBaryon()    const {return isBaryonBeam;}
+  bool isGamma()     const {return isGammaBeam;}
+  bool hasResGamma() const {return hasResGammaInBeam;}
 
   // Maximum x remaining after previous MPI and ISR, plus safety margin.
   double xMax(int iSkip = -1);
@@ -169,6 +169,11 @@ public:
   // Overestimate for PDFs. Same as normal except photons inside leptons.
   double xfMax(int idIn, double x, double Q2)
     {return pdfHardBeamPtr->xfMax(idIn, x, Q2);}
+
+  // Do not sample the x_gamma value to get correct cross section with
+  // possible second call.
+  double xfSame(int idIn, double x, double Q2)
+    {return pdfHardBeamPtr->xfSame(idIn, x, Q2);}
 
   // Standard parton distributions.
   double xf(int idIn, double x, double Q2)
@@ -317,7 +322,7 @@ public:
     { return pdfBeamPtr->xfIntegratedTotal(Q2); }
 
   // Save the x_gamma value after latest PDF call or set it later if ND.
-  void xGammaPDF()            { xGm = pdfBeamPtr->xGamma(); }
+  void xGammaPDF()            { xGm = pdfHardBeamPtr->xGamma(); }
   void xGamma(double xGmIn)   { xGm = xGmIn; }
   void Q2Gamma(double Q2GmIn) { Q2gm = Q2GmIn; }
   void newGammaKTPhi(double kTIn, double phiIn)
@@ -376,7 +381,7 @@ private:
   double xqgTot, xqVal, xqgSea, xqCompSum;
 
   // Variables related to photon beams (also inside lepton).
-  bool   doISR, doMPI, doND, isResolvedGamma, lepton2gamma, hasGammaInLepton;
+  bool   doISR, doMPI, doND, isResolvedGamma, hasResGammaInBeam;
   double pTminISR, pTminMPI, pT2gm2qqbar;
   int    iGamVal, iPosVal;
 

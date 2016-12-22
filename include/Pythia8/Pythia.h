@@ -91,7 +91,8 @@ public:
   // Possibility to pass in pointers to PDF's.
   bool setPDFPtr( PDF* pdfAPtrIn, PDF* pdfBPtrIn, PDF* pdfHardAPtrIn = 0,
     PDF* pdfHardBPtrIn = 0, PDF* pdfPomAPtrIn = 0, PDF* pdfPomBPtrIn = 0,
-    PDF* pdfGamAPtrIn = 0, PDF* pdfGamBPtrIn = 0);
+    PDF* pdfGamAPtrIn = 0, PDF* pdfGamBPtrIn = 0, PDF* pdfHardGamAPtrIn = 0,
+    PDF* pdfHardGamBPtrIn = 0);
 
   // Possibility to pass in pointer to external LHA-interfaced generator.
   bool setLHAupPtr( LHAup* lhaUpPtrIn) {lhaUpPtr = lhaUpPtrIn; return true;}
@@ -227,6 +228,10 @@ private:
   int    nErrList;
   double epTolErr, epTolWarn, mTolErr, mTolWarn;
 
+  // Initialization data related to photon-photon interactions.
+  bool   beamHasGamma, beamAisResGamma, beamBisResGamma, beamAhasResGamma,
+         beamBhasResGamma;
+
   // Initialization data, extracted from init(...) call.
   bool   isConstructed, isInit, isUnresolvedA, isUnresolvedB, showSaV,
          showMaD, doReconnect, forceHadronLevelCR;
@@ -257,9 +262,13 @@ private:
   PDF* pdfGamAPtr;
   PDF* pdfGamBPtr;
 
+  // Extra PDF pointers to be used in hard lepton -> gamma processes.
+  PDF* pdfHardGamAPtr;
+  PDF* pdfHardGamBPtr;
+
   // Keep track when "new" has been used and needs a "delete" for PDF's.
   bool useNewPdfA, useNewPdfB, useNewPdfHard, useNewPdfPomA, useNewPdfPomB,
-       useNewPdfGamA, useNewPdfGamB;
+    useNewPdfGamA, useNewPdfGamB, useNewPdfHardGamA, useNewPdfHardGamB;
 
   // The two incoming beams.
   BeamParticle beamA;

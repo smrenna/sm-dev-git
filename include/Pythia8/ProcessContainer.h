@@ -54,7 +54,7 @@ public:
     ParticleData* particleDataPtrIn, Rndm* rndmPtrIn, BeamParticle* beamAPtr,
     BeamParticle* beamBPtr, Couplings* couplings, SigmaTotal* sigmaTotPtr,
     ResonanceDecays* resDecaysPtrIn, SLHAinterface* slhaInterfacePtr,
-    UserHooks* userHooksPtr);
+    UserHooks* userHooksPtr, GammaKinematics* gammaKinPtrIn);
 
   // Store or replace Les Houches pointer.
   void setLHAPtr( LHAup* lhaUpPtrIn,  ParticleData* particleDataPtrIn = 0)
@@ -167,7 +167,7 @@ private:
   BeamParticle*    beamBPtr;
 
   // Pointer to the phase space generator of photons from leptons.
-  GammaKinematics  gammaKin;
+  GammaKinematics* gammaKinPtr;
 
   // Possibility to modify Les Houches input.
   bool   matchInOut;
@@ -186,8 +186,8 @@ private:
   double sigmaMx, sigmaSgn, sigmaSum, sigma2Sum, sigmaNeg, sigmaAvg,
          sigmaFin, deltaFin, weightNow, wtAccSum;
 
-  // Flags to store whether beam has a gamma beam inside.
-  bool   beamAhasGamma, beamBhasGamma, beamHasGamma;
+  // Flags to store whether beam has a (un)resolved photon.
+  bool   beamAhasResGamma, beamBhasResGamma, beamHasResGamma, beamHasGamma;
 
   // Statistics for Les Houches event classification.
   vector<int> codeLHA;

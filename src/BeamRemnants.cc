@@ -347,6 +347,14 @@ bool BeamRemnants::setKinematics( Event& event) {
   if ( beamA.isUnresolvedLepton() && beamB.isUnresolvedLepton() )
     return true;
 
+  // Photon from photon beam is unresolved.
+  if ( beamA.isGamma() && beamA[0].id() == 22 ) {
+    beamA.resolvedGamma(false);
+  }
+  if ( beamB.isGamma() && beamB[0].id() == 22 )  {
+    beamB.resolvedGamma(false);
+  }
+
   // Check if photon beams need remnants.
   bool beamAisGamma     = beamA.isGamma();
   bool beamBisGamma     = beamB.isGamma();
@@ -359,8 +367,10 @@ bool BeamRemnants::setKinematics( Event& event) {
     && infoPtr->nMPI() == 1 )
     return true;
 
-  // Check that has not already used up beams.
-  if ( ( !(beamA.isLepton() || (beamAisGamma && !gammaAResolved) )
+  // Check that has not already used up beams. Unless direct photon in photon.
+  if ( beamA.isGamma() && beamA[0].id() == 22 ) { }
+  else if ( beamB.isGamma() && beamB[0].id() == 22 )  { }
+  else if ( ( !(beamA.isLepton() || (beamAisGamma && !gammaAResolved) )
          && beamA.xMax(-1) <= 0.) ||
        ( !(beamB.isLepton() || (beamBisGamma && !gammaBResolved) )
          && beamB.xMax(-1) <= 0.) ) {
@@ -386,8 +396,8 @@ bool BeamRemnants::setKinematics( Event& event) {
   int nOffset  = nBeams - 3;
 
   // If extra photons in event fix the offset.
-  if (beamA.hasGamma()) --nOffset;
-  if (beamB.hasGamma()) --nOffset;
+  if (beamA.hasResGamma()) --nOffset;
+  if (beamB.hasResGamma()) --nOffset;
 
   // Reserve space for extra information on the systems and beams.
   int nMaxBeam = max( beamA.size(), beamB.size() );
@@ -898,6 +908,10 @@ bool BeamRemnants::setOneRemnKinematics( Event& event, int beamOffset) {
   BeamParticle& beamHad   = (iBeamHad == 1) ? *beamAPtr : *beamBPtr;
   BeamParticle& beamOther = (iBeamHad == 2) ? *beamAPtr : *beamBPtr;
 
+  // Beam offsets in case of gamma+gamma.
+  int iBeamA = 1 + beamOffset;
+  int iBeamB = 2 + beamOffset;
+
   // Identify remnant-side hadronic four-momentum and scattered lepton if DIS.
   int iLepScat = isDIS ? (beamOther[0].iPos() + 2) : -1;
   Vec4 pHadScat;
@@ -906,7 +920,7 @@ bool BeamRemnants::setOneRemnKinematics( Event& event, int beamOffset) {
 
   // Set scattered lepton momentum if DIS and find the hadronic system.
   Vec4 pLepScat = isDIS ? event[iLepScat].p() : Vec4();
-  Vec4 pHadTot  = event[1 + beamOffset].p() + event[2 + beamOffset].p();
+  Vec4 pHadTot  = event[iBeamA].p() + event[iBeamB].p();
   if ( isDIS ) pHadTot -= pLepScat;
   Vec4 pRemnant = pHadTot - pHadScat;
   double w2Tot  = pHadTot.m2Calc();

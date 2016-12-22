@@ -58,8 +58,8 @@ const int BeamParticle::NRANDOMTRIES = 1000;
 
 void BeamParticle::init( int idIn, double pzIn, double eIn, double mIn,
   Info* infoPtrIn, Settings& settings, ParticleData* particleDataPtrIn,
-  Rndm* rndmPtrIn,PDF* pdfInPtr, PDF* pdfHardInPtr, bool isUnresolvedIn,
-  StringFlav* flavSelPtrIn) {
+  Rndm* rndmPtrIn, PDF* pdfInPtr, PDF* pdfHardInPtr, bool isUnresolvedIn,
+  StringFlav* flavSelPtrIn, bool hasResGammaIn) {
 
   // Store input pointers (and one bool) for future use.
   infoPtr           = infoPtrIn;
@@ -69,6 +69,7 @@ void BeamParticle::init( int idIn, double pzIn, double eIn, double mIn,
   pdfHardBeamPtr    = pdfHardInPtr;
   isUnresolvedBeam  = isUnresolvedIn;
   flavSelPtr        = flavSelPtrIn;
+  hasResGammaInBeam = hasResGammaIn;
 
   // Maximum quark kind in allowed incoming beam hadrons.
   maxValQuark       = settings.mode("BeamRemnants:maxValQuark");
@@ -117,9 +118,6 @@ void BeamParticle::init( int idIn, double pzIn, double eIn, double mIn,
   doMPI             = settings.flag("PartonLevel:MPI");
   pTminISR          = settings.parm("SpaceShower:pTmin");
 
-  // Is there a gamma beam inside lepton.
-  lepton2gamma      = settings.flag("PDF:lepton2gamma");
-
   // Store info on the incoming beam.
   idBeam            = idIn;
   initBeamKind();
@@ -143,14 +141,13 @@ void BeamParticle::init( int idIn, double pzIn, double eIn, double mIn,
 void BeamParticle::initBeamKind() {
 
   // Reset.
-  idBeamAbs        = abs(idBeam);
-  isLeptonBeam     = false;
-  isHadronBeam     = false;
-  isMesonBeam      = false;
-  isBaryonBeam     = false;
-  isGammaBeam      = false;
-  hasGammaInLepton = false;
-  nValKinds    = 0;
+  idBeamAbs         = abs(idBeam);
+  isLeptonBeam      = false;
+  isHadronBeam      = false;
+  isMesonBeam       = false;
+  isBaryonBeam      = false;
+  isGammaBeam       = false;
+  nValKinds         = 0;
 
   // Check for leptons.
   if (idBeamAbs > 10 && idBeamAbs < 17) {
@@ -158,8 +155,6 @@ void BeamParticle::initBeamKind() {
     nVal[0]   = 1;
     idVal[0]  = idBeam;
     isLeptonBeam = true;
-    // If not a neutrino, set hasGammaInLepton appropriately.
-    if ( idBeamAbs%2 == 1 && lepton2gamma ) hasGammaInLepton = true;
   }
 
   // Valence content for photons.
@@ -239,7 +234,6 @@ void BeamParticle::initBeamKind() {
 }
 
 //--------------------------------------------------------------------------
-
 
 // Dynamic choice of meson valence flavours for pi0, K0S, K0L, Pomeron.
 
@@ -568,7 +562,7 @@ double BeamParticle::xCompDist(double xc, double xs) {
 
 bool BeamParticle::gammaInitiatorIsVal(int iResolved, double Q2) {
   return gammaInitiatorIsVal( iResolved, resolved[iResolved].id(),
-  resolved[iResolved].x(), Q2 );
+    resolved[iResolved].x(), Q2 );
 }
 
 //--------------------------------------------------------------------------
@@ -665,6 +659,9 @@ bool BeamParticle::remnantFlavours(Event& event, bool isDIS) {
 
   // Decide the valence content of photon beam here if ISR is applied.
   if ( isGammaBeam ) {
+
+    // For direct-resolved processes no need for remnants on direct side.
+    if (resolved[0].id() == 22) return true;
 
     // If ISR but no MPIs check only for the one initiator.
     if ( doISR && !doMPI ) {
