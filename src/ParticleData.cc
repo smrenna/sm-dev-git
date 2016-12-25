@@ -10,6 +10,7 @@
 #include "Pythia8/ResonanceWidths.h"
 #include "Pythia8/StandardModel.h"
 #include "Pythia8/SusyResonanceWidths.h"
+#include "Pythia8/ResonanceWidthsDM.h"
 
 // Allow string and character manipulation.
 #include <cctype>
@@ -682,6 +683,10 @@ void ParticleData::initWidths( vector<ResonanceWidths*> resonancePtrs) {
   resonancePtr = new ResonanceLeptoquark(42);
   setResonancePtr( 42, resonancePtr);
 
+  // Mediators for Dark Matter.
+  resonancePtr = new ResonanceZp(55);
+  setResonancePtr( 55, resonancePtr);
+
   // 93 = Z0copy and 94 = W+-copy used to pick decay channels
   // for W/Z production in parton showers.
   resonancePtr = new ResonanceGmZ(93);
@@ -689,8 +694,8 @@ void ParticleData::initWidths( vector<ResonanceWidths*> resonancePtrs) {
   resonancePtr = new ResonanceW(94);
   setResonancePtr( 94, resonancePtr);
 
-  // Supersymmetry
-  //  - Squarks
+  // Supersymmetry:
+  //  - Squarks;
   for(int i = 1; i < 7; i++){
     resonancePtr = new ResonanceSquark(1000000 + i);
     setResonancePtr( 1000000 + i, resonancePtr);
@@ -698,7 +703,7 @@ void ParticleData::initWidths( vector<ResonanceWidths*> resonancePtrs) {
     setResonancePtr( 2000000 + i, resonancePtr);
   }
 
-  //  - Sleptons and sneutrinos
+  //  - Sleptons and sneutrinos;
   for(int i = 1; i < 7; i++){
     resonancePtr = new ResonanceSlepton(1000010 + i);
     setResonancePtr( 1000010 + i, resonancePtr);
@@ -706,17 +711,17 @@ void ParticleData::initWidths( vector<ResonanceWidths*> resonancePtrs) {
     setResonancePtr( 2000010 + i, resonancePtr);
   }
 
-  // - Gluino
+  // - Gluino;
   resonancePtr = new ResonanceGluino(1000021);
   setResonancePtr( 1000021, resonancePtr);
 
-  // - Charginos
+  // - Charginos;
   resonancePtr = new ResonanceChar(1000024);
   setResonancePtr( 1000024, resonancePtr);
   resonancePtr = new ResonanceChar(1000037);
   setResonancePtr( 1000037, resonancePtr);
 
-  // - Neutralinos
+  // - Neutralinos.
   if (isResonance(1000022)) {
     resonancePtr = new ResonanceNeut(1000022);
     setResonancePtr( 1000022, resonancePtr);

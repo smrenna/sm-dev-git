@@ -19,6 +19,7 @@
 #include "Pythia8/SigmaNewGaugeBosons.h"
 #include "Pythia8/SigmaQCD.h"
 #include "Pythia8/SigmaSUSY.h"
+#include "Pythia8/SigmaDM.h"
 
 namespace Pythia8 {
 
@@ -2739,6 +2740,12 @@ bool SetupContainers::init(vector<ProcessContainer*>& containerPtrs,
   }
   if (settings.flag("ExtraDimensionsUnpart:gg2llbar")) {
     sigmaPtr = new Sigma2gg2LEDllbar( false );
+    containerPtrs.push_back( new ProcessContainer(sigmaPtr) );
+  }
+
+  // Set up requested objects for Dark Matter processes.
+  if (settings.flag("DM:ffbar2Zp2XX")) {
+    sigmaPtr = new Sigma2ffbar2Zp2XX();
     containerPtrs.push_back( new ProcessContainer(sigmaPtr) );
   }
 

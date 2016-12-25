@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.222: 22 December 2016 
+<li>8.222: 25 December 2016 
 <ul> 
  
 <li>Nadine Fischer and Leif L&ouml;nnblad join as co-authors, 
@@ -118,6 +118,10 @@ See the <?php $filepath = $_GET["filepath"];
 echo "<a href='HadronScattering.php?filepath=".$filepath."' target='page'>";?>Hadron Scattering</a> page 
 for further details and parameters. New status codes 111 and 112 
 introduced for rescattered hadrons.</li> 
+ 
+<li>A first process for Dark Matter production, for the pair production 
+of new Dirac DM particles through an <i>s</i>-channel vector-like 
+mediator.</li> 
  
 <li>New mode <code>BeamRemnants:unresolvedHadron</code> can be used to 
 let original hadron remain as beam remnant, e.g. for coherent emission 

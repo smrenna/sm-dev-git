@@ -4,7 +4,7 @@
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
-// Header file for resonance properties: dynamical widths etc.
+// Header file for SUSY resonance properties: dynamical widths etc.
 // SusyResonanceWidths: base class for all SUSY resonances.
 
 #ifndef Pythia8_SusyResonanceWidths_H
@@ -66,7 +66,6 @@ private:
 
   // Caclulate width for currently considered channel.
   virtual void calcWidth(bool calledFromInit = false);
-
 
   double s2W;
 
