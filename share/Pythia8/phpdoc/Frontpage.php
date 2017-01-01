@@ -202,10 +202,10 @@ for Event Generator Authors and Users.
  
 <p/> 
 The program and the documentation is 
-Copyright &copy; 2015 Torbj&ouml;rn Sj&ouml;strand 
+Copyright &copy; 2017 Torbj&ouml;rn Sj&ouml;strand 
  
  
 </body>
 </html>
  
-<!-- Copyright (C) 2016 Torbjorn Sjostrand --> 
+<!-- Copyright (C) 2017 Torbjorn Sjostrand --> 

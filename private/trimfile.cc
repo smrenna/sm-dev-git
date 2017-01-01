@@ -1,5 +1,7 @@
-// File: trimfile.cc
-// Copyright (C) 2016 Torbjorn Sjostrand
+// trimfile.cc is a part of the PYTHIA event generator.
+// Copyright (C) 2017 Torbjorn Sjostrand.
+// PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
+// Please respect the MCnet Guidelines, see GUIDELINES for details.
 
 // Execute with "private/trimfile filename" from main directory.
 
@@ -11,7 +13,8 @@
 //    (but leave reformatting to manual control);
 // -- warn if a line contains tab characters
 //    (can be fixed in emacs by "ctrl-x h" followed by "cmnd-x untabify");
-// -- perform some string replacements.
+// -- perform some string replacements, notably copyright year 
+//    (&copy; in Frontpage.xml to be done by hand; also update convertXML).
 
 // By default trimfile only works on .h, .cc, .cmnd and .xml files,
 // but command-line option "-f" forces it for any file type.
@@ -46,8 +49,8 @@ using std::istringstream;
 int maxLen = 79;
 
 // Possibility to replace strings inside file.
-string replaceOld[3] = { "Copyright (C) 2015", "\"true\"", "\"false\"" }; 
-string replaceNew[3] = { "Copyright (C) 2016", "\"on\"",   "\"off\""   };
+string replaceOld[3] = { "Copyright (C) 2016", "\"true\"", "\"false\"" }; 
+string replaceNew[3] = { "Copyright (C) 2017", "\"on\"",   "\"off\""   };
 int    replaceLen[3] = { 18, 6, 7 };
 
 //--------------------------------------------------------------------------

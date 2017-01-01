@@ -1,5 +1,5 @@
 // main69.cc is a part of the PYTHIA event generator.
-// Copyright (C) 2016 Torbjorn Sjostrand.
+// Copyright (C) 2017 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
@@ -8,8 +8,8 @@
 // The first sub-run generates hard QCD processes with two resolved photons,
 // second and third processes where one beam is a unresolved and the other
 // resolved, and the last run the contribution from processes where both
-// photons are unresolved and act as initiators of the process. Events can be 
-// generated either with photon beams or with photons emitted from lepton 
+// photons are unresolved and act as initiators of the process. Events can be
+// generated either with photon beams or with photons emitted from lepton
 // beams, and a pT weight can be set to emphasize higher values of pT.
 
 #include "Pythia8/Pythia.h"

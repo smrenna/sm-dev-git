@@ -1,5 +1,5 @@
 // FragmentationFlavZpT.cc is a part of the PYTHIA event generator.
-// Copyright (C) 2016 Torbjorn Sjostrand.
+// Copyright (C) 2017 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 
@@ -1532,51 +1532,6 @@ double StringZ::zPeterson( double epsilon) {
 // To avoid division by zero one must have sigma > 0.
 const double StringPT::SIGMAMIN     = 0.2;
 
-// Number of ranges.
-const int StringPT::nRange    = 5;
-
-// Min and Max x values of ranges.
-const double StringPT::xMin[] = { 0.0, 1.0, 2.0, 5.0, 10.0 };
-const double StringPT::xMax[] = { 1.0, 2.0, 5.0, 10.0, 10000000.0 };
-
-// Normalization factor to make sure overestimate is large enough.
-const double StringPT::Norm[] = { 0.5, 0.56, 0.72, 0.86, 3.0 };
-
-// Relative weights of the ranges.
-const double StringPT::relWeights[] =
-  { Norm[0]*(exp(-xMin[0])-exp(-xMax[0])),
-    Norm[1]*(exp(-xMin[1])-exp(-xMax[1])),
-    Norm[2]*(exp(-xMin[2])-exp(-xMax[2])),
-    Norm[3]*(exp(-xMin[3])-exp(-xMax[3])),
-    Norm[4]*(exp(-xMin[4])-exp(-xMax[4])) };
-
-// Sum of all relative weights.
-const double StringPT::weightSum =
-  relWeights[0]+relWeights[1]+relWeights[2]+
-  relWeights[3]+relWeights[4];
-
-// Weights of the ranges, normalized such that they sum to 1.
-const double StringPT::weights[] =
-  { relWeights[0]/weightSum, relWeights[1]/weightSum, relWeights[2]/weightSum,
-    relWeights[3]/weightSum, relWeights[4]/weightSum };
-
-// Accumulated normalized weights.
-const double StringPT::accumWeights[] =
-  { weights[0], weights[0]+weights[1], weights[0]+weights[1]+weights[2],
-    weights[0]+weights[1]+weights[2]+weights[3],
-    weights[0]+weights[1]+weights[2]+weights[3]+weights[4] };
-
-// Fitting parameters, fitted function has the form exp(a-bx)/x^c.
-const double StringPT::aFit[] =
-  { -0.6286920418539674, -0.7700989585141107, -0.7794919132465212,
-    -0.7714359449694874, -0.7489138949304024 };
-const double StringPT::bFit[] =
-  { 1.1832878319554379, 1.0210354994770188, 1.0072781977437897,
-    1.0019605149328101, 1.0001414072386292 };
-const double StringPT::cFit[] =
-  { 0.5896336504652963, 0.6777444262270705, 0.7035860035210165,
-    0.7245732786233750, 0.7420792145813402 };
-
 //--------------------------------------------------------------------------
 
 // Initialize data members of the string pT selection.
@@ -1602,6 +1557,9 @@ void StringPT::init(Settings& settings,  ParticleData* particleDataPtrIn,
   thermalModel     = settings.flag("StringPT:thermalModel");
   temperature      = settings.parm("StringPT:temperature");
   tempPreFactor    = settings.parm("StringPT:tempPreFactor");
+
+  // Upper estimate of thermal spectrum: fraction at x = pT_quark/T < 1.
+  fracSmallX       = 0.6 / (0.6 + (1.2/0.9) * exp(-0.9));
 
   // Enhanded-width prefactor for MPIs and/or nearby string pieces.
   closePacking     = settings.flag("StringPT:closePacking");
@@ -1631,36 +1589,18 @@ pair<double, double> StringPT::pxyThermal(int idIn, double nNSP) {
     temprNow *= pow(max(1.0,nNSP), exponentNSP);
   }
 
-  double accept   = false;
-  double pTquark  = 0.0;
-  while (!accept) {
-    // Random number to decide on range.
-    double rand1 = rndmPtr->flat();
-    int iRange   = -1;
-    for (int i = 0; i < nRange; i++) {
-      if (rand1 < accumWeights[i]) {
-        iRange = i;
-        break;
-      }
-    }
-    // Pick random x=pTQ/T in that range.
-    double rand2 = rndmPtr->flat();
-    double xrand = -log( exp(-xMin[iRange]) - rand2 * relWeights[iRange]
-      / Norm[iRange] );
-    // Accept/reject.
-    double rand3 = rndmPtr->flat();
-    double fFit  = exp( aFit[iRange] - bFit[iRange] * xrand)
-      / pow( xrand, cFit[iRange]);
-    double fOver = Norm[iRange] * exp(-xrand) / xrand;
-    double Pacc  = fFit / fOver;
-    if (rand3 < Pacc) {
-      accept  = true;
-      pTquark = xrand * temprNow;
-    }
-  }
+  // Pick x = pT_quark/T according to K_{1/4}(x)/x^{1/4} * x dx.
+  double xrand, approx, wanted;
+  do {
+    xrand = (rndmPtr->flat() < fracSmallX) ? rndmPtr->flat()
+          : 1. - log(rndmPtr->flat()) / 0.9;
+    approx = (xrand < 1.) ? 0.6 : 1.2 * exp(-0.9 * xrand);
+    wanted = BesselK14(xrand) * pow( xrand, 0.75);
+  } while (rndmPtr->flat() * approx > wanted);
 
-  // Random number to decide on angle.
-  double phi = 2.0*M_PI*rndmPtr->flat();
+  // Find pT_quark. Random number to decide on angle.
+  double pTquark = xrand * temprNow;
+  double phi     = 2.0 * M_PI * rndmPtr->flat();
 
   // Done.
   return pair<double, double>( pTquark * cos(phi), pTquark * sin(phi) );
@@ -1694,6 +1634,43 @@ pair<double, double> StringPT::pxyGauss(int idIn, double nNSP) {
   pair<double, double> gauss2 = rndmPtr->gauss2();
   return pair<double, double>(sigma * gauss2.first, sigma * gauss2.second);
 
+}
+
+//--------------------------------------------------------------------------
+
+// Evaluate Bessel function K_{1/4}(x).
+// Use power series for x < 2.5 and asymptotic expansion for x > 2.5.
+// Number of terms picked to have accuracy better than 1 per mille.
+// Based on M. Abramowitz and I.A. Stegun, eqs. 9.6.2, 9.6.10, 9.7.2.
+
+double StringPT::BesselK14(double x) {
+
+  // Power series expansion of K_{1/4} : k = 0 term.
+  if (x < 2.5) {
+    double xRat  = 0.25 * x * x;
+    double prodP = pow( 0.5 * x, -0.25) / 1.2254167024;
+    double prodN = pow( 0.5 * x,  0.25) / 0.9064024771;
+    double sum   = prodP - prodN;
+
+    // Power series expansion of K_{1/4} : m > 0 terms.
+    for (int k = 1; k < 6; ++k) {
+      prodP *= xRat / (k * (k - 0.25));
+      prodN *= xRat / (k * (k + 0.25));
+      sum   += prodP - prodN;
+    }
+    sum *= M_PI * sqrt(0.5);
+    return sum;
+
+  // Asymptotic expansion of K_{1/4}.
+  } else {
+    double asym  = sqrt(M_PI * 0.5 / x) * exp(-x);
+    double term1 = -         0.75 / ( 8. * x);
+    double term2 = -term1 *  8.75 / (16. * x);
+    double term3 = -term2 * 24.75 / (24. * x);
+    double term4 = -term3 * 48.75 / (32. * x);
+    asym *= 1. + term1 + term2 + term3 + term4;
+    return asym;
+  }
 }
 
 //==========================================================================

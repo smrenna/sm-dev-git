@@ -271,4 +271,4 @@ You can also access an extensive list of the public
 echo "<a href='ProgramMethods.php?filepath=".$filepath."' target='page'>";?>methods</a> in these classes, 
 which compensates for the brevity of the current page. 
  
-<!-- Copyright (C) 2016 Torbjorn Sjostrand --> 
+<!-- Copyright (C) 2017 Torbjorn Sjostrand --> 

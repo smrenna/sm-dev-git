@@ -1,5 +1,5 @@
 # Makefile is a part of the PYTHIA event generator.
-# Copyright (C) 2016 Torbjorn Sjostrand.
+# Copyright (C) 2017 Torbjorn Sjostrand.
 # PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 # Please respect the MCnet Guidelines, see GUIDELINES for details.
 # Author: Philip Ilten, September 2014.
@@ -135,7 +135,7 @@ endif
 main92.so: main92Dct.cc $(PREFIX_LIB)/libpythia8.a
 	$(CXX) $^ -o $@ -w -I$(ROOT_INCLUDE) $(CXX_SHARED) $(CXX_COMMON)\
 	 `$(ROOTBIN)root-config --cflags`
-main92Dct.cc: main92.h main92LinkDef.h 
+main92Dct.cc: main92.h main92LinkDef.h
 	export LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:$(ROOT_LIB);\
 	 $(ROOT_BIN)rootcint -f $@ -c -I$(PREFIX_INCLUDE) $^
 

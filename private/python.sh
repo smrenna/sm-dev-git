@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright (C) 2016 Torbjorn Sjostrand.
+# Copyright (C) 2017 Torbjorn Sjostrand.
 # PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 # Please respect the MCnet Guidelines, see GUIDELINES for details.
 # Author: Philip Ilten, March 2016.
@@ -8,9 +8,9 @@
 # It should be run from the main directory, but is located in private/.
 
 # Check SWIG (works with version 3.0.8) and SED exist.
-if ! type "sed" &> /dev/null; then 
+if ! type "sed" &> /dev/null; then
     echo "Error: SED not found."; exit; fi
-if ! type "swig" &> /dev/null; then 
+if ! type "swig" &> /dev/null; then
     echo "Error: SWIG not found."; exit; fi
 
 # Set the SWIG configuration file and the Python interface file.
@@ -197,7 +197,7 @@ while [ $ITER -lt $ITERS ]; do
 	    SIZE=`echo $SUB_DEPS | wc -w`
 	    if [ "$SIZE" == "0" ]; then continue
 	    else NEW_DEPS+=" $DEP"; fi; done
-	if [ `echo $NEW_DEPS | wc -w` -eq "0" ]; then 
+	if [ `echo $NEW_DEPS | wc -w` -eq "0" ]; then
 	    eval FILE=\${${NAME}_FILE}
 	    eval ${NAME}_DEPS=\"NONE\"
 	    if [[ $BAN =~ (^| )$NAME($| ) ]]; then
@@ -212,17 +212,17 @@ cat >> $CFG_FILE << BLOCKTEXT
 // Exceptions to handle iterable classes.
 %exception Pythia8::Vec4::__getitem__ {
   assert(!VEC4_ERROR); \$action
-  if (VEC4_ERROR) {VEC4_ERROR = 0; 
+  if (VEC4_ERROR) {VEC4_ERROR = 0;
     SWIG_exception(SWIG_IndexError, "Index out of bounds");}
 }
 %exception Pythia8::Event::__getitem__ {
   assert(!EVENT_ERROR); \$action
-  if (EVENT_ERROR) {EVENT_ERROR = 0; 
+  if (EVENT_ERROR) {EVENT_ERROR = 0;
     SWIG_exception(SWIG_IndexError, "Index out of bounds");}
 }
 %exception Pythia8::BeamParticle::__getitem__ {
   assert(!BEAMPARTICLE_ERROR); \$action
-  if (BEAMPARTICLE_ERROR) {BEAMPARTICLE_ERROR = 0; 
+  if (BEAMPARTICLE_ERROR) {BEAMPARTICLE_ERROR = 0;
     SWIG_exception(SWIG_IndexError, "Index out of bounds");}
 }
 %exception Pythia8::ColConfig::__getitem__ {
@@ -352,7 +352,7 @@ BLOCKTEXT
 # Run SWIG and create the C++ wrapper header file.
 swig -c++ -python python.cfg
 cat > $HEADER_FILE << BLOCKTEXT
-// Copyright (C) 2016 Torbjorn Sjostrand.
+// Copyright (C) 2017 Torbjorn Sjostrand.
 // PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 // Please respect the MCnet Guidelines, see GUIDELINES for details.
 // Author: Philip Ilten, March 2016.
@@ -367,7 +367,7 @@ SPLIT=$[$SPLIT+2]; tail -n +$SPLIT $CXX_FILE >> $HEADER_FILE
 echo "// PYTHON SOURCE" >> $HEADER_FILE
 cat >> $HEADER_FILE << BLOCKTEXT
 //"""
-//Copyright (C) 2016 Torbjorn Sjostrand.
+//Copyright (C) 2017 Torbjorn Sjostrand.
 //PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 //Please respect the MCnet Guidelines, see GUIDELINES for details.
 //

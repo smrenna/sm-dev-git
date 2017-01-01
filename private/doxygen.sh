@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright (C) 2016 Torbjorn Sjostrand.
+# Copyright (C) 2017 Torbjorn Sjostrand.
 # PYTHIA is licenced under the GNU GPL version 2, see COPYING for details.
 # Please respect the MCnet Guidelines, see GUIDELINES for details.
 # Author: Philip Ilten, January 2015.
@@ -8,9 +8,9 @@
 # It should be run from the main directory, but is located in private/.
 
 # Check Doxygen and SED exist.
-if ! type "sed" &> /dev/null; then 
+if ! type "sed" &> /dev/null; then
     echo "Error: SED not found."; exit; fi
-if ! type "doxygen" &> /dev/null; then 
+if ! type "doxygen" &> /dev/null; then
     echo "Error: DOXYGEN not found."; exit; fi
 
 # Remove and create new doxygen structure.

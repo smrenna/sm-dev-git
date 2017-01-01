@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.222: 25 December 2016 
+<li>8.223: 1 January 2017 
 <ul> 
  
 <li>Nadine Fischer and Leif L&ouml;nnblad join as co-authors, 
@@ -184,6 +184,8 @@ companion choice also if <code>iComp = 0</code>.</li>
 <li>Two minor particle data fixes.</li> 
  
 <li>Small fix in the parsing code of <code>LHEF3.h</code>.</li> 
+  
+<li>Year updated to 2017.</li> 
  
 <li>Small clarifications in the documentation.</li> 
  
@@ -1380,4 +1382,4 @@ to six flavours at the top mass.</li>
 </body>
 </html>
  
-<!-- Copyright (C) 2016 Torbjorn Sjostrand --> 
+<!-- Copyright (C) 2017 Torbjorn Sjostrand --> 
