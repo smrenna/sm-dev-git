@@ -137,7 +137,7 @@ public:
     spacePtr = spacePtrIn; return true;}
 
   // Initialize.
-  bool init();
+  bool init(istream* isIn = NULL, istream* isHeadIn = NULL);
 
   // Generate the next event.
   bool next();

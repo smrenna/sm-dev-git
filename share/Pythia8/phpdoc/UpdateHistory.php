@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.223: 1 January 2017 
+<li>8.223: 2 January 2017 
 <ul> 
  
 <li>Nadine Fischer and Leif L&ouml;nnblad join as co-authors, 
@@ -79,8 +79,7 @@ Matching new kinematics output methods, see
 <?php $filepath = $_GET["filepath"];
 echo "<a href='EventInformation.php?filepath=".$filepath."' target='page'>";?>Event Information</a>.</li> 
  
-<li> 
-A PDF for point-like photon is included. In case of lepton PDFs, the 
+<li>A PDF for point-like photon is included. In case of lepton PDFs, the 
 photon contribution has now restricted virtuality and also more accurate 
 lower limit for the virtuality. A new option to use separate PDFs for 
 hard processes, with photon PDFs obtained from LHAPDF5. CJKL PDFs are 
@@ -130,6 +129,17 @@ of photons.</li>
 <li>New option with running coupling in Hidden Valley scenarios. 
 Some other small fixes in it.</li> 
  
+<li>Fixed a check in the construction of all shower histories for 
+the merging, which meant that not all histories were produced for 
+squarks+jets. Included rudimentary facilities to guess the process 
+for merging.</li> 
+ 
+<li>Added functionality to write Pythia events to a LHEF3-style string, 
+e.g. for use in an external Pythia caller.<li> 
+ 
+<li>Added possibility to initialize Pythia on two istream objects, 
+from which LHEF3 input events and a LHEF3-style header can be read.</li> 
+ 
 <li>New behaviour of <code>Event::remove</code>, where mother and 
 daughter indices now are updated by default.</li> 
  
@@ -178,13 +188,16 @@ were incorrect, insofar as checks or not against duplication of existing
 channels go, and have now been set straight. Thanks to Christopher 
 West.</li> 
  
+<li>Minor bug fix in the <code>TimeShower</code> machinery to optionally 
+enhance the rate of some shower branchings.</li> 
+ 
 <li>A minor fix for <code>BeamParticle::popBack()</code> method to reset 
 companion choice also if <code>iComp = 0</code>.</li> 
  
 <li>Two minor particle data fixes.</li> 
  
 <li>Small fix in the parsing code of <code>LHEF3.h</code>.</li> 
-  
+ 
 <li>Year updated to 2017.</li> 
  
 <li>Small clarifications in the documentation.</li> 

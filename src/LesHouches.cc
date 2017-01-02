@@ -1531,7 +1531,7 @@ bool LHEF3FromPythia8::setEvent(int) {
   // Write event comments of input LHEF.
 
   writer.hepeup = hepeup;
-  writer.writeEvent(&hepeup,pDigits);
+  if (writeToFile) writer.writeEvent(&hepeup,pDigits);
 
   return true;
 

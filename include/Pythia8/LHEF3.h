@@ -813,6 +813,11 @@ public:
     isGood = init();
   }
 
+  Reader(istream* is)
+    : filename(""), intstream(NULL), file(is) {
+    isGood = init();
+  }
+
   // Clean up
   ~Reader() {
     if (intstream) delete intstream;
@@ -1011,6 +1016,8 @@ public:
   // Write out the event stored in hepeup, followed by optional
   // comment lines.
   bool writeEvent(HEPEUP * peup = 0, int pDigits = 15);
+  // Write out an event as a string.
+  string getEventString(HEPEUP * peup = 0);
 
 protected:
 

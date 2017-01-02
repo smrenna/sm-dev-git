@@ -7447,7 +7447,8 @@ bool History::allowedClustering( int rad, int emt, int rec, int partner,
   // Add recoiler to number of final quarks
   if (event[rec].isFinal() && event[rec].isQuark()) nFinalQuark++;
   // Add radiator after clustering to number of final quarks
-  if (event[rad].isFinal() && abs(radBeforeFlav) < 10) nFinalQuark++;
+  if ( event[rad].isFinal()
+    && abs(particleDataPtr->colType(radBeforeFlav)) == 1) nFinalQuark++;
 
   // Get number of initial quarks
   int nInitialQuark = 0;
@@ -7506,7 +7507,8 @@ bool History::allowedClustering( int rad, int emt, int rec, int partner,
   // matches hard core process
   if (isSing)
     allowed = false;
-  if (isSing && (abs(radBeforeFlav)<10 && event[rec].isQuark()) )
+  if ( isSing && event[rec].isQuark()
+    && abs(particleDataPtr->colType(radBeforeFlav)) == 1)
     allowed = true;
 
   // Never recluster any outgoing partons of the core V -> qqbar' splitting!

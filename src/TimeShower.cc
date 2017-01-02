@@ -2339,7 +2339,7 @@ void TimeShower::pT2nextQCD(double pT2begDip, double pT2sel,
   if (canEnhanceET) {
     if (isEnhancedQ2QG) storeEnhanceFactor(dip.pT2,"fsr:Q2QG", enhanceNow);
     if (isEnhancedG2QQ) storeEnhanceFactor(dip.pT2,"fsr:G2QQ", enhanceNow);
-    if (isEnhancedG2QQ) storeEnhanceFactor(dip.pT2,"fsr:G2GG", enhanceNow);
+    if (isEnhancedG2GG) storeEnhanceFactor(dip.pT2,"fsr:G2GG", enhanceNow);
   }
 
 }

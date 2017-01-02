@@ -491,7 +491,7 @@ bool Pythia::setPDFPtr( PDF* pdfAPtrIn, PDF* pdfBPtrIn, PDF* pdfHardAPtrIn,
 
 // Routine to initialize with the variable values of the Beams kind.
 
-bool Pythia::init() {
+bool Pythia::init(istream* isIn, istream* isHeadIn) {
 
   // Check that constructor worked.
   isInit = false;
@@ -565,8 +565,10 @@ bool Pythia::init() {
         // Header is optional, so use NULL pointer to indicate no value.
         const char* cstring2 = (lhefHeader == "void")
           ? NULL : lhefHeader.c_str();
-        lhaUpPtr   = new LHAupLHEF(&info, cstring1, cstring2,
-          readHeaders, setScales);
+        lhaUpPtr   = (isIn == NULL && isHeadIn == NULL)
+                   ? new LHAupLHEF(&info, cstring1, cstring2, readHeaders,
+                         setScales)
+                   : new LHAupLHEF(&info,isIn,isHeadIn,readHeaders,setScales);
         useNewLHA  = true;
       }
 
@@ -1449,6 +1451,7 @@ bool Pythia::next() {
     info.clear();
     process.clear();
     partonSystems.clear();
+
     // Reset the event information. Necessary if the previous event was read
     // from LHEF, while the current event is not read from LHEF.
     info.setLHEF3EventInfo();
