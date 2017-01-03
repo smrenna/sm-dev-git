@@ -88,6 +88,7 @@ public:
   // Method to be used for LHAupLHEF derived class.
   virtual void newEventFile(const char*) {}
   virtual bool fileFound() {return true;}
+  virtual bool useExternal() {return false;}
 
   // A pure virtual method setInit, wherein all initialization information
   // is supposed to be set in the derived class. Can do this by reading a
@@ -380,7 +381,8 @@ public:
   }
 
   // Confirm that file was found and opened as expected.
-  bool fileFound() { return (isHead->good() && is->good()); }
+  bool fileFound() {return (useExternal() || (isHead->good() && is->good()));}
+  bool useExternal() {return (hasExtHeaderStream && hasExtFileStream);}
 
   // Routine for doing the job of reading and setting initialization info.
   bool setInit() {

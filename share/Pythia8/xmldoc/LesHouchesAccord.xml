@@ -842,12 +842,23 @@ used.) All parsing that is not strictly part of the LHEF format
 the <code>LHAupLHEF</code> methods. 
  
 <p/> 
-Two other small utility routines are: 
+Some other small utility routines are: 
  
 <method name="bool LHAup::fileFound()"> 
 always returns true in the base class, but in <code>LHAupLHEF</code> 
 it returns false if the LHEF provided in the constructor is not 
 found and opened correctly. 
+</method> 
+ 
+<method name="bool LHAup::useExternal()"> 
+always returns false in the base class, but in <code>LHAupLHEF</code> 
+it returns false if the <code>LHAupLHEF</code> instance is constructed to 
+work on an input LHE file, while it returns true if the <code>LHAupLHEF</code> 
+instance is constructed to use externally provided input streams instead. 
+For the latter, the <code>LHAupLHEF</code> instance should have been 
+constructed with the class constructor <code>LHAupLHEF(Info* infoPtrIn, 
+istream* isIn, istream* isHeadIn, bool readHeadersIn, bool setScalesFromLHEFIn) 
+</code> 
 </method> 
  
 <method name="void LHAup::setInfoHeader(const string &key, 

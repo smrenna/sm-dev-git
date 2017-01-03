@@ -491,7 +491,7 @@ bool Pythia::setPDFPtr( PDF* pdfAPtrIn, PDF* pdfBPtrIn, PDF* pdfHardAPtrIn,
 
 // Routine to initialize with the variable values of the Beams kind.
 
-bool Pythia::init(istream* isIn, istream* isHeadIn) {
+bool Pythia::init() {
 
   // Check that constructor worked.
   isInit = false;
@@ -559,16 +559,16 @@ bool Pythia::init(istream* isIn, istream* isHeadIn) {
     // For file input: renew file stream or (re)new Les Houches object.
     if (frameType == 4) {
       const char* cstring1 = lhef.c_str();
-      if (useNewLHA && skipInit) lhaUpPtr->newEventFile(cstring1);
-      else {
+      bool useExternal = (lhaUpPtr && !useNewLHA && lhaUpPtr->useExternal());
+      if (!useExternal && useNewLHA && skipInit)
+        lhaUpPtr->newEventFile(cstring1);
+      else if (!useExternal) {
         if (useNewLHA) delete lhaUpPtr;
         // Header is optional, so use NULL pointer to indicate no value.
         const char* cstring2 = (lhefHeader == "void")
           ? NULL : lhefHeader.c_str();
-        lhaUpPtr   = (isIn == NULL && isHeadIn == NULL)
-                   ? new LHAupLHEF(&info, cstring1, cstring2, readHeaders,
-                         setScales)
-                   : new LHAupLHEF(&info,isIn,isHeadIn,readHeaders,setScales);
+        lhaUpPtr   = new LHAupLHEF(&info, cstring1, cstring2, readHeaders,
+                         setScales);
         useNewLHA  = true;
       }
 
@@ -2206,18 +2206,21 @@ bool Pythia::check() {
       }
     }
 
+    // Some intermediate shower partons excepted from (E, p, m) consistency.
+    bool checkMass = event[i].statusAbs() != 49 && event[i].statusAbs() != 59;
+
     // Look for particles with mismatched or not-a-number energy/momentum/mass.
     if (abs(event[i].px()) >= 0. && abs(event[i].py()) >= 0.
       && abs(event[i].pz()) >= 0.  && abs(event[i].e()) >= 0.
       && abs(event[i].m()) >= 0.) {
       double errMass = abs(event[i].mCalc() - event[i].m())
         / max( 1.0, event[i].e());
-      if (errMass > mTolErr) {
+      if (checkMass && errMass > mTolErr) {
         info.errorMsg("Error in Pythia::check: "
           "unmatched particle energy/momentum/mass");
         physical = false;
         iErrEpm.push_back(i);
-      } else if (errMass > mTolWarn) {
+      } else if (checkMass && errMass > mTolWarn) {
         info.errorMsg("Warning in Pythia::check: "
           "not quite matched particle energy/momentum/mass");
       }

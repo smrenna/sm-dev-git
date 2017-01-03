@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.223: 2 January 2017 
+<li>8.223: 3 January 2017 
 <ul> 
  
 <li>Nadine Fischer and Leif L&ouml;nnblad join as co-authors, 
@@ -135,10 +135,13 @@ squarks+jets. Included rudimentary facilities to guess the process
 for merging.</li> 
  
 <li>Added functionality to write Pythia events to a LHEF3-style string, 
-e.g. for use in an external Pythia caller.<li> 
+e.g. for use in an external Pythia caller.</li> 
  
-<li>Added possibility to initialize Pythia on two istream objects, 
-from which LHEF3 input events and a LHEF3-style header can be read.</li> 
+<li>Improved safety checks for the presence of LHE files.</li> 
+ 
+<li>New status codes 49 and 59 introduced for ISR and FSR partons, 
+respectively, to represent special states in the evolution where 
+<i>E^2 - p^2 = m^2</i> is not fulfilled.</li> 
  
 <li>New behaviour of <code>Event::remove</code>, where mother and 
 daughter indices now are updated by default.</li> 

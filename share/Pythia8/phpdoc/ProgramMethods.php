@@ -2104,13 +2104,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="LesHouchesAccord.php#method38" target="page">LHAup::closeFile(...)</a></td>
+<td><a href="LesHouchesAccord.php#method39" target="page">LHAup::closeFile(...)</a></td>
 <td>Les Houches Accord</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="LesHouchesAccord.php#method43" target="page">LHAup::closeLHEF(...)</a></td>
+<td><a href="LesHouchesAccord.php#method44" target="page">LHAup::closeLHEF(...)</a></td>
 <td>Les Houches Accord</td>
 </tr>
 
@@ -2146,7 +2146,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
-<td><a href="LesHouchesAccord.php#method42" target="page">LHAup::eventLHEF(...)</a></td>
+<td><a href="LesHouchesAccord.php#method43" target="page">LHAup::eventLHEF(...)</a></td>
 <td>Les Houches Accord</td>
 </tr>
 
@@ -2158,7 +2158,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>string</td>
-<td><a href="LesHouchesAccord.php#method44" target="page">LHAup::getFileName()</a></td>
+<td><a href="LesHouchesAccord.php#method45" target="page">LHAup::getFileName()</a></td>
 <td>Les Houches Accord</td>
 </tr>
 
@@ -2218,7 +2218,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
-<td><a href="LesHouchesAccord.php#method41" target="page">LHAup::initLHEF()</a></td>
+<td><a href="LesHouchesAccord.php#method42" target="page">LHAup::initLHEF()</a></td>
 <td>Les Houches Accord</td>
 </tr>
 
@@ -2260,19 +2260,19 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
-<td><a href="LesHouchesAccord.php#method37" target="page">LHAup::newEventFile(...)</a></td>
+<td><a href="LesHouchesAccord.php#method38" target="page">LHAup::newEventFile(...)</a></td>
 <td>Les Houches Accord</td>
 </tr>
 
 <tr>
 <td>istream*</td>
-<td><a href="LesHouchesAccord.php#method38" target="page">LHAup::openFile(...)</a></td>
+<td><a href="LesHouchesAccord.php#method39" target="page">LHAup::openFile(...)</a></td>
 <td>Les Houches Accord</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="LesHouchesAccord.php#method40" target="page">LHAup::openLHEF(...)</a></td>
+<td><a href="LesHouchesAccord.php#method41" target="page">LHAup::openLHEF(...)</a></td>
 <td>Les Houches Accord</td>
 </tr>
 
@@ -2386,7 +2386,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="LesHouchesAccord.php#method36" target="page">LHAup::setInfoHeader(...)</a></td>
+<td><a href="LesHouchesAccord.php#method37" target="page">LHAup::setInfoHeader(...)</a></td>
 <td>Les Houches Accord</td>
 </tr>
 
@@ -2499,6 +2499,12 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
+<td>bool</td>
+<td><a href="LesHouchesAccord.php#method36" target="page">LHAup::useExternal()</a></td>
+<td>Les Houches Accord</td>
+</tr>
+
+<tr>
 <td>double</td>
 <td><a href="LesHouchesAccord.php#method22" target="page">LHAup::weight()</a></td>
 <td>Les Houches Accord</td>
@@ -2584,7 +2590,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="LesHouchesAccord.php#method39" target="page">LHAupLHEF::closeAllFiles()</a></td>
+<td><a href="LesHouchesAccord.php#method40" target="page">LHAupLHEF::closeAllFiles()</a></td>
 <td>Les Houches Accord</td>
 </tr>
 

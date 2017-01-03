@@ -120,6 +120,8 @@ In detail, the list of used or foreseen status codes is:
            parton (cf. status 42)</li> 
   <li>47 : a <i>W</i> or <i>Z</i> gauge boson produced in the 
            shower evolution</li> 
+  <li>49 : a special state in the evolution, where 
+           <i>E^2 - p^2 = m^2</i> is not fulfilled</li> 
   </ul> 
 <li>51 - 59 : particles produced by final-state-showers</li> 
   <ul> 
@@ -133,6 +135,8 @@ In detail, the list of used or foreseen status codes is:
            different system from the radiator</li> 
   <li>56 : a <i>W</i> or <i>Z</i> gauge boson produced in a 
            shower branching (special case of 51)</li> 
+  <li>59 : a special state in the evolution, where 
+           <i>E^2 - p^2 = m^2</i> is not fulfilled</li> 
   </ul> 
 <li>61 - 69 : particles produced by beam-remnant treatment</li> 
   <ul> 

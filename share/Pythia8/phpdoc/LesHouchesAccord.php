@@ -892,7 +892,7 @@ used.) All parsing that is not strictly part of the LHEF format
 the <code>LHAupLHEF</code> methods. 
  
 <p/> 
-Two other small utility routines are: 
+Some other small utility routines are: 
  
 <a name="method35"></a>
 <p/><strong>bool LHAup::fileFound() &nbsp;</strong> <br/>
@@ -902,6 +902,18 @@ found and opened correctly.
    
  
 <a name="method36"></a>
+<p/><strong>bool LHAup::useExternal() &nbsp;</strong> <br/>
+always returns false in the base class, but in <code>LHAupLHEF</code> 
+it returns false if the <code>LHAupLHEF</code> instance is constructed to 
+work on an input LHE file, while it returns true if the <code>LHAupLHEF</code> 
+instance is constructed to use externally provided input streams instead. 
+For the latter, the <code>LHAupLHEF</code> instance should have been 
+constructed with the class constructor <code>LHAupLHEF(Info* infoPtrIn, 
+istream* isIn, istream* isHeadIn, bool readHeadersIn, bool setScalesFromLHEFIn) 
+</code> 
+   
+ 
+<a name="method37"></a>
 <p/><strong>void LHAup::setInfoHeader(const string &key, const string &val) &nbsp;</strong> <br/>
 is used to send header information on to the <code>Info</code> class. 
    
@@ -913,13 +925,13 @@ to be read consecutively, without the need for a complete
 reinitialization. This presupposes that the events are of the same 
 kind, only split e.g. to limit file sizes. 
  
-<a name="method37"></a>
+<a name="method38"></a>
 <p/><strong>bool LHAup::newEventFile(const char* fileIn) &nbsp;</strong> <br/>
 close current event input file/stream and open a new one, to 
 continue reading events of the same kind as before. 
    
  
-<a name="method38"></a>
+<a name="method39"></a>
 <p/><strong>istream* LHAup::openFile(const char *fn, ifstream &ifs) &nbsp;</strong> <br/>
    
 <strong>void LHAup::closeFile(istream *&is, ifstream &ifs) &nbsp;</strong> <br/>
@@ -927,7 +939,7 @@ open and close a file, also gzip files, where an intermediate
 decompression layer is needed. 
    
  
-<a name="method39"></a>
+<a name="method40"></a>
 <p/><strong>void LHAupLHEF::closeAllFiles() &nbsp;</strong> <br/>
 close main event file (LHEF) and, if present, separate header file. 
    
@@ -980,20 +992,20 @@ as well, however. Specifically, there are four routines in the base class
 that can be called to write a Les Houches Event File. These should be 
 called in sequence in order to build up the proper file structure. 
  
-<a name="method40"></a>
+<a name="method41"></a>
 <p/><strong>bool LHAup::openLHEF(string filename) &nbsp;</strong> <br/>
 Opens a file with the filename indicated, and writes a header plus a brief 
 comment with date and time information. 
    
  
-<a name="method41"></a>
+<a name="method42"></a>
 <p/><strong>bool LHAup::initLHEF() &nbsp;</strong> <br/>
 Writes initialization information to the file above. Such information should 
 already have been set with the methods described in the "Initialization" 
 section above. 
    
  
-<a name="method42"></a>
+<a name="method43"></a>
 <p/><strong>bool LHAup::eventLHEF(bool verbose = true) &nbsp;</strong> <br/>
 Writes event information to the file above. Such information should 
 already have been set with the methods described in the "Event input" 
@@ -1003,7 +1015,7 @@ To save space, the alternative <code>verbose = false</code> only
 leaves a single blank between the information fields. 
    
  
-<a name="method43"></a>
+<a name="method44"></a>
 <p/><strong>bool LHAup::closeLHEF(bool updateInit = false) &nbsp;</strong> <br/>
 Writes the closing tag and closes the file. Optionally, if 
 <code>updateInit = true</code>, this routine will reopen the file from 
@@ -1022,7 +1034,7 @@ lines require exactly as much space as the old ones did. Thus, if you add
 another process in between, the file will be corrupted. 
    
  
-<a name="method44"></a>
+<a name="method45"></a>
 <p/><strong>string LHAup::getFileName() &nbsp;</strong> <br/>
 Return the name of the LHE file above. 
    

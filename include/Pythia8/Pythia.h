@@ -137,7 +137,7 @@ public:
     spacePtr = spacePtrIn; return true;}
 
   // Initialize.
-  bool init(istream* isIn = NULL, istream* isHeadIn = NULL);
+  bool init();
 
   // Generate the next event.
   bool next();
@@ -198,7 +198,7 @@ public:
   Couplings*     couplingsPtr;
 
   // SLHA Interface
-  SLHAinterface slhaInterface;
+  SLHAinterface  slhaInterface;
 
   // The partonic content of each subcollision system (auxiliary to event).
   PartonSystems  partonSystems;
