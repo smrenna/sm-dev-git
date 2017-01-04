@@ -14,6 +14,9 @@
 # VARIABLES: Definition of the relevant variables from the configuration script.
 ################################################################################
 
+# Set the shell.
+SHELL=/usr/bin/env bash
+
 # Include the configuration.
 -include Makefile.inc
 

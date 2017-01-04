@@ -765,7 +765,7 @@ the information stored after reading Les Houches Event files in the
 updated format <ref>But14</ref>. An example main program using LHEF 3.0 
 information is <code>main38.cc</code>. 
  
-</p> 
+<p/> 
 LHEF 3.0 offers new features both in the initialisation and the event sections 
 of the input files. Possible information include extended 
 use of XML tags in the <code>&lt;header&gt;</code> and 

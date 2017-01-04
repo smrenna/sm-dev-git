@@ -1126,12 +1126,12 @@ in the init block is not sensible, as no integration has yet
 taken place. The init block can be updated at the end of 
 the event generation (see below). 
  
-</p> 
+<p/> 
 During event generation, you should use <code>setEvent()</code> to 
 write the event information (as read from <code>info</code> and 
 <code>event</code>) to the output file. 
  
-</p> 
+<p/> 
 Finally, before leaving your main program, it is necessary to 
 close the output file by using the 
 <code>LHAupFromPYTHIA8</code> member function 

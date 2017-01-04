@@ -147,7 +147,7 @@ such as package managers, etc. Also note that if one wishes to utilize
 GZIP support (needed for the <code>LHAupMadgraph</code> plugin) then 
 the option <code>--with-gzip</code> should also be provided. 
  
-</p> 
+<p/> 
 After configuring the Python interface for PYTHIA to be built and 
 running <code>make</code> as usual, the following files should be 
 generated in the directory <code>lib</code>. 
@@ -158,7 +158,7 @@ interface.</li>
 <li><code>libpythia8.[so,dylib]</code>: the standard shared PYTHIA 
 library.</li> 
  
-</p> 
+<p/> 
 To ensure that the <code>pythia8.py</code> module is available to 
 Python, the system variable <code>PYTHONPATH</code> should be set similar to 
 <pre> 
