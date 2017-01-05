@@ -63,13 +63,13 @@ pairs are found:
 <h4>Rapidity based</h4> 
 This corresponds to <code>HadronScatter:mode = 0</code>. 
 <p/> 
-Probe all hadron pairs with an invariant mass <i> m<sub>inv</sub> < 
+Probe all hadron pairs with an invariant mass <i> m<sub>inv</sub> &lt; 
 (m<sup>2</sup><sub>1</sub>+p<sup>2</sup><sub>Max</sub>)<sup>1/2</sup> + 
 (m<sup>2</sup><sub>2</sub>+p<sup>2</sup><sub>Max</sub>)<sup>1/2</sup></i> 
 with the parameter <i>p<sub>Max</sub></i> 
 <br/><br/><table><tr><td><strong>HadronScatter:pMax </td><td></td><td> <input type="text" name="2" value="0.5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.5</strong></code>; <code>minimum = 0.1</code>; <code>maximum = 1000000.0</code>)</td></tr></table>
    
-</br> 
+<br/> 
 If a hadron pair passes this cut, the scattering probability for hadrons of 
 different strings is <i>P<sub>DS</sub>(&#x394y) = 
 P<sup>max</sup><sub>DS</sub>(1 - &#x394y/&#x394y<sup>max</sup>)</i> 
@@ -77,11 +77,11 @@ with rapidity difference <i>&#x394y</i> of the hadron pair and the
 parameters <i>&#x394y<sup>max</sup></i> 
 <br/><br/><table><tr><td><strong>HadronScatter:yDiffMax </td><td></td><td> <input type="text" name="3" value="1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.0</strong></code>; <code>minimum = 0.1</code>; <code>maximum = 10.0</code>)</td></tr></table>
    
-</br> 
+<br/> 
 and <i>P<sup>max</sup><sub>DS</sub></i>, see 
 <a href="#HadScatNewCom">below</a>. If the hadrons are produced 
 within the same string the probability is <i>P<sub>DS</sub>(&#x394y) 
-P<sup>max</sup><sub>SS</i> if the hadrons are further apart from each 
+P<sup>max</sup><sub>SS</sub></i> if the hadrons are further apart from each 
 other as <code>HadronScatter:neighbourFar</code>, <i>0</i> if they are 
 closer together as <code>HadronScatter:neighbourNear</code>, and linear 
 between the maximum <code>HadronScatter:maxProbSS</code> and minimum 
@@ -100,7 +100,7 @@ with rapidity difference <i>&#x394y</i> and difference in azimuth
 parameters <i>R<sup>max</sup></i> 
 <br/><br/><table><tr><td><strong>HadronScatter:Rmax </td><td></td><td> <input type="text" name="4" value="1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.0</strong></code>; <code>minimum = 0.1</code>; <code>maximum = 10.0</code>)</td></tr></table>
    
-</br> 
+<br/> 
 and <i>P<sup>max</sup><sub>DS</sub></i>, see 
 <a href="#HadScatNewCom">below</a>. 
 The probability for hadron pairs from the same string is similar 
@@ -148,16 +148,16 @@ The following paramters are used for both the above cases:
    
  
 <br/><br/><table><tr><td><strong>HadronScatter:minProbSS </td><td></td><td> <input type="text" name="8" value="0.5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.5</strong></code>; <code>minimum = 0.0</code>; <code>maximum = 1.0</code>)</td></tr></table>
-  The minimum probability <i>P<sup>min</sup><sub>SS</i> for the scattering 
-  of two hadrons within the same string. (Relative to that for different 
-  strings, i.e. for the total probability the baseline 
+  The minimum probability <i>P<sup>min</sup><sub>SS</sub></i> for the 
+  scattering of two hadrons within the same string. (Relative to that for 
+  different strings, i.e. for the total probability the baseline 
   <code>maxProbDS</code> factor also enters.) 
    
  
 <br/><br/><table><tr><td><strong>HadronScatter:maxProbSS </td><td></td><td> <input type="text" name="9" value="1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.0</strong></code>; <code>minimum = 0.0</code>; <code>maximum = 1.0</code>)</td></tr></table>
-  The maximum probability <i>P<sup>max</sup><sub>SS</i> for the scattering 
-  of two hadrons within the same string. (Relative to that for different 
-  strings, i.e. for the total probability the baseline 
+  The maximum probability <i>P<sup>max</sup><sub>SS</sub></i> for the 
+  scattering of two hadrons within the same string. (Relative to that for 
+  different strings, i.e. for the total probability the baseline 
   <code>maxProbDS</code> factor also enters.) 
    
  

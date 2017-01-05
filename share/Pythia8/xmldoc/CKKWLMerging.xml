@@ -189,7 +189,7 @@ jet measures. A specific form can be chosen by setting the switch
 <modepick name="Merging:ktType" default="1" min="1" max="3"> 
 Precise functional definition of longitudinally 
 invariant <ei>kT</ei>. For e+e- collisions, <ei>Durham kT</ei> is 
-always defined by the square root of <ei>min{ 2*min[ </sub> 
+always defined by the square root of <ei>min{ 2*min[ 
 E<sub>i</sub><sup>2</sup>, E<sub>j</sub><sup>2</sup>] * [ 1 - 
 cos&theta;<sub>ij</sub>] }</ei>, so that this switch will have no effect. 
 <option value="1"> Longitudinally invariant <ei>kT</ei> is defined by 

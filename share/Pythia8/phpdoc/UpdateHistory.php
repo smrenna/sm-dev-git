@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.223: 4 January 2017 
+<li>8.223: 5 January 2017 
 <ul> 
  
 <li>Nadine Fischer and Leif L&ouml;nnblad join as co-authors, 
@@ -160,7 +160,7 @@ Thanks to Roberto Franceschini.</li>
 <li>Corrected behaviour for <i>R</i>-hadrons produced in sequential 
 resonance decays (for example a squark decaying to a gluino with the 
 latter forming an <i>R</i>-hadron). Thanks to Jinmian Li for 
-alerting us. 
+alerting us.</li> 
  
 <li>Minor updates so that <code>main91</code> and <code>main92</code> 
 examples work also with ROOT 6, in addition to the existing ROOT 5 
@@ -203,13 +203,15 @@ enhance the rate of some shower branchings.</li>
 <li>A minor fix for <code>BeamParticle::popBack()</code> method to reset 
 companion choice also if <code>iComp = 0</code>.</li> 
  
+<li>Cleanup of unmatched xml tags and other xml inconsistencies.</li> 
+ 
 <li>Two minor particle data fixes.</li> 
  
 <li>Small fix in the parsing code of <code>LHEF3.h</code>.</li> 
  
 <li>Year updated to 2017.</li> 
  
-<li>Small clarifications in the documentation, and fixes of xml tags.</li> 
+<li>Small clarifications in the documentation.</li> 
  
 </ul> 
 </li> 
@@ -1365,7 +1367,7 @@ angle <i>phi</i> as described in <?php $filepath = $_GET["filepath"];
 echo "<a href='HiggsProcesses.php?filepath=".$filepath."' target='page'>";?>Higgs 
 Processes</a>. The choice of the Higgs CP-mixing parametrization 
 now also affects the distributions of the <i>tau</i> decay products 
-from the processes <i>H^0 &rarr; tau^+ tau^-</i>. 
+from the processes <i>H^0 &rarr; tau^+ tau^-</i>.</li> 
  
 <li>Bug fix in <i>H^0 &rarr; W^+ W^- &rarr; 4 f</i> matrix element 
 for mixed CP-state case.</li> 

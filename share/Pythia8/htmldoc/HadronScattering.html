@@ -53,14 +53,14 @@ pairs are found:
 <h4>Rapidity based</h4> 
 This corresponds to <code>HadronScatter:mode = 0</code>. 
 <p/> 
-Probe all hadron pairs with an invariant mass <i> m<sub>inv</sub> < 
+Probe all hadron pairs with an invariant mass <i> m<sub>inv</sub> &lt; 
 (m<sup>2</sup><sub>1</sub>+p<sup>2</sup><sub>Max</sub>)<sup>1/2</sup> + 
 (m<sup>2</sup><sub>2</sub>+p<sup>2</sup><sub>Max</sub>)<sup>1/2</sup></i> 
 with the parameter <i>p<sub>Max</sub></i> 
 <p/><code>parm&nbsp; </code><strong> HadronScatter:pMax &nbsp;</strong> 
  (<code>default = <strong>0.5</strong></code>; <code>minimum = 0.1</code>; <code>maximum = 1000000.0</code>)<br/>
    
-</br> 
+<br/> 
 If a hadron pair passes this cut, the scattering probability for hadrons of 
 different strings is <i>P<sub>DS</sub>(&#x394y) = 
 P<sup>max</sup><sub>DS</sub>(1 - &#x394y/&#x394y<sup>max</sup>)</i> 
@@ -69,11 +69,11 @@ parameters <i>&#x394y<sup>max</sup></i>
 <p/><code>parm&nbsp; </code><strong> HadronScatter:yDiffMax &nbsp;</strong> 
  (<code>default = <strong>1.0</strong></code>; <code>minimum = 0.1</code>; <code>maximum = 10.0</code>)<br/>
    
-</br> 
+<br/> 
 and <i>P<sup>max</sup><sub>DS</sub></i>, see 
 <a href="#HadScatNewCom">below</a>. If the hadrons are produced 
 within the same string the probability is <i>P<sub>DS</sub>(&#x394y) 
-P<sup>max</sup><sub>SS</i> if the hadrons are further apart from each 
+P<sup>max</sup><sub>SS</sub></i> if the hadrons are further apart from each 
 other as <code>HadronScatter:neighbourFar</code>, <i>0</i> if they are 
 closer together as <code>HadronScatter:neighbourNear</code>, and linear 
 between the maximum <code>HadronScatter:maxProbSS</code> and minimum 
@@ -93,7 +93,7 @@ parameters <i>R<sup>max</sup></i>
 <p/><code>parm&nbsp; </code><strong> HadronScatter:Rmax &nbsp;</strong> 
  (<code>default = <strong>1.0</strong></code>; <code>minimum = 0.1</code>; <code>maximum = 10.0</code>)<br/>
    
-</br> 
+<br/> 
 and <i>P<sup>max</sup><sub>DS</sub></i>, see 
 <a href="#HadScatNewCom">below</a>. 
 The probability for hadron pairs from the same string is similar 
@@ -141,17 +141,17 @@ The following paramters are used for both the above cases:
  
 <p/><code>parm&nbsp; </code><strong> HadronScatter:minProbSS &nbsp;</strong> 
  (<code>default = <strong>0.5</strong></code>; <code>minimum = 0.0</code>; <code>maximum = 1.0</code>)<br/>
-  The minimum probability <i>P<sup>min</sup><sub>SS</i> for the scattering 
-  of two hadrons within the same string. (Relative to that for different 
-  strings, i.e. for the total probability the baseline 
+  The minimum probability <i>P<sup>min</sup><sub>SS</sub></i> for the 
+  scattering of two hadrons within the same string. (Relative to that for 
+  different strings, i.e. for the total probability the baseline 
   <code>maxProbDS</code> factor also enters.) 
    
  
 <p/><code>parm&nbsp; </code><strong> HadronScatter:maxProbSS &nbsp;</strong> 
  (<code>default = <strong>1.0</strong></code>; <code>minimum = 0.0</code>; <code>maximum = 1.0</code>)<br/>
-  The maximum probability <i>P<sup>max</sup><sub>SS</i> for the scattering 
-  of two hadrons within the same string. (Relative to that for different 
-  strings, i.e. for the total probability the baseline 
+  The maximum probability <i>P<sup>max</sup><sub>SS</sub></i> for the 
+  scattering of two hadrons within the same string. (Relative to that for 
+  different strings, i.e. for the total probability the baseline 
   <code>maxProbDS</code> factor also enters.) 
    
  

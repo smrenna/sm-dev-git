@@ -248,7 +248,7 @@ int acol, Vec4 p, double m = 0., double scale = 0., double pol = 9.)">
 appends a particle to the bottom of the event record and 
 returns the index of this position, as above but with vanishing 
 (i.e. zero) mother and daughter indices. 
-</method> 
+</methodmore> 
  
 <method name="int Event::setEvtPtr(int iSet = -1)"> 
 send in the <code>this</code> pointer of the current <code>Event</code> 

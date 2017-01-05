@@ -516,7 +516,7 @@ fraction of HV-mesons that are assigned spin 1 (vector), with the
 remainder spin 0 (pseudoscalar). Assuming the <ei>qv</ei> have 
 spin <ei>1/2</ei> and the mass splitting is small, spin counting 
 predicts that <ei>3/4</ei> of the mesons should have spin 1. 
-</modeopen> 
+</parm> 
  
 <parm name="HiddenValley:aLund" default="0.3" min="0.0" max="2.0"> 
 The <ei>a</ei> parameter of the Lund symmetric fragmentation function. 

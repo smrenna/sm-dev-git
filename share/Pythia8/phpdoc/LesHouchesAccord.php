@@ -279,11 +279,9 @@ for the number of subprocesses.
 <strong>double LHAup::xMax(i) &nbsp;</strong> <br/>
 for process <code>i</code> in the range <code>0 &lt;= i &lt; 
 sizeProc()</code>. 
- 
    
 <a name="method16"></a>
 <p/><strong>double LHAup::xSecSum() &nbsp;</strong> <br/>
-   
 <strong>double LHAup::xErrSum() &nbsp;</strong> <br/>
 the sum of the cross sections and errors (the latter added quadratically). 
 Note that cross section errors are only meaningful for strategies +-3. 
@@ -333,6 +331,7 @@ events in a file is exhausted. If so, no event is generated, and
 echo "<a href='EventInformation.php?filepath=".$filepath."' target='page'>";?>Info::atEndOfFile()</a></code> 
 to confirm that indeed the failure is caused in this method, and decide 
 to break out of the event generation loop. 
+   
  
 <p/> 
 Inside a normal <code>setEvent(...)</code> call, information can be set 
@@ -436,6 +435,7 @@ This information is returned by the methods
 <strong>double LHAup::x1() &nbsp;</strong> <br/>
    
 <strong>double LHAup::x2() &nbsp;</strong> <br/>
+the flavour and <i>x</i> values of the two initiators. 
    
  
 <p/> 
@@ -444,7 +444,7 @@ include information on the parton densities of the colliding partons
 is suggested. This optional further information can be set by 
 <a name="method28"></a>
 <p/><strong>void LHAup::setPdf( int id1pdf, int id2pdf, double x1pdf, double x2pdf, double scalePDF, double pdf1, double pdf2, bool pdfIsSet) &nbsp;</strong> <br/>
-which gives the flavours , the <i>x</i> and the <ie>Q</i> scale 
+which gives the flavours , the <i>x</i> and the <i>Q</i> scale 
 (in GeV) at which the parton densities <i>x*f_i(x, Q)</i> have been 
 evaluated. The last argument is normally <code>true</code>. 
    
@@ -1114,7 +1114,7 @@ a constructor call
 As a next step, you should open the output file by using the 
 <code>LHAupFromPYTHIA8</code> member function 
 <br/><code>openLHEF(string name)</code> 
-</br> 
+<br/> 
 where <code>name</code> is the output file name. 
  
 <p/> 
@@ -1136,7 +1136,7 @@ Finally, before leaving your main program, it is necessary to
 close the output file by using the 
 <code>LHAupFromPYTHIA8</code> member function 
 <br/><code>closeLHEF( bool doUpdate = false)</code> 
-</br> 
+<br/> 
 The boolean variable <code>doUpdate</code> is optional. 
 If <code>doUpdate</code> is used, and if 
 <code>doUpdate = true</code>, then the init block of the output 

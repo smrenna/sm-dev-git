@@ -27,7 +27,7 @@ echo "<font color='red'>NO FILE SELECTED YET.. PLEASE DO SO </font><a href='Save
 
 <form method='post' action='Index.php'>
  
-<img src='pythia99.gif' alt='Pythia logo' hspace=10/> 
+<img src="pythia99.gif" alt="Pythia logo" hspace="10"/> 
  
 <h2>PYTHIA 8 Index</h2> 
  

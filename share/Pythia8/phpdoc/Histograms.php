@@ -181,20 +181,20 @@ is the upper edge of the histogram.
    
  
 <a name="method3"></a>
-<p/><strong>Hist::Hist(const Hist& h) &nbsp;</strong> <br/>
+<p/><strong>Hist::Hist(const Hist&amp; h) &nbsp;</strong> <br/>
 creates an identical copy of the histogram in the argument, 
 including bin contents. 
    
  
 <a name="method4"></a>
-<p/><strong>Hist::Hist(string title, const Hist& h) &nbsp;</strong> <br/>
+<p/><strong>Hist::Hist(string title, const Hist&amp; h) &nbsp;</strong> <br/>
 creates an identical copy of the histogram in the argument, 
 including bin contents, except that a new title is provided 
 as first argument. 
    
  
 <a name="method5"></a>
-<p/><strong>Hist& Hist::operator=(const Hist& h) &nbsp;</strong> <br/>
+<p/><strong>Hist&amp; Hist::operator=(const Hist&amp; h) &nbsp;</strong> <br/>
 copies all properties of the histogram in the argument, 
 except that the original histogram title is retained. 
    
@@ -227,7 +227,7 @@ is the amount of weight to be added at this <i>x</i> value.
    
  
 <a name="method10"></a>
-<p/><strong>friend ostream& operator<<(ostream& os, const Hist& h) &nbsp;</strong> <br/>
+<p/><strong>friend ostream& operator&lt;&lt;(ostream&amp; os, const Hist&amp; h) &nbsp;</strong> <br/>
 appends a simple histogram printout (see above for format) to the 
 <code>ostream</code>, while leaving the histogram object itself 
 unchanged. At most 100 columns are allowed to be displayed. 
@@ -238,7 +238,7 @@ last column possibly summing fewer rows than the others.)
    
  
 <a name="method11"></a>
-<p/><strong>void Hist::table(ostream& os = cout, bool printOverUnder = false, bool xMidBin = true) &nbsp;</strong> <br/>
+<p/><strong>void Hist::table(ostream&amp; os = cout, bool printOverUnder = false, bool xMidBin = true) &nbsp;</strong> <br/>
    
 <strong>void Hist::table(string fileName, bool printOverUnder = false, bool xMidBin = true) &nbsp;</strong> <br/>
 print a two-column table, where the first column gives the center of 
@@ -258,7 +258,7 @@ default midpoint value.
    
  
 <a name="method12"></a>
-<p/><strong>void Hist::rivetTable(ostream& os = cout, bool printError = false) &nbsp;</strong> <br/>
+<p/><strong>void Hist::rivetTable(ostream&amp; os = cout, bool printError = false) &nbsp;</strong> <br/>
    
 <strong>void Hist::rivetTable(string fileName, bool printError = false) &nbsp;</strong> <br/>
 print a five-column table, where the first two columns give the lower 
@@ -276,9 +276,9 @@ the same unit weight for each entry to it.
    
  
 <a name="method13"></a>
-<p/><strong>friend void table(const Hist& h1, const Hist& h2, ostream& os = cout, bool printOverUnder = false, bool xMidBin = true) &nbsp;</strong> <br/>
+<p/><strong>friend void table(const Hist&amp; h1, const Hist&amp; h2, ostream& os = cout, bool printOverUnder = false, bool xMidBin = true) &nbsp;</strong> <br/>
    
-<strong>friend void table(const Hist& h1, const Hist& h2, string fileName, bool printOverUnder = false, bool xMidBin = true) &nbsp;</strong> <br/>
+<strong>friend void table(const Hist&amp; h1, const Hist&amp; h2, string fileName, bool printOverUnder = false, bool xMidBin = true) &nbsp;</strong> <br/>
 print a three-column table, where the first column gives the center of 
 each bin and the second and third ones the corresponding bin contents 
 of the two histograms. Only works if the two histograms have the same 
@@ -307,7 +307,7 @@ return the number of entries, i.e. the number of time that
    
  
 <a name="method17"></a>
-<p/><strong>bool Hist::sameSize(const Hist& h) &nbsp;</strong> <br/>
+<p/><strong>bool Hist::sameSize(const Hist&amp; h) &nbsp;</strong> <br/>
 checks that the number of bins and upper and lower limits are the 
 same as in the histogram in the argument. 
    
@@ -327,72 +327,72 @@ set to zero.
    
  
 <a name="method20"></a>
-<p/><strong>Hist& Hist::operator+=(const Hist& h) &nbsp;</strong> <br/>
+<p/><strong>Hist&amp; Hist::operator+=(const Hist&amp; h) &nbsp;</strong> <br/>
    
-<strong>Hist& Hist::operator-=(const Hist& h) &nbsp;</strong> <br/>
+<strong>Hist&amp; Hist::operator-=(const Hist&amp; h) &nbsp;</strong> <br/>
 adds or subtracts the current histogram by the contents of the 
 histogram in the argument if <code>sameSize(...)</code> is true, 
 else does nothing. 
    
  
 <a name="method21"></a>
-<p/><strong>Hist& Hist::operator*=(const Hist& h) &nbsp;</strong> <br/>
+<p/><strong>Hist&amp; Hist::operator*=(const Hist&amp; h) &nbsp;</strong> <br/>
    
-<strong>Hist& Hist::operator/=(const Hist& h) &nbsp;</strong> <br/>
+<strong>Hist&amp; Hist::operator/=(const Hist&amp; h) &nbsp;</strong> <br/>
 multiplies or divides the current histogram by the contents of the 
 histogram in the argument if <code>sameSize(...)</code> is true, 
 else does nothing. 
    
  
 <a name="method22"></a>
-<p/><strong>Hist& Hist::operator+=(double f) &nbsp;</strong> <br/>
+<p/><strong>Hist&amp; Hist::operator+=(double f) &nbsp;</strong> <br/>
    
-<strong>Hist& Hist::operator-=(double f) &nbsp;</strong> <br/>
+<strong>Hist&amp; Hist::operator-=(double f) &nbsp;</strong> <br/>
 adds or subtracts each bin content by the common offset <i>f</i>. 
    
  
 <a name="method23"></a>
-<p/><strong>Hist& Hist::operator*=(double f) &nbsp;</strong> <br/>
+<p/><strong>Hist&amp; Hist::operator*=(double f) &nbsp;</strong> <br/>
    
-<strong>Hist& Hist::operator*=(double f) &nbsp;</strong> <br/>
+<strong>Hist&amp; Hist::operator*=(double f) &nbsp;</strong> <br/>
 multiplies or divides each bin content by the common factor <i>f</i>. 
    
  
 <a name="method24"></a>
-<p/><strong>friend Hist operator+(double f, const Hist& h1) &nbsp;</strong> <br/>
+<p/><strong>friend Hist operator+(double f, const Hist&amp; h1) &nbsp;</strong> <br/>
    
-<strong>friend Hist operator+(const Hist& h1, double f) &nbsp;</strong> <br/>
+<strong>friend Hist operator+(const Hist&amp; h1, double f) &nbsp;</strong> <br/>
    
-<strong>friend Hist operator+(const Hist& h1, const Hist h2) &nbsp;</strong> <br/>
+<strong>friend Hist operator+(const Hist&amp; h1, const Hist h2) &nbsp;</strong> <br/>
 add a constant to a histogram or two histograms to each other, bin by bin. 
    
  
 <a name="method25"></a>
-<p/><strong>friend Hist operator-(double f, const Hist& h1) &nbsp;</strong> <br/>
+<p/><strong>friend Hist operator-(double f, const Hist&amp; h1) &nbsp;</strong> <br/>
    
-<strong>friend Hist operator-(const Hist& h1, double f) &nbsp;</strong> <br/>
+<strong>friend Hist operator-(const Hist&amp; h1, double f) &nbsp;</strong> <br/>
    
-<strong>friend Hist operator-(const Hist& h1, const Hist h2) &nbsp;</strong> <br/>
+<strong>friend Hist operator-(const Hist&amp; h1, const Hist h2) &nbsp;</strong> <br/>
 subtract a histogram from a constant, a constant from a histogram, 
 or two histograms from each other, bin by bin. 
    
  
 <a name="method26"></a>
-<p/><strong>friend Hist operator*(double f, const Hist& h1) &nbsp;</strong> <br/>
+<p/><strong>friend Hist operator*(double f, const Hist&amp; h1) &nbsp;</strong> <br/>
    
-<strong>friend Hist operator*(const Hist& h1, double f) &nbsp;</strong> <br/>
+<strong>friend Hist operator*(const Hist&amp; h1, double f) &nbsp;</strong> <br/>
    
-<strong>friend Hist operator*(const Hist& h1, const Hist h2) &nbsp;</strong> <br/>
+<strong>friend Hist operator*(const Hist&amp; h1, const Hist h2) &nbsp;</strong> <br/>
 multiply a constant by a histogram or two histograms by each other, 
 bin by bin. 
    
  
 <a name="method27"></a>
-<p/><strong>friend Hist operator/(double f, const Hist& h1) &nbsp;</strong> <br/>
+<p/><strong>friend Hist operator/(double f, const Hist&amp; h1) &nbsp;</strong> <br/>
    
-<strong>friend Hist operator/(const Hist& h1, double f) &nbsp;</strong> <br/>
+<strong>friend Hist operator/(const Hist&amp; h1, double f) &nbsp;</strong> <br/>
    
-<strong>friend Hist operator/(const Hist& h1, const Hist h2) &nbsp;</strong> <br/>
+<strong>friend Hist operator/(const Hist&amp; h1, const Hist h2) &nbsp;</strong> <br/>
 divide a constant by a histogram, a histogram by a constant, 
 or two histograms by each other, bin by bin. 
    

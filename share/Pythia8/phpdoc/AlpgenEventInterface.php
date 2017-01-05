@@ -166,7 +166,7 @@ the ALPGEN hard process cuts:
 <ul> 
 <li> <code>JetMatching:eTjetMin = min(ptjmin + 5., 1.2 * ptjmin)</code>, </li> 
 <li> <code>JetMatching:coneRadius = drjmin</code>, </li> 
-<li> <code>JetMatching:etaJetMax = etajmax</code>. </li> 
+<li> <code>JetMatching:etaJetMax = etajmax</code>.</li> 
 </ul> 
 where the <code>ptjmin</code>, <code>drjmin</code> and 
 <code>etajmax</code> are the incoming ALPGEN parameters. Note that any 

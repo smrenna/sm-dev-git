@@ -141,6 +141,12 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
+<td>friend ostream&</td>
+<td><a href="Histograms.php#method10" target="page">operator&lt;&lt;(...)</a></td>
+<td>Histograms</td>
+</tr>
+
+<tr>
 <td>friend Vec4</td>
 <td><a href="FourVectors.php#method36" target="page">operator*(...)</a></td>
 <td>Four-Vectors</td>
@@ -245,12 +251,6 @@ Many of them are only intended for experts, while undocumented ones are only for
 <tr>
 <td>friend Hist</td>
 <td><a href="Histograms.php#method27" target="page">operator/(...)</a></td>
-<td>Histograms</td>
-</tr>
-
-<tr>
-<td>friend ostream&</td>
-<td><a href="Histograms.php#method10" target="page">operator<<(...)</a></td>
 <td>Histograms</td>
 </tr>
 
@@ -1167,55 +1167,55 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
-<td>Hist&</td>
+<td>Hist&amp;</td>
 <td><a href="Histograms.php#method21" target="page">Hist::operator*=(...)</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
-<td>Hist&</td>
+<td>Hist&amp;</td>
 <td><a href="Histograms.php#method23" target="page">Hist::operator*=(...)</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
-<td>Hist&</td>
+<td>Hist&amp;</td>
 <td><a href="Histograms.php#method23" target="page">Hist::operator*=(...)</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
-<td>Hist&</td>
+<td>Hist&amp;</td>
 <td><a href="Histograms.php#method20" target="page">Hist::operator+=(...)</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
-<td>Hist&</td>
+<td>Hist&amp;</td>
 <td><a href="Histograms.php#method22" target="page">Hist::operator+=(...)</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
-<td>Hist&</td>
+<td>Hist&amp;</td>
 <td><a href="Histograms.php#method20" target="page">Hist::operator-=(...)</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
-<td>Hist&</td>
+<td>Hist&amp;</td>
 <td><a href="Histograms.php#method22" target="page">Hist::operator-=(...)</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
-<td>Hist&</td>
+<td>Hist&amp;</td>
 <td><a href="Histograms.php#method21" target="page">Hist::operator/=(...)</a></td>
 <td>Histograms</td>
 </tr>
 
 <tr>
-<td>Hist&</td>
+<td>Hist&amp;</td>
 <td><a href="Histograms.php#method5" target="page">Hist::operator=(...)</a></td>
 <td>Histograms</td>
 </tr>

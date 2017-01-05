@@ -369,7 +369,7 @@ to the string region under consideration. (Note that, for technical
 reasons, the 0.2 GeV lower limit is de facto hardcoded.) 
 </parm> 
  
-<parm name="FragmentationSystems:mJoinJunction" default="1.0"min="0.5" 
+<parm name="FragmentationSystems:mJoinJunction" default="1.0" min="0.5" 
 max="2."> 
 When the invariant mass of two of the quarks in a three-quark junction 
 string system becomes too small, the system is simplified to a 

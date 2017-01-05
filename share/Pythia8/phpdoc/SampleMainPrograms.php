@@ -39,7 +39,7 @@ along with instructions how they should be run:
  
 <li><code>main00.cc</code> : does not exist, but it has been defined 
 in the <code>Makefile</code>, so this name could be used for a simple 
-first test run. 
+first test run. </li> 
  
 <li><code>main01.cc</code> : a simple study of the charged multiplicity 
 for jet events at the LHC. (Brief example fitting on one slide.)</li> 
@@ -424,6 +424,8 @@ in a program that for the rest is structured like a normal PYTHIA run.
  
 <li><code>main92.cc</code> : shows how PYTHIA events can be stored as 
 ROOT trees.</li> 
+ 
+</ul> 
  
 </body>
 </html>

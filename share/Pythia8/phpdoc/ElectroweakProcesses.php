@@ -142,7 +142,7 @@ or <i>W^+-</i> exchange between two fermions.
 <br/><br/><strong>WeakBosonExchange:ff2ff(t:gmZ)</strong>  <input type="radio" name="10" value="on"><strong>On</strong>
 <input type="radio" name="10" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
-Scattering <i>f f' &rarr; f f'</i> via </i>gamma^*/Z^0</i> 
+Scattering <i>f f' &rarr; f f'</i> via <i>gamma^*/Z^0</i> 
 <i>t</i>-channel exchange, with full interference 
 between the <i>gamma^*</i> and <i>Z^0</i>. 
 Code 211. 
@@ -151,7 +151,7 @@ Code 211.
 <br/><br/><strong>WeakBosonExchange:ff2ff(t:W)</strong>  <input type="radio" name="11" value="on"><strong>On</strong>
 <input type="radio" name="11" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
-Scattering <i>f_1 f_2 &rarr; f_3 f_4</i> via </i>W^+-</i> 
+Scattering <i>f_1 f_2 &rarr; f_3 f_4</i> via <i>W^+-</i> 
 <i>t</i>-channel exchange. 
 Code 212. 
    

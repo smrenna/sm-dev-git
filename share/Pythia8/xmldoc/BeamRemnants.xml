@@ -206,7 +206,7 @@ Switch to choose between the two different colour models for the beam remnant.
 <option value="1"> The new beam remnant model. </option> 
 </modepick> 
  
-<parm = name="BeamRemnants:saturation" default="5" min="0.1" max="100000"> 
+<parm name="BeamRemnants:saturation" default="5" min="0.1" max="100000"> 
 Controls the suppresion due to saturation in the new model. The exact formula 
 used is <ei>exp(-M / k)</ei>, where M is the multiplet size and k is this 
 parameter. Thus a small number will result in a large saturation. 

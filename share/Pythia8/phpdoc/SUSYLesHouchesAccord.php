@@ -292,7 +292,7 @@ Corresponds to SLHA block MODSEL entry 3.
 <a name="generic"></a> 
 <h2>Using SLHA for generic BSM Models</h2> 
  
-<p/> 
+<p> 
 Using the <code>QNUMBERS</code> extension [<a href="Bibliography.php" target="page">Alw07</a>], the SLHA 
 can also be used to define new particles, with arbitrary quantum 
 numbers. This already serves as a useful way to introduce new 
@@ -301,8 +301,9 @@ particles and can be combined with <code>MASS</code> and
 way, to generate isotropically distributed decays or even chains of 
 such decays. (If you want something better than isotropic, sorry, you'll 
 have to do some actual work ...) 
+</p> 
  
-<p/> 
+<p> 
 A more advanced further option is to make use of the possibility 
 in the SLHA to include user-defined blocks with arbitrary 
 names and contents. Obviously, standalone 
@@ -310,8 +311,9 @@ PYTHIA 8 does not know what to do with such information. However, it
 does not throw it away either, but instead stores the contents of user 
 blocks as strings, which can be read back later, with the user 
 having full control over the format used to read the individual entries. 
+</p> 
  
-<p/> 
+<p> 
 The contents of both standard and user-defined SLHA blocks can be accessed 
 in any class inheriting from PYTHIA 8's <code>SigmaProcess</code> 
 class (i.e., in particular, from any semi-internal process written by 
@@ -323,8 +325,9 @@ bool slhaPtr->getEntry(string blockName, int indx, double& val);
 bool slhaPtr->getEntry(string blockName, int indx, int jndx, double& val); 
 bool slhaPtr->getEntry(string blockName, int indx, int jndx, int kndx, double& val); 
 </pre> 
+</p> 
  
-<p/> 
+<p> 
 This particular example assumes that the user wants to read the 
 entries (without index, indexed, matrix-indexed, or 3-tensor-indexed, 
 respectively) in the user-defined block <code>blockName</code>, 
@@ -341,8 +344,9 @@ over names and conventions. Of course, it is then the user's
 responsibility to ensure complete consistency between the names and 
 conventions used in the SLHA input, and those assumed in any 
 user-written semi-internal process code. 
+</p> 
  
-<p/> 
+<p> 
 Note that PYTHIA 8 always initializes at least 
 the SLHA blocks MASS and SMINPUTS, starting from its internal 
 SM parameters and particle data table values (updated to take into 
@@ -356,6 +360,7 @@ the W mass, at one loop from these quantities, a value of 79 GeV results,
 with a corresponding value for the weak mixing angle. We advise to 
 instead take the physically measured W mass from block MASS, and 
 recompute the EW parameters as best suited for the application at hand. 
+</p> 
  
 <input type="hidden" name="saved" value="1"/>
 
