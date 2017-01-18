@@ -253,7 +253,8 @@ public:
   // Function to calculate the hard process matrix element.
   virtual double hardProcessME( const Event& inEvent ) {
     // Dummy statement to avoid compiler warnings.
-    if ( false ) cout << inEvent[0].e(); return 1.; }
+    if ( false ) cout << inEvent[0].e();
+    return 1.; }
 
   //----------------------------------------------------------------------//
   // Simple output functions

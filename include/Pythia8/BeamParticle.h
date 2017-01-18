@@ -242,7 +242,8 @@ public:
   // How many different flavours, and how many quarks of given flavour.
   int nValenceKinds() const {return nValKinds;}
   int nValence(int idIn) const {for (int i = 0; i < nValKinds; ++i)
-    if (idIn == idVal[i]) return nVal[i]; return 0;}
+      if (idIn == idVal[i]) return nVal[i];
+    return 0;}
 
   // Test whether a lepton is to be considered as unresolved.
   bool isUnresolvedLepton();

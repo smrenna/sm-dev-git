@@ -34,7 +34,8 @@ public:
     weights_detailed(NULL), weights_compressed(NULL), scales(NULL),
     weights(NULL), rwgt(NULL), eCMSave(0.), lowPTmin(false), a0MPISave(0.),
     abortPartonLevel(false), weightCKKWLSave(1.), weightFIRSTSave(0.) {
-    for (int i = 0; i < 40; ++i) counters[i] = 0; setNWeights(1);}
+    for (int i = 0; i < 40; ++i) counters[i] = 0;
+    setNWeights(1);}
 
   // Listing of most available information on current event.
   void   list() const;

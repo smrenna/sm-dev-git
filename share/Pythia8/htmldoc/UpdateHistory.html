@@ -18,6 +18,35 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
+<li>8.224: 18 January 2017 
+<ul> 
+ 
+<li>Construct <i>pi^+-</i> PDFs so that <i>dbar = u</i> 
+and <i>d = ubar</i>, shortcutting the returned <i>d, dbar</i> 
+values since these are not always constructed correctly in LHAPDF. 
+Thanks to Vincent Andrieux.</li> 
+ 
+<li>Upgrade from fjcore version 3.0.5 to 3.2.1. This removes the 
+usage of the deprecated <code>std::auto_ptr</code> C++ feature. 
+Thanks to Ivan Razumov.</li> 
+ 
+<li>Fix a number of harmless but annoying warnings issued in some 
+versions of GCC 6.x, where the <code>-Wmisleading-indentation</code> 
+flag appears to be on by default. Thanks to Ivan Razumov.</li> 
+ 
+<li>Introduce possibility to make phase space cuts on the DIS 
+<i>Q^2</i> variable.</li> 
+ 
+<li>Bug fix in the <code>TimeShower::findMEtype(...)</code> for a 
+few rare cases.</li> 
+ 
+<li></li> 
+ 
+<li></li> 
+ 
+</ul> 
+</li> 
+ 
 <li>8.223: 5 January 2017 
 <ul> 
  

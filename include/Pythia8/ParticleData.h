@@ -247,7 +247,8 @@ public:
   bool   doForceWidth()           const { return doForceWidthSave; }
   bool   hasChanged()     const { if (hasChangedSave) return true;
          for (int i = 0; i < int(channels.size()); ++i)
-         if (channels[i].hasChanged()) return true; return false;}
+           if (channels[i].hasChanged()) return true;
+         return false;}
 
   // Set and give back several mass-related quantities.
   void   initBWmass();

@@ -4449,12 +4449,12 @@ void TimeShower::findMEtype( Event& event, TimeDipoleEnd& dip) {
       MEkind = 2;
 
     // q -> q + V.
-    else if (minDauType == 1 && maxDauType == 7 && motherType == 1)
+    else if (minDauType == 1 && maxDauType == 7 && motherType == 1) {
       MEkind = 3;
       if (idDau1 == 22 || idDau2 == 22) MEcombi = 1;
 
     // Scalar/pseudoscalar -> q + qbar; q -> q + S.
-    else if (minDauType == 1 && maxDauType == 1 && motherType == 8) {
+    } else if (minDauType == 1 && maxDauType == 1 && motherType == 8) {
       MEkind = 4;
       if (idMother == 25 || idMother == 35 || idMother == 37) MEcombi = 1;
       else if (idMother == 36) MEcombi = 2;

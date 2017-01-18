@@ -505,7 +505,8 @@ public:
   virtual double sigmaHatWrap(int id1in = 0, int id2in = 0) {
     id1 = id1in; id2 = id2in; double sigmaTmp = sigmaHat();
     if (convertM2())  sigmaTmp /= 16. * M_PI * sH2;
-    if (convert2mb()) sigmaTmp *= CONVERT2MB; return sigmaTmp;}
+    if (convert2mb()) sigmaTmp *= CONVERT2MB;
+    return sigmaTmp;}
 
   // Perform kinematics for a Multiparton Interaction, in its rest frame.
   virtual bool   final2KinMPI( int i1Res = 0, int i2Res = 0, Vec4 p1Res = 0.,

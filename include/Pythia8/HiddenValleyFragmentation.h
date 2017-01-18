@@ -119,7 +119,8 @@ public:
 
   // Destructor.
   ~HiddenValleyFragmentation() { if (doHVfrag) {
-    if (hvZSelPtr) delete hvZSelPtr; if (hvPTSelPtr) delete hvPTSelPtr;
+    if (hvZSelPtr) delete hvZSelPtr;
+    if (hvPTSelPtr) delete hvPTSelPtr;
     if (hvFlavSelPtr) delete hvFlavSelPtr;} }
 
   // Initialize and save pointers.

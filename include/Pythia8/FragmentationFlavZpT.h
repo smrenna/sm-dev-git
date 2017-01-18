@@ -82,7 +82,9 @@ public:
 
   // Pick a light d, u or s quark according to fixed ratios.
   int pickLightQ() { double rndmFlav = probQandS * rndmPtr->flat();
-    if (rndmFlav < 1.) return 1; if (rndmFlav < 2.) return 2; return 3; }
+    if (rndmFlav < 1.) return 1;
+    if (rndmFlav < 2.) return 2;
+    return 3; }
 
   // Pick a new flavour (including diquarks) given an incoming one,
   // either by old standard Gaussian or new alternative exponential.
@@ -147,7 +149,8 @@ public:
     int j = (hadronID % 10);
     if (hadronID <  1000) return ((j==1) ? 0 : ( (j==3) ? 1 : 5 ));
     if (hadronID < 20000) return ((j==1) ? 3 : 2);
-    if (hadronID > 20000) return 4; return -1; }
+    if (hadronID > 20000) return 4;
+    return -1; }
 
 protected:
 

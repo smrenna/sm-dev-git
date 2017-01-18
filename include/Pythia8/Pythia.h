@@ -10,8 +10,8 @@
 #define Pythia8_Pythia_H
 
 // Version number defined for use in macros and for consistency checks.
-#define PYTHIA_VERSION 8.223
-#define PYTHIA_VERSION_INTEGER 8223
+#define PYTHIA_VERSION 8.224
+#define PYTHIA_VERSION_INTEGER 8224
 
 // Header files for the Pythia class and for what else the user may need.
 #include "Pythia8/Analysis.h"
@@ -101,8 +101,9 @@ public:
   bool setDecayPtr( DecayHandler* decayHandlePtrIn,
     vector<int> handledParticlesIn) {decayHandlePtr = decayHandlePtrIn;
     handledParticles.resize(0);
-    for(int i = 0; i < int(handledParticlesIn.size()); ++i)
-    handledParticles.push_back( handledParticlesIn[i] ); return true;}
+    for (int i = 0; i < int(handledParticlesIn.size()); ++i)
+      handledParticles.push_back( handledParticlesIn[i] );
+    return true;}
 
   // Possibility to pass in pointer for external random number generation.
   bool setRndmEnginePtr( RndmEngine* rndmEnginePtrIn)
@@ -161,7 +162,8 @@ public:
 
   // Skip a number of Les Houches events at input.
   bool LHAeventSkip(int nSkip) {
-    if (lhaUpPtr != 0) return lhaUpPtr->skipEvent(nSkip); return false;}
+    if (lhaUpPtr != 0) return lhaUpPtr->skipEvent(nSkip);
+    return false;}
 
   // Main routine to provide final statistics on generation.
   void stat();

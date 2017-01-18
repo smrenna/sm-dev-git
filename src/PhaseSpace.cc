@@ -149,14 +149,18 @@ void PhaseSpace::init(bool isFirst, SigmaProcess* sigmaProcessPtrIn,
     pTHatGlobalMax     = settingsPtr->parm("PhaseSpace:pTHatMaxSecond");
   }
 
+  // Cutoff against divergences at pT -> 0.
+  pTHatMinDiverge      = settingsPtr->parm("PhaseSpace:pTHatMinDiverge");
+
+  // Special cut on DIS Q2 = -tHat.
+  Q2GlobalMin          = settingsPtr->parm("PhaseSpace:Q2Min");
+  hasQ2Min             = ( Q2GlobalMin >= pow2(pTHatMinDiverge) );
+
   // For photons from lepton beams match the cuts to gm+gm system cuts.
   if ( beamHasResGamma ) {
     double Wmax         = settingsPtr->parm("Photon:Wmax");
     if ( (mHatGlobalMax > Wmax) || mHatGlobalMax < 0.) mHatGlobalMax = Wmax;
   }
-
-  // Cutoff against divergences at pT -> 0.
-  pTHatMinDiverge      = settingsPtr->parm("PhaseSpace:pTHatMinDiverge");
 
   // When to use Breit-Wigners.
   useBreitWigners      = settingsPtr->flag("PhaseSpace:useBreitWigners");
@@ -1158,8 +1162,10 @@ bool PhaseSpace::limitTau(bool is2, bool is3) {
     return true;
   }
 
-  // Requirements from allowed mHat range.
+  // Requirements from allowed mHat range and allowed Q2Min.
   tauMin = sHatMin / s;
+  if (is2 && hasQ2Min && Q2GlobalMin + s3 + s4 > sHatMin)
+    tauMin = (Q2GlobalMin + s3 + s4) / s;
   tauMax = (mHatMax < mHatMin) ? 1. : min( 1., sHatMax / s);
 
   // Requirements from allowed pT range and masses.
@@ -1211,8 +1217,38 @@ bool PhaseSpace::limitZ() {
   zMax = sqrtpos( 1. - pT2HatMin / p2Abs );
   if (pTHatMax > pTHatMin) zMin = sqrtpos( 1. - pT2HatMax / p2Abs );
 
+  // Check that there is an open range so far.
+  hasNegZ = false;
+  hasPosZ = false;
+  if (zMax < zMin) return false;
+
+  // Define two individual ranges.
+  hasNegZ = true;
+  hasPosZ = true;
+  zNegMin = -zMax;
+  zNegMax = -zMin;
+  zPosMin =  zMin;
+  zPosMax =  zMax;
+
+  // Optionally introduce Q2 = -tHat cut.
+  if (hasQ2Min) {
+    double zMaxQ2 = (sH - s3 - s4 - 2. * Q2GlobalMin) / (2. * pAbs * mHat);
+    if (zMaxQ2 > zPosMin) {
+      if (zMaxQ2 < zPosMax) zPosMax = zMaxQ2;
+    } else {
+      hasPosZ = false;
+      zPosMax = zPosMin;
+      if (zMaxQ2 > zNegMin) {
+        if (zMaxQ2 < zNegMax) zNegMax = zMaxQ2;
+      } else {
+        hasNegZ = false;
+        zNegMin = zNegMax;
+      }
+    }
+  }
+
   // Check that there is an open range.
-  return (zMax > zMin);
+  return hasNegZ;
 }
 
 //--------------------------------------------------------------------------
@@ -1393,6 +1429,7 @@ void PhaseSpace::selectY(int iY, double yVal) {
 // Select z = cos(theta) according to a choice of shapes.
 // The selection is split in the positive- and negative-z regions,
 // since a pTmax cut can remove the region around z = 0.
+// Furthermore, a Q2 (= -tHat) cut can make the two regions asymmetric.
 
 void PhaseSpace::selectZ(int iZ, double zVal) {
 
@@ -1402,84 +1439,100 @@ void PhaseSpace::selectZ(int iZ, double zVal) {
   double ratiopT2 = 2. * pT2HatMin / max( SHATMINZ, sH);
   if (ratiopT2 < PT2RATMINZ) ratio34 = max( ratio34, ratiopT2);
 
-  // Common expressions in z limits.
-  double zPosMax = max(ratio34, unity34 + zMax);
-  double zNegMax = max(ratio34, unity34 - zMax);
-  double zPosMin = max(ratio34, unity34 + zMin);
-  double zNegMin = max(ratio34, unity34 - zMin);
+  // Common expressions of unity - z and unity + z limits, protected from 0.
+  double zNegMinM = max(ratio34, unity34 - zNegMin);
+  double zNegMaxM = max(ratio34, unity34 - zNegMax);
+  double zPosMinM = max(ratio34, unity34 - zPosMin);
+  double zPosMaxM = max(ratio34, unity34 - zPosMax);
+  double zNegMinP = max(ratio34, unity34 + zNegMin);
+  double zNegMaxP = max(ratio34, unity34 + zNegMax);
+  double zPosMinP = max(ratio34, unity34 + zPosMin);
+  double zPosMaxP = max(ratio34, unity34 + zPosMax);
 
+  // Evaluate integrals over negative and positive z ranges.
+  // Flat in z.
+  double area0Neg = zNegMax - zNegMin;
+  double area0Pos = zPosMax - zPosMin;
+  double area0    = area0Neg + area0Pos;
+  // 1 / (unity34 - z).
+  double area1Neg = log(zNegMinM / zNegMaxM);
+  double area1Pos = log(zPosMinM / zPosMaxM);
+  double area1    = area1Neg + area1Pos;
+  // 1 / (unity34 + z).
+  double area2Neg = log(zNegMaxP / zNegMinP);
+  double area2Pos = log(zPosMaxP / zPosMinP);
+  double area2    = area2Neg + area2Pos;
+  // 1 / (unity34 - z)^2.
+  double area3Neg = 1. / zNegMaxM - 1. / zNegMinM;
+  double area3Pos = 1. / zPosMaxM - 1. / zPosMinM;
+  double area3    = area3Neg + area3Pos;
+  // 1 / (unity34 + z)^2.
+  double area4Neg = 1. / zNegMinP - 1. / zNegMaxP;
+  double area4Pos = 1. / zPosMinP - 1. / zPosMaxP;
+  double area4    = area4Neg + area4Pos;
+
+  // Pick z value according to alternatives.
   // Flat in z.
   if (iZ == 0) {
-    if (zVal < 0.5) z = -(zMax + (zMin - zMax) * 2. * zVal);
-    else z = zMin + (zMax - zMin) * (2. * zVal - 1.);
+    if (!hasPosZ || zVal * area0 < area0Neg) {
+      double zValMod = zVal * area0 / area0Neg;
+      z = zNegMin + zValMod * area0Neg;
+    } else {
+      double zValMod = (zVal * area0 - area0Neg) / area0Pos;
+      z = zPosMin + zValMod * area0Pos;
+    }
 
   // 1 / (unity34 - z).
   } else if (iZ == 1) {
-    double areaNeg = log(zPosMax / zPosMin);
-    double areaPos = log(zNegMin / zNegMax);
-    double area = areaNeg + areaPos;
-    if (zVal * area < areaNeg) {
-      double zValMod = zVal * area / areaNeg;
-      z = unity34 - zPosMax * pow(zPosMin / zPosMax, zValMod);
+    if (!hasPosZ || zVal * area1 < area1Neg) {
+      double zValMod = zVal * area1 / area1Neg;
+      z = unity34 - zNegMinM * pow(zNegMaxM / zNegMinM, zValMod);
     } else {
-      double zValMod = (zVal * area - areaNeg)/ areaPos;
-      z = unity34 - zNegMin * pow(zNegMax / zNegMin, zValMod);
+      double zValMod = (zVal * area1 - area1Neg)/ area1Pos;
+      z = unity34 - zPosMinM * pow(zPosMaxM / zPosMinM, zValMod);
     }
 
   // 1 / (unity34 + z).
   } else if (iZ == 2) {
-    double areaNeg = log(zNegMin / zNegMax);
-    double areaPos = log(zPosMax / zPosMin);
-    double area = areaNeg + areaPos;
-    if (zVal * area < areaNeg) {
-      double zValMod = zVal * area / areaNeg;
-      z = zNegMax * pow(zNegMin / zNegMax, zValMod) - unity34;
+    if (!hasPosZ || zVal * area2 < area2Neg) {
+      double zValMod = zVal * area2 / area2Neg;
+      z = zNegMinP * pow(zNegMaxP / zNegMinP, zValMod) - unity34;
     } else {
-      double zValMod = (zVal * area - areaNeg)/ areaPos;
-      z = zPosMin * pow(zPosMax / zPosMin, zValMod) - unity34;
+      double zValMod = (zVal * area2 - area2Neg)/ area2Pos;
+      z = zPosMinP * pow(zPosMaxP / zPosMinP, zValMod) - unity34;
     }
 
   // 1 / (unity34 - z)^2.
   } else if (iZ == 3) {
-    double areaNeg = 1. / zPosMin - 1. / zPosMax;
-    double areaPos = 1. / zNegMax - 1. / zNegMin;
-    double area = areaNeg + areaPos;
-    if (zVal * area < areaNeg) {
-      double zValMod = zVal * area / areaNeg;
-      z = unity34 - 1. / (1./zPosMax + areaNeg * zValMod);
+    if (!hasPosZ || zVal * area3 < area3Neg) {
+      double zValMod = zVal * area3 / area3Neg;
+      z = unity34 - 1. / (1./zNegMinM + area3Neg * zValMod);
     } else {
-      double zValMod = (zVal * area - areaNeg)/ areaPos;
-      z = unity34 - 1. / (1./zNegMin + areaPos * zValMod);
+      double zValMod = (zVal * area3 - area3Neg)/ area3Pos;
+      z = unity34 - 1. / (1./zPosMinM + area3Pos * zValMod);
     }
 
   // 1 / (unity34 + z)^2.
   } else if (iZ == 4) {
-    double areaNeg = 1. / zNegMax - 1. / zNegMin;
-    double areaPos = 1. / zPosMin - 1. / zPosMax;
-    double area = areaNeg + areaPos;
-    if (zVal * area < areaNeg) {
-      double zValMod = zVal * area / areaNeg;
-      z = 1. / (1./zNegMax - areaNeg * zValMod) - unity34;
+    if (!hasPosZ || zVal * area4 < area4Neg) {
+      double zValMod = zVal * area4 / area4Neg;
+      z = 1. / (1./zNegMinP - area4Neg * zValMod) - unity34;
     } else {
-      double zValMod = (zVal * area - areaNeg)/ areaPos;
-      z = 1. / (1./zPosMin - areaPos * zValMod) - unity34;
+      double zValMod = (zVal * area4 - area4Neg)/ area4Pos;
+      z = 1. / (1./zPosMinP - area4Pos * zValMod) - unity34;
     }
   }
 
   // Safety check for roundoff errors. Combinations with z.
-  if (z < 0.) z = min(-zMin, max(-zMax, z));
-  else z = min(zMax, max(zMin, z));
+  if (z < 0.) z = min( zNegMax, max( zNegMin, z));
+  else        z = min( zPosMax, max( zPosMin, z) );
   zNeg = max(ratio34, unity34 - z);
   zPos = max(ratio34, unity34 + z);
 
   // Phase space integral in z.
-  double intZ0 = 2. * (zMax - zMin);
-  double intZ12 = log( (zPosMax * zNegMin) / (zPosMin * zNegMax) );
-  double intZ34 = 1. / zPosMin - 1. / zPosMax + 1. / zNegMax
-    - 1. / zNegMin;
-  wtZ = mHat * pAbs / ( (zCoef[0] / intZ0) + (zCoef[1] / intZ12) / zNeg
-    + (zCoef[2] / intZ12) / zPos + (zCoef[3] / intZ34) / pow2(zNeg)
-    + (zCoef[4] / intZ34) / pow2(zPos) );
+  wtZ = mHat * pAbs / ( (zCoef[0] / area0) + (zCoef[1] / area1) / zNeg
+    + (zCoef[2] / area2) / zPos + (zCoef[3] / area3) / pow2(zNeg)
+    + (zCoef[4] / area4) / pow2(zPos) );
 
   // Calculate tHat and uHat. Also gives pTHat.
   double sH34 = -0.5 * (sH - s3 - s4);
