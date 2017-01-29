@@ -12,7 +12,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.224: 18 January 2017 
+<li>8.224: 29 January 2017 
 <ul> 
  
 <li>Construct <ei>pi^+-</ei> PDFs so that <ei>dbar = u</ei> 
@@ -31,12 +31,20 @@ flag appears to be on by default. Thanks to Ivan Razumov.</li>
 <li>Introduce possibility to make phase space cuts on the DIS 
 <ei>Q^2</ei> variable.</li> 
  
+<li>Introduce some freedom to modify the default shape of the 
+low-mass part of diffractive cross sections, and thereby also the 
+integrated value. </li> 
+ 
 <li>Bug fix in the <code>TimeShower::findMEtype(...)</code> for a 
 few rare cases.</li> 
  
-<li></li> 
+<li>Minor addition to <code>Streams.cc</code> includes to avoid 
+problems on one platform. Thanks to Joshua Ellis.</li> 
  
-<li></li> 
+<li>Bug fix in <code>HVStringFlav</code>, which otherwise left 
+some Hidden Valley particles massless. Thanks to Colleen Treado.</li> 
+ 
+<li>Minor numerical precision improvement in gamma-gamma kinematics.</li> 
  
 </ul> 
 </li> 

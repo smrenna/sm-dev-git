@@ -74,10 +74,12 @@ bool GammaKinematics::sampleKTgamma(){
          + sqrt(1. - m2sB) * sqrt( pow2(1. - xGamma2) - m2sB ) );
 
   // Check if allowed x_gamma. May fail for direct processes.
-  double xGamMaxA = Q2maxGamma / (2. * m2BeamA) * ( sqrt(
-    (1. + 4. * m2BeamA / Q2maxGamma) * (1. - 4. * m2BeamA / sCM) ) - 1. );
-  double xGamMaxB = Q2maxGamma / (2. * m2BeamB) * ( sqrt(
-    (1. + 4. * m2BeamB / Q2maxGamma) * (1. - 4. * m2BeamB / sCM) ) - 1. );
+  double xGamMaxA = ( 2. - 2. * Q2maxGamma / sCM - 8. * m2BeamA / sCM )
+    / ( 1. + sqrt( (1. + 4. * m2BeamA / Q2maxGamma)
+    * (1. - 4. * m2BeamA / sCM) ) );
+  double xGamMaxB = ( 2. - 2. * Q2maxGamma / sCM - 8. * m2BeamB / sCM )
+    / ( 1. + sqrt( (1. + 4. * m2BeamB / Q2maxGamma)
+    * (1. - 4. * m2BeamB / sCM) ) );
   if ( xGamma1 > xGamMaxA || xGamma2 > xGamMaxB ) return false;
 
   // Sample Q2_gamma values for each beam.

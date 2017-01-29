@@ -71,7 +71,10 @@ class StringFlav {
 public:
 
   // Constructor.
-  StringFlav() {}
+  StringFlav() {
+    // Initialize winning parameters.
+    hadronIDwin = 0; idNewWin = 0; hadronMassWin = -1.0;
+  }
 
   // Destructor.
   virtual ~StringFlav() {}
@@ -201,6 +204,7 @@ private:
   map< pair<int,int>, vector< pair<int,int> > > possibleHadronsLast;
   map< pair<int,int>, vector<double> > possibleRatePrefacsLast;
 
+  // Selection in thermal model.
   int    hadronIDwin, idNewWin;
   double hadronMassWin;
 

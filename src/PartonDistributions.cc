@@ -3248,7 +3248,7 @@ double CJKL::hadronlikeB(double x, double s, double Q2) {
 // The LHAGrid1 class.
 // Codes to read files i the LHAPDF6 lhagrid1 format,
 // assuming that the same x grid is used for all Q subgrids.
-// Results are not identical with LHAPDF6, owing do different interpolation.
+// Results are not identical with LHAPDF6, owing to different interpolation.
 
 //--------------------------------------------------------------------------
 
@@ -3578,8 +3578,8 @@ void Lepton2gamma::xfUpdate(int , double x, double Q2){
 
   // Find the maximum x value at given Q2max and sqrt(s).
   double sCM = infoPtr->s();
-  double xGamMax = Q2max / (2. * m2lepton)
-    * (sqrt( (1. + 4. * m2lepton / Q2max) * (1. - 4. * m2lepton / sCM) ) - 1.);
+  double xGamMax = ( 2. - 2. * Q2max / sCM - 8. * m2lepton / sCM )
+    / ( 1. + sqrt( (1. + 4. * m2lepton / Q2max) * (1. - 4. * m2lepton/sCM) ) );
 
   // If outside allowed x values set PDFs to zero.
   if ( x > xGamMax ) {
@@ -3653,8 +3653,8 @@ double Lepton2gamma::xfMax(int id, double x, double Q2){
 
   // Find the maximum x value at given Q2max and sqrt(s).
   double sCM = infoPtr->s();
-  double xGamMax = Q2max / (2. * m2lepton)
-    * (sqrt( (1. + 4. * m2lepton / Q2max) * (1. - 4. * m2lepton / sCM) ) - 1.);
+  double xGamMax = ( 2. - 2. * Q2max / sCM - 8. * m2lepton / sCM )
+    / ( 1. + sqrt( (1. + 4. * m2lepton / Q2max) * (1. - 4. * m2lepton/sCM) ) );
 
   // Set PDFs to zero outside allowed x values.
   if ( x > xGamMax ) return 0;
