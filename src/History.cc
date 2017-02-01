@@ -836,20 +836,20 @@ void History::getStartingConditions( const double RN, Event& outState ) {
     // transverse momentum of the outgoing partons.
     if ( nSteps == 0 && nFinalCol == 2
       && ( mergingHooksPtr->getProcessString().compare("pp>jj") == 0
-	|| mergingHooksPtr->getProcessString().compare("pp>aj") == 0) ) {
+        || mergingHooksPtr->getProcessString().compare("pp>aj") == 0) ) {
       state.scale(muf);
       for (int i = 3;i < state.size();++i)
-	state[i].scale(muf);
+        state[i].scale(muf);
     }
     // For weak inclusive merging, follow QCD 2->2 starting scale for dijet
     // events. Also, restore input input polarisations.
     if (nSteps == 0 && nFinalCol == 2 &&
-	mergingHooksPtr->getProcessString().find("inc") != string::npos) {
-	state.scale(muf);
+        mergingHooksPtr->getProcessString().find("inc") != string::npos) {
+        state.scale(muf);
       for (int i = 3;i < state.size();++i)
-	state[i].scale(muf);
+        state[i].scale(muf);
       for ( int i=0; i < min(state.size(),outState.size()); ++i )
-	state[i].pol(outState[i].pol());
+        state[i].pol(outState[i].pol());
     }
 
   } else {

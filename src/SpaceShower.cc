@@ -2354,7 +2354,6 @@ bool SpaceShower::branch( Event& event) {
   } else if (side == 1) {
     Vec4 pMotherWanted( 0., 0.,  0.5 * eCM * x1New, 0.5 * eCM * x1New);
     MfromRest.fromCMframe( pMotherWanted, event[iRecoiler].p() );
-
   } else {
     Vec4 pMotherWanted( 0., 0., -0.5 * eCM * x2New, 0.5 * eCM * x2New);
     MfromRest.fromCMframe( event[iRecoiler].p(), pMotherWanted );

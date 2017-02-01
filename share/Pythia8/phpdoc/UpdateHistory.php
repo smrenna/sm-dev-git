@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.224: 29 January 2017 
+<li>8.224: 1 February 2017 
 <ul> 
  
 <li>Construct <i>pi^+-</i> PDFs so that <i>dbar = u</i> 

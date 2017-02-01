@@ -61,6 +61,7 @@ void StringEnd::newHadron(double nNSP) {
   // In case we are using the thermal model or Gaussian with
   // mT2 suppression we have to pick the pT first.
   if (thermalModel || mT2suppression) {
+
     // Pick its transverse momentum.
     pair<double, double> pxy = pTSelPtr->pxy(flavNew.id, nNSP);
     pxNew = pxy.first;
@@ -68,32 +69,39 @@ void StringEnd::newHadron(double nNSP) {
     pxHad = pxOld + pxNew;
     pyHad = pyOld + pyNew;
     double pT2Had = pow2(pxHad) + pow2(pyHad);
+
     // Pick new flavour and form a new hadron.
     do {
       flavNew = flavSelPtr->pick( flavOld, sqrt(pT2Had), nNSP);
       idHad   = flavSelPtr->getHadronID( flavOld, flavNew);
     } while (idHad == 0);
+
+    // Get its mass and thereby define its transverse mass.
+    mHad   = flavSelPtr->getHadronMassWin(idHad);
+    mT2Had = pow2(mHad) + pow2(pxHad) + pow2(pyHad);
   }
 
   // In case of the Gaussian without mT2 suppression we pick
   // the new flavour first to make the width flavour dependent.
   else {
+
     // Pick new flavour and form a new hadron.
     do {
       flavNew = flavSelPtr->pick( flavOld);
       idHad   = flavSelPtr->combine( flavOld, flavNew);
     } while (idHad == 0);
+
     // Pick its transverse momentum.
     pair<double, double> pxy = pTSelPtr->pxy(flavNew.id, nNSP);
     pxNew = pxy.first;
     pyNew = pxy.second;
     pxHad = pxOld + pxNew;
     pyHad = pyOld + pyNew;
-  }
 
-  // Get its mass and thereby define its transverse mass.
-  mHad   = flavSelPtr->getHadronMassWin(idHad);
-  mT2Had = pow2(mHad) + pow2(pxHad) + pow2(pyHad);
+    // Pick its mass and thereby define its transverse mass.
+    mHad   = particleDataPtr->mSel(idHad);
+    mT2Had = pow2(mHad) + pow2(pxHad) + pow2(pyHad);
+  }
 
 }
 
