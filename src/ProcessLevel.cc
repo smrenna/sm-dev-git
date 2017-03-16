@@ -231,7 +231,7 @@ bool ProcessLevel::init( Info* infoPtrIn, Settings& settings,
     // Construct string with incoming beams and for cm energy.
     string collision = "We collide " + particleDataPtr->name(idA)
       + " with " + particleDataPtr->name(idB) + " at a CM energy of ";
-    string pad( 51 - collision.length(), ' ');
+    string pad( max( 0, 51 - int(collision.length())), ' ');
 
     // Print initialization information: header.
     cout << "\n *-------  PYTHIA Process Initialization  ---------"
@@ -456,9 +456,11 @@ void ProcessLevel::accumulate( bool doAccumulate) {
   if (doAccumulate) container2Ptrs[i2Container]->accumulate();
 
   // Update statistics on average impact factor.
-  ++nImpact;
-  sumImpactFac     += infoPtr->enhanceMPI();
-  sum2ImpactFac    += pow2(infoPtr->enhanceMPI());
+  if (doAccumulate) {
+    ++nImpact;
+    sumImpactFac     += infoPtr->enhanceMPI();
+    sum2ImpactFac    += pow2(infoPtr->enhanceMPI());
+  }
 
   // Cross section estimate for second hard process.
   double sigma2Sum  = 0.;

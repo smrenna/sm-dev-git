@@ -149,8 +149,9 @@ void BeamParticle::initBeamKind() {
   isGammaBeam       = false;
   nValKinds         = 0;
 
-  // Check for leptons.
-  if (idBeamAbs > 10 && idBeamAbs < 17) {
+  // Check for leptons or DM beams.
+  if ( (idBeamAbs > 10 && idBeamAbs < 17)
+    || (idBeamAbs > 50 && idBeamAbs < 60) ) {
     nValKinds = 1;
     nVal[0]   = 1;
     idVal[0]  = idBeam;

@@ -1390,8 +1390,9 @@ bool Pythia::next() {
       return false;
     }
 
-    // Reset info array (while event record contains data).
+    // Reset info and partonSystems arrays (while event record contains data).
     info.clear();
+    partonSystems.clear();
 
     // Set correct energy for system.
     Vec4 pSum = 0.;
@@ -2626,6 +2627,10 @@ PDF* Pythia::getPDFPtr(int idIn, int sequence, string beam) {
       tempPDFPtr = new Lepton(idIn, Q2maxGamma, &info);
     }
     else tempPDFPtr = new LeptonPoint(idIn);
+
+  // Dark matter beam set up as pointlike lepton.
+  } else if (abs(idIn) > 50 && abs(idIn) < 60) {
+    tempPDFPtr = new LeptonPoint(idIn);
   }
 
   // Optionally allow extrapolation beyond x and Q2 limits.

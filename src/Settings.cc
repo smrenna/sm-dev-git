@@ -552,6 +552,9 @@ bool Settings::readString(string line, bool warn) {
     wvec(name, value);
   }
 
+  // Store history of valid readString statements
+  readStringHistory.push_back(lineNow);
+
   // Done.
   return true;
 }

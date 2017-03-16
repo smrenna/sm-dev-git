@@ -782,7 +782,7 @@ bool ProcessContainer::constructProcess( Event& process, bool isHardest) {
       process[4].pz(-e2);
       process[4].e(  e2);
       process[4].m(  0.);
-      if (max (e1, e2) > 0.5 * process[0].e()) {
+      if (max(e1, e2) > 0.500001 * process[0].e()) {
         infoPtr->errorMsg("Error in ProcessContainer::constructProcess: "
           "setting mass failed");
         return false;

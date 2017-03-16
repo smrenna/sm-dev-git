@@ -338,7 +338,10 @@ public:
   // Check whether input openend with { not yet closed with }.
   bool unfinishedInput() {return lineSaved;}
 
-private:
+  // Method to retrieve history of readString commands (e.g., for inspection)
+  vector<string> getReadHistory() { return readStringHistory; }
+
+ private:
 
   // Pointer to various information on the generation.
   Info* infoPtr;
@@ -373,6 +376,9 @@ private:
   // Store temporary line when searching for continuation line.
   bool   lineSaved;
   string savedLine;
+
+  // Stored history of readString statements
+  vector<string> readStringHistory;
 
   // Print out table of database, called from listAll and listChanged.
   void list(bool doListAll, bool doListString, string match);

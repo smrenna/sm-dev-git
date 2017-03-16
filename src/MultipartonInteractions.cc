@@ -460,6 +460,7 @@ bool MultipartonInteractions::init( bool doMPIinit, int iDiffSysIn,
     hasLowPow    = (expPow < 2.);
     expRev       = 2. / expPow - 1.;
   }
+  enhanceBinit   = 1.;
 
   // Initialize alpha_strong generation.
   alphaS.init( alphaSvalue, alphaSorder, alphaSnfmax, false);
@@ -2048,6 +2049,7 @@ void MultipartonInteractions::overlapInit() {
   double overlapNow     = 0.;
   double probNow        = 0.;
   double overlapInt     = 0.5;
+  double overlap2Int    = 0.;
   double probInt        = 0.;
   double probOverlapInt = 0.;
   double bProbInt       = 0.;
@@ -2089,6 +2091,7 @@ void MultipartonInteractions::overlapInit() {
 
       // Reset integrals.
       overlapInt     = (bProfile == 3) ? 0. : 0.5;
+      overlap2Int    = 0.;
       probInt        = 0.;
       probOverlapInt = 0.;
       bProbInt       = 0.;
@@ -2117,6 +2120,7 @@ void MultipartonInteractions::overlapInit() {
 
         // Calculate interaction probability and integrate.
         probNow         = 1. - exp( -min(EXPMAX, M_PI * kNow * overlapNow));
+        overlap2Int    += bArea * pow2(overlapNow);
         probInt        += bArea * probNow;
         probOverlapInt += bArea * overlapNow * probNow;
         bProbInt       += b * bArea * probNow;
@@ -2167,6 +2171,7 @@ void MultipartonInteractions::overlapInit() {
     zeroIntCorr = probOverlapInt / overlapInt;
     normOverlap = normPi * zeroIntCorr / avgOverlap;
     bAvg = bProbInt / probInt;
+    enhanceBinit = (overlap2Int * probInt) / (probOverlapInt * overlapInt);
 
   // Values for x-dependent matter profile.
   } else if (bProfile == 4) {

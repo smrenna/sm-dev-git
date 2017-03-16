@@ -187,6 +187,7 @@ void PhaseSpace::init(bool isFirst, SigmaProcess* sigmaProcessPtrIn,
   canBias2Sel      = settingsPtr->flag("PhaseSpace:bias2Selection");
   bias2SelPow      = settingsPtr->parm("PhaseSpace:bias2SelectionPow");
   bias2SelRef      = settingsPtr->parm("PhaseSpace:bias2SelectionRef");
+  if (canBias2Sel) pTHatGlobalMin = max( pTHatGlobalMin, pTHatMinDiverge);
 
   // Default event-specific kinematics properties.
   x1H             = 1.;
@@ -1536,8 +1537,14 @@ void PhaseSpace::selectZ(int iZ, double zVal) {
 
   // Calculate tHat and uHat. Also gives pTHat.
   double sH34 = -0.5 * (sH - s3 - s4);
-  tH  = sH34 + mHat * pAbs * z;
-  uH  = sH34 - mHat * pAbs * z;
+  double tHuH = pow2(sH34) * (1. - z) * (1. + z) + s3 * s4 * pow2(z);
+  if (z < 0.) {
+    tH = sH34 + mHat * pAbs * z;
+    uH = tHuH / tH;
+  } else {
+    uH = sH34 - mHat * pAbs * z;
+    tH = tHuH / uH;
+  }
   pTH = sqrtpos( (tH * uH - s3 * s4) / sH);
 
 }

@@ -18,7 +18,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.224: 1 February 2017 
+<li>8.224: 16 March 2017 
 <ul> 
  
 <li>Construct <i>pi^+-</i> PDFs so that <i>dbar = u</i> 
@@ -34,12 +34,31 @@ Thanks to Ivan Razumov.</li>
 versions of GCC 6.x, where the <code>-Wmisleading-indentation</code> 
 flag appears to be on by default. Thanks to Ivan Razumov.</li> 
  
+<li>Bug fix the calculation of enhancement factor for the machinery 
+with two hard processes. By mistake statistics was added once with 
+the correct value for each event (accessible with 
+<code>Info::enhanceMPI()</code>), and once with unity, leading to a 
+dilution of the effect. The enhancement factor is now also calculated 
+at initialization, for internal usage.</li> 
+ 
+<li>New method <code>Settings::getReadHistory</code> returns a vector 
+with all strings that have been read in by the 
+<code>Settings::readString()</code> method, and thereby also the 
+settings part of the <code>Pythia::readString()</code> and 
+<code>Pythia::readFile()</code> commands. (Still to be expanded?) 
+</li> 
+ 
 <li>Introduce possibility to make phase space cuts on the DIS 
 <i>Q^2</i> variable.</li> 
  
 <li>Introduce some freedom to modify the default shape of the 
 low-mass part of diffractive cross sections, and thereby also the 
 integrated value. </li> 
+ 
+<li>When using the <code>PhaseSpace:bias2Selection</code> to reweight 
+high-<i>pT</i> events the <code>PhaseSpace:pTHatMinDiverge</code> 
+value is now used as ultimate fail-safe to avoid <i>pT = 0</i>. 
+</li> 
  
 <li>Bug fix in the <code>TimeShower::findMEtype(...)</code> for a 
 few rare cases.</li> 
@@ -50,7 +69,14 @@ problems on one platform. Thanks to Joshua Ellis.</li>
 <li>Bug fix in <code>HVStringFlav</code>, which otherwise left 
 some Hidden Valley particles massless. Thanks to Colleen Treado.</li> 
  
-<li>Minor numerical precision improvement in gamma-gamma kinematics.</li> 
+<li>A few minor fixes when Dark Matter is used as incoming beams in 
+Les Houches input. Thanks to Roberto Ruiz.</li> 
+ 
+<li>Fixed memory leak in <code>TimeShower</code>, for the case when 
+the ProcessLevel is off. Thanks to Ryosuke Sato.</li> 
+ 
+<li>Minor numerical precision improvements in gamma-gamma kinematics 
+and in <i>tHat</i> and <i>uHat</i> construction.</li> 
  
 </ul> 
 </li> 
