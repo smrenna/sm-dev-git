@@ -209,6 +209,10 @@ facilities.</li>
 of <code>main34.cc</code>. Demonstrates usage of a PYTHIA plugin 
 within the Python interface.</li> 
  
+<li><code>main35.cc</code> : demonstrates how to generate quarkonia 
+events with the external HelacOnia package interfaced to Pythia, 
+and compare results with the internal implementation.</li> 
+ 
 <li><code>main37.cc</code> : shows how LHEF version 3.0 files can be 
 read and used to fill several histograms of the same property, but with 
 different event weights.</li> 

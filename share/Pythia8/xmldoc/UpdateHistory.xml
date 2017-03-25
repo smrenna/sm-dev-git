@@ -12,7 +12,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.224: 16 March 2017 
+<li>8.225: 25 March 2017 
 <ul> 
  
 <li>Construct <ei>pi^+-</ei> PDFs so that <ei>dbar = u</ei> 
@@ -49,6 +49,13 @@ settings part of the <code>Pythia::readString()</code> and
 low-mass part of diffractive cross sections, and thereby also the 
 integrated value. </li> 
  
+<li>The new <code>LHAupHelaconia</code> class in 
+<code>include/Pythia8Plugins/LHAHelaconia.h</code> provides an 
+interface to the HelacOnia package for onium production. The new 
+<code>main35.cc</code> example shows how to use the interface, 
+and how to compare with corresponding internal Pythia results. 
+</li> 
+ 
 <li>When using the <code>PhaseSpace:bias2Selection</code> to reweight 
 high-<ei>pT</ei> events the <code>PhaseSpace:pTHatMinDiverge</code> 
 value is now used as ultimate fail-safe to avoid <ei>pT = 0</ei>. 
@@ -56,6 +63,10 @@ value is now used as ultimate fail-safe to avoid <ei>pT = 0</ei>.
  
 <li>Bug fix in the <code>TimeShower::findMEtype(...)</code> for a 
 few rare cases.</li> 
+ 
+<li>Bug fixes for the squark-gluino and gluino-chargino processes. 
+The charge-conjugate processes were not handled correctly, since the 
+PDF factors are different, and have now been separated.</li> 
  
 <li>Minor addition to <code>Streams.cc</code> includes to avoid 
 problems on one platform. Thanks to Joshua Ellis.</li> 
@@ -66,8 +77,20 @@ some Hidden Valley particles massless. Thanks to Colleen Treado.</li>
 <li>A few minor fixes when Dark Matter is used as incoming beams in 
 Les Houches input. Thanks to Roberto Ruiz.</li> 
  
+<li>Minor bug fix where the process container for resonance decays 
+(only) from LHE input is not initialized. This can lead to the problem 
+where particle input without lifetimes are not corrected, even when 
+the <code>LesHouches:setLifetime</code> mode is non-zero.</li> 
+ 
+<li>Bug fix in <ei>LED/Unparticle + Z^0</ei> production: correct 
+cross section for allowed <ei>Z^0</ei> decay channels. Thanks to 
+Andreas Albert.</li> 
+ 
 <li>Fixed memory leak in <code>TimeShower</code>, for the case when 
 the ProcessLevel is off. Thanks to Ryosuke Sato.</li> 
+ 
+<li>Fix that the MPI machinery did not work for the (infrequently used)
+<code>MultipartonInteractions:bProfile = 0</code> option.</li> 
  
 <li>Minor numerical precision improvements in gamma-gamma kinematics 
 and in <ei>tHat</ei> and <ei>uHat</ei> construction.</li> 

@@ -57,8 +57,13 @@ public:
     UserHooks* userHooksPtr, GammaKinematics* gammaKinPtrIn);
 
   // Store or replace Les Houches pointer.
-  void setLHAPtr( LHAup* lhaUpPtrIn,  ParticleData* particleDataPtrIn = 0)
-    {lhaUpPtr = lhaUpPtrIn;
+  void setLHAPtr( LHAup* lhaUpPtrIn,  ParticleData* particleDataPtrIn = 0,
+    Settings* settingsPtrIn = 0, Rndm* rndmPtrIn = 0)
+    {lhaUpPtr = lhaUpPtrIn; setLifetime = 0;
+    if (settingsPtrIn && rndmPtrIn) {
+      rndmPtr = rndmPtrIn;
+      setLifetime = settingsPtrIn->mode("LesHouches:setLifetime");
+    }
     if (particleDataPtrIn != 0) particleDataPtr = particleDataPtrIn;
     if (sigmaProcessPtr != 0) sigmaProcessPtr->setLHAPtr(lhaUpPtr);
     if (phaseSpacePtr != 0) phaseSpacePtr->setLHAPtr(lhaUpPtr);}

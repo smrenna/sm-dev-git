@@ -74,10 +74,12 @@ public:
   void findJunctions( Event& junEvent);
 
   // Initialize and call resonance decays separately.
-  void initDecays( Info* infoPtrIn, ParticleData* particleDataPtrIn,
-    Rndm* rndmPtrIn, LHAup* lhaUpPtrIn) { infoPtr = infoPtrIn;
+  void initDecays( Info* infoPtrIn, Settings &settings,
+    ParticleData* particleDataPtrIn, Rndm* rndmPtrIn, LHAup* lhaUpPtrIn) {
+    infoPtr = infoPtrIn;
     resonanceDecays.init( infoPtrIn, particleDataPtrIn, rndmPtrIn);
-    containerLHAdec.setLHAPtr(lhaUpPtrIn, particleDataPtrIn); }
+    containerLHAdec.setLHAPtr(lhaUpPtrIn, particleDataPtrIn, &settings,
+      rndmPtrIn); }
   bool nextDecays( Event& process) { return resonanceDecays.next( process);}
 
 private:

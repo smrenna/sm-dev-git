@@ -2230,7 +2230,7 @@ void MultipartonInteractions::overlapFirst() {
   // Trivial values if no impact parameter dependence.
   if (bProfile <= 0 || bProfile > 4) {
     bNow     = 1.;
-    enhanceB = zeroIntCorr;
+    enhanceB = enhanceBmax = enhanceBnow = zeroIntCorr;
     bIsSet   = true;
     isAtLowB = true;
     return;
@@ -2352,7 +2352,7 @@ void MultipartonInteractions::overlapNext(Event& event, double pTscale,
   }
 
   // Default, valid for bProfile = 0. Also initial Sudakov.
-  enhanceB = zeroIntCorr;
+  enhanceB = enhanceBmax = enhanceBnow = zeroIntCorr;
   if (bProfile <= 0 || bProfile > 4) return;
 
   // Alternative choices of event scale for Sudakov in (pT, b) space.

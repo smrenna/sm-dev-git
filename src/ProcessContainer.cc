@@ -1947,13 +1947,15 @@ bool SetupContainers::init(vector<ProcessContainer*>& containerPtrs,
       int iproc = 1202;
       for (int idx = 1; idx <= 6; ++idx) {
         for (int iso = 1; iso <= 2; ++iso) {
-          iproc++;
+          iproc += 2;
           int id3 = iso + ((idx <= 3)
                   ? 1000000+2*(idx-1) : 2000000+2*(idx-4));
           int id4 = 1000021;
           // Skip if outgoing codes not asked for
           if (!allowIdVals( id3, id4)) continue;
-          sigmaPtr = new Sigma2qg2squarkgluino(id3,iproc);
+          sigmaPtr = new Sigma2qg2squarkgluino(id3,iproc-1);
+          containerPtrs.push_back( new ProcessContainer(sigmaPtr) );
+          sigmaPtr = new Sigma2qg2squarkgluino(-id3,iproc);
           containerPtrs.push_back( new ProcessContainer(sigmaPtr) );
         }
       }
@@ -2149,11 +2151,14 @@ bool SetupContainers::init(vector<ProcessContainer*>& containerPtrs,
     if (SUSYs || settings.flag("SUSY:qqbar2chi+-gluino")) {
       int iproc = 1620;
       for (int iChar = 1; iChar <= 2; ++iChar) {
-        iproc ++;
+        iproc += 2;
         // Skip if outgoing codes not asked for
         if (!allowIdVals( coupSUSY->idChar(iChar), 1000021)) continue;
-        sigmaPtr = new Sigma2qqbar2chargluino( iChar, iproc);
+        sigmaPtr = new Sigma2qqbar2chargluino( iChar, iproc-1);
         containerPtrs.push_back( new ProcessContainer(sigmaPtr) );
+        sigmaPtr = new Sigma2qqbar2chargluino( -iChar, iproc);
+        containerPtrs.push_back( new ProcessContainer(sigmaPtr) );
+
       }
     }
 

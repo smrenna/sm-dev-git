@@ -23,7 +23,7 @@ namespace Pythia8 {
 
 // The current Pythia (sub)version number, to agree with XML version.
 const double Pythia::VERSIONNUMBERHEAD = PYTHIA_VERSION;
-const double Pythia::VERSIONNUMBERCODE = 8.224;
+const double Pythia::VERSIONNUMBERCODE = 8.225;
 
 //--------------------------------------------------------------------------
 
@@ -882,8 +882,8 @@ bool Pythia::init() {
   timesDecPtr->init( &beamA, &beamB);
 
   // Alternatively only initialize resonance decays.
-  if ( !doProcessLevel) processLevel.initDecays( &info, &particleData,
-    &rndm, lhaUpPtr);
+  if ( !doProcessLevel) processLevel.initDecays( &info, settings,
+    &particleData, &rndm, lhaUpPtr);
 
   // Send info/pointers to parton level for initialization.
   if ( doPartonLevel && doProcessLevel && !partonLevel.init( &info, settings,
