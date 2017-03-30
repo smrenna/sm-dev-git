@@ -460,7 +460,7 @@ bool MultipartonInteractions::init( bool doMPIinit, int iDiffSysIn,
     hasLowPow    = (expPow < 2.);
     expRev       = 2. / expPow - 1.;
   }
-  enhanceBinit   = 1.;
+  enhanceBavg    = 1.;
 
   // Initialize alpha_strong generation.
   alphaS.init( alphaSvalue, alphaSorder, alphaSnfmax, false);
@@ -2171,7 +2171,7 @@ void MultipartonInteractions::overlapInit() {
     zeroIntCorr = probOverlapInt / overlapInt;
     normOverlap = normPi * zeroIntCorr / avgOverlap;
     bAvg = bProbInt / probInt;
-    enhanceBinit = (overlap2Int * probInt) / (probOverlapInt * overlapInt);
+    enhanceBavg = (overlap2Int * probInt) / (probOverlapInt * overlapInt);
 
   // Values for x-dependent matter profile.
   } else if (bProfile == 4) {

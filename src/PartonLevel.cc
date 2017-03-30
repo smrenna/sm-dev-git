@@ -504,7 +504,8 @@ bool PartonLevel::next( Event& process, Event& event) {
 
     // Impact parameter has now been chosen, except for diffraction.
     if (!isDiff) infoPtr->setImpact( multiPtr->bMPI(),
-      multiPtr->enhanceMPI(), true, (iHardDiffLoop == 2));
+      multiPtr->enhanceMPI(), multiPtr->enhanceMPIavg(), true, 
+      (iHardDiffLoop == 2));
     // Set up initial veto scale.
     doVeto        = false;
     double pTveto = pTvetoPT;
@@ -973,7 +974,8 @@ bool PartonLevel::next( Event& process, Event& event) {
     nMPI, nISR, nFSRinProc, nFSRinRes);
   if (isDiff) {
     multiPtr->setEmpty();
-    infoPtr->setImpact( multiPtr->bMPI(), multiPtr->enhanceMPI(), false);
+    infoPtr->setImpact( multiPtr->bMPI(), multiPtr->enhanceMPI(),
+    multiPtr->enhanceMPIavg(), false);
   }
 
 

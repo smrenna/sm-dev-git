@@ -215,6 +215,15 @@ public:
   // Read in one update from a single line.
   bool readString(string line, bool warn = true) ;
 
+  // Retrieve readString history (e.g., for inspection). Everything
+  // (subrun=-999), up to first subrun (=-1), or subrun-specific (>=0).
+  vector<string> getReadHistory(int subrun=-999) {
+    if (subrun == -999) return readStringHistory;
+    else if (readStringSubrun.find(subrun) != readStringSubrun.end())
+      return readStringSubrun[subrun];
+    else return vector<string>();
+  }
+
   // Write updates or everything to user-defined file or to stream.
   bool writeFile(string toFile, bool writeAll = false) ;
   bool writeFile(ostream& os = cout, bool writeAll = false) ;
@@ -304,20 +313,14 @@ public:
   map<string, WVec> getWVecMap(string match);
 
   // Change current value, respecting limits.
-  void flag(string keyIn, bool nowIn);
-  bool mode(string keyIn, int nowIn);
-  void parm(string keyIn, double nowIn);
-  void word(string keyIn, string nowIn);
-  void fvec(string keyIn, vector<bool> nowIn);
-  void mvec(string keyIn, vector<int> nowIn);
-  void pvec(string keyIn, vector<double> nowIn);
-  void wvec(string keyIn, vector<string> nowIn);
-
-  // Change current value, disregarding limits.
-  void forceMode(string keyIn, int nowIn);
-  void forceParm(string keyIn, double nowIn);
-  void forceMVec(string keyIn, vector<int> nowIn);
-  void forcePVec(string keyIn, vector<double> nowIn);
+  void flag(string keyIn, bool nowIn, bool force = false);
+  bool mode(string keyIn, int nowIn, bool force = false);
+  void parm(string keyIn, double nowIn, bool force = false);
+  void word(string keyIn, string nowIn, bool force = false);
+  void fvec(string keyIn, vector<bool> nowIn, bool force = false);
+  void mvec(string keyIn, vector<int> nowIn, bool force = false);
+  void pvec(string keyIn, vector<double> nowIn, bool force = false);
+  void wvec(string keyIn, vector<string> nowIn, bool force = false);
 
   // Restore current value to default.
   void resetFlag(string keyIn);
@@ -337,9 +340,6 @@ public:
 
   // Check whether input openend with { not yet closed with }.
   bool unfinishedInput() {return lineSaved;}
-
-  // Method to retrieve history of readString commands (e.g., for inspection)
-  vector<string> getReadHistory() { return readStringHistory; }
 
  private:
 
@@ -377,8 +377,9 @@ public:
   bool   lineSaved;
   string savedLine;
 
-  // Stored history of readString statements
+  // Stored history of readString statements (common and by subrun).
   vector<string> readStringHistory;
+  map<int, vector<string> > readStringSubrun;
 
   // Print out table of database, called from listAll and listChanged.
   void list(bool doListAll, bool doListString, string match);

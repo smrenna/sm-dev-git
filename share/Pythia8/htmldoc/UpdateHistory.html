@@ -18,7 +18,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.225: 25 March 2017 
+<li>8.225: 30 March 2017 
 <ul> 
  
 <li>Construct <i>pi^+-</i> PDFs so that <i>dbar = u</i> 
@@ -38,15 +38,29 @@ flag appears to be on by default. Thanks to Ivan Razumov.</li>
 with two hard processes. By mistake statistics was added once with 
 the correct value for each event (accessible with 
 <code>Info::enhanceMPI()</code>), and once with unity, leading to a 
-dilution of the effect. The enhancement factor is now also calculated 
-at initialization, for internal usage.</li> 
+dilution of the effect. The average enhancement factor is now also 
+calculated at initialization, see <code>Info::enhanceMPIavg()</code> 
+and <code>Info::enhanceMPIoldavg()</code>.</li> 
  
-<li>New method <code>Settings::getReadHistory</code> returns a vector 
+<li>A new approach has been introduced to force settings values 
+outside their allowed range, either by using the keyword 
+<code>FORCE</code> after the key (= parameter name) in an 
+<code>readString()</code> or <code>readFile()</code> command line, 
+or by using a new optional third argument <code>force = true</code> 
+(which is <code>false</code> by default) in the <code>Settings</code> 
+methods used to change values. The latter methods also will add a new 
+key to the database if not already there when <code>force = true</code> 
+is set. The old special <code>force</code> methods are now redundant 
+and have been removed. (Still to be expanded?)</li> 
+ 
+<li>New methods <code>Settings::getReadHistory</code> and 
+<code>ParticleData::getReadHistory</code> return a vector 
 with all strings that have been read in by the 
-<code>Settings::readString()</code> method, and thereby also the 
-settings part of the <code>Pythia::readString()</code> and 
-<code>Pythia::readFile()</code> commands. (Still to be expanded?) 
-</li> 
+<code>Settings::readString()</code> and 
+<code>ParticleData::readString()</code> 
+methods, respectively, and thereby also the information set by the 
+<code>Pythia::readString()</code> and <code>Pythia::readFile()</code> 
+commands. (Still to be expanded?)</li> 
  
 <li>Introduce possibility to make phase space cuts on the DIS 
 <i>Q^2</i> variable.</li> 
@@ -95,8 +109,12 @@ Andreas Albert.</li>
 <li>Fixed memory leak in <code>TimeShower</code>, for the case when 
 the ProcessLevel is off. Thanks to Ryosuke Sato.</li> 
  
-<li>Fix that the MPI machinery did not work for the (infrequently used)
+<li>Fix that the MPI machinery did not work for the (infrequently used) 
 <code>MultipartonInteractions:bProfile = 0</code> option.</li> 
+ 
+<li>Minor division-by-zero bug fix in statistics calculation and 
+harmless uninitialized <code>bool</code>s in <code>CoupSUSY</code>. 
+Thanks to Vittorio Zecca.</li> 
  
 <li>Minor numerical precision improvements in gamma-gamma kinematics 
 and in <i>tHat</i> and <i>uHat</i> construction.</li> 

@@ -146,7 +146,7 @@ public:
   double pdf2()       const {return (id2 == 21 ? 4./9. : 1.) * xPDF2now;}
   double bMPI()       const {return (bIsSet) ? bNow : 0.;}
   double enhanceMPI() const {return (bIsSet) ? enhanceB / zeroIntCorr : 1.;}
-  double enhanceBin() const {return enhanceBinit;}
+  double enhanceMPIavg() const {return enhanceBavg;}
 
   // For x-dependent matter profile, return incoming valence/sea
   // decision from trial interactions.
@@ -225,7 +225,7 @@ private:
          zeroIntCorr, normOverlap, nAvg, kNow, normPi, bAvg, bDiv,
          probLowB, radius2B, radius2C, fracA, fracB, fracC, fracAhigh,
          fracBhigh, fracChigh, fracABChigh, expRev, cDiv, cMax,
-         enhanceBinit;
+         enhanceBavg;
 
   // Properties specific to current system.
   bool   bIsSet, bSetInFirst, isAtLowB, pickOtherSel;

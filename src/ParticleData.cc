@@ -1300,6 +1300,13 @@ void ParticleData::listFF(string outFile) {
     return false;
   }
 
+  // Store history of readString statements.
+  readStringHistory.push_back(line);
+  int subrun = max( -1, settingsPtr->mode("Main:subrun"));
+  if (readStringSubrun.find(subrun) == readStringSubrun.end())
+    readStringSubrun[subrun] = vector<string>();
+  readStringSubrun[subrun].push_back(line);
+
   // Identify particle property and read + set its value, case by case.
   if (property == "name") {
     string nameTmp;

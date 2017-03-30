@@ -482,7 +482,8 @@ void ProcessLevel::accumulate( bool doAccumulate) {
   double sigmaComb  = 0.5 * (sigmaSum * sig2SelSum + sigSelSum * sigma2Sum);
   sigmaComb        *= impactFac / sigmaND;
   if (allHardSame) sigmaComb *= 0.5;
-  double deltaComb  = sqrtpos(2. / nAccSum + impactErr2) * sigmaComb;
+  double deltaComb  = (nAccSum == 0) ? 0.
+                    : sqrtpos(2. / nAccSum + impactErr2) * sigmaComb;
 
   // Store info and done.
   infoPtr->setSigma( 0, "sum", nTrySum, nSelSum, nAccSum, sigmaComb, deltaComb,

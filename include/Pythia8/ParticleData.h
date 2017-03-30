@@ -424,6 +424,15 @@ public:
   // Keep track whether any readings have failed, invalidating run setup.
   bool readingFailed() {return readingFailedSave;}
 
+  // Retrieve readString history (e.g., for inspection). Everything
+  // (subrun=-999), up to first subrun (=-1), or subrun-specific (>=0).
+  vector<string> getReadHistory(int subrun=-999) {
+    if (subrun == -999) return readStringHistory;
+    else if (readStringSubrun.find(subrun) != readStringSubrun.end())
+      return readStringSubrun[subrun];
+    else return vector<string>();
+  }
+
   // Print out table of whole database, or of only part of it.
   void listAll() {list(false, true);}
   void listChanged(bool changedRes = false) {list(true, changedRes);}
@@ -663,6 +672,10 @@ private:
 
   // Vector of strings containing the readable lines of the XML file.
   vector<string> xmlFileSav;
+
+  // Stored history of readString statements (common and by subrun).
+  vector<string> readStringHistory;
+  map<int, vector<string> > readStringSubrun;
 
 };
 
