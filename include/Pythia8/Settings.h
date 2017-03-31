@@ -215,15 +215,6 @@ public:
   // Read in one update from a single line.
   bool readString(string line, bool warn = true) ;
 
-  // Retrieve readString history (e.g., for inspection). Everything
-  // (subrun=-999), up to first subrun (=-1), or subrun-specific (>=0).
-  vector<string> getReadHistory(int subrun=-999) {
-    if (subrun == -999) return readStringHistory;
-    else if (readStringSubrun.find(subrun) != readStringSubrun.end())
-      return readStringSubrun[subrun];
-    else return vector<string>();
-  }
-
   // Write updates or everything to user-defined file or to stream.
   bool writeFile(string toFile, bool writeAll = false) ;
   bool writeFile(ostream& os = cout, bool writeAll = false) ;
@@ -237,6 +228,15 @@ public:
 
   // Give back current value(s) as a string, whatever the type.
   string output(string keyIn, bool fullLine = true);
+
+  // Retrieve readString history (e.g., for inspection). Everything
+  // (subrun=-999), up to first subrun (=-1), or subrun-specific (>=0).
+  vector<string> getReadHistory(int subrun=-999) {
+    if (subrun == -999) return readStringHistory;
+    else if (readStringSubrun.find(subrun) != readStringSubrun.end())
+      return readStringSubrun[subrun];
+    else return vector<string>();
+  }
 
   // Reset all values to their defaults.
   void resetAll() ;
@@ -321,6 +321,13 @@ public:
   void mvec(string keyIn, vector<int> nowIn, bool force = false);
   void pvec(string keyIn, vector<double> nowIn, bool force = false);
   void wvec(string keyIn, vector<string> nowIn, bool force = false);
+
+  // Methods kept for backwards compatability with 8.223 and earlier.
+  // (To be removed in next major release.)
+  void forceMode(string keyIn, int nowIn) {mode(keyIn,nowIn,true);}
+  void forceParm(string keyIn, double nowIn) {parm(keyIn,nowIn,true);}
+  void forceMVec(string keyIn, vector<int> nowIn) {mvec(keyIn,nowIn,true);}
+  void forcePVec(string keyIn, vector<double> nowIn) {pvec(keyIn,nowIn,true);}
 
   // Restore current value to default.
   void resetFlag(string keyIn);

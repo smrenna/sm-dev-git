@@ -262,13 +262,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>ParticleDataEntry&</td>
-<td><a href="ParticleDataScheme.php#method66" target="page">operator=(...)</a></td>
+<td><a href="ParticleDataScheme.php#method68" target="page">operator=(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>DecayChannel&</td>
-<td><a href="ParticleDataScheme.php#method124" target="page">operator=(...)</a></td>
+<td><a href="ParticleDataScheme.php#method126" target="page">operator=(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
@@ -316,7 +316,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method55" target="page">setResonancePtr(...)</a></td>
+<td><a href="ParticleDataScheme.php#method57" target="page">setResonancePtr(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
@@ -742,145 +742,145 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method126" target="page">DecayChannel::bRatio()</a></td>
+<td><a href="ParticleDataScheme.php#method128" target="page">DecayChannel::bRatio()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method126" target="page">DecayChannel::bRatio(...)</a></td>
+<td><a href="ParticleDataScheme.php#method128" target="page">DecayChannel::bRatio(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method132" target="page">DecayChannel::contains(...)</a></td>
+<td><a href="ParticleDataScheme.php#method134" target="page">DecayChannel::contains(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method132" target="page">DecayChannel::contains(...)</a></td>
+<td><a href="ParticleDataScheme.php#method134" target="page">DecayChannel::contains(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method132" target="page">DecayChannel::contains(...)</a></td>
+<td><a href="ParticleDataScheme.php#method134" target="page">DecayChannel::contains(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method133" target="page">DecayChannel::currentBR()</a></td>
+<td><a href="ParticleDataScheme.php#method135" target="page">DecayChannel::currentBR()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method133" target="page">DecayChannel::currentBR(...)</a></td>
+<td><a href="ParticleDataScheme.php#method135" target="page">DecayChannel::currentBR(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td> </td>
-<td><a href="ParticleDataScheme.php#method123" target="page">DecayChannel::DecayChannel(...)</a></td>
+<td><a href="ParticleDataScheme.php#method125" target="page">DecayChannel::DecayChannel(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method131" target="page">DecayChannel::hasChanged()</a></td>
+<td><a href="ParticleDataScheme.php#method133" target="page">DecayChannel::hasChanged()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleDataScheme.php#method128" target="page">DecayChannel::meMode()</a></td>
+<td><a href="ParticleDataScheme.php#method130" target="page">DecayChannel::meMode()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method128" target="page">DecayChannel::meMode(...)</a></td>
+<td><a href="ParticleDataScheme.php#method130" target="page">DecayChannel::meMode(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleDataScheme.php#method129" target="page">DecayChannel::multiplicity()</a></td>
+<td><a href="ParticleDataScheme.php#method131" target="page">DecayChannel::multiplicity()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method129" target="page">DecayChannel::multiplicity(...)</a></td>
+<td><a href="ParticleDataScheme.php#method131" target="page">DecayChannel::multiplicity(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleDataScheme.php#method125" target="page">DecayChannel::onMode()</a></td>
+<td><a href="ParticleDataScheme.php#method127" target="page">DecayChannel::onMode()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method125" target="page">DecayChannel::onMode(...)</a></td>
+<td><a href="ParticleDataScheme.php#method127" target="page">DecayChannel::onMode(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method134" target="page">DecayChannel::onShellWidth()</a></td>
+<td><a href="ParticleDataScheme.php#method136" target="page">DecayChannel::onShellWidth()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method134" target="page">DecayChannel::onShellWidth(...)</a></td>
+<td><a href="ParticleDataScheme.php#method136" target="page">DecayChannel::onShellWidth(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method135" target="page">DecayChannel::onShellWidthFactor(...)</a></td>
+<td><a href="ParticleDataScheme.php#method137" target="page">DecayChannel::onShellWidthFactor(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method136" target="page">DecayChannel::openSec(...)</a></td>
+<td><a href="ParticleDataScheme.php#method138" target="page">DecayChannel::openSec(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method136" target="page">DecayChannel::openSec(...)</a></td>
+<td><a href="ParticleDataScheme.php#method138" target="page">DecayChannel::openSec(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method130" target="page">DecayChannel::product(...)</a></td>
+<td><a href="ParticleDataScheme.php#method132" target="page">DecayChannel::product(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleDataScheme.php#method130" target="page">DecayChannel::product(...)</a></td>
+<td><a href="ParticleDataScheme.php#method132" target="page">DecayChannel::product(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method127" target="page">DecayChannel::rescaleBR(...)</a></td>
+<td><a href="ParticleDataScheme.php#method129" target="page">DecayChannel::rescaleBR(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method131" target="page">DecayChannel::setHasChanged(...)</a></td>
+<td><a href="ParticleDataScheme.php#method133" target="page">DecayChannel::setHasChanged(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
@@ -3436,127 +3436,139 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method15" target="page">ParticleData::addParticle(...)</a></td>
+<td><a href="ParticleDataScheme.php#method17" target="page">ParticleData::addParticle(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method15" target="page">ParticleData::addParticle(...)</a></td>
+<td><a href="ParticleDataScheme.php#method17" target="page">ParticleData::addParticle(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method20" target="page">ParticleData::antiName(...)</a></td>
+<td><a href="ParticleDataScheme.php#method22" target="page">ParticleData::antiName(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleDataScheme.php#method53" target="page">ParticleData::baryonNumberType(...)</a></td>
+<td><a href="ParticleDataScheme.php#method55" target="page">ParticleData::baryonNumberType(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method42" target="page">ParticleData::canDecay(...)</a></td>
+<td><a href="ParticleDataScheme.php#method44" target="page">ParticleData::canDecay(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method23" target="page">ParticleData::charge(...)</a></td>
+<td><a href="ParticleDataScheme.php#method25" target="page">ParticleData::charge(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method22" target="page">ParticleData::chargeType(...)</a></td>
+<td><a href="ParticleDataScheme.php#method24" target="page">ParticleData::chargeType(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleDataScheme.php#method22" target="page">ParticleData::chargeType(...)</a></td>
+<td><a href="ParticleDataScheme.php#method24" target="page">ParticleData::chargeType(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method14" target="page">ParticleData::checkTable(...)</a></td>
+<td><a href="ParticleDataScheme.php#method16" target="page">ParticleData::checkTable(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method24" target="page">ParticleData::colType(...)</a></td>
+<td><a href="ParticleDataScheme.php#method26" target="page">ParticleData::colType(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleDataScheme.php#method24" target="page">ParticleData::colType(...)</a></td>
+<td><a href="ParticleDataScheme.php#method26" target="page">ParticleData::colType(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method39" target="page">ParticleData::constituentMass(...)</a></td>
+<td><a href="ParticleDataScheme.php#method41" target="page">ParticleData::constituentMass(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method34" target="page">ParticleData::doExternalDecay(...)</a></td>
+<td><a href="ParticleDataScheme.php#method36" target="page">ParticleData::doExternalDecay(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method34" target="page">ParticleData::doExternalDecays(...)</a></td>
+<td><a href="ParticleDataScheme.php#method36" target="page">ParticleData::doExternalDecays(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method36" target="page">ParticleData::doForceWidth(...)</a></td>
+<td><a href="ParticleDataScheme.php#method38" target="page">ParticleData::doForceWidth(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method36" target="page">ParticleData::doForceWidth(...)</a></td>
+<td><a href="ParticleDataScheme.php#method38" target="page">ParticleData::doForceWidth(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method64" target="page">ParticleData::getIsInit()</a></td>
+<td><a href="ParticleDataScheme.php#method66" target="page">ParticleData::getIsInit()</a></td>
+<td>Particle Data Scheme</td>
+</tr>
+
+<tr>
+<td>vector<string></td>
+<td><a href="ParticleDataScheme.php#method14" target="page">ParticleData::getReadHistory()</a></td>
+<td>Particle Data Scheme</td>
+</tr>
+
+<tr>
+<td>vector<string></td>
+<td><a href="ParticleDataScheme.php#method15" target="page">ParticleData::getReadHistory(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method19" target="page">ParticleData::hasAnti(...)</a></td>
+<td><a href="ParticleDataScheme.php#method21" target="page">ParticleData::hasAnti(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method37" target="page">ParticleData::hasChanged(...)</a></td>
+<td><a href="ParticleDataScheme.php#method39" target="page">ParticleData::hasChanged(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method37" target="page">ParticleData::hasChanged(...)</a></td>
+<td><a href="ParticleDataScheme.php#method39" target="page">ParticleData::hasChanged(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleDataScheme.php#method52" target="page">ParticleData::heaviestQuark(...)</a></td>
+<td><a href="ParticleDataScheme.php#method54" target="page">ParticleData::heaviestQuark(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
@@ -3580,85 +3592,85 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method50" target="page">ParticleData::isBaryon(...)</a></td>
+<td><a href="ParticleDataScheme.php#method52" target="page">ParticleData::isBaryon(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method46" target="page">ParticleData::isDiquark(...)</a></td>
+<td><a href="ParticleDataScheme.php#method48" target="page">ParticleData::isDiquark(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method45" target="page">ParticleData::isGluon(...)</a></td>
+<td><a href="ParticleDataScheme.php#method47" target="page">ParticleData::isGluon(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method48" target="page">ParticleData::isHadron(...)</a></td>
+<td><a href="ParticleDataScheme.php#method50" target="page">ParticleData::isHadron(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method43" target="page">ParticleData::isLepton(...)</a></td>
+<td><a href="ParticleDataScheme.php#method45" target="page">ParticleData::isLepton(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method49" target="page">ParticleData::isMeson(...)</a></td>
+<td><a href="ParticleDataScheme.php#method51" target="page">ParticleData::isMeson(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method51" target="page">ParticleData::isOctetHadron(...)</a></td>
+<td><a href="ParticleDataScheme.php#method53" target="page">ParticleData::isOctetHadron(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method17" target="page">ParticleData::isParticle(...)</a></td>
+<td><a href="ParticleDataScheme.php#method19" target="page">ParticleData::isParticle(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method47" target="page">ParticleData::isParton()</a></td>
+<td><a href="ParticleDataScheme.php#method49" target="page">ParticleData::isParton()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method44" target="page">ParticleData::isQuark(...)</a></td>
+<td><a href="ParticleDataScheme.php#method46" target="page">ParticleData::isQuark(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method32" target="page">ParticleData::isResonance(...)</a></td>
+<td><a href="ParticleDataScheme.php#method34" target="page">ParticleData::isResonance(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method32" target="page">ParticleData::isResonance(...)</a></td>
+<td><a href="ParticleDataScheme.php#method34" target="page">ParticleData::isResonance(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method35" target="page">ParticleData::isVisible(...)</a></td>
+<td><a href="ParticleDataScheme.php#method37" target="page">ParticleData::isVisible(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method35" target="page">ParticleData::isVisible(...)</a></td>
+<td><a href="ParticleDataScheme.php#method37" target="page">ParticleData::isVisible(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
@@ -3706,109 +3718,109 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method25" target="page">ParticleData::m0(...)</a></td>
+<td><a href="ParticleDataScheme.php#method27" target="page">ParticleData::m0(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method25" target="page">ParticleData::m0(...)</a></td>
+<td><a href="ParticleDataScheme.php#method27" target="page">ParticleData::m0(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method30" target="page">ParticleData::m0Max(...)</a></td>
+<td><a href="ParticleDataScheme.php#method32" target="page">ParticleData::m0Max(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method29" target="page">ParticleData::m0Min(...)</a></td>
+<td><a href="ParticleDataScheme.php#method31" target="page">ParticleData::m0Min(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method33" target="page">ParticleData::mayDecay(...)</a></td>
+<td><a href="ParticleDataScheme.php#method35" target="page">ParticleData::mayDecay(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method33" target="page">ParticleData::mayDecay(...)</a></td>
+<td><a href="ParticleDataScheme.php#method35" target="page">ParticleData::mayDecay(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method28" target="page">ParticleData::mMax(...)</a></td>
+<td><a href="ParticleDataScheme.php#method30" target="page">ParticleData::mMax(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method28" target="page">ParticleData::mMax(...)</a></td>
+<td><a href="ParticleDataScheme.php#method30" target="page">ParticleData::mMax(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method27" target="page">ParticleData::mMin(...)</a></td>
+<td><a href="ParticleDataScheme.php#method29" target="page">ParticleData::mMin(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method27" target="page">ParticleData::mMin(...)</a></td>
+<td><a href="ParticleDataScheme.php#method29" target="page">ParticleData::mMin(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method41" target="page">ParticleData::mRun(...)</a></td>
+<td><a href="ParticleDataScheme.php#method43" target="page">ParticleData::mRun(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method40" target="page">ParticleData::mSel(...)</a></td>
+<td><a href="ParticleDataScheme.php#method42" target="page">ParticleData::mSel(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method26" target="page">ParticleData::mWidth(...)</a></td>
+<td><a href="ParticleDataScheme.php#method28" target="page">ParticleData::mWidth(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method26" target="page">ParticleData::mWidth(...)</a></td>
+<td><a href="ParticleDataScheme.php#method28" target="page">ParticleData::mWidth(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method20" target="page">ParticleData::name(...)</a></td>
+<td><a href="ParticleDataScheme.php#method22" target="page">ParticleData::name(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>string</td>
-<td><a href="ParticleDataScheme.php#method20" target="page">ParticleData::name(...)</a></td>
+<td><a href="ParticleDataScheme.php#method22" target="page">ParticleData::name(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method20" target="page">ParticleData::names(...)</a></td>
+<td><a href="ParticleDataScheme.php#method22" target="page">ParticleData::names(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleDataScheme.php#method18" target="page">ParticleData::nextId(...)</a></td>
+<td><a href="ParticleDataScheme.php#method20" target="page">ParticleData::nextId(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
@@ -3820,7 +3832,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>ParticleDataEntry*</td>
-<td><a href="ParticleDataScheme.php#method63" target="page">ParticleData::particleDataEntryPtr(...)</a></td>
+<td><a href="ParticleDataScheme.php#method65" target="page">ParticleData::particleDataEntryPtr(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
@@ -3850,547 +3862,547 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method54" target="page">ParticleData::rescaleBR(...)</a></td>
+<td><a href="ParticleDataScheme.php#method56" target="page">ParticleData::rescaleBR(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method56" target="page">ParticleData::resInit(...)</a></td>
+<td><a href="ParticleDataScheme.php#method58" target="page">ParticleData::resInit(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method60" target="page">ParticleData::resOpenFrac(...)</a></td>
+<td><a href="ParticleDataScheme.php#method62" target="page">ParticleData::resOpenFrac(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method57" target="page">ParticleData::resWidth(...)</a></td>
+<td><a href="ParticleDataScheme.php#method59" target="page">ParticleData::resWidth(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method62" target="page">ParticleData::resWidthChan(...)</a></td>
+<td><a href="ParticleDataScheme.php#method64" target="page">ParticleData::resWidthChan(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method58" target="page">ParticleData::resWidthOpen(...)</a></td>
+<td><a href="ParticleDataScheme.php#method60" target="page">ParticleData::resWidthOpen(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method61" target="page">ParticleData::resWidthRescaleFactor(...)</a></td>
+<td><a href="ParticleDataScheme.php#method63" target="page">ParticleData::resWidthRescaleFactor(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method59" target="page">ParticleData::resWidthStore(...)</a></td>
+<td><a href="ParticleDataScheme.php#method61" target="page">ParticleData::resWidthStore(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method16" target="page">ParticleData::setAll(...)</a></td>
+<td><a href="ParticleDataScheme.php#method18" target="page">ParticleData::setAll(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method21" target="page">ParticleData::spinType(...)</a></td>
+<td><a href="ParticleDataScheme.php#method23" target="page">ParticleData::spinType(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleDataScheme.php#method21" target="page">ParticleData::spinType(...)</a></td>
+<td><a href="ParticleDataScheme.php#method23" target="page">ParticleData::spinType(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method31" target="page">ParticleData::tau0(...)</a></td>
+<td><a href="ParticleDataScheme.php#method33" target="page">ParticleData::tau0(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method31" target="page">ParticleData::tau0(...)</a></td>
+<td><a href="ParticleDataScheme.php#method33" target="page">ParticleData::tau0(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method38" target="page">ParticleData::useBreitWigner(...)</a></td>
+<td><a href="ParticleDataScheme.php#method40" target="page">ParticleData::useBreitWigner(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method109" target="page">ParticleDataEntry::addChannel(...)</a></td>
+<td><a href="ParticleDataScheme.php#method111" target="page">ParticleDataEntry::addChannel(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleDataScheme.php#method107" target="page">ParticleDataEntry::baryonNumberType(...)</a></td>
+<td><a href="ParticleDataScheme.php#method109" target="page">ParticleDataEntry::baryonNumberType(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method96" target="page">ParticleDataEntry::canDecay(...)</a></td>
+<td><a href="ParticleDataScheme.php#method98" target="page">ParticleDataEntry::canDecay(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>DecayChannel&</td>
-<td><a href="ParticleDataScheme.php#method111" target="page">ParticleDataEntry::channel(...)</a></td>
+<td><a href="ParticleDataScheme.php#method113" target="page">ParticleDataEntry::channel(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>const DecayChannel&</td>
-<td><a href="ParticleDataScheme.php#method111" target="page">ParticleDataEntry::channel(...)</a></td>
+<td><a href="ParticleDataScheme.php#method113" target="page">ParticleDataEntry::channel(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method75" target="page">ParticleDataEntry::charge(...)</a></td>
+<td><a href="ParticleDataScheme.php#method77" target="page">ParticleDataEntry::charge(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleDataScheme.php#method75" target="page">ParticleDataEntry::chargeType(...)</a></td>
+<td><a href="ParticleDataScheme.php#method77" target="page">ParticleDataEntry::chargeType(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method108" target="page">ParticleDataEntry::clearChannels()</a></td>
+<td><a href="ParticleDataScheme.php#method110" target="page">ParticleDataEntry::clearChannels()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleDataScheme.php#method76" target="page">ParticleDataEntry::colType(...)</a></td>
+<td><a href="ParticleDataScheme.php#method78" target="page">ParticleDataEntry::colType(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method92" target="page">ParticleDataEntry::constituentMass()</a></td>
+<td><a href="ParticleDataScheme.php#method94" target="page">ParticleDataEntry::constituentMass()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method86" target="page">ParticleDataEntry::doExternalDecay()</a></td>
+<td><a href="ParticleDataScheme.php#method88" target="page">ParticleDataEntry::doExternalDecay()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method88" target="page">ParticleDataEntry::doForceWidth()</a></td>
+<td><a href="ParticleDataScheme.php#method90" target="page">ParticleDataEntry::doForceWidth()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>ResonanceWidths*</td>
-<td><a href="ParticleDataScheme.php#method115" target="page">ParticleDataEntry::getResonancePtr()</a></td>
+<td><a href="ParticleDataScheme.php#method117" target="page">ParticleDataEntry::getResonancePtr()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method72" target="page">ParticleDataEntry::hasAnti()</a></td>
+<td><a href="ParticleDataScheme.php#method74" target="page">ParticleDataEntry::hasAnti()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method90" target="page">ParticleDataEntry::hasChanged(...)</a></td>
+<td><a href="ParticleDataScheme.php#method92" target="page">ParticleDataEntry::hasChanged(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleDataScheme.php#method106" target="page">ParticleDataEntry::heaviestQuark(...)</a></td>
+<td><a href="ParticleDataScheme.php#method108" target="page">ParticleDataEntry::heaviestQuark(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleDataScheme.php#method71" target="page">ParticleDataEntry::id()</a></td>
+<td><a href="ParticleDataScheme.php#method73" target="page">ParticleDataEntry::id()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method91" target="page">ParticleDataEntry::initBWmass()</a></td>
+<td><a href="ParticleDataScheme.php#method93" target="page">ParticleDataEntry::initBWmass()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method69" target="page">ParticleDataEntry::initPtr(...)</a></td>
+<td><a href="ParticleDataScheme.php#method71" target="page">ParticleDataEntry::initPtr(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method104" target="page">ParticleDataEntry::isBaryon()</a></td>
+<td><a href="ParticleDataScheme.php#method106" target="page">ParticleDataEntry::isBaryon()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method100" target="page">ParticleDataEntry::isDiquark()</a></td>
+<td><a href="ParticleDataScheme.php#method102" target="page">ParticleDataEntry::isDiquark()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method99" target="page">ParticleDataEntry::isGluon()</a></td>
+<td><a href="ParticleDataScheme.php#method101" target="page">ParticleDataEntry::isGluon()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method102" target="page">ParticleDataEntry::isHadron()</a></td>
+<td><a href="ParticleDataScheme.php#method104" target="page">ParticleDataEntry::isHadron()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method97" target="page">ParticleDataEntry::isLepton()</a></td>
+<td><a href="ParticleDataScheme.php#method99" target="page">ParticleDataEntry::isLepton()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method103" target="page">ParticleDataEntry::isMeson()</a></td>
+<td><a href="ParticleDataScheme.php#method105" target="page">ParticleDataEntry::isMeson()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method105" target="page">ParticleDataEntry::isOctetHadron()</a></td>
+<td><a href="ParticleDataScheme.php#method107" target="page">ParticleDataEntry::isOctetHadron()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method101" target="page">ParticleDataEntry::isParton()</a></td>
+<td><a href="ParticleDataScheme.php#method103" target="page">ParticleDataEntry::isParton()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method98" target="page">ParticleDataEntry::isQuark()</a></td>
+<td><a href="ParticleDataScheme.php#method100" target="page">ParticleDataEntry::isQuark()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method84" target="page">ParticleDataEntry::isResonance()</a></td>
+<td><a href="ParticleDataScheme.php#method86" target="page">ParticleDataEntry::isResonance()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method87" target="page">ParticleDataEntry::isVisible()</a></td>
+<td><a href="ParticleDataScheme.php#method89" target="page">ParticleDataEntry::isVisible()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method77" target="page">ParticleDataEntry::m0()</a></td>
+<td><a href="ParticleDataScheme.php#method79" target="page">ParticleDataEntry::m0()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method82" target="page">ParticleDataEntry::m0Max()</a></td>
+<td><a href="ParticleDataScheme.php#method84" target="page">ParticleDataEntry::m0Max()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method81" target="page">ParticleDataEntry::m0Min()</a></td>
+<td><a href="ParticleDataScheme.php#method83" target="page">ParticleDataEntry::m0Min()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method85" target="page">ParticleDataEntry::mayDecay()</a></td>
+<td><a href="ParticleDataScheme.php#method87" target="page">ParticleDataEntry::mayDecay()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method80" target="page">ParticleDataEntry::mMax()</a></td>
+<td><a href="ParticleDataScheme.php#method82" target="page">ParticleDataEntry::mMax()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method79" target="page">ParticleDataEntry::mMin()</a></td>
+<td><a href="ParticleDataScheme.php#method81" target="page">ParticleDataEntry::mMin()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method94" target="page">ParticleDataEntry::mRun(...)</a></td>
+<td><a href="ParticleDataScheme.php#method96" target="page">ParticleDataEntry::mRun(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method93" target="page">ParticleDataEntry::mSel()</a></td>
+<td><a href="ParticleDataScheme.php#method95" target="page">ParticleDataEntry::mSel()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method78" target="page">ParticleDataEntry::mWidth()</a></td>
+<td><a href="ParticleDataScheme.php#method80" target="page">ParticleDataEntry::mWidth()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>string</td>
-<td><a href="ParticleDataScheme.php#method73" target="page">ParticleDataEntry::name(...)</a></td>
+<td><a href="ParticleDataScheme.php#method75" target="page">ParticleDataEntry::name(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td> </td>
-<td><a href="ParticleDataScheme.php#method65" target="page">ParticleDataEntry::ParticleDataEntry(...)</a></td>
+<td><a href="ParticleDataScheme.php#method67" target="page">ParticleDataEntry::ParticleDataEntry(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td> </td>
-<td><a href="ParticleDataScheme.php#method65" target="page">ParticleDataEntry::ParticleDataEntry(...)</a></td>
+<td><a href="ParticleDataScheme.php#method67" target="page">ParticleDataEntry::ParticleDataEntry(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>DecayChannel&</td>
-<td><a href="ParticleDataScheme.php#method114" target="page">ParticleDataEntry::pickChannel()</a></td>
+<td><a href="ParticleDataScheme.php#method116" target="page">ParticleDataEntry::pickChannel()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method113" target="page">ParticleDataEntry::preparePick(...)</a></td>
+<td><a href="ParticleDataScheme.php#method115" target="page">ParticleDataEntry::preparePick(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method112" target="page">ParticleDataEntry::rescaleBR(...)</a></td>
+<td><a href="ParticleDataScheme.php#method114" target="page">ParticleDataEntry::rescaleBR(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method116" target="page">ParticleDataEntry::resInit(...)</a></td>
+<td><a href="ParticleDataScheme.php#method118" target="page">ParticleDataEntry::resInit(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method120" target="page">ParticleDataEntry::resOpenFrac(...)</a></td>
+<td><a href="ParticleDataScheme.php#method122" target="page">ParticleDataEntry::resOpenFrac(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method117" target="page">ParticleDataEntry::resWidth(...)</a></td>
+<td><a href="ParticleDataScheme.php#method119" target="page">ParticleDataEntry::resWidth(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method122" target="page">ParticleDataEntry::resWidthChan(...)</a></td>
+<td><a href="ParticleDataScheme.php#method124" target="page">ParticleDataEntry::resWidthChan(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method118" target="page">ParticleDataEntry::resWidthOpen(...)</a></td>
+<td><a href="ParticleDataScheme.php#method120" target="page">ParticleDataEntry::resWidthOpen(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method121" target="page">ParticleDataEntry::resWidthRescaleFactor()</a></td>
+<td><a href="ParticleDataScheme.php#method123" target="page">ParticleDataEntry::resWidthRescaleFactor()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method119" target="page">ParticleDataEntry::resWidthStore(...)</a></td>
+<td><a href="ParticleDataScheme.php#method121" target="page">ParticleDataEntry::resWidthStore(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method70" target="page">ParticleDataEntry::setAll(...)</a></td>
+<td><a href="ParticleDataScheme.php#method72" target="page">ParticleDataEntry::setAll(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method73" target="page">ParticleDataEntry::setAntiName(...)</a></td>
+<td><a href="ParticleDataScheme.php#method75" target="page">ParticleDataEntry::setAntiName(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method75" target="page">ParticleDataEntry::setChargeType(...)</a></td>
+<td><a href="ParticleDataScheme.php#method77" target="page">ParticleDataEntry::setChargeType(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method76" target="page">ParticleDataEntry::setColType(...)</a></td>
+<td><a href="ParticleDataScheme.php#method78" target="page">ParticleDataEntry::setColType(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method68" target="page">ParticleDataEntry::setDefaults()</a></td>
+<td><a href="ParticleDataScheme.php#method70" target="page">ParticleDataEntry::setDefaults()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method86" target="page">ParticleDataEntry::setDoExternalDecays(...)</a></td>
+<td><a href="ParticleDataScheme.php#method88" target="page">ParticleDataEntry::setDoExternalDecays(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method88" target="page">ParticleDataEntry::setDoForceWidth(...)</a></td>
+<td><a href="ParticleDataScheme.php#method90" target="page">ParticleDataEntry::setDoForceWidth(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method89" target="page">ParticleDataEntry::setHasChanged(...)</a></td>
+<td><a href="ParticleDataScheme.php#method91" target="page">ParticleDataEntry::setHasChanged(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method84" target="page">ParticleDataEntry::setIsResonance(...)</a></td>
+<td><a href="ParticleDataScheme.php#method86" target="page">ParticleDataEntry::setIsResonance(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method87" target="page">ParticleDataEntry::setIsVisible(...)</a></td>
+<td><a href="ParticleDataScheme.php#method89" target="page">ParticleDataEntry::setIsVisible(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method77" target="page">ParticleDataEntry::setM0(...)</a></td>
+<td><a href="ParticleDataScheme.php#method79" target="page">ParticleDataEntry::setM0(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method85" target="page">ParticleDataEntry::setMayDecay(...)</a></td>
+<td><a href="ParticleDataScheme.php#method87" target="page">ParticleDataEntry::setMayDecay(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method80" target="page">ParticleDataEntry::setMMax(...)</a></td>
+<td><a href="ParticleDataScheme.php#method82" target="page">ParticleDataEntry::setMMax(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method79" target="page">ParticleDataEntry::setMMin(...)</a></td>
+<td><a href="ParticleDataScheme.php#method81" target="page">ParticleDataEntry::setMMin(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method78" target="page">ParticleDataEntry::setMWidth(...)</a></td>
+<td><a href="ParticleDataScheme.php#method80" target="page">ParticleDataEntry::setMWidth(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method73" target="page">ParticleDataEntry::setName(...)</a></td>
+<td><a href="ParticleDataScheme.php#method75" target="page">ParticleDataEntry::setName(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method73" target="page">ParticleDataEntry::setNames(...)</a></td>
+<td><a href="ParticleDataScheme.php#method75" target="page">ParticleDataEntry::setNames(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method115" target="page">ParticleDataEntry::setResonancePtr(...)</a></td>
+<td><a href="ParticleDataScheme.php#method117" target="page">ParticleDataEntry::setResonancePtr(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method74" target="page">ParticleDataEntry::setSpinType(...)</a></td>
+<td><a href="ParticleDataScheme.php#method76" target="page">ParticleDataEntry::setSpinType(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleDataScheme.php#method83" target="page">ParticleDataEntry::setTau0(...)</a></td>
+<td><a href="ParticleDataScheme.php#method85" target="page">ParticleDataEntry::setTau0(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleDataScheme.php#method110" target="page">ParticleDataEntry::sizeChannels()</a></td>
+<td><a href="ParticleDataScheme.php#method112" target="page">ParticleDataEntry::sizeChannels()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleDataScheme.php#method74" target="page">ParticleDataEntry::spinType()</a></td>
+<td><a href="ParticleDataScheme.php#method76" target="page">ParticleDataEntry::spinType()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleDataScheme.php#method83" target="page">ParticleDataEntry::tau0()</a></td>
+<td><a href="ParticleDataScheme.php#method85" target="page">ParticleDataEntry::tau0()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleDataScheme.php#method95" target="page">ParticleDataEntry::useBreitWigner()</a></td>
+<td><a href="ParticleDataScheme.php#method97" target="page">ParticleDataEntry::useBreitWigner()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
 <td> </td>
-<td><a href="ParticleDataScheme.php#method67" target="page">ParticleDataEntry::~ParticleDataEntry</a></td>
+<td><a href="ParticleDataScheme.php#method69" target="page">ParticleDataEntry::~ParticleDataEntry</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
@@ -4960,163 +4972,175 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method13" target="page">Settings::addFlag(...)</a></td>
+<td><a href="SettingsScheme.php#method15" target="page">Settings::addFlag(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method13" target="page">Settings::addFVec(...)</a></td>
+<td><a href="SettingsScheme.php#method15" target="page">Settings::addFVec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method13" target="page">Settings::addMode(...)</a></td>
+<td><a href="SettingsScheme.php#method15" target="page">Settings::addMode(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method13" target="page">Settings::addMVec(...)</a></td>
+<td><a href="SettingsScheme.php#method15" target="page">Settings::addMVec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method13" target="page">Settings::addParm(...)</a></td>
+<td><a href="SettingsScheme.php#method15" target="page">Settings::addParm(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method13" target="page">Settings::addPVec(...)</a></td>
+<td><a href="SettingsScheme.php#method15" target="page">Settings::addPVec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method13" target="page">Settings::addWord(...)</a></td>
+<td><a href="SettingsScheme.php#method15" target="page">Settings::addWord(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method13" target="page">Settings::addWVec(...)</a></td>
+<td><a href="SettingsScheme.php#method15" target="page">Settings::addWVec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="SettingsScheme.php#method14" target="page">Settings::flag(...)</a></td>
+<td><a href="SettingsScheme.php#method16" target="page">Settings::flag(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method17" target="page">Settings::flag(...)</a></td>
+<td><a href="SettingsScheme.php#method19" target="page">Settings::flag(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="SettingsScheme.php#method15" target="page">Settings::flagDefault(...)</a></td>
+<td><a href="SettingsScheme.php#method17" target="page">Settings::flagDefault(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method18" target="page">Settings::forceMode(...)</a></td>
+<td><a href="SettingsScheme.php#method20" target="page">Settings::forceMode(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method18" target="page">Settings::forceMVec(...)</a></td>
+<td><a href="SettingsScheme.php#method20" target="page">Settings::forceMVec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method18" target="page">Settings::forceParm(...)</a></td>
+<td><a href="SettingsScheme.php#method20" target="page">Settings::forceParm(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method18" target="page">Settings::forcePVec(...)</a></td>
+<td><a href="SettingsScheme.php#method20" target="page">Settings::forcePVec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>vector&lt;bool&gt;</td>
-<td><a href="SettingsScheme.php#method14" target="page">Settings::fvec(...)</a></td>
+<td><a href="SettingsScheme.php#method16" target="page">Settings::fvec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method17" target="page">Settings::fvec(...)</a></td>
+<td><a href="SettingsScheme.php#method19" target="page">Settings::fvec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>vector&lt;bool&gt;</td>
-<td><a href="SettingsScheme.php#method15" target="page">Settings::fvecDefault(...)</a></td>
+<td><a href="SettingsScheme.php#method17" target="page">Settings::fvecDefault(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>map&lt;string, Flag&gt;</td>
-<td><a href="SettingsScheme.php#method16" target="page">Settings::getFlagMap(...)</a></td>
+<td><a href="SettingsScheme.php#method18" target="page">Settings::getFlagMap(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>map&lt;string, FVec&gt;</td>
-<td><a href="SettingsScheme.php#method16" target="page">Settings::getFVecMap(...)</a></td>
+<td><a href="SettingsScheme.php#method18" target="page">Settings::getFVecMap(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="SettingsScheme.php#method20" target="page">Settings::getIsInit()</a></td>
+<td><a href="SettingsScheme.php#method22" target="page">Settings::getIsInit()</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>map&lt;string, Mode&gt;</td>
-<td><a href="SettingsScheme.php#method16" target="page">Settings::getModeMap(...)</a></td>
+<td><a href="SettingsScheme.php#method18" target="page">Settings::getModeMap(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>map&lt;string, MVec&gt;</td>
-<td><a href="SettingsScheme.php#method16" target="page">Settings::getMVecMap(...)</a></td>
+<td><a href="SettingsScheme.php#method18" target="page">Settings::getMVecMap(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>map&lt;string, Parm&gt;</td>
-<td><a href="SettingsScheme.php#method16" target="page">Settings::getParmMap(...)</a></td>
+<td><a href="SettingsScheme.php#method18" target="page">Settings::getParmMap(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>map&lt;string, PVec&gt;</td>
-<td><a href="SettingsScheme.php#method16" target="page">Settings::getPVecMap(...)</a></td>
+<td><a href="SettingsScheme.php#method18" target="page">Settings::getPVecMap(...)</a></td>
+<td>Settings Scheme</td>
+</tr>
+
+<tr>
+<td>vector<string></td>
+<td><a href="SettingsScheme.php#method11" target="page">Settings::getReadHistory()</a></td>
+<td>Settings Scheme</td>
+</tr>
+
+<tr>
+<td>vector<string></td>
+<td><a href="SettingsScheme.php#method12" target="page">Settings::getReadHistory(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>map&lt;string, Word&gt;</td>
-<td><a href="SettingsScheme.php#method16" target="page">Settings::getWordMap(...)</a></td>
+<td><a href="SettingsScheme.php#method18" target="page">Settings::getWordMap(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>map&lt;string, WVec&gt;</td>
-<td><a href="SettingsScheme.php#method16" target="page">Settings::getWVecMap(...)</a></td>
+<td><a href="SettingsScheme.php#method18" target="page">Settings::getWVecMap(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
@@ -5134,49 +5158,49 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
-<td><a href="SettingsScheme.php#method12" target="page">Settings::isFlag(...)</a></td>
+<td><a href="SettingsScheme.php#method14" target="page">Settings::isFlag(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="SettingsScheme.php#method12" target="page">Settings::isFVec(...)</a></td>
+<td><a href="SettingsScheme.php#method14" target="page">Settings::isFVec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="SettingsScheme.php#method12" target="page">Settings::isMode(...)</a></td>
+<td><a href="SettingsScheme.php#method14" target="page">Settings::isMode(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="SettingsScheme.php#method12" target="page">Settings::isMVec(...)</a></td>
+<td><a href="SettingsScheme.php#method14" target="page">Settings::isMVec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="SettingsScheme.php#method12" target="page">Settings::isParm(...)</a></td>
+<td><a href="SettingsScheme.php#method14" target="page">Settings::isParm(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="SettingsScheme.php#method12" target="page">Settings::isPVec(...)</a></td>
+<td><a href="SettingsScheme.php#method14" target="page">Settings::isPVec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="SettingsScheme.php#method12" target="page">Settings::isWord(...)</a></td>
+<td><a href="SettingsScheme.php#method14" target="page">Settings::isWord(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="SettingsScheme.php#method12" target="page">Settings::isWVec(...)</a></td>
+<td><a href="SettingsScheme.php#method14" target="page">Settings::isWVec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
@@ -5200,37 +5224,37 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>int</td>
-<td><a href="SettingsScheme.php#method14" target="page">Settings::mode(...)</a></td>
+<td><a href="SettingsScheme.php#method16" target="page">Settings::mode(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method17" target="page">Settings::mode(...)</a></td>
+<td><a href="SettingsScheme.php#method19" target="page">Settings::mode(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="SettingsScheme.php#method15" target="page">Settings::modeDefault(...)</a></td>
+<td><a href="SettingsScheme.php#method17" target="page">Settings::modeDefault(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>vector&lt;int&gt;</td>
-<td><a href="SettingsScheme.php#method14" target="page">Settings::mvec(...)</a></td>
+<td><a href="SettingsScheme.php#method16" target="page">Settings::mvec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method17" target="page">Settings::mvec(...)</a></td>
+<td><a href="SettingsScheme.php#method19" target="page">Settings::mvec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>vector&lt;int&gt;</td>
-<td><a href="SettingsScheme.php#method15" target="page">Settings::mvecDefault(...)</a></td>
+<td><a href="SettingsScheme.php#method17" target="page">Settings::mvecDefault(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
@@ -5242,43 +5266,43 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="SettingsScheme.php#method14" target="page">Settings::parm(...)</a></td>
+<td><a href="SettingsScheme.php#method16" target="page">Settings::parm(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method17" target="page">Settings::parm(...)</a></td>
+<td><a href="SettingsScheme.php#method19" target="page">Settings::parm(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="SettingsScheme.php#method15" target="page">Settings::parmDefault(...)</a></td>
+<td><a href="SettingsScheme.php#method17" target="page">Settings::parmDefault(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>vector&lt;double&gt;</td>
-<td><a href="SettingsScheme.php#method14" target="page">Settings::pvec(...)</a></td>
+<td><a href="SettingsScheme.php#method16" target="page">Settings::pvec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method17" target="page">Settings::pvec(...)</a></td>
+<td><a href="SettingsScheme.php#method19" target="page">Settings::pvec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>vector&lt;double&gt;</td>
-<td><a href="SettingsScheme.php#method15" target="page">Settings::pvecDefault(...)</a></td>
+<td><a href="SettingsScheme.php#method17" target="page">Settings::pvecDefault(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="SettingsScheme.php#method21" target="page">Settings::readingFailed()</a></td>
+<td><a href="SettingsScheme.php#method23" target="page">Settings::readingFailed()</a></td>
 <td>Settings Scheme</td>
 </tr>
 
@@ -5296,55 +5320,55 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method11" target="page">Settings::resetAll()</a></td>
+<td><a href="SettingsScheme.php#method13" target="page">Settings::resetAll()</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method19" target="page">Settings::resetFlag(...)</a></td>
+<td><a href="SettingsScheme.php#method21" target="page">Settings::resetFlag(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method19" target="page">Settings::resetFVec(...)</a></td>
+<td><a href="SettingsScheme.php#method21" target="page">Settings::resetFVec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method19" target="page">Settings::resetMode(...)</a></td>
+<td><a href="SettingsScheme.php#method21" target="page">Settings::resetMode(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method19" target="page">Settings::resetMVec(...)</a></td>
+<td><a href="SettingsScheme.php#method21" target="page">Settings::resetMVec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method19" target="page">Settings::resetParm(...)</a></td>
+<td><a href="SettingsScheme.php#method21" target="page">Settings::resetParm(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method19" target="page">Settings::resetPVec(...)</a></td>
+<td><a href="SettingsScheme.php#method21" target="page">Settings::resetPVec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method19" target="page">Settings::resetWord(...)</a></td>
+<td><a href="SettingsScheme.php#method21" target="page">Settings::resetWord(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method19" target="page">Settings::resetWVec(...)</a></td>
+<td><a href="SettingsScheme.php#method21" target="page">Settings::resetWVec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
@@ -5356,25 +5380,25 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
-<td><a href="SettingsScheme.php#method22" target="page">Settings::unfinishedInput()</a></td>
+<td><a href="SettingsScheme.php#method24" target="page">Settings::unfinishedInput()</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>string</td>
-<td><a href="SettingsScheme.php#method14" target="page">Settings::word(...)</a></td>
+<td><a href="SettingsScheme.php#method16" target="page">Settings::word(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method17" target="page">Settings::word(...)</a></td>
+<td><a href="SettingsScheme.php#method19" target="page">Settings::word(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>string</td>
-<td><a href="SettingsScheme.php#method15" target="page">Settings::wordDefault(...)</a></td>
+<td><a href="SettingsScheme.php#method17" target="page">Settings::wordDefault(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
@@ -5392,19 +5416,19 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>vector&lt;string&gt;</td>
-<td><a href="SettingsScheme.php#method14" target="page">Settings::wvec(...)</a></td>
+<td><a href="SettingsScheme.php#method16" target="page">Settings::wvec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="SettingsScheme.php#method17" target="page">Settings::wvec(...)</a></td>
+<td><a href="SettingsScheme.php#method19" target="page">Settings::wvec(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
 <td>vector&lt;string&gt;</td>
-<td><a href="SettingsScheme.php#method15" target="page">Settings::wvecDefault(...)</a></td>
+<td><a href="SettingsScheme.php#method17" target="page">Settings::wvecDefault(...)</a></td>
 <td>Settings Scheme</td>
 </tr>
 

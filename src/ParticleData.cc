@@ -615,7 +615,7 @@ void ParticleData::initCommon() {
 
 void ParticleData::initWidths( vector<ResonanceWidths*> resonancePtrs) {
 
-  // Initialize some common data.
+  // Initialize some common data (but preserve history of read statements).
   initCommon();
 
   // Pointer to database and Breit-Wigner mass initialization for each
@@ -860,6 +860,8 @@ bool ParticleData::copyXML(const ParticleData &particleDataIn) {
   // First Reset everything.
   pdt.clear();
   xmlFileSav.clear();
+  readStringHistory.resize(0);
+  readStringSubrun.clear();
   isInit = false;
   xmlFileSav=particleDataIn.xmlFileSav;
 
@@ -876,7 +878,13 @@ bool ParticleData::copyXML(const ParticleData &particleDataIn) {
 bool ParticleData::loadXML(istream& is, bool reset) {
 
   // Normally reset whole database before beginning.
-  if (reset) {pdt.clear(); xmlFileSav.clear(); isInit = false;}
+  if (reset) {
+    pdt.clear();
+    xmlFileSav.clear();
+    readStringHistory.resize(0);
+    readStringSubrun.clear();
+    isInit = false;
+  }
 
   // Check that instream is OK.
   if (!is.good()) {
@@ -1102,7 +1110,12 @@ void ParticleData::listXML(string outFile) {
 bool ParticleData::readFF(istream& is, bool reset) {
 
   // Normally reset whole database before beginning.
-  if (reset) {pdt.clear(); isInit = false;}
+  if (reset) {
+    pdt.clear();
+    readStringHistory.resize(0);
+    readStringSubrun.clear();
+    isInit = false;
+  }
 
   if (!is.good()) {
     infoPtr->errorMsg("Error in ParticleData::readFF:"
