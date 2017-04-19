@@ -2601,6 +2601,30 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
+<td> </td>
+<td><a href="HelacOniaProcesses.php#method1" target="page">LHAupHelaconia::LHAupHelaconia(...)</a></td>
+<td>Helac Onia Processes</td>
+</tr>
+
+<tr>
+<td>bool</td>
+<td><a href="HelacOniaProcesses.php#method2" target="page">LHAupHelaconia::readString(...)</a></td>
+<td>Helac Onia Processes</td>
+</tr>
+
+<tr>
+<td>void</td>
+<td><a href="HelacOniaProcesses.php#method3" target="page">LHAupHelaconia::setEvents(...)</a></td>
+<td>Helac Onia Processes</td>
+</tr>
+
+<tr>
+<td>void</td>
+<td><a href="HelacOniaProcesses.php#method4" target="page">LHAupHelaconia::setSeed(...)</a></td>
+<td>Helac Onia Processes</td>
+</tr>
+
+<tr>
 <td>void</td>
 <td><a href="LesHouchesAccord.php#method40" target="page">LHAupLHEF::closeAllFiles()</a></td>
 <td>Les Houches Accord</td>
@@ -3537,13 +3561,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
-<td>vector<string></td>
+<td>vector&lt;string&gt;</td>
 <td><a href="ParticleDataScheme.php#method14" target="page">ParticleData::getReadHistory()</a></td>
 <td>Particle Data Scheme</td>
 </tr>
 
 <tr>
-<td>vector<string></td>
+<td>vector&lt;string&gt;</td>
 <td><a href="ParticleDataScheme.php#method15" target="page">ParticleData::getReadHistory(...)</a></td>
 <td>Particle Data Scheme</td>
 </tr>
@@ -5121,13 +5145,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
-<td>vector<string></td>
+<td>vector&lt;string&gt;</td>
 <td><a href="SettingsScheme.php#method11" target="page">Settings::getReadHistory()</a></td>
 <td>Settings Scheme</td>
 </tr>
 
 <tr>
-<td>vector<string></td>
+<td>vector&lt;string&gt;</td>
 <td><a href="SettingsScheme.php#method12" target="page">Settings::getReadHistory(...)</a></td>
 <td>Settings Scheme</td>
 </tr>

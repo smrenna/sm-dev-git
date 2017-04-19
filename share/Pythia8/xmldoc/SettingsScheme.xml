@@ -428,7 +428,7 @@ while if false only the  <code>value</code> string.
 </argument> 
 </method> 
  
-<method name="vector<string> Settings::getReadHistory()"> 
+<method name="vector&lt;string&gt; Settings::getReadHistory()"> 
 Method to retrieve the history of <code>readString</code> commands that 
 have been processed by the <code>Settings</code> instance, e.g. for 
 inspection. Note that <code>readFile</code> command lines are interpreted 
@@ -437,7 +437,7 @@ by <code>readString</code> and thus also are listed, as are the
 and <code>Pythia::readFile</code>. 
 </method> 
  
-<method name="vector<string> Settings::getReadHistory(int subrun)"> 
+<method name="vector&lt;string&gt; Settings::getReadHistory(int subrun)"> 
 Method to retrieve the history of <code>readString</code> commands that 
 have been processed by <code>Settings</code>, for a specific subrun 
 (see the section on <aidx href="MainProgramSettings">Main-Program 
@@ -588,7 +588,7 @@ bool force = false)">
 change the current value(s) of the respective setting to the provided 
 new value(s). If lower or upper limits have been set and 
 <code>force=false</code>, input values 
-outside the allowed range are reinterpreted as being a the nearest 
+outside the allowed range are reinterpreted as being at the nearest 
 limit. If <code>force = true</code>, upper and lower limits will be 
 ignored, allowing to force values outside the allowed range (to be 
 used with caution and at own responsibility!). Any key not found in the 

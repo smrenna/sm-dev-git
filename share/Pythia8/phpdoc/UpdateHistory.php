@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.225: 31 March 2017 
+<li>8.225: 19 April 2017 
 <ul> 
  
 <li>Construct <i>pi^+-</i> PDFs so that <i>dbar = u</i> 
@@ -92,10 +92,22 @@ integrated value. </li>
  
 <li>The new <code>LHAupHelaconia</code> class in 
 <code>include/Pythia8Plugins/LHAHelaconia.h</code> provides an 
-interface to the HelacOnia package for onium production. The new 
-<code>main35.cc</code> example shows how to use the interface, 
+interface to the HelacOnia [<a href="Bibliography.php" target="page">Sha15</a>] package for onium production, 
+see further the new 
+<?php $filepath = $_GET["filepath"];
+echo "<a href='HelacOniaProcesses.php?filepath=".$filepath."' target='page'>";?>HelacOnia Processes</a> page. The 
+new <code>main35.cc</code> example shows how to use the interface, 
 and how to compare with corresponding internal Pythia results. 
 </li> 
+ 
+<li>Modified <code>configure</code> and <code>Makefile</code>s 
+fixes an issue with linking shared libraries on a Mac, and automatizes 
+the selection of whether to link static or shared libraries to the 
+example main programs. </li> 
+ 
+<li>New <code>main74.cc</code> illustrates how the modified Mass Drop 
+Tagger code in FastJet can be used to improve mass reconstruction of 
+a resonance.</li> 
  
 <li>When using the <code>PhaseSpace:bias2Selection</code> to reweight 
 high-<i>pT</i> events the <code>PhaseSpace:pTHatMinDiverge</code> 

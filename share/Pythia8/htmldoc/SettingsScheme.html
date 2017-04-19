@@ -440,7 +440,7 @@ while if false only the  <code>value</code> string.
    
  
 <a name="method11"></a>
-<p/><strong>vector<string> Settings::getReadHistory() &nbsp;</strong> <br/>
+<p/><strong>vector&lt;string&gt; Settings::getReadHistory() &nbsp;</strong> <br/>
 Method to retrieve the history of <code>readString</code> commands that 
 have been processed by the <code>Settings</code> instance, e.g. for 
 inspection. Note that <code>readFile</code> command lines are interpreted 
@@ -450,7 +450,7 @@ and <code>Pythia::readFile</code>.
    
  
 <a name="method12"></a>
-<p/><strong>vector<string> Settings::getReadHistory(int subrun) &nbsp;</strong> <br/>
+<p/><strong>vector&lt;string&gt; Settings::getReadHistory(int subrun) &nbsp;</strong> <br/>
 Method to retrieve the history of <code>readString</code> commands that 
 have been processed by <code>Settings</code>, for a specific subrun 
 (see the section on <a href="MainProgramSettings.html" target="page">Main-Program 
@@ -592,7 +592,7 @@ string "match" in its name.
 change the current value(s) of the respective setting to the provided 
 new value(s). If lower or upper limits have been set and 
 <code>force=false</code>, input values 
-outside the allowed range are reinterpreted as being a the nearest 
+outside the allowed range are reinterpreted as being at the nearest 
 limit. If <code>force = true</code>, upper and lower limits will be 
 ignored, allowing to force values outside the allowed range (to be 
 used with caution and at own responsibility!). Any key not found in the 

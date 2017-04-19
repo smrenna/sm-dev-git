@@ -335,6 +335,11 @@ identical conditions, in this case for QCD jets.</li>
 parton and the hadron level, illustrating possibilities for larger 
 control of which particles are used in the jet analyses.</li> 
  
+<li><code>main74.cc</code> : exemplifies how to use one of the 
+contributed add-ons to the FastJet package. In this case the 
+modified Mass Drop Tagger is used to improve the mass reconstruction 
+of a boosted hadronically decaying <i>Z^0</i>.</li> 
+ 
 <li><code>main80.cc</code> : do CKKW-L merging with a merging scale 
 defined in <i>kT</i>. Input is provided by the <code>main80.cmnd</code> 
 file and input LHE files. Very basic and pedagogical setup, suitable 
