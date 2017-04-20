@@ -12,8 +12,36 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.225: 19 April 2017 
+<li>8.225: 20 April 2017 
 <ul> 
+ 
+<li>Implementation of <ei>gamma-hadron</ei> collisions and 
+photoproduction in <ei>lepton-hadron</ei> ones. Section 
+<aloc href="PhotonPhoton">Photon-photon Interactions</aloc> renamed to 
+<aloc href="Photoproduction">Photoproduction</aloc> to cover also 
+<ei>gamma-hadron</ei> documentation. Modified <code>GammaKinematics</code> 
+class to sample photon kinematics also with one photon. Added 
+case <ei>gamma-hadron</ei> to <code>SigmaTotal</code>.</li> 
+ 
+<li>Automatic mixing of resolved and unresolved photon-photon interactions. 
+Implemented by introducing resolved and unresolved PDF pointers for a 
+<code>BeamParticle</code>, and calling the relevant one once the process 
+has been selected. In case of one direct photon the correct number of 
+photon-initiated processes (<code>PhotonParton</code>) is set by 
+<code>ProcessContainer</code>. A new method <code>Info::photonMode()</code> 
+to output the type of the process. Updated sample program 
+<code>main69.cc</code>.</li> 
+ 
+<li>Check if there is room left for photon-beam remnants also in case 
+of softQCD processes. Very rarely fails.</li> 
+ 
+<li>A new partonic subprocess <ei>q gamma &rarr; q gamma</ei>, mainly to 
+study photon production in <ei>lepton &rarr; gamma - hadron</ei> 
+collisions.</li> 
+ 
+<li>Modified <code>finalKin()</code> methods for derived 
+<code>PhaseSpace</code> classes in case of non-diffractive processes, 
+to calculate incoming parton momenta with massive beam particles.</li> 
  
 <li>Construct <ei>pi^+-</ei> PDFs so that <ei>dbar = u</ei> 
 and <ei>d = ubar</ei>, shortcutting the returned <ei>d, dbar</ei> 

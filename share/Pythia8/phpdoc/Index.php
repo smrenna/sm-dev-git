@@ -101,7 +101,7 @@ echo "<a href='SaveSettings.php?returning=1&filename=".$filename."' target='page
 <a href='ParticleDecays.php?filepath=".$filepath."' target='page'>Particle Decays</a><br/> 
 <a href='RHadrons.php?filepath=".$filepath."' target='page'>R-hadrons</a><br/> 
 <a href='BoseEinsteinEffects.php?filepath=".$filepath."' target='page'>Bose-Einstein Effects</a><br/> 
-<a href='PhotonPhoton.php?filepath=".$filepath."' target='page'>Photon-photon Interactions</a><br/> 
+<a href='Photoproduction.php?filepath=".$filepath."' target='page'>Photoproduction</a><br/> 
 <a href='HadronScattering.php?filepath=".$filepath."' target='page'>Hadron Scattering</a><br/> 
 <a href='ParticleData.php?filepath=".$filepath."' target='page'>Particle Data</a><br/> 
 <a href='ErrorChecks.php?filepath=".$filepath."' target='page'>Error Checks</a><br/> 

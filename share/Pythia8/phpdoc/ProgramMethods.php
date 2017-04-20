@@ -1270,13 +1270,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="EventInformation.php#method50" target="page">Info::a0MPI()</a></td>
+<td><a href="EventInformation.php#method51" target="page">Info::a0MPI()</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="EventInformation.php#method65" target="page">Info::addCounter(...)</a></td>
+<td><a href="EventInformation.php#method66" target="page">Info::addCounter(...)</a></td>
 <td>Event Information</td>
 </tr>
 
@@ -1300,13 +1300,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="EventInformation.php#method51" target="page">Info::bMPI()</a></td>
+<td><a href="EventInformation.php#method52" target="page">Info::bMPI()</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="EventInformation.php#method58" target="page">Info::bMPIold()</a></td>
+<td><a href="EventInformation.php#method59" target="page">Info::bMPIold()</a></td>
 <td>Event Information</td>
 </tr>
 
@@ -1318,13 +1318,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>int</td>
-<td><a href="EventInformation.php#method55" target="page">Info::codeMPI(...)</a></td>
+<td><a href="EventInformation.php#method56" target="page">Info::codeMPI(...)</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>vector&lt;int&gt;</td>
-<td><a href="EventInformation.php#method59" target="page">Info::codesHard()</a></td>
+<td><a href="EventInformation.php#method60" target="page">Info::codesHard()</a></td>
 <td>Event Information</td>
 </tr>
 
@@ -1360,127 +1360,127 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="EventInformation.php#method57" target="page">Info::eMPI(...)</a></td>
+<td><a href="EventInformation.php#method58" target="page">Info::eMPI(...)</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="EventInformation.php#method52" target="page">Info::enhanceMPI()</a></td>
+<td><a href="EventInformation.php#method53" target="page">Info::enhanceMPI()</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="EventInformation.php#method53" target="page">Info::enhanceMPIavg()</a></td>
+<td><a href="EventInformation.php#method54" target="page">Info::enhanceMPIavg()</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="EventInformation.php#method58" target="page">Info::enhanceMPIold()</a></td>
+<td><a href="EventInformation.php#method59" target="page">Info::enhanceMPIold()</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="EventInformation.php#method58" target="page">Info::enhanceMPIoldavg()</a></td>
+<td><a href="EventInformation.php#method59" target="page">Info::enhanceMPIoldavg()</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="EventInformation.php#method63" target="page">Info::getCounter(...)</a></td>
+<td><a href="EventInformation.php#method64" target="page">Info::getCounter(...)</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>string</td>
-<td><a href="EventInformation.php#method68" target="page">Info::getEventAttribute(...)</a></td>
+<td><a href="EventInformation.php#method69" target="page">Info::getEventAttribute(...)</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>string</td>
-<td><a href="EventInformation.php#method68" target="page">Info::getGeneratorAttribute(...)</a></td>
+<td><a href="EventInformation.php#method69" target="page">Info::getGeneratorAttribute(...)</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="EventInformation.php#method68" target="page">Info::getGeneratorSize()</a></td>
+<td><a href="EventInformation.php#method69" target="page">Info::getGeneratorSize()</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>string</td>
-<td><a href="EventInformation.php#method68" target="page">Info::getGeneratorValue(...)</a></td>
+<td><a href="EventInformation.php#method69" target="page">Info::getGeneratorValue(...)</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="EventInformation.php#method68" target="page">Info::getInitrwgtSize()</a></td>
+<td><a href="EventInformation.php#method69" target="page">Info::getInitrwgtSize()</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="EventInformation.php#method68" target="page">Info::getScalesAttribute(...)</a></td>
+<td><a href="EventInformation.php#method69" target="page">Info::getScalesAttribute(...)</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>string</td>
-<td><a href="EventInformation.php#method68" target="page">Info::getScalesValue()</a></td>
+<td><a href="EventInformation.php#method69" target="page">Info::getScalesValue()</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>string</td>
-<td><a href="EventInformation.php#method68" target="page">Info::getWeightsCompressedAttribute(...)</a></td>
+<td><a href="EventInformation.php#method69" target="page">Info::getWeightsCompressedAttribute(...)</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>unsigned int</td>
-<td><a href="EventInformation.php#method68" target="page">Info::getWeightsCompressedSize()</a></td>
+<td><a href="EventInformation.php#method69" target="page">Info::getWeightsCompressedSize()</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="EventInformation.php#method68" target="page">Info::getWeightsCompressedValue(...)</a></td>
+<td><a href="EventInformation.php#method69" target="page">Info::getWeightsCompressedValue(...)</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>string</td>
-<td><a href="EventInformation.php#method68" target="page">Info::getWeightsDetailedAttribute(...)</a></td>
+<td><a href="EventInformation.php#method69" target="page">Info::getWeightsDetailedAttribute(...)</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>unsigned int</td>
-<td><a href="EventInformation.php#method68" target="page">Info::getWeightsDetailedSize()</a></td>
+<td><a href="EventInformation.php#method69" target="page">Info::getWeightsDetailedSize()</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="EventInformation.php#method68" target="page">Info::getWeightsDetailedValue(...)</a></td>
+<td><a href="EventInformation.php#method69" target="page">Info::getWeightsDetailedValue(...)</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="EventInformation.php#method66" target="page">Info::hasHistory()</a></td>
+<td><a href="EventInformation.php#method67" target="page">Info::hasHistory()</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="EventInformation.php#method66" target="page">Info::hasHistory(...)</a></td>
+<td><a href="EventInformation.php#method67" target="page">Info::hasHistory(...)</a></td>
 <td>Event Information</td>
 </tr>
 
@@ -1492,25 +1492,25 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>string</td>
-<td><a href="EventInformation.php#method69" target="page">Info::header(...)</a></td>
+<td><a href="EventInformation.php#method70" target="page">Info::header(...)</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>vector &lt;string&gt;</td>
-<td><a href="EventInformation.php#method70" target="page">Info::headerKeys()</a></td>
+<td><a href="EventInformation.php#method71" target="page">Info::headerKeys()</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="EventInformation.php#method56" target="page">Info::iAMPI(...)</a></td>
+<td><a href="EventInformation.php#method57" target="page">Info::iAMPI(...)</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="EventInformation.php#method56" target="page">Info::iBMPI(...)</a></td>
+<td><a href="EventInformation.php#method57" target="page">Info::iBMPI(...)</a></td>
 <td>Event Information</td>
 </tr>
 
@@ -1618,13 +1618,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>int</td>
-<td><a href="EventInformation.php#method44" target="page">Info::lhaStrategy()</a></td>
+<td><a href="EventInformation.php#method45" target="page">Info::lhaStrategy()</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="EventInformation.php#method68" target="page">Info::LHEFversion()</a></td>
+<td><a href="EventInformation.php#method69" target="page">Info::LHEFversion()</a></td>
 <td>Event Information</td>
 </tr>
 
@@ -1660,13 +1660,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="EventInformation.php#method48" target="page">Info::mergingWeight()</a></td>
+<td><a href="EventInformation.php#method49" target="page">Info::mergingWeight()</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="EventInformation.php#method49" target="page">Info::mergingWeightNLO()</a></td>
+<td><a href="EventInformation.php#method50" target="page">Info::mergingWeightNLO()</a></td>
 <td>Event Information</td>
 </tr>
 
@@ -1678,7 +1678,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>long</td>
-<td><a href="EventInformation.php#method61" target="page">Info::nAccepted(...)</a></td>
+<td><a href="EventInformation.php#method62" target="page">Info::nAccepted(...)</a></td>
 <td>Event Information</td>
 </tr>
 
@@ -1690,7 +1690,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>string</td>
-<td><a href="EventInformation.php#method60" target="page">Info::nameProc(...)</a></td>
+<td><a href="EventInformation.php#method61" target="page">Info::nameProc(...)</a></td>
 <td>Event Information</td>
 </tr>
 
@@ -1714,43 +1714,43 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>int</td>
-<td><a href="EventInformation.php#method45" target="page">Info::nFSRinProc()</a></td>
+<td><a href="EventInformation.php#method46" target="page">Info::nFSRinProc()</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="EventInformation.php#method45" target="page">Info::nFSRinRes()</a></td>
+<td><a href="EventInformation.php#method46" target="page">Info::nFSRinRes()</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="EventInformation.php#method45" target="page">Info::nISR()</a></td>
+<td><a href="EventInformation.php#method46" target="page">Info::nISR()</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="EventInformation.php#method54" target="page">Info::nMPI()</a></td>
+<td><a href="EventInformation.php#method55" target="page">Info::nMPI()</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="EventInformation.php#method68" target="page">Info::nProcessesLHEF()</a></td>
+<td><a href="EventInformation.php#method69" target="page">Info::nProcessesLHEF()</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>long</td>
-<td><a href="EventInformation.php#method61" target="page">Info::nSelected(...)</a></td>
+<td><a href="EventInformation.php#method62" target="page">Info::nSelected(...)</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>long</td>
-<td><a href="EventInformation.php#method61" target="page">Info::nTried(...)</a></td>
+<td><a href="EventInformation.php#method62" target="page">Info::nTried(...)</a></td>
 <td>Event Information</td>
 </tr>
 
@@ -1773,6 +1773,18 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
+<td>int</td>
+<td><a href="Photoproduction.php#method1" target="page">Info::photonMode()</a></td>
+<td>Photoproduction</td>
+</tr>
+
+<tr>
+<td>int</td>
+<td><a href="EventInformation.php#method42" target="page">Info::photonMode()</a></td>
+<td>Event Information</td>
+</tr>
+
+<tr>
 <td>double</td>
 <td><a href="EventInformation.php#method33" target="page">Info::pT2Hat()</a></td>
 <td>Event Information</td>
@@ -1780,13 +1792,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="EventInformation.php#method68" target="page">Info::pT2NowISR()</a></td>
+<td><a href="EventInformation.php#method69" target="page">Info::pT2NowISR()</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="EventInformation.php#method68" target="page">Info::pT2NowISR(...)</a></td>
+<td><a href="EventInformation.php#method69" target="page">Info::pT2NowISR(...)</a></td>
 <td>Event Information</td>
 </tr>
 
@@ -1798,31 +1810,31 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="EventInformation.php#method46" target="page">Info::pTmaxFSR()</a></td>
+<td><a href="EventInformation.php#method47" target="page">Info::pTmaxFSR()</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="EventInformation.php#method46" target="page">Info::pTmaxISR()</a></td>
+<td><a href="EventInformation.php#method47" target="page">Info::pTmaxISR()</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="EventInformation.php#method46" target="page">Info::pTmaxMPI()</a></td>
+<td><a href="EventInformation.php#method47" target="page">Info::pTmaxMPI()</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="EventInformation.php#method55" target="page">Info::pTMPI(...)</a></td>
+<td><a href="EventInformation.php#method56" target="page">Info::pTMPI(...)</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="EventInformation.php#method47" target="page">Info::pTnow()</a></td>
+<td><a href="EventInformation.php#method48" target="page">Info::pTnow()</a></td>
 <td>Event Information</td>
 </tr>
 
@@ -1888,13 +1900,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="EventInformation.php#method64" target="page">Info::setCounter(...)</a></td>
+<td><a href="EventInformation.php#method65" target="page">Info::setCounter(...)</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="EventInformation.php#method71" target="page">Info::setHeader(...)</a></td>
+<td><a href="EventInformation.php#method72" target="page">Info::setHeader(...)</a></td>
 <td>Event Information</td>
 </tr>
 
@@ -1906,19 +1918,19 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="EventInformation.php#method62" target="page">Info::sigmaErr(...)</a></td>
+<td><a href="EventInformation.php#method63" target="page">Info::sigmaErr(...)</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="EventInformation.php#method62" target="page">Info::sigmaGen(...)</a></td>
+<td><a href="EventInformation.php#method63" target="page">Info::sigmaGen(...)</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="EventInformation.php#method68" target="page">Info::sigmaLHEF(...)</a></td>
+<td><a href="EventInformation.php#method69" target="page">Info::sigmaLHEF(...)</a></td>
 <td>Event Information</td>
 </tr>
 
@@ -1978,13 +1990,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="EventInformation.php#method42" target="page">Info::weight()</a></td>
+<td><a href="EventInformation.php#method43" target="page">Info::weight()</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="EventInformation.php#method43" target="page">Info::weightSum()</a></td>
+<td><a href="EventInformation.php#method44" target="page">Info::weightSum()</a></td>
 <td>Event Information</td>
 </tr>
 
@@ -2044,13 +2056,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="EventInformation.php#method67" target="page">Info::zNowISR()</a></td>
+<td><a href="EventInformation.php#method68" target="page">Info::zNowISR()</a></td>
 <td>Event Information</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="EventInformation.php#method67" target="page">Info::zNowISR(...)</a></td>
+<td><a href="EventInformation.php#method68" target="page">Info::zNowISR(...)</a></td>
 <td>Event Information</td>
 </tr>
 

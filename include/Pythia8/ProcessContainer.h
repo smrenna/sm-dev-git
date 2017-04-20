@@ -92,6 +92,10 @@ public:
   // Reset statistics on events generated so far.
   void reset();
 
+  // Set whether (photon) beam is resolved or unresolved.
+  // Method propagates the choice of photon process type to beam pointers.
+  void setBeamModes();
+
   // Process name and code, and the number of final-state particles.
   string name()             const {return sigmaProcessPtr->name();}
   int    code()             const {return sigmaProcessPtr->code();}
@@ -193,6 +197,7 @@ private:
 
   // Flags to store whether beam has a (un)resolved photon.
   bool   beamAhasResGamma, beamBhasResGamma, beamHasResGamma, beamHasGamma;
+  int    beamAgammaMode, beamBgammaMode, gammaModeEvent;
 
   // Statistics for Les Houches event classification.
   vector<int> codeLHA;

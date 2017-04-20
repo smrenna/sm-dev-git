@@ -29,7 +29,7 @@ class CoupSUSY : public Couplings{
 public:
 
   // Constructor
-  CoupSUSY() : Couplings(true), isInit(false), isNMSSM(false), 
+  CoupSUSY() : Couplings(true), isInit(false), isNMSSM(false),
     isLLE(false), isLQD(false), isUDD(false) {}
 
   // Initialize

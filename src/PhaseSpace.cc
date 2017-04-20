@@ -134,6 +134,27 @@ void PhaseSpace::init(bool isFirst, SigmaProcess* sigmaProcessPtrIn,
   // Flag if photons from leptons.
   bool beamHasResGamma = beamAPtr->hasResGamma() && beamBPtr->hasResGamma();
 
+  // Set flags for (un)resolved photons according to gammaModes.
+  if ( beamAPtr->isGamma() && beamBPtr->isGamma() ) {
+
+    int beamAGammaMode = beamAPtr->getGammaMode();
+    int beamBGammaMode = beamBPtr->getGammaMode();
+
+    if ( beamAGammaMode == 2 && beamBGammaMode != 2 ) {
+      hasOnePointParticle = true;
+      hasPointGammaA = true;
+    }
+    if ( beamBGammaMode == 2 && beamAGammaMode != 2 ) {
+      hasOnePointParticle = true;
+      hasPointGammaB = true;
+    }
+    if ( beamAGammaMode == 2 && beamBGammaMode == 2 ) {
+      hasTwoPointParticles = true;
+      hasPointGammaA = true;
+      hasPointGammaB = true;
+    }
+  }
+
   // Standard phase space cuts.
   if (isFirst || settingsPtr->flag("PhaseSpace:sameForSecond")) {
     mHatGlobalMin      = settingsPtr->parm("PhaseSpace:mHatMin");
@@ -1975,8 +1996,13 @@ bool PhaseSpace2to1tauy::finalKin() {
   mH[3] = mHat;
 
   // Incoming partons along beam axes. Outgoing has sum of momenta.
-  pH[1] = Vec4( 0., 0., 0.5 * eCM * x1H, 0.5 * eCM * x1H);
-  pH[2] = Vec4( 0., 0., -0.5 * eCM * x2H, 0.5 * eCM * x2H);
+  // Updated for beams with different masses.
+  double m2A  = pow2(mA);
+  double m2B  = pow2(mB);
+  double eCMA = 0.5 * ( s + m2A - m2B ) / eCM;
+  double eCMB = 0.5 * ( s - m2A + m2B ) / eCM;
+  pH[1] = Vec4( 0., 0.,  eCMA * x1H, eCMA * x1H);
+  pH[2] = Vec4( 0., 0., -eCMB * x2H, eCMB * x2H);
   pH[3] = pH[1] + pH[2];
 
   // Done.
@@ -2130,9 +2156,13 @@ bool PhaseSpace2to2tauyz::finalKin() {
   mH[3] = m3;
   mH[4] = m4;
 
-  // Incoming partons along beam axes.
-  pH[1] = Vec4( 0., 0., 0.5 * eCM * x1H, 0.5 * eCM * x1H);
-  pH[2] = Vec4( 0., 0., -0.5 * eCM * x2H, 0.5 * eCM * x2H);
+  // Incoming partons along beam axes. Updated for beams with different masses.
+  double m2A  = pow2(mA);
+  double m2B  = pow2(mB);
+  double eCMA = 0.5 * ( s + m2A - m2B ) / eCM;
+  double eCMB = 0.5 * ( s - m2A + m2B ) / eCM;
+  pH[1] = Vec4( 0., 0.,  eCMA * x1H, eCMA * x1H);
+  pH[2] = Vec4( 0., 0., -eCMB * x2H, eCMB * x2H);
 
   // Outgoing partons initially in collision CM frame along beam axes.
   pH[3] = Vec4( 0., 0.,  pAbs, 0.5 * (sH + s3 - s4) / mHat);
@@ -2140,8 +2170,8 @@ bool PhaseSpace2to2tauyz::finalKin() {
 
   // Then rotate and boost them to overall CM frame.
   theta = acos(z);
-  phi = 2. * M_PI * rndmPtr->flat();
-  betaZ = (x1H - x2H)/(x1H + x2H);
+  phi   = 2. * M_PI * rndmPtr->flat();
+  betaZ = (x1H * eCMA - x2H * eCMB)/(x1H * eCMA + x2H * eCMB);
   pH[3].rot( theta, phi);
   pH[4].rot( theta, phi);
   pH[3].bst( 0., 0., betaZ);
@@ -3518,14 +3548,19 @@ bool PhaseSpace2to3diffractive::finalKin() {
 
 bool PhaseSpace2to2nondiffractiveGamma::setupSampling() {
 
-  // Initialize relevant cuts.
-  Q2maxGamma = settingsPtr->parm("Photon:Q2max");
-  Wmin       = settingsPtr->parm("Photon:Wmin");
+  // Read in relevant cuts.
+  Q2maxGamma    = settingsPtr->parm("Photon:Q2max");
+  Wmin          = settingsPtr->parm("Photon:Wmin");
+  bool hasGamma = settingsPtr->flag("PDF:lepton2gamma");
 
-  // Save relevant parameters.
-  alphaEM    = couplingsPtr->alphaEM(Q2maxGamma);
-  sCM        = s;
-  sigmaTotPtr->calc( 22, 22, eCM );
+  // Save relevant parameters and calculate sigmaND.
+  alphaEM = couplingsPtr->alphaEM(Q2maxGamma);
+  sCM     = s;
+  gammaA  = beamAPtr->isGamma() || (beamAPtr->isLepton() && hasGamma);
+  gammaB  = beamBPtr->isGamma() || (beamBPtr->isLepton() && hasGamma);
+  idAin   = gammaA ? 22 : beamAPtr->id();
+  idBin   = gammaB ? 22 : beamBPtr->id();
+  sigmaTotPtr->calc( idAin, idBin, eCM);
   sigmaNDmax = sigmaTotPtr->sigmaND();
 
   // Get the masses of beam particles and derive useful ratios.
@@ -3536,26 +3571,43 @@ bool PhaseSpace2to2nondiffractiveGamma::setupSampling() {
 
   // Calculate the square of the minimum invariant mass for sampling.
   double m2GmGmMin = pow2(Wmin);
+  double xGamAMax  = 1.;
+  double xGamBMax  = 1.;
+  double xGamAMin  = m2GmGmMin / sCM ;
+  double xGamBMin  = m2GmGmMin / sCM ;
 
-  // Calculate limits for x1 and x2. Lower limit crude approximation but
-  // fixed later by the minimum invariant mass for gm+gm pair.
-  double xGamAMax   = Q2maxGamma / (2. * m2BeamA)
-    * (sqrt( (1. + 4. * m2BeamA / Q2maxGamma) * (1. - m2sA) ) - 1.);
-  double xGamBMax   = Q2maxGamma / (2. * m2BeamB)
-    * (sqrt( (1. + 4. * m2BeamB / Q2maxGamma) * (1. - m2sB) ) - 1.);
-  double xGamAMin   = m2GmGmMin / sCM ;
-  double xGamBMin   = m2GmGmMin / sCM ;
+  xGamma1   = 1.;
+  xGamma2   = 1.;
+  log2xMinA = 0.;
+  log2xMaxA = 0.;
 
-  // Pre-calculate some logs used for the x-sampling and cross section
-  // estimation.
-  log2xMinA = pow2( log( Q2maxGamma/ ( m2BeamA * pow2(xGamAMin) ) ) );
-  log2xMaxA = pow2( log( Q2maxGamma/ ( m2BeamA * pow2(xGamAMax) ) ) );
-  log2xMinB = pow2( log( Q2maxGamma/ ( m2BeamB * pow2(xGamBMin) ) ) );
-  log2xMaxB = pow2( log( Q2maxGamma/ ( m2BeamB * pow2(xGamBMax) ) ) );
+  // Calculate limit for x1 (if applicable) and derive useful logs.
+  if (gammaA) {
+    xGamAMax = Q2maxGamma / (2. * m2BeamA)
+      * (sqrt( (1. + 4. * m2BeamA / Q2maxGamma) * (1. - m2sA) ) - 1.);
+    log2xMinA = pow2( log( Q2maxGamma/ ( m2BeamA * pow2(xGamAMin) ) ) );
+    log2xMaxA = pow2( log( Q2maxGamma/ ( m2BeamA * pow2(xGamAMax) ) ) );
+  }
 
-  // Derive the over estimate for sigmaND integral with l+l- -> gm+gm.
-  sigmaNDestimate = pow2( 0.5 * alphaEM / M_PI )
-    * 0.25 * (log2xMinA - log2xMaxA) * (log2xMinB - log2xMaxB) * sigmaNDmax;
+  // Calculate limit for x2 (if applicable) and derive useful logs.
+  if (gammaB) {
+    xGamBMax   = Q2maxGamma / (2. * m2BeamB)
+      * (sqrt( (1. + 4. * m2BeamB / Q2maxGamma) * (1. - m2sB) ) - 1.);
+    log2xMinB = pow2( log( Q2maxGamma/ ( m2BeamB * pow2(xGamBMin) ) ) );
+    log2xMaxB = pow2( log( Q2maxGamma/ ( m2BeamB * pow2(xGamBMax) ) ) );
+  }
+
+
+  // Derive the overestimate for sigmaND integral with l+l-/p -> gm+gm/p.
+  if ( gammaA && gammaB)
+    sigmaNDestimate = pow2( 0.5 * alphaEM / M_PI )
+      * 0.25 * (log2xMinA - log2xMaxA) * (log2xMinB - log2xMaxB) * sigmaNDmax;
+  else if (gammaA)
+    sigmaNDestimate = 0.5 * alphaEM / M_PI
+      * 0.5 * (log2xMinA - log2xMaxA) * sigmaNDmax;
+  else if (gammaB)
+    sigmaNDestimate = 0.5 * alphaEM / M_PI
+      * 0.5 * (log2xMinB - log2xMaxB) * sigmaNDmax;
 
   // Save the cross-section estimate.
   sigmaNw = sigmaNDestimate;
@@ -3576,10 +3628,10 @@ bool PhaseSpace2to2nondiffractiveGamma::trialKin(bool , bool) {
   double wt = 1.0;
 
   // Sample x_gamma's.
-  xGamma1 = sqrt( (Q2maxGamma / m2BeamA) * exp( -sqrt( log2xMinA
-          + rndmPtr->flat() * (log2xMaxA - log2xMinA) ) ) );
-  xGamma2 = sqrt( (Q2maxGamma / m2BeamB) * exp( -sqrt( log2xMinB
-          + rndmPtr->flat() * (log2xMaxB - log2xMinB) ) ) );
+  if (gammaA) xGamma1 = sqrt( (Q2maxGamma / m2BeamA) * exp( -sqrt( log2xMinA
+                      + rndmPtr->flat() * (log2xMaxA - log2xMinA) ) ) );
+  if (gammaB) xGamma2 = sqrt( (Q2maxGamma / m2BeamB) * exp( -sqrt( log2xMinB
+                      + rndmPtr->flat() * (log2xMaxB - log2xMinB) ) ) );
 
   // Save the x_gamma values to beam particles for further use.
   beamAPtr->xGamma(xGamma1);
@@ -3596,20 +3648,22 @@ bool PhaseSpace2to2nondiffractiveGamma::trialKin(bool , bool) {
   mGmGm    = gammaKinPtr->eCMsub();
 
   // Correct for x1 and x2 oversampling.
-  double wt1 = ( 0.5 * ( 1. + pow2(1 - xGamma1) ) ) * log( Q2maxGamma/Q2min1 )
-             / log( Q2maxGamma / ( m2BeamA * pow2( xGamma1 ) ) );
-  double wt2 = ( 0.5 * ( 1. + pow2(1 - xGamma2) ) ) * log( Q2maxGamma/Q2min2 )
-             / log( Q2maxGamma / ( m2BeamB * pow2( xGamma2 ) ) );
+  double wt1 = gammaA ?
+    ( 0.5 * ( 1. + pow2(1 - xGamma1) ) ) * log( Q2maxGamma/Q2min1 )
+    / log( Q2maxGamma / ( m2BeamA * pow2( xGamma1 ) ) ) : 1.0;
+  double wt2 = gammaB ?
+    ( 0.5 * ( 1. + pow2(1 - xGamma2) ) ) * log( Q2maxGamma/Q2min2 )
+    / log( Q2maxGamma / ( m2BeamB * pow2( xGamma2 ) ) ) : 1.0;
 
   // Correct for the estimated sigmaND.
-  sigmaTotPtr->calc( 22, 22, mGmGm );
+  sigmaTotPtr->calc( idAin, idBin, mGmGm );
   double sigmaNDnow = sigmaTotPtr->sigmaND();
   double wtSigma    = sigmaNDnow/sigmaNDmax;
 
   // Correct for alpha_EM with the sampled Q2 values.
-  double alphaEM1   = couplingsPtr->alphaEM(Q2gamma1);
-  double alphaEM2   = couplingsPtr->alphaEM(Q2gamma2);
-  double wtAlphaEM  = alphaEM1 * alphaEM2 / pow2(alphaEM);
+  double wtAlphaEM1 = gammaA ? couplingsPtr->alphaEM(Q2gamma1) / alphaEM : 1.;
+  double wtAlphaEM2 = gammaB ? couplingsPtr->alphaEM(Q2gamma2) / alphaEM : 1.;
+  double wtAlphaEM  = wtAlphaEM1 * wtAlphaEM2;
 
   // Calculate the total weight and warn if unphysical weight.
   wt *= wt1 * wt2 * wtSigma * wtAlphaEM;
@@ -3789,9 +3843,13 @@ bool PhaseSpace2to3tauycyl::finalKin() {
   mH[4] = m4;
   mH[5] = m5;
 
-  // Incoming partons along beam axes.
-  pH[1] = Vec4( 0., 0., 0.5 * eCM * x1H, 0.5 * eCM * x1H);
-  pH[2] = Vec4( 0., 0., -0.5 * eCM * x2H, 0.5 * eCM * x2H);
+  // Incoming partons along beam axes. Updated for beams with different masses.
+  double m2A  = pow2(mA);
+  double m2B  = pow2(mB);
+  double eCMA = 0.5 * ( s + m2A - m2B ) / eCM;
+  double eCMB = 0.5 * ( s - m2A + m2B ) / eCM;
+  pH[1] = Vec4( 0., 0.,  eCMA * x1H, eCMA * x1H);
+  pH[2] = Vec4( 0., 0., -eCMB * x2H, eCMB * x2H);
 
   // Begin three-momentum rescaling to compensate for masses.
   if (idMass[3] == 0 || idMass[4] == 0 || idMass[5] == 0) {
@@ -3827,7 +3885,7 @@ bool PhaseSpace2to3tauycyl::finalKin() {
   pH[5] = p5cm;
 
   // Then boost them to overall CM frame
-  betaZ = (x1H - x2H)/(x1H + x2H);
+  betaZ = (x1H * eCMA - x2H * eCMB)/(x1H * eCMA + x2H * eCMB);
   pH[3].rot( theta, phi);
   pH[4].rot( theta, phi);
   pH[3].bst( 0., 0., betaZ);

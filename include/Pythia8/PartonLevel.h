@@ -127,8 +127,9 @@ private:
   vector<int>  iPosBefShow;
 
   // Variables for photon inside electron.
-  bool   beamHasGamma, beamAhasResGamma, beamBhasResGamma, beamHasResGamma;
-  int    gammaMode;
+  bool   hasGammaA, hasGammaB, beamHasGamma, beamAhasResGamma,
+         beamBhasResGamma, beamHasResGamma, isGammaHadronDir;
+  int    gammaMode, gammaModeEvent;
 
   // Pointer to various information on the generation.
   Info*          infoPtr;

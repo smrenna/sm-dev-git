@@ -367,7 +367,7 @@ diffractive process.
 The momentum transfer <ei>t</ei> in the hard diffractive process. 
 </methodmore> 
  
-<h3>Photon-photon in lepton-lepton</h3> 
+<h3>Photons from lepton beams</h3> 
  
 Information about the kinematics of photon-photon collisions from lepton 
 beams. 
@@ -389,6 +389,10 @@ Virtualities of the photons emitted by the leptons.
 <methodmore name="double Info::thetaScatLepB()"> 
 Scattering angles of the leptons wrt. the beam direction. 
 </methodmore> 
+<method name="int Info::photonMode()"> 
+Type of photon process, see 
+<aloc href="Photoproduction">Photoproduction</aloc> for details. 
+</method> 
  
 <h3>Event weight and activity</h3> 
  

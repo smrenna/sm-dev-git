@@ -500,6 +500,8 @@ private:
   GammaKinematics* gammaKinPtr;
 
   // Parameters.
+  int    idAin, idBin;
+  bool   gammaA, gammaB;
   double Q2maxGamma, Wmin, sigmaNDestimate, sigmaNDmax, sCM, alphaEM,
     m2BeamA, m2BeamB, m2sA, m2sB, log2xMinA, log2xMaxA, log2xMinB, log2xMaxB,
     xGamma1, xGamma2, Q2gamma1, Q2gamma2, mGmGm, Q2min1, Q2min2;

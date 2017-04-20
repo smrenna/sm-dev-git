@@ -2823,7 +2823,8 @@ bool SpaceShower::branch( Event& event) {
   }
 
   // Check that beam momentum not used up by rescattered-system boosts.
-  if (beamAPtr->xMax(-1) < 0.0 || beamBPtr->xMax(-1) < 0.0) {
+  if ( ( beamAPtr->xMax(-1) < 0.0 && !(beamAPtr->isUnresolved()) )
+         || (beamBPtr->xMax(-1) < 0.0 && !(beamBPtr->isUnresolved()) ) ) {
     infoPtr->errorMsg("Warning in SpaceShower::branch: "
       "used up beam momentum; retrying parton level");
     rescatterFail = true;

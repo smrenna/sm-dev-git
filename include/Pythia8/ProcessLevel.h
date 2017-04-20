@@ -94,6 +94,10 @@ private:
   double mHatMin1, mHatMax1, pTHatMin1, pTHatMax1, mHatMin2, mHatMax2,
          pTHatMin2, pTHatMax2, sigmaND, sumImpactFac, sum2ImpactFac;
 
+  // Info for process generation with photon beams.
+  bool   beamHasGamma;
+  int    gammaMode;
+
   // Vector of containers of internally-generated processes.
   vector<ProcessContainer*> containerPtrs;
   int    iContainer, iLHACont;

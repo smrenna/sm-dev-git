@@ -92,7 +92,9 @@ public:
   bool setPDFPtr( PDF* pdfAPtrIn, PDF* pdfBPtrIn, PDF* pdfHardAPtrIn = 0,
     PDF* pdfHardBPtrIn = 0, PDF* pdfPomAPtrIn = 0, PDF* pdfPomBPtrIn = 0,
     PDF* pdfGamAPtrIn = 0, PDF* pdfGamBPtrIn = 0, PDF* pdfHardGamAPtrIn = 0,
-    PDF* pdfHardGamBPtrIn = 0);
+    PDF* pdfHardGamBPtrIn = 0, PDF* pdfUnresAPtrIn = 0,
+    PDF* pdfUnresBPtrIn = 0, PDF* pdfUnresGamAPtrIn = 0,
+    PDF* pdfUnresGamBPtrIn = 0);
 
   // Possibility to pass in pointer to external LHA-interfaced generator.
   bool setLHAupPtr( LHAup* lhaUpPtrIn) {lhaUpPtr = lhaUpPtrIn; return true;}
@@ -175,7 +177,8 @@ public:
   string word(string key) {return settings.word(key);}
 
   // Auxiliary to set parton densities among list of possibilities.
-  PDF* getPDFPtr(int idIn, int sequence = 1, string beam = "");
+  PDF* getPDFPtr(int idIn, int sequence = 1, string beam = "",
+    bool resolved = true);
 
   // The event record for the parton-level central process.
   Event          process;
@@ -233,6 +236,7 @@ private:
   // Initialization data related to photon-photon interactions.
   bool   beamHasGamma, beamAisResGamma, beamBisResGamma, beamAhasResGamma,
          beamBhasResGamma;
+  int    gammaMode;
 
   // Initialization data, extracted from init(...) call.
   bool   isConstructed, isInit, isUnresolvedA, isUnresolvedB, showSaV,
@@ -268,9 +272,16 @@ private:
   PDF* pdfHardGamAPtr;
   PDF* pdfHardGamBPtr;
 
+  // Alternative unresolved PDFs when mixing resolved and unresolved processes.
+  PDF* pdfUnresAPtr;
+  PDF* pdfUnresBPtr;
+  PDF* pdfUnresGamAPtr;
+  PDF* pdfUnresGamBPtr;
+
   // Keep track when "new" has been used and needs a "delete" for PDF's.
   bool useNewPdfA, useNewPdfB, useNewPdfHard, useNewPdfPomA, useNewPdfPomB,
-    useNewPdfGamA, useNewPdfGamB, useNewPdfHardGamA, useNewPdfHardGamB;
+    useNewPdfGamA, useNewPdfGamB, useNewPdfHardGamA, useNewPdfHardGamB,
+    useNewPdfUnresA, useNewPdfUnresB, useNewPdfUnresGamA, useNewPdfUnresGamB;
 
   // The two incoming beams.
   BeamParticle beamA;

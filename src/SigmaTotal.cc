@@ -24,8 +24,9 @@ namespace Pythia8 {
 // =  2 : pi+ + p;   =  3 : pi- + p;     =  4 : pi0/rho0 + p;
 // =  5 : phi + p;   =  6 : J/psi + p;
 // =  7 : rho + rho; =  8 : rho + phi;   =  9 : rho + J/psi;
-// = 10 : phi + phi; = 11 : phi + J/psi; = 12 : J/psi + J/psi.
-// = 13 : Pom + p (preliminary); 14 : gamma + gamma (preliminary).
+// = 10 : phi + phi; = 11 : phi + J/psi; = 12 : J/psi + J/psi;
+// = 13 : Pom + p (preliminary); 14 : gamma + gamma (preliminary);
+// = 15 : gamma + p (preliminary).
 // For now a neutron is treated like a proton.
 
 //--------------------------------------------------------------------------
@@ -222,7 +223,11 @@ bool SigmaTotal::calc( int idA, int idB, double eCM) {
     if (idAbsA > 300) iProc                       = 10;
     if (idAbsA > 300 && idAbsB > 400) iProc       = 11;
     if (idAbsA > 400) iProc                       = 12;
-  } else if (idAbsA == 22 && idAbsB == 22) iProc  = 14;
+  } else if (idAbsA == 22 || idAbsB == 22) {
+    if (idAbsA == idAbsB) iProc                   = 14;
+    if (idAbsA > 1000 || idAbsB > 1000) iProc     = 15;
+  }
+
   if (iProc == -1) return false;
 
   // Primitive implementation of Pomeron + p.
@@ -240,6 +245,18 @@ bool SigmaTotal::calc( int idA, int idB, double eCM) {
     double sEps = pow( s, EPSILON);
     double sEta = pow( s, ETA);
     sigTot = 211e-6 * sEps + 215e-6 * sEta;
+    sigND  = fracSigmaNDgamma * sigTot;
+    isCalc = true;
+    return true;
+  }
+
+  // Primitive implementation of gamma + p.
+  // Multiplied with a factor (\sim 0.7) as above to get the inelastic part.
+  if (iProc == 15) {
+    s           = eCM*eCM;
+    double sEps = pow( s, EPSILON);
+    double sEta = pow( s, ETA);
+    sigTot = 67.7e-3 * sEps + 129e-3 * sEta;
     sigND  = fracSigmaNDgamma * sigTot;
     isCalc = true;
     return true;

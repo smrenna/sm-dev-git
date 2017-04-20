@@ -322,7 +322,7 @@ protected:
   // Information on incoming beams.
   int    idA, idB;
   double mA, mB;
-  bool   isLeptonA, isLeptonB, hasLeptonBeams;
+  bool   isLeptonA, isLeptonB, hasLeptonBeams, lepton2gammaA, lepton2gammaB;
 
   // Partons in beams, with PDF's.
   vector<InBeam> inBeamA;
