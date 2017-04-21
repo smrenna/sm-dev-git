@@ -2847,7 +2847,7 @@ double Sigma2qqbar2sleptonantislepton::sigmaHat() {
     // s-channel W contribution (only contributes to LL helicities)
     sumColS = sigmaEW / 32.0 / pow2(xW) / pow2(1.0-xW)
       * norm(conj(coupSUSYPtr->LudW[iGen1][iGen2])
-             * coupSUSYPtr->LslsvW[iGen3][iGen4]) * facTU * norm(propZW);
+      * coupSUSYPtr->LslsvW[iGen3][iGen4]) * facTU * norm(propZW);
 
   } else {
     double CslZ;
@@ -2856,30 +2856,30 @@ double Sigma2qqbar2sleptonantislepton::sigmaHat() {
     if (abs(id1) == abs(id2)) {
 
       CslZ = real(coupSUSYPtr->LslslZ[iGen3][iGen4]
-		  + coupSUSYPtr->RslslZ[iGen3][iGen4]);
+           + coupSUSYPtr->RslslZ[iGen3][iGen4]);
       if (abs(id3)%2 == 0)
-	CslZ = real(coupSUSYPtr->LsvsvZ[iGen3][iGen4]
-		    + coupSUSYPtr->RsvsvZ[iGen3][iGen4]);
+        CslZ = real(coupSUSYPtr->LsvsvZ[iGen3][iGen4]
+             + coupSUSYPtr->RsvsvZ[iGen3][iGen4]);
 
       // gamma
       // Factor 2 since contributes to both ha != hb helicities
       sumColS += (abs(CslZ) > 0.0) ? 2. * pow2(eQ) * pow2(eSl) * sigmaEW
-	* facTU / pow2(sH) : 0.0;
+        * facTU / pow2(sH) : 0.0;
 
       // Z/gamma interference
       sumInterference += eQ * eSl * sigmaEW * facTU / 2.0 / xW / (1.-xW)
-	* sqrt(norm(propZW)) / sH * CslZ
-	* (coupSUSYPtr->LqqZ[idIn1A] + coupSUSYPtr->RqqZ[idIn1A]);
+        * sqrt(norm(propZW)) / sH * CslZ
+        * (coupSUSYPtr->LqqZ[idIn1A] + coupSUSYPtr->RqqZ[idIn1A]);
 
       // s-channel Z
       CslZ = norm(coupSUSYPtr->LslslZ[iGen3][iGen4]
-	        + coupSUSYPtr->RslslZ[iGen3][iGen4]);
+           + coupSUSYPtr->RslslZ[iGen3][iGen4]);
       if (abs(id3Sav)%2 == 0)
-	CslZ = norm(coupSUSYPtr->LsvsvZ[iGen3][iGen4]
-	          + coupSUSYPtr->RsvsvZ[iGen3][iGen4]);
+        CslZ = norm(coupSUSYPtr->LsvsvZ[iGen3][iGen4]
+             + coupSUSYPtr->RsvsvZ[iGen3][iGen4]);
       sumColS += sigmaEW * facTU / 16.0 / pow2(xW) / pow2(1.0-xW)
-	* norm(propZW) * CslZ
-	* ( pow2(coupSUSYPtr->LqqZ[idIn1A]) + pow2(coupSUSYPtr->RqqZ[idIn1A]) );
+        * norm(propZW) * CslZ
+        * (pow2(coupSUSYPtr->LqqZ[idIn1A]) + pow2(coupSUSYPtr->RqqZ[idIn1A]));
     }
   }
 

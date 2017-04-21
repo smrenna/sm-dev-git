@@ -55,6 +55,13 @@ then the <code>doVetoPT(...)</code> and <code>doVetoPartonLevel(...)</code>
 locations in the code are not even reached, so they would never be called. 
  
 <p/> 
+Normally you would gather all your changes into one derived class. 
+In some cases it may be more convenient to separate different 
+functionalities. Therefore it is possible to hand in several user hooks. 
+See the section on "Multiple user hooks" at the bottom of this page for 
+further information on this possibility. 
+ 
+<p/> 
 The effect of the vetoes of types (i), (ii) and (iii) can be studied 
 in the output of the 
 <code><aloc href="EventStatistics">Pythia::stat()</aloc></code> 
@@ -1137,6 +1144,30 @@ string break is redone.
 just before it is added to the event record. 
 </argument> 
 </method> 
+ 
+<h3>Multiple user hooks</h3> 
+ 
+In addition to the 
+<br/><code><aloc href="ProgramFlow"> 
+Pythia::setUserHooksPtr( UserHooks*)</aloc></code> 
+<br/>method there is a second 
+<br/><code><aloc href="ProgramFlow"> 
+Pythia::addUserHooksPtr( UserHooks*)</aloc></code> 
+<br/>method that works almost like the former, but it allows the 
+addition of further user hooks. These are stored as a vector and 
+all of them will be called consecutively at the respective locations 
+where they are set up to be active. 
+ 
+<p/> 
+If two or more of them are active at the same location it is up to 
+the user to ensure that the joint action is the one intended. 
+In cases where weights are assigned the net result will be a weight 
+that is is the product of them. In cases where vetoes are involved, 
+a veto will be returned if either hook wants to veto, i.e. the 
+no-veto survival probability is combined multiplicatively. 
+It is not meaningful to let two hooks set the resonance scale or 
+change fragmentation parameters, so warnings will be issued if this 
+occurs. 
  
 </chapter> 
  

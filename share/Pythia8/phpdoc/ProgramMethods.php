@@ -88,7 +88,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>PDF*</td>
-<td><a href="ProgramFlow.php#method30" target="page">getPDFPtr(...)</a></td>
+<td><a href="ProgramFlow.php#method31" target="page">getPDFPtr(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
@@ -4552,55 +4552,61 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
+<td><a href="ProgramFlow.php#method13" target="page">Pythia::addUserHooksPtr(...)</a></td>
+<td>Program Flow</td>
+</tr>
+
+<tr>
+<td>bool</td>
 <td><a href="ProgramFlow.php#method5" target="page">Pythia::checkVersion()</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>CoupSM</td>
-<td><a href="ProgramFlow.php#method37" target="page">Pythia::coupSM</a></td>
+<td><a href="ProgramFlow.php#method38" target="page">Pythia::coupSM</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>Event</td>
-<td><a href="ProgramFlow.php#method32" target="page">Pythia::event</a></td>
+<td><a href="ProgramFlow.php#method33" target="page">Pythia::event</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#method26" target="page">Pythia::flag(...)</a></td>
+<td><a href="ProgramFlow.php#method27" target="page">Pythia::flag(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#method20" target="page">Pythia::forceHadronLevel(...)</a></td>
+<td><a href="ProgramFlow.php#method21" target="page">Pythia::forceHadronLevel(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#method22" target="page">Pythia::forceRHadronDecays()</a></td>
+<td><a href="ProgramFlow.php#method23" target="page">Pythia::forceRHadronDecays()</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ProgramFlow.php#method19" target="page">Pythia::forceTimeShower(...)</a></td>
+<td><a href="ProgramFlow.php#method20" target="page">Pythia::forceTimeShower(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>Info</td>
-<td><a href="ProgramFlow.php#method33" target="page">Pythia::info</a></td>
+<td><a href="ProgramFlow.php#method34" target="page">Pythia::info</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#method17" target="page">Pythia::init()</a></td>
+<td><a href="ProgramFlow.php#method18" target="page">Pythia::init()</a></td>
 <td>Program Flow</td>
 </tr>
 
@@ -4612,55 +4618,55 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="ProgramFlow.php#method23" target="page">Pythia::LHAeventList()</a></td>
+<td><a href="ProgramFlow.php#method24" target="page">Pythia::LHAeventList()</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#method24" target="page">Pythia::LHAeventSkip(...)</a></td>
+<td><a href="ProgramFlow.php#method25" target="page">Pythia::LHAeventSkip(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ProgramFlow.php#method27" target="page">Pythia::mode(...)</a></td>
+<td><a href="ProgramFlow.php#method28" target="page">Pythia::mode(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#method21" target="page">Pythia::moreDecays()</a></td>
+<td><a href="ProgramFlow.php#method22" target="page">Pythia::moreDecays()</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#method18" target="page">Pythia::next()</a></td>
+<td><a href="ProgramFlow.php#method19" target="page">Pythia::next()</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ProgramFlow.php#method28" target="page">Pythia::parm(...)</a></td>
+<td><a href="ProgramFlow.php#method29" target="page">Pythia::parm(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>ParticleData</td>
-<td><a href="ProgramFlow.php#method35" target="page">Pythia::particleData</a></td>
+<td><a href="ProgramFlow.php#method36" target="page">Pythia::particleData</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>PartonSystems</td>
-<td><a href="ProgramFlow.php#method39" target="page">Pythia::partonSystems</a></td>
+<td><a href="ProgramFlow.php#method40" target="page">Pythia::partonSystems</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>Event</td>
-<td><a href="ProgramFlow.php#method31" target="page">Pythia::process</a></td>
+<td><a href="ProgramFlow.php#method32" target="page">Pythia::process</a></td>
 <td>Program Flow</td>
 </tr>
 
@@ -4714,13 +4720,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>Rndm</td>
-<td><a href="ProgramFlow.php#method36" target="page">Pythia::rndm</a></td>
+<td><a href="ProgramFlow.php#method37" target="page">Pythia::rndm</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#method13" target="page">Pythia::setBeamShapePtr(...)</a></td>
+<td><a href="ProgramFlow.php#method14" target="page">Pythia::setBeamShapePtr(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
@@ -4744,7 +4750,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#method15" target="page">Pythia::setResonancePtr(...)</a></td>
+<td><a href="ProgramFlow.php#method16" target="page">Pythia::setResonancePtr(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
@@ -4756,19 +4762,19 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#method16" target="page">Pythia::setShowerPtr(...)</a></td>
+<td><a href="ProgramFlow.php#method17" target="page">Pythia::setShowerPtr(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#method14" target="page">Pythia::setSigmaPtr(...)</a></td>
+<td><a href="ProgramFlow.php#method15" target="page">Pythia::setSigmaPtr(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>Settings</td>
-<td><a href="ProgramFlow.php#method34" target="page">Pythia::settings</a></td>
+<td><a href="ProgramFlow.php#method35" target="page">Pythia::settings</a></td>
 <td>Program Flow</td>
 </tr>
 
@@ -4780,19 +4786,19 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>SusyLesHouches</td>
-<td><a href="ProgramFlow.php#method38" target="page">Pythia::slha</a></td>
+<td><a href="ProgramFlow.php#method39" target="page">Pythia::slha</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ProgramFlow.php#method25" target="page">Pythia::stat()</a></td>
+<td><a href="ProgramFlow.php#method26" target="page">Pythia::stat()</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>string</td>
-<td><a href="ProgramFlow.php#method29" target="page">Pythia::word(...)</a></td>
+<td><a href="ProgramFlow.php#method30" target="page">Pythia::word(...)</a></td>
 <td>Program Flow</td>
 </tr>
 

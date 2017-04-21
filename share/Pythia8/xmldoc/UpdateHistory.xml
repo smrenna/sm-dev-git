@@ -12,7 +12,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.225: 20 April 2017 
+<li>8.225: 21 April 2017 
 <ul> 
  
 <li>Implementation of <ei>gamma-hadron</ei> collisions and 
@@ -42,6 +42,12 @@ collisions.</li>
 <li>Modified <code>finalKin()</code> methods for derived 
 <code>PhaseSpace</code> classes in case of non-diffractive processes, 
 to calculate incoming parton momenta with massive beam particles.</li> 
+ 
+<li>New method <code>Pythia::addUserHooksPtr(...)</code> allows 
+the simultaneous use of several <aloc href="UserHooks">User Hooks</aloc>. 
+When several hooks are applicable for a given task the net effect is 
+multiplicative, in weights or in veto survival. It is up to the user 
+to ensure that such combinations are the intended ones.</li> 
  
 <li>Construct <ei>pi^+-</ei> PDFs so that <ei>dbar = u</ei> 
 and <ei>d = ubar</ei>, shortcutting the returned <ei>d, dbar</ei> 

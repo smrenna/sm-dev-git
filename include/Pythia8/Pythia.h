@@ -115,6 +115,14 @@ public:
   bool setUserHooksPtr( UserHooks* userHooksPtrIn)
     { userHooksPtr = userHooksPtrIn; return true;}
 
+  // Possibility to add further pointers to allow multiple user hooks.
+  bool addUserHooksPtr( UserHooks* userHooksPtrIn) {
+    if ( !userHooksPtr ) return setUserHooksPtr(userHooksPtrIn);
+    UserHooksVector* uhv = dynamic_cast<UserHooksVector*>(userHooksPtr);
+    if ( !uhv ) { uhv = new UserHooksVector();
+      uhv->hooks.push_back(userHooksPtr); userHooksPtr = uhv; }
+    uhv->hooks.push_back(userHooksPtrIn); return true;}
+
   // Possibility to pass in pointer for merging hooks.
   bool setMergingHooksPtr( MergingHooks* mergingHooksPtrIn)
     { mergingHooksPtr = mergingHooksPtrIn; return true;}

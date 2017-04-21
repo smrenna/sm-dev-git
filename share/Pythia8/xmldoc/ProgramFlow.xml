@@ -738,6 +738,16 @@ must be instantiated by you in your program.
 <note>Note:</note> The method currently always returns true. 
 </method> 
  
+<method name="bool Pythia::addUserHooksPtr( UserHooks* userHooksPtr)"> 
+offers the possibility to add further user hooks, see 
+<code>setUserHooksPtr</code> above for further information. 
+<note>Note:</note> The method currently always returns true. 
+<note>Warning:</note> usually it is meaningful to combine several 
+requirements, but there are examples where not. It is the responsibility 
+of the user to check that a particular combination works as intended. 
+Also see <aloc href="UserHooks">here</aloc>. 
+</method> 
+ 
 <method name="bool Pythia::setBeamShapePtr( BeamShape* beamShapePtr)"> 
 offers the possibility to provide your own shape of the momentum and 
 space-time spread of the incoming beams. The rules for constructing 
