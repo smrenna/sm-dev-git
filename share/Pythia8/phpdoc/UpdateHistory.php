@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.225: 21 April 2017 
+<li>8.225: 23 April 2017 
 <ul> 
  
 <li>Implementation of <i>gamma-hadron</i> collisions and 
@@ -72,12 +72,28 @@ collisions.</li>
 <code>PhaseSpace</code> classes in case of non-diffractive processes, 
 to calculate incoming parton momenta with massive beam particles.</li> 
  
+<li>Redesigned the merging machinery to allow users to define their 
+own ME+PS merging plugin, which can then be used by Pythia. This change 
+does not affect the physics of Pythia's internal merging schemes.</li> 
+ 
+<li>Added some new (optional) virtual functions to the timelike and 
+spacelike showers to ease ME+PS merging with shower plugin codes. The 
+change does not impair the compatibility of existing shower plugin codes. 
+</li> 
+ 
 <li>New method <code>Pythia::addUserHooksPtr(...)</code> allows 
 the simultaneous use of several <?php $filepath = $_GET["filepath"];
 echo "<a href='UserHooks.php?filepath=".$filepath."' target='page'>";?>User Hooks</a>. 
 When several hooks are applicable for a given task the net effect is 
 multiplicative, in weights or in veto survival. It is up to the user 
 to ensure that such combinations are the intended ones.</li> 
+ 
+<li>Four central members from the NNPDF 3.1 sets are made available, 
+as <code>PDF:pSet</code> (and equivalent) codes 17 - 20: the LO 
+ones with <i>alpha_s = 0.130</i> and <i>0.118</i>, and the 
+NLO and NNLO ones with the latter <i>alpha_s</i>. Note that these 
+have a small-<i>x</i> behaviour significantly different from the 
+default NNPDF 2.3 ones, so retunes will be necessary.</li> 
  
 <li>Construct <i>pi^+-</i> PDFs so that <i>dbar = u</i> 
 and <i>d = ubar</i>, shortcutting the returned <i>d, dbar</i> 
@@ -99,6 +115,13 @@ the correct value for each event (accessible with
 dilution of the effect. The average enhancement factor is now also 
 calculated at initialization, see <code>Info::enhanceMPIavg()</code> 
 and <code>Info::enhanceMPIoldavg()</code>.</li> 
+ 
+<li>Bug fix in <code>SusyLesHouches.cc</code>, in which the unitary 
+checks of SLHA mixing matrices previously ignored imaginary components, 
+leading to failures when reading in spectra with explicit CP violation. 
+Thanks to M. Noormandipur for pointing to this bug. Mixing-matrix output 
+simultaneously updated so that the magnitudes, rather than the real parts, 
+of mixing-matrix elements are printed.</li> 
  
 <li>A new approach has been introduced to force settings values 
 outside their allowed range, either by using the keyword 

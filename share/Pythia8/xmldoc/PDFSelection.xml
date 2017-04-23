@@ -146,6 +146,14 @@ NLO <ei>alpha_s(M_Z) = 0.1180</ei> (NLO, see Warning 3 above).</option>
 </option> 
 <option value="16">NNPDF2.3 QCD+QED NNLO <ei>alpha_s(M_Z) = 0.119</ei>. 
 </option> 
+<option value="17">NNPDF3.1 QCD LO <ei>alpha_s(M_Z) = 0.130</ei>. 
+</option> 
+<option value="18">NNPDF3.1 QCD LO <ei>alpha_s(M_Z) = 0.118</ei>. 
+</option> 
+<option value="19">NNPDF3.1 QCD NLO <ei>alpha_s(M_Z) = 0.118</ei>. 
+</option> 
+<option value="20">NNPDF3.1 QCD NNLO <ei>alpha_s(M_Z) = 0.118</ei>. 
+</option> 
 <option value="LHAPDF5:set/member">Use an external LHAPDF set 
 where <code>set</code> is the name of the set to use 
 and <code>member</code> is the member of the set to use. The value 

@@ -93,6 +93,16 @@ public:
   friend class History;
   friend class MergingHooks;
 
+  // Pointers to timelike showers for resonance decays and the rest.
+  TimeShower*    timesDecPtr;
+  TimeShower*    timesPtr;
+
+  // Pointer to spacelike showers.
+  SpaceShower*   spacePtr;
+
+  // Pointer to userHooks object for user interaction with program.
+  UserHooks*     userHooksPtr;
+
 private:
 
   // Constants: could only be changed in the code itself.
@@ -159,16 +169,6 @@ private:
 
   // Pointer to information on subcollision parton locations.
   PartonSystems* partonSystemsPtr;
-
-  // Pointer to userHooks object for user interaction with program.
-  UserHooks*     userHooksPtr;
-
-  // Pointers to timelike showers for resonance decays and the rest.
-  TimeShower*    timesDecPtr;
-  TimeShower*    timesPtr;
-
-  // Pointer to spacelike showers.
-  SpaceShower*   spacePtr;
 
   // The generator classes for multiparton interactions.
   MultipartonInteractions  multiMB;

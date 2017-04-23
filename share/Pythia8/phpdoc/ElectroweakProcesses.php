@@ -404,7 +404,7 @@ code in the parentheses is used when the direct photon is from side A.
 <br/><br/><strong>PhotonParton:all</strong>  <input type="radio" name="38" value="on"><strong>On</strong>
 <input type="radio" name="38" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
-Common switch for the processes 271-274. 
+Common switch for the processes 271-274 (also 281-284 when relevant). 
    
  
 <br/><br/><strong>PhotonParton:ggm2qqbar</strong>  <input type="radio" name="39" value="on"><strong>On</strong>

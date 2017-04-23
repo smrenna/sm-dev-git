@@ -203,6 +203,9 @@ Pythia::~Pythia() {
   // Delete the Les Houches object created with new.
   if (useNewLHA) delete lhaUpPtr;
 
+  // Delete the Merging object created with new.
+  if (hasOwnMerging) delete mergingPtr;
+
   // Delete the MergingHooks object created with new.
   if (hasOwnMergingHooks) delete mergingHooksPtr;
 
@@ -267,6 +270,9 @@ void Pythia::initPtrs() {
 
   // Initial value for pointer to merging hooks.
   doMerging          = false;
+  hasMerging         = false;
+  hasOwnMerging      = false;
+  mergingPtr         = 0;
   hasMergingHooks    = false;
   hasOwnMergingHooks = false;
   mergingHooksPtr    = 0;
@@ -568,6 +574,63 @@ bool Pythia::init() {
   info.addCounter(1);
   frameType = mode("Beams:frameType");
 
+  // Set up values related to CKKW-L merging.
+  bool doUserMerging     = settings.flag("Merging:doUserMerging");
+  bool doMGMerging       = settings.flag("Merging:doMGMerging");
+  bool doKTMerging       = settings.flag("Merging:doKTMerging");
+  bool doPTLundMerging   = settings.flag("Merging:doPTLundMerging");
+  bool doCutBasedMerging = settings.flag("Merging:doCutBasedMerging");
+  // Set up values related to unitarised CKKW merging
+  bool doUMEPSTree       = settings.flag("Merging:doUMEPSTree");
+  bool doUMEPSSubt       = settings.flag("Merging:doUMEPSSubt");
+  // Set up values related to NL3 NLO merging
+  bool doNL3Tree         = settings.flag("Merging:doNL3Tree");
+  bool doNL3Loop         = settings.flag("Merging:doNL3Loop");
+  bool doNL3Subt         = settings.flag("Merging:doNL3Subt");
+  // Set up values related to unitarised NLO merging
+  bool doUNLOPSTree      = settings.flag("Merging:doUNLOPSTree");
+  bool doUNLOPSLoop      = settings.flag("Merging:doUNLOPSLoop");
+  bool doUNLOPSSubt      = settings.flag("Merging:doUNLOPSSubt");
+  bool doUNLOPSSubtNLO   = settings.flag("Merging:doUNLOPSSubtNLO");
+  bool doXSectionEst     = settings.flag("Merging:doXSectionEstimate");
+  doMerging = doUserMerging || doMGMerging || doKTMerging
+    || doPTLundMerging || doCutBasedMerging || doUMEPSTree || doUMEPSSubt
+    || doNL3Tree || doNL3Loop || doNL3Subt || doUNLOPSTree
+    || doUNLOPSLoop || doUNLOPSSubt || doUNLOPSSubtNLO || doXSectionEst;
+
+  // Set up MergingHooks object.
+  bool inputMergingHooks = (mergingHooksPtr != 0);
+  if (doMerging && !inputMergingHooks){
+    if (hasOwnMergingHooks && mergingHooksPtr) delete mergingHooksPtr;
+    mergingHooksPtr = new MergingHooks();
+    hasOwnMergingHooks = true;
+  }
+
+  hasMergingHooks  = (mergingHooksPtr != 0);
+  // Merging hooks required for merging. If no merging hooks pointer is
+  // available, exit.
+  if (doMerging && !hasMergingHooks) {
+    info.errorMsg("Abort from Pythia::init: "
+      "no merging hooks object has been provided");
+    return false;
+  } else if (doMerging) {
+    mergingHooksPtr->setLHEInputFile("");
+  }
+
+  // Set up Merging object.
+  bool inputMerging = (mergingPtr != 0);
+  if (doMerging && !inputMerging){
+    if (hasOwnMerging && mergingPtr) delete mergingPtr;
+    mergingPtr = new Merging();
+    hasOwnMerging = true;
+  }
+
+  hasMerging  = (mergingPtr != 0);
+
+  // Initialise counting of events significantly above the
+  // merging scale.
+  info.setCounter(41,0);
+
   // Initialization with internal processes: read in and set values.
   if (frameType < 4 ) {
     doLHA     = false;
@@ -650,53 +713,12 @@ bool Pythia::init() {
     // Set up values related to merging hooks.
     if (frameType == 4 || frameType == 5) {
 
-      // Set up values related to CKKW-L merging.
-      bool doUserMerging     = settings.flag("Merging:doUserMerging");
-      bool doMGMerging       = settings.flag("Merging:doMGMerging");
-      bool doKTMerging       = settings.flag("Merging:doKTMerging");
-      bool doPTLundMerging   = settings.flag("Merging:doPTLundMerging");
-      bool doCutBasedMerging = settings.flag("Merging:doCutBasedMerging");
-      // Set up values related to unitarised CKKW merging
-      bool doUMEPSTree       = settings.flag("Merging:doUMEPSTree");
-      bool doUMEPSSubt       = settings.flag("Merging:doUMEPSSubt");
-      // Set up values related to NL3 NLO merging
-      bool doNL3Tree         = settings.flag("Merging:doNL3Tree");
-      bool doNL3Loop         = settings.flag("Merging:doNL3Loop");
-      bool doNL3Subt         = settings.flag("Merging:doNL3Subt");
-      // Set up values related to unitarised NLO merging
-      bool doUNLOPSTree      = settings.flag("Merging:doUNLOPSTree");
-      bool doUNLOPSLoop      = settings.flag("Merging:doUNLOPSLoop");
-      bool doUNLOPSSubt      = settings.flag("Merging:doUNLOPSSubt");
-      bool doUNLOPSSubtNLO   = settings.flag("Merging:doUNLOPSSubtNLO");
-      bool doXSectionEst     = settings.flag("Merging:doXSectionEstimate");
-      doMerging = doUserMerging || doMGMerging || doKTMerging
-        || doPTLundMerging || doCutBasedMerging || doUMEPSTree || doUMEPSSubt
-        || doNL3Tree || doNL3Loop || doNL3Subt || doUNLOPSTree
-        || doUNLOPSLoop || doUNLOPSSubt || doUNLOPSSubtNLO || doXSectionEst;
-
-      // Set up MergingHooks object.
-      bool inputMergingHooks = (mergingHooksPtr != 0);
-      if (doMerging && !inputMergingHooks) {
-        if (hasOwnMergingHooks && mergingHooksPtr) delete mergingHooksPtr;
-        mergingHooksPtr = new MergingHooks();
-        hasOwnMergingHooks = true;
-      }
-
-      hasMergingHooks  = (mergingHooksPtr != 0);
-      // Merging hooks required for merging. If no merging hooks pointer is
-      // available, exit.
-      if (doMerging && !hasMergingHooks) {
-        info.errorMsg("Abort from Pythia::init: "
-          "no merging hooks object has been provided");
-        return false;
-      } else if (doMerging) {
+      // Store the name of the input LHEF for merging.
+      if (doMerging) {
         string lhefIn = (frameType == 4) ? lhef : "";
         mergingHooksPtr->setLHEInputFile( lhefIn);
       }
 
-      // Initialise counting of Les Houches Events significantly above the
-      // merging scale.
-      info.setCounter(41,0);
     }
 
     // Set LHAinit information (in some external program).
@@ -781,8 +803,10 @@ bool Pythia::init() {
   beamBhasResGamma = beamBneedResGamma && beamHasGamma && isChargedLeptonB;
 
   // Initialise merging hooks.
-  if ( doMerging && (hasMergingHooks || hasOwnMergingHooks) )
-    mergingHooksPtr->init( settings, &info, &particleData, &partonSystems);
+  if ( doMerging && (hasMergingHooks || hasOwnMergingHooks) ) {
+    mergingHooksPtr->initPtr( &settings, &info, &particleData, &partonSystems);
+    mergingHooksPtr->init();
+  }
 
   // Check that combinations of settings are allowed; change if not.
   checkSettings();
@@ -976,8 +1000,11 @@ bool Pythia::init() {
   }
 
   // Initialise the merging wrapper class.
-  if (doMerging ) merging.init( &settings, &info, &particleData, &rndm,
-    &beamA, &beamB, mergingHooksPtr, &trialPartonLevel, couplingsPtr );
+  if (doMerging ) {
+    mergingPtr->initPtr( &settings, &info, &particleData, &rndm,
+      &beamA, &beamB, mergingHooksPtr, &trialPartonLevel, couplingsPtr );
+    mergingPtr->init();
+  }
 
   // Send info/pointers to hadron level for initialization.
   // Note: forceHadronLevel() can come, so we must always initialize.
@@ -1632,7 +1659,7 @@ bool Pythia::next() {
 
     // Possibility to perform matrix element merging for this event.
     if (doMerging) {
-      int veto = merging.mergeProcess( process );
+      int veto = mergingPtr->mergeProcess( process );
       // Apply possible merging scale cut.
       if (veto == -1) {
         hasVetoed = true;
@@ -2054,7 +2081,7 @@ void Pythia::stat() {
   if (reset)   partonLevel.resetStatistics();
 
   // Merging statistics.
-  if (doMerging) merging.statistics();
+  if (doMerging) mergingPtr->statistics();
 
   // Summary of which and how many warnings/errors encountered.
   if (showErr) info.errorStatistics();
@@ -2628,6 +2655,8 @@ PDF* Pythia::getPDFPtr(int idIn, int sequence, string beam, bool resolved) {
       tempPDFPtr = new CTEQ6pdf(idIn, pSet - 6, 1., xmlPath, &info);
     else if (pSet <= 16)
       tempPDFPtr = new NNPDF(idIn, pSet - 12, xmlPath, &info);
+    else if (pSet <= 20)
+      tempPDFPtr = new LHAGrid1(idIn, pWord, xmlPath, &info);
     else tempPDFPtr = 0;
   }
 

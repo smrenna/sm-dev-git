@@ -696,7 +696,7 @@ make sense out of any one line.
    
  
 <a name="method8"></a>
-<p/><strong>bool Pythia::setPDFPtr( PDF* pdfAPtr, PDF* pdfBPtr, PDF* pdfHardAPtr = 0, PDF* pdfHardBPtr = 0) &nbsp;</strong> <br/>
+<p/><strong>bool Pythia::setPDFPtr( PDF* pdfAPtr, PDF* pdfBPtr, PDF* pdfHardAPtr = 0, PDF* pdfHardBPtr = 0, PDF* pdfPomAPtr = 0, PDF* pdfPomBPtr = 0, PDF* pdfGamAPtr = 0, PDF* pdfGamBPtr = 0, PDF* pdfHardGamAPtr = 0, PDF* pdfHardGamBPtr = 0, PDF* pdfUnresAPtr = 0, PDF* pdfUnresBPtr = 0, PDF* pdfUnresGamAPtr = 0, PDF* pdfUnresGamBPtrIn = 0) &nbsp;</strong> <br/>
 offers the possibility to link in external PDF sets for usage inside 
 the program. The rules for constructing your own class from 
 the <code>PDF</code> base class are described 
@@ -719,6 +719,37 @@ provide these two further pointers then two different sets of PDF's are
 used. This second set is then exclusively for the generation of the hard 
 process from the process matrix elements library. The first set above 
 is for everything else, notably parton showers and multiparton interactions. 
+   
+<br/><code>argument</code><strong> pdfPomAPtr, pdfPomBPtr </strong> (<code>default = <strong>0</strong></code>) :  
+pointers to two further <code>PDF</code>-derived objects, one for each 
+of the incoming beams. These define the pomeron PDFs used in hard diffraction. 
+   
+<br/><code>argument</code><strong> pdfGamAPtr, pdfGamBPtr </strong> (<code>default = <strong>0</strong></code>) :  
+pointers to two further <code>PDF</code>-derived objects, one for each 
+of the incoming beams. These define the photon PDFs when photons are 
+emitted from lepton beams. With resolved photon beams some additional 
+methods are required for initial state radiation and multiparton interactions 
+and to sample valence content. 
+   
+<br/><code>argument</code><strong> pdfHardGamAPtr, pdfHardGamBPtr </strong> (<code>default = <strong>0</strong></code>) :  
+pointers to two further <code>PDF</code>-derived objects, one for each 
+of the incoming beams. As above, but now these are used for hard-process 
+generation only, the parton showers and multiparton interactions uses the 
+<code>pdfGamAPtr</code> and <code>pdfGamBPtr</code> PDFs. Unlike above, 
+no additional methods are needed for these. 
+   
+<br/><code>argument</code><strong> pdfUnresAPtr, pdfUnresBPtr </strong> (<code>default = <strong>0</strong></code>) :  
+pointers to two further <code>PDF</code>-derived objects, one for each 
+of the incoming beams. Additional PDF pointers when the beam particle 
+has also unresolved PDFs in addition to usual resolved one. Currently 
+used only when mixing direct and resolved photon-initiated processes. 
+   
+<br/><code>argument</code><strong> pdfUnresGamAPtr, pdfUnresGamBPtr </strong> (<code>default = <strong>0</strong></code>) :  
+pointers to two further <code>PDF</code>-derived objects, one for each 
+of the incoming beams. Additional PDF pointers when having resolved and 
+unresolved photons coming from lepton beams. Currently used only when mixing 
+direct and resolved photon-initiated processes in lepton-lepton or 
+lepton-hadron collisions. 
    
 <br/><b>Note 1:</b> The method returns false if the input is obviously 
 incorrect, e.g. if two (nonzero) pointers agree. 

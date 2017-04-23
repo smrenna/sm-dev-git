@@ -33,6 +33,18 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
+<td>  virtual bool</td>
+<td><a href="MatchingAndMerging.php#method16" target="page">canCutOnRecState()</a></td>
+<td>Matching And Merging</td>
+</tr>
+
+<tr>
+<td>  virtual bool</td>
+<td><a href="MatchingAndMerging.php#method18" target="page">canVetoTrialEmission()</a></td>
+<td>Matching And Merging</td>
+</tr>
+
+<tr>
 <td>friend double</td>
 <td><a href="FourVectors.php#method25" target="page">cosphi(...)</a></td>
 <td>Four-Vectors</td>
@@ -57,9 +69,21 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
+<td>  virtual double</td>
+<td><a href="MatchingAndMerging.php#method15" target="page">dampenIfFailCuts(...)</a></td>
+<td>Matching And Merging</td>
+</tr>
+
+<tr>
 <td>virtual bool</td>
 <td><a href="UserHooks.php#method46" target="page">doChangeFragPar(...)</a></td>
 <td>User Hooks</td>
+</tr>
+
+<tr>
+<td>  virtual bool</td>
+<td><a href="MatchingAndMerging.php#method17" target="page">doCutOnRecState(...)</a></td>
+<td>Matching And Merging</td>
 </tr>
 
 <tr>
@@ -72,6 +96,12 @@ Many of them are only intended for experts, while undocumented ones are only for
 <td>virtual bool</td>
 <td><a href="UserHooks.php#method47" target="page">doVetoFragmentation(...)</a></td>
 <td>User Hooks</td>
+</tr>
+
+<tr>
+<td>  virtual bool</td>
+<td><a href="MatchingAndMerging.php#method19" target="page">doVetoTrialEmission(...)</a></td>
+<td>Matching And Merging</td>
 </tr>
 
 <tr>
@@ -90,6 +120,12 @@ Many of them are only intended for experts, while undocumented ones are only for
 <td>PDF*</td>
 <td><a href="ProgramFlow.php#method31" target="page">getPDFPtr(...)</a></td>
 <td>Program Flow</td>
+</tr>
+
+<tr>
+<td>  virtual double</td>
+<td><a href="MatchingAndMerging.php#method20" target="page">hardProcessME(...)</a></td>
+<td>Matching And Merging</td>
 </tr>
 
 <tr>
@@ -321,6 +357,12 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
+<td>virtual void</td>
+<td><a href="MatchingAndMerging.php#method6" target="page">statistics()</a></td>
+<td>Matching And Merging</td>
+</tr>
+
+<tr>
 <td>friend void</td>
 <td><a href="Histograms.php#method13" target="page">table(...)</a></td>
 <td>Histograms</td>
@@ -339,9 +381,33 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
+<td>  virtual bool</td>
+<td><a href="MatchingAndMerging.php#method23" target="page">useShowerPlugin()</a></td>
+<td>Matching And Merging</td>
+</tr>
+
+<tr>
 <td>bool</td>
 <td><a href="SettingsScheme.php#method8" target="page">writeFileXML(...)</a></td>
 <td>Settings Scheme</td>
+</tr>
+
+<tr>
+<td>virtual</td>
+<td><a href="MatchingAndMerging.php#method24" target="page">~MyHardProcess()</a></td>
+<td>Matching And Merging</td>
+</tr>
+
+<tr>
+<td>virtual</td>
+<td><a href="MatchingAndMerging.php#method4" target="page">~MyMerging()</a></td>
+<td>Matching And Merging</td>
+</tr>
+
+<tr>
+<td>virtual</td>
+<td><a href="MatchingAndMerging.php#method8" target="page">~MyMergingHooks()</a></td>
+<td>Matching And Merging</td>
 </tr>
 
 <tr>
@@ -2739,6 +2805,12 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
+<td> </td>
+<td><a href="MatchingAndMerging.php#method3" target="page">MergingHooks::setHardProcessPtr(...)</a></td>
+<td>Matching And Merging</td>
+</tr>
+
+<tr>
 <td>double</td>
 <td><a href="CKKWLMerging.php#method10" target="page">MergingHooks::tms()</a></td>
 <td>C K K W L Merging</td>
@@ -2754,6 +2826,108 @@ Many of them are only intended for experts, while undocumented ones are only for
 <td>virtual</td>
 <td><a href="CKKWLMerging.php#method2" target="page">MergingHooks::~MergingHooks()</a></td>
 <td>C K K W L Merging</td>
+</tr>
+
+<tr>
+<td>virtual bool</td>
+<td><a href="MatchingAndMerging.php#method28" target="page">MyHardProcess::allowCandidates(...)</a></td>
+<td>Matching And Merging</td>
+</tr>
+
+<tr>
+<td>virtual bool</td>
+<td><a href="MatchingAndMerging.php#method31" target="page">MyHardProcess::exchangeCandidates(...)</a></td>
+<td>Matching And Merging</td>
+</tr>
+
+<tr>
+<td>virtual bool</td>
+<td><a href="MatchingAndMerging.php#method30" target="page">MyHardProcess::findOtherCandidates(...)</a></td>
+<td>Matching And Merging</td>
+</tr>
+
+<tr>
+<td>virtual void</td>
+<td><a href="MatchingAndMerging.php#method25" target="page">MyHardProcess::initOnProcess(...)</a></td>
+<td>Matching And Merging</td>
+</tr>
+
+<tr>
+<td>virtual bool</td>
+<td><a href="MatchingAndMerging.php#method29" target="page">MyHardProcess::matchesAnyOutgoing(...)</a></td>
+<td>Matching And Merging</td>
+</tr>
+
+<tr>
+<td>virtual void</td>
+<td><a href="MatchingAndMerging.php#method27" target="page">MyHardProcess::storeCandidates(...)</a></td>
+<td>Matching And Merging</td>
+</tr>
+
+<tr>
+<td>virtual void</td>
+<td><a href="MatchingAndMerging.php#method26" target="page">MyHardProcess::translateProcessString(...)</a></td>
+<td>Matching And Merging</td>
+</tr>
+
+<tr>
+<td>virtual void</td>
+<td><a href="MatchingAndMerging.php#method5" target="page">MyMerging::init()</a></td>
+<td>Matching And Merging</td>
+</tr>
+
+<tr>
+<td>virtual int</td>
+<td><a href="MatchingAndMerging.php#method7" target="page">MyMerging::mergeProcess(...)</a></td>
+<td>Matching And Merging</td>
+</tr>
+
+<tr>
+<td>virtual bool</td>
+<td><a href="MatchingAndMerging.php#method12" target="page">MyMergingHooks::canVetoEmission()</a></td>
+<td>Matching And Merging</td>
+</tr>
+
+<tr>
+<td>virtual bool</td>
+<td><a href="MatchingAndMerging.php#method10" target="page">MyMergingHooks::canVetoStep()</a></td>
+<td>Matching And Merging</td>
+</tr>
+
+<tr>
+<td>virtual bool</td>
+<td><a href="MatchingAndMerging.php#method11" target="page">MyMergingHooks::doVetoStep(...)</a></td>
+<td>Matching And Merging</td>
+</tr>
+
+<tr>
+<td>virtual bool</td>
+<td><a href="MatchingAndMerging.php#method13" target="page">MyMergingHooks::doVetoStep(...)</a></td>
+<td>Matching And Merging</td>
+</tr>
+
+<tr>
+<td>virtual int</td>
+<td><a href="MatchingAndMerging.php#method22" target="page">MyMergingHooks::getNumberOfClusteringSteps(...)</a></td>
+<td>Matching And Merging</td>
+</tr>
+
+<tr>
+<td>virtual void</td>
+<td><a href="MatchingAndMerging.php#method9" target="page">MyMergingHooks::init()</a></td>
+<td>Matching And Merging</td>
+</tr>
+
+<tr>
+<td>virtual bool</td>
+<td><a href="MatchingAndMerging.php#method14" target="page">MyMergingHooks::setShowerStartingScales(...)</a></td>
+<td>Matching And Merging</td>
+</tr>
+
+<tr>
+<td>virtual double</td>
+<td><a href="MatchingAndMerging.php#method21" target="page">MyMergingHooks::tmsDefinition(...)</a></td>
+<td>Matching And Merging</td>
 </tr>
 
 <tr>
@@ -4743,6 +4917,18 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
+<td> </td>
+<td><a href="MatchingAndMerging.php#method2" target="page">Pythia::setMergingHooksPtr(...)</a></td>
+<td>Matching And Merging</td>
+</tr>
+
+<tr>
+<td> </td>
+<td><a href="MatchingAndMerging.php#method1" target="page">Pythia::setMergingPtr(...)</a></td>
+<td>Matching And Merging</td>
+</tr>
+
+<tr>
 <td>bool</td>
 <td><a href="ProgramFlow.php#method8" target="page">Pythia::setPDFPtr(...)</a></td>
 <td>Program Flow</td>
@@ -5794,115 +5980,127 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>virtual bool</td>
-<td><a href="ImplementNewShowers.php#method34" target="page">SpaceShower::branch(...)</a></td>
+<td><a href="ImplementNewShowers.php#method46" target="page">SpaceShower::allowedSplitting(...)</a></td>
+<td>Implement New Showers</td>
+</tr>
+
+<tr>
+<td>virtual bool</td>
+<td><a href="ImplementNewShowers.php#method36" target="page">SpaceShower::branch(...)</a></td>
 <td>Implement New Showers</td>
 </tr>
 
 <tr>
 <td>virtual Event</td>
-<td><a href="ImplementNewShowers.php#method40" target="page">SpaceShower::clustered(...)</a></td>
+<td><a href="ImplementNewShowers.php#method42" target="page">SpaceShower::clustered(...)</a></td>
 <td>Implement New Showers</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ImplementNewShowers.php#method36" target="page">SpaceShower::doRestart()</a></td>
+<td><a href="ImplementNewShowers.php#method38" target="page">SpaceShower::doRestart()</a></td>
 <td>Implement New Showers</td>
 </tr>
 
 <tr>
 <td>virtual double</td>
-<td><a href="ImplementNewShowers.php#method30" target="page">SpaceShower::enhancePTmax()</a></td>
+<td><a href="ImplementNewShowers.php#method32" target="page">SpaceShower::enhancePTmax()</a></td>
 <td>Implement New Showers</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ImplementNewShowers.php#method37" target="page">SpaceShower::getHasWeaklyRadiated()</a></td>
+<td><a href="ImplementNewShowers.php#method39" target="page">SpaceShower::getHasWeaklyRadiated()</a></td>
 <td>Implement New Showers</td>
 </tr>
 
 <tr>
-<td>virtual string</td>
-<td><a href="ImplementNewShowers.php#method42" target="page">SpaceShower::getSplittingName(...)</a></td>
+<td>virtual vector&lt;int&gt;</td>
+<td><a href="ImplementNewShowers.php#method47" target="page">SpaceShower::getRecoilers(...)</a></td>
+<td>Implement New Showers</td>
+</tr>
+
+<tr>
+<td>virtual vector&lt;string&gt;</td>
+<td><a href="ImplementNewShowers.php#method44" target="page">SpaceShower::getSplittingName(...)</a></td>
 <td>Implement New Showers</td>
 </tr>
 
 <tr>
 <td>virtual double</td>
-<td><a href="ImplementNewShowers.php#method43" target="page">SpaceShower::getSplittingProb(...)</a></td>
+<td><a href="ImplementNewShowers.php#method45" target="page">SpaceShower::getSplittingProb(...)</a></td>
 <td>Implement New Showers</td>
 </tr>
 
 <tr>
 <td>virtual map &lt;string,double&gt;</td>
-<td><a href="ImplementNewShowers.php#method41" target="page">SpaceShower::getStateVariables(...)</a></td>
+<td><a href="ImplementNewShowers.php#method43" target="page">SpaceShower::getStateVariables(...)</a></td>
 <td>Implement New Showers</td>
 </tr>
 
 <tr>
 <td>virtual void</td>
-<td><a href="ImplementNewShowers.php#method28" target="page">SpaceShower::init(...)</a></td>
+<td><a href="ImplementNewShowers.php#method30" target="page">SpaceShower::init(...)</a></td>
 <td>Implement New Showers</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ImplementNewShowers.php#method27" target="page">SpaceShower::initPtr(...)</a></td>
+<td><a href="ImplementNewShowers.php#method29" target="page">SpaceShower::initPtr(...)</a></td>
 <td>Implement New Showers</td>
 </tr>
 
 <tr>
 <td>virtual bool</td>
-<td><a href="ImplementNewShowers.php#method39" target="page">SpaceShower::isSpacelike(...)</a></td>
+<td><a href="ImplementNewShowers.php#method41" target="page">SpaceShower::isSpacelike(...)</a></td>
 <td>Implement New Showers</td>
 </tr>
 
 <tr>
 <td>virtual bool</td>
-<td><a href="ImplementNewShowers.php#method29" target="page">SpaceShower::limitPTmax(...)</a></td>
+<td><a href="ImplementNewShowers.php#method31" target="page">SpaceShower::limitPTmax(...)</a></td>
 <td>Implement New Showers</td>
 </tr>
 
 <tr>
 <td>virtual void</td>
-<td><a href="ImplementNewShowers.php#method38" target="page">SpaceShower::list()</a></td>
+<td><a href="ImplementNewShowers.php#method40" target="page">SpaceShower::list()</a></td>
 <td>Implement New Showers</td>
 </tr>
 
 <tr>
 <td>virtual void</td>
-<td><a href="ImplementNewShowers.php#method31" target="page">SpaceShower::prepare(...)</a></td>
+<td><a href="ImplementNewShowers.php#method33" target="page">SpaceShower::prepare(...)</a></td>
 <td>Implement New Showers</td>
 </tr>
 
 <tr>
 <td>virtual double</td>
-<td><a href="ImplementNewShowers.php#method33" target="page">SpaceShower::pTnext(...)</a></td>
+<td><a href="ImplementNewShowers.php#method35" target="page">SpaceShower::pTnext(...)</a></td>
 <td>Implement New Showers</td>
 </tr>
 
 <tr>
 <td> </td>
-<td><a href="ImplementNewShowers.php#method25" target="page">SpaceShower::SpaceShower()</a></td>
+<td><a href="ImplementNewShowers.php#method27" target="page">SpaceShower::SpaceShower()</a></td>
 <td>Implement New Showers</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ImplementNewShowers.php#method35" target="page">SpaceShower::system()</a></td>
+<td><a href="ImplementNewShowers.php#method37" target="page">SpaceShower::system()</a></td>
 <td>Implement New Showers</td>
 </tr>
 
 <tr>
 <td>virtual void</td>
-<td><a href="ImplementNewShowers.php#method32" target="page">SpaceShower::update(...)</a></td>
+<td><a href="ImplementNewShowers.php#method34" target="page">SpaceShower::update(...)</a></td>
 <td>Implement New Showers</td>
 </tr>
 
 <tr>
 <td>virtual</td>
-<td><a href="ImplementNewShowers.php#method26" target="page">SpaceShower::~SpaceShower()</a></td>
+<td><a href="ImplementNewShowers.php#method28" target="page">SpaceShower::~SpaceShower()</a></td>
 <td>Implement New Showers</td>
 </tr>
 
@@ -6016,6 +6214,12 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>virtual bool</td>
+<td><a href="ImplementNewShowers.php#method25" target="page">TimeShower::allowedSplitting(...)</a></td>
+<td>Implement New Showers</td>
+</tr>
+
+<tr>
+<td>virtual bool</td>
 <td><a href="ImplementNewShowers.php#method15" target="page">TimeShower::branch(...)</a></td>
 <td>Implement New Showers</td>
 </tr>
@@ -6039,7 +6243,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
-<td>virtual string</td>
+<td>virtual vector&lt;string&gt;</td>
 <td><a href="ImplementNewShowers.php#method23" target="page">TimeShower::getSplittingName(...)</a></td>
 <td>Implement New Showers</td>
 </tr>
@@ -6708,6 +6912,12 @@ Many of them are only intended for experts, while undocumented ones are only for
 <td> </td>
 <td><a href="FourVectors.php#method2" target="page">Vec4::Vec4(...)</a></td>
 <td>Four-Vectors</td>
+</tr>
+
+<tr>
+<td>virtual</td>
+<td><a href="ImplementNewShowers.php#method26" target="page">vector&lt;int&gt;TimeShower::getRecoilers(...)</a></td>
+<td>Implement New Showers</td>
 </tr>
 
 </table>

@@ -533,7 +533,7 @@ bool PartonLevel::next( Event& process, Event& event) {
     beamAPtr->pTMPI( process.scale() );
     beamBPtr->pTMPI( process.scale() );
 
-    // Potentially reset up starting scales for matrix element merging.
+    // Potentially reset starting scales for matrix element merging.
     if ( hasMergingHooks && (doTrial || canRemoveEvent || canRemoveEmission) )
       mergingHooksPtr->setShowerStartingScales( doTrial,
         (canRemoveEvent || canRemoveEmission), pTscaleRad, process, pTmaxFSR,
@@ -577,6 +577,12 @@ bool PartonLevel::next( Event& process, Event& event) {
       // Find next pT value for FSR, MPI and ISR.
       // Order calls to minimize time expenditure.
       double pTgen = 0.;
+
+      // Potentially increase shower stopping scale for trial showers, to
+      // avoid accumulating low-pT emissions (and weights thereof)
+      if ( hasMergingHooks && doTrial)
+        pTgen = max( pTgen, mergingHooksPtr->getShowerStoppingScale() );
+
       double pTtimes = (doFSRduringProcess)
         ? timesPtr->pTnext( event, pTmaxFSR, pTgen, isFirstTrial, doTrial)
         : -1.;
@@ -1026,9 +1032,8 @@ bool PartonLevel::next( Event& process, Event& event) {
   if (isDiff) {
     multiPtr->setEmpty();
     infoPtr->setImpact( multiPtr->bMPI(), multiPtr->enhanceMPI(),
-    multiPtr->enhanceMPIavg(), false);
+      multiPtr->enhanceMPIavg(), false);
   }
-
 
   // Do colour reconnection for resonance decays.
   if (!earlyResDec && forceResonanceCR && doReconnect &&
@@ -1591,9 +1596,11 @@ void PartonLevel::setupResolvedDiff( Event& process) {
 
   // Reassign beam pointers in other classes.
   timesPtr->reassignBeamPtrs( beamAPtr, beamBPtr, beamOffset);
+  timesDecPtr->reassignBeamPtrs( beamAPtr, beamBPtr, beamOffset);
   spacePtr->reassignBeamPtrs( beamAPtr, beamBPtr, beamOffset);
   remnants.reassignBeamPtrs(  beamAPtr, beamBPtr, iDS);
   colourReconnection.reassignBeamPtrs(  beamAPtr, beamBPtr);
+
 
   // Reassign multiparton interactions pointer to right object.
   if      (iDS == 1) multiPtr = &multiSDA;
@@ -1621,7 +1628,7 @@ void PartonLevel::leaveResolvedDiff( int iHardLoop, Event& process,
   for (int i = sizeProcess; i < process.size(); ++i)
     process[i].rotbst( MtoCM);
   int iFirst = (iHardLoop == 1) ? 5 + sizeEvent - sizeProcess : sizeEvent;
-  if (isDiffC)  iFirst = 6 + sizeEvent - sizeProcess;
+  if (isDiffC) iFirst = 6 + sizeEvent - sizeProcess;
   for (int i = iFirst; i < event.size(); ++i)
     event[i].rotbst( MtoCM);
 
@@ -1636,6 +1643,7 @@ void PartonLevel::leaveResolvedDiff( int iHardLoop, Event& process,
 
   // Reassign beam pointers in other classes.
   timesPtr->reassignBeamPtrs( beamAPtr, beamBPtr, 0);
+  timesDecPtr->reassignBeamPtrs( beamAPtr, beamBPtr, 0);
   spacePtr->reassignBeamPtrs( beamAPtr, beamBPtr, 0);
   remnants.reassignBeamPtrs(  beamAPtr, beamBPtr, 0);
   colourReconnection.reassignBeamPtrs(  beamAPtr, beamBPtr);
@@ -1797,6 +1805,7 @@ void PartonLevel::setupHardDiff( Event& process) {
 
   // Reassign beam pointers in other classes.
   timesPtr->reassignBeamPtrs( beamAPtr, beamBPtr, beamOffset);
+  timesDecPtr->reassignBeamPtrs( beamAPtr, beamBPtr, beamOffset);
   spacePtr->reassignBeamPtrs( beamAPtr, beamBPtr, beamOffset);
   remnants.reassignBeamPtrs(  beamAPtr, beamBPtr, (isHardDiffB) ? 2 : 1);
   colourReconnection.reassignBeamPtrs(  beamAPtr, beamBPtr);
@@ -1845,6 +1854,7 @@ void PartonLevel::leaveHardDiff( Event& process, Event& event) {
 
   // Reassign beam pointers in other classes.
   timesPtr->reassignBeamPtrs( beamAPtr, beamBPtr, 0);
+  timesDecPtr->reassignBeamPtrs( beamAPtr, beamBPtr, 0);
   spacePtr->reassignBeamPtrs( beamAPtr, beamBPtr, 0);
   remnants.reassignBeamPtrs(  beamAPtr, beamBPtr, 0);
   colourReconnection.reassignBeamPtrs(  beamAPtr, beamBPtr);
@@ -1930,6 +1940,7 @@ bool PartonLevel::setupResolvedLeptonGamma( Event& process) {
 
   // Reassign beam pointers in other classes.
   timesPtr->reassignBeamPtrs( beamAPtr, beamBPtr, beamOffset);
+  timesDecPtr->reassignBeamPtrs( beamAPtr, beamBPtr, beamOffset);
   spacePtr->reassignBeamPtrs( beamAPtr, beamBPtr, beamOffset);
   remnants.reassignBeamPtrs(  beamAPtr, beamBPtr, beamOffset);
   colourReconnection.reassignBeamPtrs(  beamAPtr, beamBPtr);
@@ -2081,6 +2092,7 @@ void PartonLevel::leaveResolvedLeptonGamma( Event& process, Event& event,
 
   // Reassign beam pointers in other classes.
   timesPtr->reassignBeamPtrs( beamAPtr, beamBPtr, 0);
+  timesDecPtr->reassignBeamPtrs( beamAPtr, beamBPtr, 0);
   spacePtr->reassignBeamPtrs( beamAPtr, beamBPtr, 0);
   remnants.reassignBeamPtrs(  beamAPtr, beamBPtr, 0);
   colourReconnection.reassignBeamPtrs(  beamAPtr, beamBPtr);
@@ -2331,6 +2343,14 @@ bool PartonLevel::resonanceShowers( Event& process, Event& event,
       // Set correct scale for trial showers.
       if (doTrial) pTmax = process.scale();
 
+      // Set correct scale for showers off multi-parton events when
+      // merging e+e- -> V -> jets.
+      int iMother1 = hardMother.mother1();
+      int iMother2 = hardMother.mother2();
+      if ( canRemoveEvent
+        && event[iMother1].colType() == 0 && event[iMother2].colType() == 0)
+        pTmax = process.scale();
+
       // Let prepare routine do the setup.
       timesDecPtr->prepare( iSys, event);
 
@@ -2408,6 +2428,12 @@ bool PartonLevel::wzDecayShowers( Event& event) {
   for (int iWZ = 0; iWZ < event.size(); ++iWZ)
   if (event[iWZ].isFinal()
     && (event[iWZ].id() == 23 || event[iWZ].idAbs() == 24) ) {
+
+    // Do nothing if particle should not be decayed.
+    if ( event[iWZ].canDecay() && event[iWZ].mayDecay()
+      && event[iWZ].isResonance() ) ;
+    else continue;
+
     int iWZtop = event[iWZ].iTopCopy();
     int typeWZ = 0;
     if (event[iWZtop].statusAbs() == 56) typeWZ = 1;

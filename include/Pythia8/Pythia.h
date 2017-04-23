@@ -123,6 +123,10 @@ public:
       uhv->hooks.push_back(userHooksPtr); userHooksPtr = uhv; }
     uhv->hooks.push_back(userHooksPtrIn); return true;}
 
+  // Possibility to pass in pointer for full merging class.
+  bool setMergingPtr( Merging* mergingPtrIn)
+    { mergingPtr = mergingPtrIn; return true;}
+
   // Possibility to pass in pointer for merging hooks.
   bool setMergingHooksPtr( MergingHooks* mergingHooksPtrIn)
     { mergingHooksPtr = mergingHooksPtrIn; return true;}
@@ -217,11 +221,15 @@ public:
   PartonSystems  partonSystems;
 
   // Merging object as wrapper for matrix element merging routines.
-  Merging        merging;
+  Merging*       mergingPtr;
 
   // Pointer to MergingHooks object for user interaction with the merging.
   // MergingHooks also more generally steers the matrix element merging.
   MergingHooks*  mergingHooksPtr;
+
+  // The two incoming beams.
+  BeamParticle beamA;
+  BeamParticle beamB;
 
 private:
 
@@ -291,10 +299,6 @@ private:
     useNewPdfGamA, useNewPdfGamB, useNewPdfHardGamA, useNewPdfHardGamB,
     useNewPdfUnresA, useNewPdfUnresB, useNewPdfUnresGamA, useNewPdfUnresGamB;
 
-  // The two incoming beams.
-  BeamParticle beamA;
-  BeamParticle beamB;
-
   // Alternative Pomeron beam-inside-beam.
   BeamParticle beamPomA;
   BeamParticle beamPomB;
@@ -345,6 +349,7 @@ private:
   PartonLevel trialPartonLevel;
 
   // Flags for defining the merging scheme.
+  bool        hasMerging, hasOwnMerging;
   bool        hasMergingHooks, hasOwnMergingHooks, doMerging;
 
   // The Colour reconnection class.

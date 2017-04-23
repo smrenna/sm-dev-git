@@ -306,7 +306,7 @@ code in the parentheses is used when the direct photon is from side A.
 </p> 
  
 <flag name="PhotonParton:all" default="off"> 
-Common switch for the processes 271-274. 
+Common switch for the processes 271-274 (also 281-284 when relevant). 
 </flag> 
  
 <flag name="PhotonParton:ggm2qqbar" default="off"> 
