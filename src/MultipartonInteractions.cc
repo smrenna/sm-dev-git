@@ -1241,6 +1241,9 @@ bool MultipartonInteractions::scatter( Event& event) {
     if (col > 0) parton.col( col + colOffset);
     int acol = parton.acol();
     if (acol > 0) parton.acol( acol + colOffset);
+    // Allow setting of parton production vertex.
+    if (userHooksPtr && userHooksPtr->canSetProductionVertex())
+      parton.vProd(userHooksPtr->vertexForMPI(parton, bNow));
 
     // Put the partons into the event record.
     event.append(parton);

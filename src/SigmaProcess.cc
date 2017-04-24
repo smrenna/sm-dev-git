@@ -887,6 +887,7 @@ void Sigma2Process::store2Kin( double x1in, double x2in, double sHin,
     else                        Q2RenSave = sH;
     Q2RenSave                            *= renormMultFac;
     if      (renormScale2 == 5) Q2RenSave = renormFixScale;
+    if      (renormScale2 == 6) Q2RenSave = -tH * renormMultFac;
 
     // Different options for factorization scale.
     if (masslessKin)            Q2FacSave = (factorScale2 < 4) ? pT2 : sH;
@@ -896,6 +897,7 @@ void Sigma2Process::store2Kin( double x1in, double x2in, double sHin,
     else                        Q2FacSave = sH;
     Q2FacSave                            *= factorMultFac;
     if      (factorScale2 == 5) Q2FacSave = factorFixScale;
+    if      (factorScale2 == 6) Q2FacSave = -tH * factorMultFac;
   }
 
   // Evaluate alpha_strong and alpha_EM.

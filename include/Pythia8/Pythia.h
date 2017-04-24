@@ -112,8 +112,9 @@ public:
     { return rndm.rndmEnginePtr( rndmEnginePtrIn);}
 
   // Possibility to pass in pointer for user hooks.
-  bool setUserHooksPtr( UserHooks* userHooksPtrIn)
-    { userHooksPtr = userHooksPtrIn; return true;}
+  bool setUserHooksPtr( UserHooks* userHooksPtrIn) {
+    if ( dynamic_cast<UserHooksVector*>(userHooksPtr) ) delete userHooksPtr;
+    userHooksPtr = userHooksPtrIn; return true;}
 
   // Possibility to add further pointers to allow multiple user hooks.
   bool addUserHooksPtr( UserHooks* userHooksPtrIn) {

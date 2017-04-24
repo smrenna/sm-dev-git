@@ -204,6 +204,9 @@ public:
   // Operator overloading with friends
   friend Vec4 operator*(double f, const Vec4& v1);
 
+  // Print a four-vector.
+  friend ostream& operator<<(ostream&, const Vec4& v) ;
+
   // Invariant mass of a pair and its square.
   friend double m(const Vec4& v1, const Vec4& v2);
   friend double m2(const Vec4& v1, const Vec4& v2);
@@ -214,10 +217,6 @@ public:
 
   // Cross-product of three 4-vectors ( p_i = epsilon_{iabc} p_a p_b p_c).
   friend Vec4 cross4(const Vec4& a, const Vec4& b, const Vec4& c);
-
-  // Function to create two vectors that are perpendicular to the both
-  // input vectors.
-  friend pair<Vec4,Vec4> getTwoPerpendicular(const Vec4& v1, const Vec4& v2);
 
   // theta is polar angle between v1 and v2.
   friend double theta(const Vec4& v1, const Vec4& v2);
@@ -235,11 +234,11 @@ public:
   friend double RRapPhi(const Vec4& v1, const Vec4& v2);
   friend double REtaPhi(const Vec4& v1, const Vec4& v2);
 
-  // Print a four-vector.
-  friend ostream& operator<<(ostream&, const Vec4& v) ;
-
   // Shift four-momenta within pair from old to new masses.
   friend bool pShift( Vec4& p1Move, Vec4& p2Move, double m1New, double m2New);
+
+  // Create two vectors that are perpendicular to the both input vectors.
+  friend pair<Vec4,Vec4> getTwoPerpendicular(const Vec4& v1, const Vec4& v2);
 
 private:
 

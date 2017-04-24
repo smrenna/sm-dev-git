@@ -100,7 +100,7 @@ Pythia::Pythia(string xmlDir, bool printBanner) {
 
 // Constructor from pre-initialised ParticleData and Settings objects.
 
-Pythia::Pythia(Settings& settingsIn,ParticleData& particleDataIn,
+Pythia::Pythia(Settings& settingsIn, ParticleData& particleDataIn,
   bool printBanner) {
 
   // Initialise / reset pointers and global variables.
@@ -202,6 +202,9 @@ Pythia::~Pythia() {
 
   // Delete the Les Houches object created with new.
   if (useNewLHA) delete lhaUpPtr;
+
+  // Delete vector of UserHooks (but not the UserHooks themselves).
+  if ( dynamic_cast<UserHooksVector*>(userHooksPtr) ) delete userHooksPtr;
 
   // Delete the Merging object created with new.
   if (hasOwnMerging) delete mergingPtr;

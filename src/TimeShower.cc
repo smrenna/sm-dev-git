@@ -3288,6 +3288,10 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
   }
   if (recBef.hasVertex()) rec.vProd( recBef.vProd() );
 
+  // Allow setting of parton production vertex.
+  if (userHooksPtr && userHooksPtr->canSetProductionVertex() )
+    emt.vProd( userHooksPtr->vertexForFSR( rad) );
+
   // Put new particles into the event record.
   // Mark original dipole partons as branched and set daughters/mothers.
   int iRad = event.append(rad);

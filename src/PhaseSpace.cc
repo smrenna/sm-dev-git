@@ -1996,13 +1996,8 @@ bool PhaseSpace2to1tauy::finalKin() {
   mH[3] = mHat;
 
   // Incoming partons along beam axes. Outgoing has sum of momenta.
-  // Updated for beams with different masses.
-  double m2A  = pow2(mA);
-  double m2B  = pow2(mB);
-  double eCMA = 0.5 * ( s + m2A - m2B ) / eCM;
-  double eCMB = 0.5 * ( s - m2A + m2B ) / eCM;
-  pH[1] = Vec4( 0., 0.,  eCMA * x1H, eCMA * x1H);
-  pH[2] = Vec4( 0., 0., -eCMB * x2H, eCMB * x2H);
+  pH[1] = Vec4( 0., 0.,  0.5 * eCM * x1H, 0.5 * eCM * x1H);
+  pH[2] = Vec4( 0., 0., -0.5 * eCM * x2H, 0.5 * eCM * x2H);
   pH[3] = pH[1] + pH[2];
 
   // Done.
@@ -2156,13 +2151,35 @@ bool PhaseSpace2to2tauyz::finalKin() {
   mH[3] = m3;
   mH[4] = m4;
 
-  // Incoming partons along beam axes. Updated for beams with different masses.
-  double m2A  = pow2(mA);
-  double m2B  = pow2(mB);
-  double eCMA = 0.5 * ( s + m2A - m2B ) / eCM;
-  double eCMB = 0.5 * ( s - m2A + m2B ) / eCM;
-  pH[1] = Vec4( 0., 0.,  eCMA * x1H, eCMA * x1H);
-  pH[2] = Vec4( 0., 0., -eCMB * x2H, eCMB * x2H);
+  // Special kinematics for direct photon+hadron (massless+massive) to fulfill
+  // s = x1 * x2 * sHat and to retain the momentum of the massless photon beam.
+  if ( hasPointGammaA && beamBPtr->isHadron() ) {
+    double eCM1 = 0.5 * ( s + pow2(mA) - pow2(mB) ) / eCM;
+    double eCM2 = 0.25 * x2H * s / eCM1;
+    pH[1] = Vec4( 0., 0.,  eCM1, eCM1);
+    pH[2] = Vec4( 0., 0., -eCM2, eCM2);
+  } else if ( hasPointGammaB && beamAPtr->isHadron() ) {
+    double eCM2 = 0.5 * ( s - pow2(mA) + pow2(mB) ) / eCM;
+    double eCM1 = 0.25 * x1H * s / eCM2;
+    pH[1] = Vec4( 0., 0.,  eCM1, eCM1);
+    pH[2] = Vec4( 0., 0., -eCM2, eCM2);
+
+  // Special kinematics for DIS to preserve lepton mass.
+  } else if ( (beamAPtr->isLepton() && beamBPtr->isHadron())
+           || (beamBPtr->isLepton() && beamAPtr->isHadron()) ) {
+    double pzAcm = 0.5 * sqrtpos( (eCM + mA + mB) * (eCM - mA - mB)
+      * (eCM - mA + mB) * (eCM + mA - mB) ) / eCM;
+    double eAcm  = sqrt( mH[1]*mH[1] + pzAcm*pzAcm);
+    double pzBcm = -pzAcm;
+    double eBcm  = sqrt( mH[2]*mH[2] + pzBcm*pzBcm);
+    pH[1] = Vec4( 0., 0., pzAcm * x1H, eAcm * x1H);
+    pH[2] = Vec4( 0., 0., pzBcm * x2H, eBcm * x2H);
+
+  // Default kinematics with incoming partons along beam axes.
+  } else {
+    pH[1] = Vec4( 0., 0., 0.5 * eCM * x1H, 0.5 * eCM * x1H);
+    pH[2] = Vec4( 0., 0., -0.5 * eCM * x2H, 0.5 * eCM * x2H);
+  }
 
   // Outgoing partons initially in collision CM frame along beam axes.
   pH[3] = Vec4( 0., 0.,  pAbs, 0.5 * (sH + s3 - s4) / mHat);
@@ -2171,7 +2188,7 @@ bool PhaseSpace2to2tauyz::finalKin() {
   // Then rotate and boost them to overall CM frame.
   theta = acos(z);
   phi   = 2. * M_PI * rndmPtr->flat();
-  betaZ = (x1H * eCMA - x2H * eCMB)/(x1H * eCMA + x2H * eCMB);
+  betaZ = (x1H - x2H)/(x1H + x2H);
   pH[3].rot( theta, phi);
   pH[4].rot( theta, phi);
   pH[3].bst( 0., 0., betaZ);
@@ -3843,13 +3860,9 @@ bool PhaseSpace2to3tauycyl::finalKin() {
   mH[4] = m4;
   mH[5] = m5;
 
-  // Incoming partons along beam axes. Updated for beams with different masses.
-  double m2A  = pow2(mA);
-  double m2B  = pow2(mB);
-  double eCMA = 0.5 * ( s + m2A - m2B ) / eCM;
-  double eCMB = 0.5 * ( s - m2A + m2B ) / eCM;
-  pH[1] = Vec4( 0., 0.,  eCMA * x1H, eCMA * x1H);
-  pH[2] = Vec4( 0., 0., -eCMB * x2H, eCMB * x2H);
+  // Incoming partons along beam axes.
+  pH[1] = Vec4( 0., 0.,  0.5 * eCM * x1H, 0.5 * eCM * x1H);
+  pH[2] = Vec4( 0., 0., -0.5 * eCM * x2H, 0.5 * eCM * x2H);
 
   // Begin three-momentum rescaling to compensate for masses.
   if (idMass[3] == 0 || idMass[4] == 0 || idMass[5] == 0) {
@@ -3885,7 +3898,7 @@ bool PhaseSpace2to3tauycyl::finalKin() {
   pH[5] = p5cm;
 
   // Then boost them to overall CM frame
-  betaZ = (x1H * eCMA - x2H * eCMB)/(x1H * eCMA + x2H * eCMB);
+  betaZ = (x1H - x2H)/(x1H + x2H);
   pH[3].rot( theta, phi);
   pH[4].rot( theta, phi);
   pH[3].bst( 0., 0., betaZ);

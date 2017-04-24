@@ -690,9 +690,6 @@ bool StringFragmentation::fragment( int iSub, ColConfig& colConfig,
       // Check how many nearby string pieces there are for the next hadron.
       double nNSP = (closePacking) ? nearStringPieces(nowEnd, rapPairs) : 0.;
 
-      // Construct trial hadron and check that energy remains.
-      nowEnd.newHadron(nNSP);
-
       // Possibility for a user to change the fragmentation parameters.
       if ( (userHooksPtr != 0) && userHooksPtr->canChangeFragPar() ) {
          if ( !userHooksPtr->doChangeFragPar( flavSelPtr, zSelPtr, pTSelPtr,
@@ -701,6 +698,9 @@ bool StringFragmentation::fragment( int iSub, ColConfig& colConfig,
            infoPtr->errorMsg("Error in StringFragmentation::fragment: "
              "failed to change hadronisation parameters.");
       }
+
+      // Construct trial hadron and check that energy remains.
+      nowEnd.newHadron(nNSP);
 
       if ( energyUsedUp(fromPos) ) break;
 
@@ -1393,6 +1393,15 @@ bool StringFragmentation::fragmentToJunction(Event& event) {
           int nHadrons = 0;
           bool noNegE = true;
           for ( ; ; ++nHadrons) {
+
+            // Possibility for a user to change the fragmentation parameters.
+            //if ( (userHooksPtr != 0) && userHooksPtr->canChangeFragPar() ) {
+            //  if ( !userHooksPtr->doChangeFragPar( flavSelPtr, zSelPtr,
+            //    pTSelPtr, idPos, hadMom.m2Calc(),
+            //    (legLoop == 0 ? iPartonMin : iPartonMid )) )
+            //    infoPtr->errorMsg("Error in StringFragmentation::fragment"
+            //    "ToJunction: failed to change hadronisation parameters.");
+            //}
 
             // Construct trial hadron from positive end.
             posEnd.newHadron();

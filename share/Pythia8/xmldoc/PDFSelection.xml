@@ -147,6 +147,9 @@ NLO <ei>alpha_s(M_Z) = 0.1180</ei> (NLO, see Warning 3 above).</option>
 <option value="16">NNPDF2.3 QCD+QED NNLO <ei>alpha_s(M_Z) = 0.119</ei>. 
 </option> 
 <option value="17">NNPDF3.1 QCD LO <ei>alpha_s(M_Z) = 0.130</ei>. 
+<note>Warning :</note>the NNPDF 3.1 sets are quite different from the 
+NNPDF 2.3 ones, and cannot be used interchangeably but need 
+retuning of the MPI framework. 
 </option> 
 <option value="18">NNPDF3.1 QCD LO <ei>alpha_s(M_Z) = 0.118</ei>. 
 </option> 

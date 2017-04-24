@@ -2250,6 +2250,16 @@ bool SpaceShower::branch( Event& event) {
   Particle& newRecoiler = event[iNewRecoiler];
   Particle& sister      = event.back();
 
+  // Allow setting of vertex for daughter parton, recoiler and sister.
+  if (userHooksPtr && userHooksPtr->canSetProductionVertex() ){
+    if (!daughter.hasVertex())
+      daughter.vProd( userHooksPtr->vertexForISR(mother) );
+    if (!newRecoiler.hasVertex())
+      newRecoiler.vProd( userHooksPtr->vertexForISR(mother) );
+    if (!sister.hasVertex())
+      sister.vProd( userHooksPtr->vertexForISR(mother) );
+  }
+
   // Replace old by new mother; update new recoiler.
   mother.id( idMother );
   mother.status( -41);

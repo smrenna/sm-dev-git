@@ -18,7 +18,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.225: 23 April 2017 
+<li>8.225: 24 April 2017 
 <ul> 
  
 <li>Implementation of <i>gamma-hadron</i> collisions and 
@@ -45,18 +45,27 @@ of softQCD processes. Very rarely fails.</li>
 study photon production in <i>lepton &rarr; gamma - hadron</i> 
 collisions.</li> 
  
-<li>Modified <code>finalKin()</code> methods for derived 
-<code>PhaseSpace</code> classes in case of non-diffractive processes, 
-to calculate incoming parton momenta with massive beam particles.</li> 
+<li>Modified kinematics methods for DIS and photoproduction physics, 
+to take beam particle masses into account where important. 
+For DIS, e.g., the incoming lepton is kept massive, which leads to 
+slight changes only visible at very low energies.</li> 
  
 <li>Redesigned the merging machinery to allow users to define their 
 own ME+PS merging plugin, which can then be used by Pythia. This change 
-does not affect the physics of Pythia's internal merging schemes.</li> 
+does not affect the physics of Pythia's internal merging schemes. 
+For further details see the new section on "Implementing an external 
+ME+PS combination scheme and interfacing this plugin with Pythia" 
+on the <a href="MatchingAndMerging.html" target="page">Matching and Merging</a> 
+page.</li> 
  
 <li>Added some new (optional) virtual functions to the timelike and 
-spacelike showers to ease ME+PS merging with shower plugin codes. The 
+spacelike showers, to ease ME+PS merging with shower plugin codes. The 
 change does not impair the compatibility of existing shower plugin codes. 
-</li> 
+See the description on how to 
+<a href="NewShowers.html" target="page">Implement New Showers</a>, 
+the new methods <code>allowedSplitting(...)</code> and 
+<code>getRecoilers(...)</code>, and the modified 
+<code>getSplittingName(...)</code> ones.</li> 
  
 <li>New method <code>Pythia::addUserHooksPtr(...)</code> allows 
 the simultaneous use of several <a href="UserHooks.html" target="page">User Hooks</a>. 
@@ -64,12 +73,23 @@ When several hooks are applicable for a given task the net effect is
 multiplicative, in weights or in veto survival. It is up to the user 
 to ensure that such combinations are the intended ones.</li> 
  
+<li>New <a href="UserHooks.html" target="page">User Hooks</a> added to set the 
+space-time vertices for the ISR, FSR and MPI evolution process. 
+New <code>main65.cc</code> example illustrates how to set it up. 
+Thanks to Christian Bierlich.</li> 
+ 
+<li>Bug fix in the user hooks machinery for setting fragmentation 
+parameters.</li> 
+ 
 <li>Four central members from the NNPDF 3.1 sets are made available, 
 as <code>PDF:pSet</code> (and equivalent) codes 17 - 20: the LO 
 ones with <i>alpha_s = 0.130</i> and <i>0.118</i>, and the 
 NLO and NNLO ones with the latter <i>alpha_s</i>. Note that these 
-have a small-<i>x</i> behaviour significantly different from the 
-default NNPDF 2.3 ones, so retunes will be necessary.</li> 
+are rather different from the default NNPDF 2.3 ones; in particular 
+the small-<i>x</i> behaviour is completely changed. Therefore 
+MPI cross sections are appreciably modified for current parameter 
+values, and retunes will be necessary before using NNPDF 3.1 in 
+production. Thanks to Juan Rojo.</li> 
  
 <li>Construct <i>pi^+-</i> PDFs so that <i>dbar = u</i> 
 and <i>d = ubar</i>, shortcutting the returned <i>d, dbar</i> 
@@ -122,6 +142,9 @@ commands.</li>
 <li>Introduce possibility to make phase space cuts on the DIS 
 <i>Q^2</i> variable.</li> 
  
+<li>Add options to use the DIS <i>Q^2</i> variable as factorization 
+and/or renormalization scale.</li> 
+ 
 <li>Introduce some freedom to modify the default shape of the 
 low-mass part of diffractive cross sections, and thereby also the 
 integrated value. </li> 
@@ -132,13 +155,16 @@ interface to the HelacOnia [<a href="Bibliography.html" target="page">Sha15</a>]
 see further the new 
 <a href="HelacOniaProcesses.html" target="page">HelacOnia Processes</a> page. The 
 new <code>main35.cc</code> example shows how to use the interface, 
-and how to compare with corresponding internal Pythia results. 
-</li> 
+and how to compare with corresponding internal Pythia results.</li> 
  
 <li>Modified <code>configure</code> and <code>Makefile</code>s 
 fixes an issue with linking shared libraries on a Mac, and automatizes 
 the selection of whether to link static or shared libraries to the 
 example main programs. </li> 
+ 
+<li>Two new <code>Vec4</code> methods introduced: <code>cross4</code> 
+for cross product of three four-vectors, and <code>getTwoPerpendicular</code> 
+to create to four-vectors perpendicular to two given ones.</li> 
  
 <li>New <code>main74.cc</code> illustrates how the modified Mass Drop 
 Tagger code in FastJet can be used to improve mass reconstruction of 
