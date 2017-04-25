@@ -7577,14 +7577,10 @@ bool History::allowedClustering( int rad, int emt, int rec, int partner,
   }
 
   // No problems with gluon radiation
-  if (event[emt].id() == 21) {
-    if (!allowed) exit(0);
-    return allowed;
-  }
+  if (event[emt].id() == 21) return allowed;
 
   // No problems with gluino radiation
-  if (event[emt].id() == 1000021)
-    return allowed;
+  if (event[emt].id() == 1000021) return allowed;
 
   // Save all hard process candidates
   vector<int> outgoingParticles;

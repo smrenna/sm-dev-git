@@ -113,7 +113,8 @@ public:
 
   // Possibility to pass in pointer for user hooks.
   bool setUserHooksPtr( UserHooks* userHooksPtrIn) {
-    if ( dynamic_cast<UserHooksVector*>(userHooksPtr) ) delete userHooksPtr;
+    if (hasUserHooksVector) delete userHooksPtr;
+    hasUserHooksVector = false;
     userHooksPtr = userHooksPtrIn; return true;}
 
   // Possibility to add further pointers to allow multiple user hooks.
@@ -122,7 +123,8 @@ public:
     UserHooksVector* uhv = dynamic_cast<UserHooksVector*>(userHooksPtr);
     if ( !uhv ) { uhv = new UserHooksVector();
       uhv->hooks.push_back(userHooksPtr); userHooksPtr = uhv; }
-    uhv->hooks.push_back(userHooksPtrIn); return true;}
+    uhv->hooks.push_back(userHooksPtrIn);
+    hasUserHooksVector = true; return true;}
 
   // Possibility to pass in pointer for full merging class.
   bool setMergingPtr( Merging* mergingPtrIn)
@@ -295,10 +297,11 @@ private:
   PDF* pdfUnresGamAPtr;
   PDF* pdfUnresGamBPtr;
 
-  // Keep track when "new" has been used and needs a "delete" for PDF's.
+  // Keep track when "new" has been used and needs a "delete" for PDF's etc.
   bool useNewPdfA, useNewPdfB, useNewPdfHard, useNewPdfPomA, useNewPdfPomB,
     useNewPdfGamA, useNewPdfGamB, useNewPdfHardGamA, useNewPdfHardGamB,
-    useNewPdfUnresA, useNewPdfUnresB, useNewPdfUnresGamA, useNewPdfUnresGamB;
+    useNewPdfUnresA, useNewPdfUnresB, useNewPdfUnresGamA, useNewPdfUnresGamB,
+    hasUserHooksVector;
 
   // Alternative Pomeron beam-inside-beam.
   BeamParticle beamPomA;

@@ -295,7 +295,8 @@ be written on an external file.</li>
 space-time vertex information.</li> 
  
 <li><code>main69.cc</code> : examplifies how to generate all relevant 
-contributions for charged particle spectra in photon-photon collisions.</li> 
+contributions for charged particle spectra in photon-photon and 
+photon-proton collisions. </li> 
  
 <li><code>main71.cc</code> : an example how the FastJet jet finding 
 package can be linked to allow an analysis of the final state, 

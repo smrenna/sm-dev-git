@@ -1970,6 +1970,7 @@ double Sigma2qg2squarkgluino::sigmaHat() {
 
   // Check for charge conservation
   if(idQA%2 != idSq%2) return 0.0;
+  if(abs(idQA + idSq%10) < abs(idQA) + abs(idSq%10)) return 0.0;
 
   int idQ = (abs(idQA)+1)/2;
   idSq = 3 * (abs(id3) / 2000000) + (abs(id3) % 10 + 1)/2;
@@ -1997,8 +1998,6 @@ void Sigma2qg2squarkgluino::setIdColAcol() {
   setId( id1, id2, id3, id4);
 
   // Select color flow A or B (see above)
-  // Recompute individual contributions to this in-out flavour combination
-  sigmaHat();
   double R = rndmPtr->flat()*(sigmaA+sigmaB);
   if (idQ == id1) {
     setColAcol(1,0,2,1,3,0,2,3);
@@ -2852,6 +2851,17 @@ double Sigma2qqbar2sleptonantislepton::sigmaHat() {
   } else {
     double CslZ;
 
+    // s-channel Z
+    CslZ = norm(coupSUSYPtr->LslslZ[iGen3][iGen4]
+                - coupSUSYPtr->RslslZ[iGen3][iGen4]);
+    if (abs(id3Sav)%2 == 0)
+      CslZ = norm(coupSUSYPtr->LsvsvZ[iGen3][iGen4]
+                  + coupSUSYPtr->RsvsvZ[iGen3][iGen4]);
+    sumColS += sigmaEW * facTU / 16.0 / pow2(xW) / pow2(1.0-xW)
+      * norm(propZW) * CslZ
+      * ( pow2(coupSUSYPtr->LqqZ[idIn1A]) + pow2(coupSUSYPtr->RqqZ[idIn1A]) );
+
+
     // s-channel Z/photon and interference
     if (abs(id1) == abs(id2)) {
 
@@ -2861,25 +2871,19 @@ double Sigma2qqbar2sleptonantislepton::sigmaHat() {
         CslZ = real(coupSUSYPtr->LsvsvZ[iGen3][iGen4]
              + coupSUSYPtr->RsvsvZ[iGen3][iGen4]);
 
-      // gamma
-      // Factor 2 since contributes to both ha != hb helicities
-      sumColS += (abs(CslZ) > 0.0) ? 2. * pow2(eQ) * pow2(eSl) * sigmaEW
-        * facTU / pow2(sH) : 0.0;
+      if(abs(id3) == abs(id4)) {
 
-      // Z/gamma interference
-      sumInterference += eQ * eSl * sigmaEW * facTU / 2.0 / xW / (1.-xW)
-        * sqrt(norm(propZW)) / sH * CslZ
-        * (coupSUSYPtr->LqqZ[idIn1A] + coupSUSYPtr->RqqZ[idIn1A]);
+        // gamma
+        // Factor 2 since contributes to both ha != hb helicities
 
-      // s-channel Z
-      CslZ = norm(coupSUSYPtr->LslslZ[iGen3][iGen4]
-           + coupSUSYPtr->RslslZ[iGen3][iGen4]);
-      if (abs(id3Sav)%2 == 0)
-        CslZ = norm(coupSUSYPtr->LsvsvZ[iGen3][iGen4]
-             + coupSUSYPtr->RsvsvZ[iGen3][iGen4]);
-      sumColS += sigmaEW * facTU / 16.0 / pow2(xW) / pow2(1.0-xW)
-        * norm(propZW) * CslZ
-        * (pow2(coupSUSYPtr->LqqZ[idIn1A]) + pow2(coupSUSYPtr->RqqZ[idIn1A]));
+        sumColS += (abs(CslZ) > 0.0) ? 2. * pow2(eQ) * pow2(eSl) * sigmaEW
+          * facTU / pow2(sH) : 0.0;
+
+        // Z/gamma interference
+        sumInterference += eQ * eSl * sigmaEW * facTU / 2.0 / xW / (1.-xW)
+          * sqrt(norm(propZW)) / sH * CslZ
+          * (coupSUSYPtr->LqqZ[idIn1A] + coupSUSYPtr->RqqZ[idIn1A]);
+      }
     }
   }
 

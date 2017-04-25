@@ -204,7 +204,7 @@ Pythia::~Pythia() {
   if (useNewLHA) delete lhaUpPtr;
 
   // Delete vector of UserHooks (but not the UserHooks themselves).
-  if ( dynamic_cast<UserHooksVector*>(userHooksPtr) ) delete userHooksPtr;
+  if (hasUserHooksVector) delete userHooksPtr;
 
   // Delete the Merging object created with new.
   if (hasOwnMerging) delete mergingPtr;
@@ -258,18 +258,19 @@ void Pythia::initPtrs() {
   pdfUnresGamBPtr    = 0;
 
   // Initial values for pointers to Les Houches Event objects.
-  doLHA           = false;
-  useNewLHA       = false;
-  lhaUpPtr        = 0;
+  doLHA              = false;
+  useNewLHA          = false;
+  lhaUpPtr           = 0;
 
   //Initial value for couplings pointer
-  couplingsPtr    = &couplings;
+  couplingsPtr       = &couplings;
 
   // Initial value for pointer to external decay handler.
-  decayHandlePtr  = 0;
+  decayHandlePtr     = 0;
 
   // Initial value for pointer to user hooks.
-  userHooksPtr    = 0;
+  userHooksPtr       = 0;
+  hasUserHooksVector = false;
 
   // Initial value for pointer to merging hooks.
   doMerging          = false;
@@ -281,16 +282,16 @@ void Pythia::initPtrs() {
   mergingHooksPtr    = 0;
 
   // Initial value for pointer to beam shape.
-  useNewBeamShape = false;
-  beamShapePtr    = 0;
+  useNewBeamShape    = false;
+  beamShapePtr       = 0;
 
   // Initial values for pointers to timelike and spacelike showers.
-  useNewTimesDec  = false;
-  useNewTimes     = false;
-  useNewSpace     = false;
-  timesDecPtr     = 0;
-  timesPtr        = 0;
-  spacePtr        = 0;
+  useNewTimesDec     = false;
+  useNewTimes        = false;
+  useNewSpace        = false;
+  timesDecPtr        = 0;
+  timesPtr           = 0;
+  spacePtr           = 0;
 
 }
 

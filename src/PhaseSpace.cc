@@ -2165,8 +2165,11 @@ bool PhaseSpace2to2tauyz::finalKin() {
     pH[2] = Vec4( 0., 0., -eCM2, eCM2);
 
   // Special kinematics for DIS to preserve lepton mass.
-  } else if ( (beamAPtr->isLepton() && beamBPtr->isHadron())
-           || (beamBPtr->isLepton() && beamAPtr->isHadron()) ) {
+  } else if ( ( (beamAPtr->isLepton() && beamBPtr->isHadron())
+             || (beamBPtr->isLepton() && beamAPtr->isHadron()) ) 
+             && !settingsPtr->flag("PDF:lepton2gamma") ) {
+    mH[1] = mA;
+    mH[2] = mB;
     double pzAcm = 0.5 * sqrtpos( (eCM + mA + mB) * (eCM - mA - mB)
       * (eCM - mA + mB) * (eCM + mA - mB) ) / eCM;
     double eAcm  = sqrt( mH[1]*mH[1] + pzAcm*pzAcm);
