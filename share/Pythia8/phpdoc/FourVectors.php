@@ -284,8 +284,7 @@ and then the four-vectors are not changed.
    
  
 <a name="method30"></a>
-<p/><strong>friend pair<Vec4,Vec4> getTwoPerpendicular(const Vec4& v1,  &nbsp;</strong> <br/>
-const Vec4& v2)"> 
+<p/><strong>friend pair&lt;Vec4,Vec4&gt; getTwoPerpendicular(const Vec4& v1, const Vec4& v2) &nbsp;</strong> <br/>
 create a pair of four-vectors that are perpendicular to both input vectors 
 and to each other, and have the squared norm <i>-1</i>. 
    

@@ -10,8 +10,8 @@
 #define Pythia8_Pythia_H
 
 // Version number defined for use in macros and for consistency checks.
-#define PYTHIA_VERSION 8.225
-#define PYTHIA_VERSION_INTEGER 8225
+#define PYTHIA_VERSION 8.226
+#define PYTHIA_VERSION_INTEGER 8226
 
 // Header files for the Pythia class and for what else the user may need.
 #include "Pythia8/Analysis.h"

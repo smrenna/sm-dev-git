@@ -48,7 +48,7 @@ processes with two photon initiators can be generated.</option>
 <p> 
 The type of the generated process can be obtained from 
 <aloc href="EventInformation">Info class</aloc> with method 
-<method name="int Info::photonMode()"> which follows the conventions above. 
+<code>int Info::photonMode()</code> which follows the conventions above. 
 </p> 
  
 <h3>Resolved photon</h3> 

@@ -808,50 +808,50 @@ void History::getStartingConditions( const double RN, Event& outState ) {
     if (nFinal <=2)
       state.scale(mergingHooksPtr->muF());
 
-      // Save information on last splitting, to allow the next
-      // emission in the shower to have smaller rapidity with
-      // respect to the last ME splitting.
-      // For hard process, use dummy values.
-      if (mergingHooksPtr->getNumberOfClusteringSteps(state) == 0) {
-        infoPtr->zNowISR(0.5);
-        infoPtr->pT2NowISR(pow(state[0].e(),2));
-        infoPtr->hasHistory(true);
-      // For incomplete process, try to use real values.
-      } else {
-        infoPtr->zNowISR(selected->zISR());
-        infoPtr->pT2NowISR(pow(selected->pTISR(),2));
-        infoPtr->hasHistory(true);
-      }
+    // Save information on last splitting, to allow the next
+    // emission in the shower to have smaller rapidity with
+    // respect to the last ME splitting.
+    // For hard process, use dummy values.
+    if (mergingHooksPtr->getNumberOfClusteringSteps(state) == 0) {
+      infoPtr->zNowISR(0.5);
+      infoPtr->pT2NowISR(pow(state[0].e(),2));
+      infoPtr->hasHistory(true);
+    // For incomplete process, try to use real values.
+    } else {
+      infoPtr->zNowISR(selected->zISR());
+      infoPtr->pT2NowISR(pow(selected->pTISR(),2));
+      infoPtr->hasHistory(true);
+    }
 
-      // Set QCD 2->2 starting scale different from arbitrary scale in LHEF!
-      // --> Set to minimal mT of partons.
-      int nFinalCol = 0;
-      double muf = state[0].e();
-      for ( int i=0; i < state.size(); ++i )
-      if ( state[i].isFinal()
-        && ( state[i].colType() != 0 || state[i].id() == 22 ) ) {
-        nFinalCol++;
-        muf = min( muf, abs(state[i].mT()) );
-      }
-      // For pure QCD dijet events (only!), set the process scale to the
-      // transverse momentum of the outgoing partons.
-      if ( nSteps == 0 && nFinalCol == 2
-        && ( mergingHooksPtr->getProcessString().compare("pp>jj") == 0
-          || mergingHooksPtr->getProcessString().compare("pp>aj") == 0) ) {
+    // Set QCD 2->2 starting scale different from arbitrary scale in LHEF!
+    // --> Set to minimal mT of partons.
+    int nFinalCol = 0;
+    double muf = state[0].e();
+    for ( int i=0; i < state.size(); ++i )
+    if ( state[i].isFinal()
+      && ( state[i].colType() != 0 || state[i].id() == 22 ) ) {
+      nFinalCol++;
+      muf = min( muf, abs(state[i].mT()) );
+    }
+    // For pure QCD dijet events (only!), set the process scale to the
+    // transverse momentum of the outgoing partons.
+    if ( nSteps == 0 && nFinalCol == 2
+      && ( mergingHooksPtr->getProcessString().compare("pp>jj") == 0
+        || mergingHooksPtr->getProcessString().compare("pp>aj") == 0) ) {
+      state.scale(muf);
+      for (int i = 3;i < state.size();++i)
+        state[i].scale(muf);
+    }
+    // For weak inclusive merging, follow QCD 2->2 starting scale for dijet
+    // events. Also, restore input input polarisations.
+    if (nSteps == 0 && nFinalCol == 2 &&
+        mergingHooksPtr->getProcessString().find("inc") != string::npos) {
         state.scale(muf);
-        for (int i = 3;i < state.size();++i)
-          state[i].scale(muf);
-      }
-      // For weak inclusive merging, follow QCD 2->2 starting scale for dijet
-      // events. Also, restore input input polarisations.
-      if (nSteps == 0 && nFinalCol == 2 &&
-          mergingHooksPtr->getProcessString().find("inc") != string::npos) {
-          state.scale(muf);
-        for (int i = 3;i < state.size();++i)
-          state[i].scale(muf);
-        for ( int i=0; i < min(state.size(),outState.size()); ++i )
-          state[i].pol(outState[i].pol());
-      }
+      for (int i = 3;i < state.size();++i)
+        state[i].scale(muf);
+      for ( int i=0; i < min(state.size(),outState.size()); ++i )
+        state[i].pol(outState[i].pol());
+    }
 
   } else {
 
@@ -7578,7 +7578,9 @@ bool History::allowedClustering( int rad, int emt, int rec, int partner,
 
   // No problems with gluon radiation
   if (event[emt].id() == 21) {
-    if (!allowed) exit(0); return allowed;}
+    if (!allowed) exit(0);
+    return allowed;
+  }
 
   // No problems with gluino radiation
   if (event[emt].id() == 1000021)

@@ -21,12 +21,6 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
-<td>friend pair<Vec4,Vec4> getTwoPerpendicular(const Vec4& v1,</td>
-<td><a href="FourVectors.php#method30" target="page"></a></td>
-<td>Four-Vectors</td>
-</tr>
-
-<tr>
 <td> </td>
 <td><a href="AlpgenEventInterface.php#method9" target="page">AlpgenHooks(...)</a></td>
 <td>Alpgen Event Interface</td>
@@ -138,6 +132,12 @@ Many of them are only intended for experts, while undocumented ones are only for
 <td>PDF*</td>
 <td><a href="ProgramFlow.php#method31" target="page">getPDFPtr(...)</a></td>
 <td>Program Flow</td>
+</tr>
+
+<tr>
+<td>friend pair&lt;Vec4,Vec4&gt;</td>
+<td><a href="FourVectors.php#method30" target="page">getTwoPerpendicular(...)</a></td>
+<td>Four-Vectors</td>
 </tr>
 
 <tr>
@@ -1872,12 +1872,6 @@ Many of them are only intended for experts, while undocumented ones are only for
 <td>double</td>
 <td><a href="EventInformation.php#method35" target="page">Info::phiHat()</a></td>
 <td>Event Information</td>
-</tr>
-
-<tr>
-<td>int</td>
-<td><a href="Photoproduction.php#method1" target="page">Info::photonMode()</a></td>
-<td>Photoproduction</td>
 </tr>
 
 <tr>

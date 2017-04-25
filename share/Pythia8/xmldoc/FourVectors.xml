@@ -232,7 +232,7 @@ mass of the four-vectors is too small to accommodate the new masses,
 and then the four-vectors are not changed. 
 </method> 
  
-<method name="friend pair<Vec4,Vec4> getTwoPerpendicular(const Vec4& v1, 
+<method name="friend pair&lt;Vec4,Vec4&gt; getTwoPerpendicular(const Vec4& v1, 
 const Vec4& v2)"> 
 create a pair of four-vectors that are perpendicular to both input vectors 
 and to each other, and have the squared norm <ei>-1</ei>. 

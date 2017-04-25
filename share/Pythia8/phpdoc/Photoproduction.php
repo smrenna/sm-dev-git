@@ -68,8 +68,7 @@ Sets desired contribution for interactions with one or two photons.
 The type of the generated process can be obtained from 
 <?php $filepath = $_GET["filepath"];
 echo "<a href='EventInformation.php?filepath=".$filepath."' target='page'>";?>Info class</a> with method 
-<a name="method1"></a>
-<p/><strong>int Info::photonMode() &nbsp;</strong> <br/>
+<code>int Info::photonMode()</code> which follows the conventions above. 
 </p> 
  
 <h3>Resolved photon</h3> 

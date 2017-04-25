@@ -14,7 +14,7 @@ the leading tree-level diagrams. The HelacOnia code can be downloaded
 from 
 <br><a href="http://helac-phegas.web.cern.ch/helac-phegas/helac-onia.html" 
 target="page">http://helac-phegas.web.cern.ch/helac-phegas/helac-onia.html</a>, 
-<br>where only version 2 and above is compatible with PYTHIA. 
+</br>where only version 2 and above is compatible with PYTHIA. 
  
 <p/> 
 Within HelacOnia, events can automatically be passed to PYTHIA for 

@@ -255,7 +255,8 @@ public:
   // Function to calculate the hard process matrix element.
   virtual double hardProcessME( const Event& inEvent ) {
     // Dummy statement to avoid compiler warnings.
-    if ( false ) cout << inEvent[0].e(); return 1.; }
+    if ( false ) cout << inEvent[0].e();
+    return 1.; }
 
   // Functions for internal use inside Pythia source code
   // Initialize.
@@ -601,11 +602,6 @@ public:
   //----------------------------------------------------------------------//
   // Generic setup functions
   //----------------------------------------------------------------------//
-
-  // Functions for internal use inside Pythia source code
-  // Initialize.
-  void init( Settings settings, Info* infoPtrIn,
-    ParticleData* particleDataPtrIn, PartonSystems* partonSystemsPtrIn);
 
   // Function storing candidates for the hard process in the current event
   // Needed in order not to cluster members of the core process

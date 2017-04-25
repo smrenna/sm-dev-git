@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.225: 24 April 2017 
+<li>8.226: 25 April 2017 
 <ul> 
  
 <li>Implementation of <i>gamma-hadron</i> collisions and 
@@ -106,7 +106,8 @@ New <code>main65.cc</code> example illustrates how to set it up.
 Thanks to Christian Bierlich.</li> 
  
 <li>Bug fix in the user hooks machinery for setting fragmentation 
-parameters.</li> 
+parameters, and an extension of this framework also to junction 
+topologies.</li> 
  
 <li>Four central members from the NNPDF 3.1 sets are made available, 
 as <code>PDF:pSet</code> (and equivalent) codes 17 - 20: the LO 

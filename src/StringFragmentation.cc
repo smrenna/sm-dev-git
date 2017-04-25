@@ -1392,16 +1392,18 @@ bool StringFragmentation::fragmentToJunction(Event& event) {
           eUsed = 0.;
           int nHadrons = 0;
           bool noNegE = true;
+          // Keep track of hadron momentum.
+          Vec4 hadMom;
           for ( ; ; ++nHadrons) {
 
             // Possibility for a user to change the fragmentation parameters.
-            //if ( (userHooksPtr != 0) && userHooksPtr->canChangeFragPar() ) {
-            //  if ( !userHooksPtr->doChangeFragPar( flavSelPtr, zSelPtr,
-            //    pTSelPtr, idPos, hadMom.m2Calc(),
-            //    (legLoop == 0 ? iPartonMin : iPartonMid )) )
-            //    infoPtr->errorMsg("Error in StringFragmentation::fragment"
-            //    "ToJunction: failed to change hadronisation parameters.");
-            //}
+            if ( (userHooksPtr != 0) && userHooksPtr->canChangeFragPar() ) {
+              if ( !userHooksPtr->doChangeFragPar( flavSelPtr, zSelPtr,
+                pTSelPtr, idPos, hadMom.m2Calc(),
+                (legLoop == 0 ? iPartonMin : iPartonMid )) )
+                infoPtr->errorMsg("Error in StringFragmentation::fragment"
+                "ToJunction: failed to change hadronisation parameters.");
+            }
 
             // Construct trial hadron from positive end.
             posEnd.newHadron();
@@ -1422,7 +1424,8 @@ bool StringFragmentation::fragmentToJunction(Event& event) {
             hadrons.append( posEnd.idHad, statusHad, iPos, iNeg,
               0, 0, 0, 0, pHad, posEnd.mHad);
 
-            // Update string end and remaining momentum.
+            // Update hadron, string end and remaining momentum.
+            hadMom += pHad;
             posEnd.update();
             eUsed += pHad.e();
 
