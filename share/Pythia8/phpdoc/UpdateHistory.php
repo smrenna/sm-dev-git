@@ -39,7 +39,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.226: 25 April 2017 
+<li>8.226: 26 April 2017 
 <ul> 
  
 <li>Implementation of <i>gamma-hadron</i> collisions and 

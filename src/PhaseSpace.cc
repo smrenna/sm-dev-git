@@ -2166,7 +2166,7 @@ bool PhaseSpace2to2tauyz::finalKin() {
 
   // Special kinematics for DIS to preserve lepton mass.
   } else if ( ( (beamAPtr->isLepton() && beamBPtr->isHadron())
-             || (beamBPtr->isLepton() && beamAPtr->isHadron()) ) 
+             || (beamBPtr->isLepton() && beamAPtr->isHadron()) )
              && !settingsPtr->flag("PDF:lepton2gamma") ) {
     mH[1] = mA;
     mH[2] = mB;

@@ -520,8 +520,8 @@ methods and data members.
  
 <h3>Constructors and destructor</h3> 
  
-<method name="Pythia::Pythia(string xmlDir = &quot;../share/Pythia8/xmldoc&quot;, 
-bool printBanner = true)"> 
+<method name="Pythia::Pythia(string xmlDir 
+= &quot;../share/Pythia8/xmldoc&quot;, bool printBanner = true)"> 
 creates an instance of the <code>Pythia</code> event generators, 
 and sets initial default values, notably for all settings and 
 particle data. You may use several <code>Pythia</code> instances 

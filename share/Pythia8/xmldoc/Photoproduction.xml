@@ -19,12 +19,13 @@ and introduces the relevant parameters.
 Photons can be either resolved or act as point-like particles (direct). 
 Therefore for a photon-photon interaction there are four different 
 contributions, resolved-resolved, resolved-direct, direct-resolved and 
-direct-direct. In case of photon-hadron collisions there are two contributions. 
-With the default value of the parameter below, a mix of relevant contributions 
-is generated but each process type can also be generated individually. 
-Note that for photon-hadron collisions the code for direct contribution 
-depends on which of the beams is photon. Sample main program 
-<code>main69.cc</code> demonstrates different possibilities. 
+direct-direct. In case of photon-hadron collisions there are two 
+contributions. With the default value of the parameter below, a mix of 
+relevant contributions is generated but each process type can also be 
+generated individually. Note that for photon-hadron collisions the code 
+for direct contribution depends on which of the beams is photon. 
+The sample main program <code>main69.cc</code> demonstrates different 
+possibilities. 
 </p> 
  
 <modepick name="Photon:ProcessType" default="0" min="0" max="4"> 

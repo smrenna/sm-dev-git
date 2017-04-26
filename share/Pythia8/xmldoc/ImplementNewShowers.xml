@@ -682,8 +682,8 @@ kinematical invariants etc.).
 e.g. if multiple kernels with identical post-branching states exist. 
 </method> 
  
-<method name="virtual vector&lt;string&gt; SpaceShower::getSplittingName( const 
-Event& event, int iRad, int iEmt, int iRec)"> 
+<method name="virtual vector&lt;string&gt; SpaceShower::getSplittingName( 
+const Event& event, int iRad, int iEmt, int iRec)"> 
 This function should return a string identifier of the splitting producing 
 the particles with indices <code>iRad</code>, <code>iEmt</code> and 
 <code>iRec</code> in the input <code>event</code>. 
@@ -716,8 +716,8 @@ event. The function should return true if the combination was possible, and
 false otherwise. 
 </method> 
  
-<method name="virtual vector&lt;int&gt; SpaceShower::getRecoilers( const Event& 
-event, int iRad, int iEmt, string name)"> 
+<method name="virtual vector&lt;int&gt; SpaceShower::getRecoilers( 
+const Event& event, int iRad, int iEmt, string name)"> 
 This function is not used in the Pythia core code, and can thus be omitted. 
 The purpose of this function is to allow ME+PS plugins for Pythia to ask the 
 spacelike shower for all possible recoilers for a particular combination of 
