@@ -443,6 +443,7 @@ hadrons goes linearly with the number of hadrons included. Therefore
 we recommend sticking to the default options as heavier hadrons are 
 produced less likely anyway. 
  
+<a name="anchor1"></a>
 <p/><code>mode&nbsp; </code><strong> StringFlav:nQuark &nbsp;</strong> 
  (<code>default = <strong>3</strong></code>; <code>minimum = 3</code>; <code>maximum = 5</code>)<br/>
 Selects the newly produced quark flavours that may be included in hadrons. 

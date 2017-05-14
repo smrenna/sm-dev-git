@@ -32,6 +32,7 @@ Since the computation of the uncertainty variations takes additional
 CPU time (albeit much less than would be required for independent runs 
 with the equivalent variations), the automated uncertainty variations 
 are switched off by default. 
+<a name="anchor1"></a>
 <p/><code>flag&nbsp; </code><strong> UncertaintyBands:doVariations &nbsp;</strong> 
  (<code>default = <strong>off</strong></code>)<br/>
 Master switch to perform variations. 
@@ -44,6 +45,7 @@ the pole at LambdaQCD, however, branchings near the perturbative
 cutoff can nominally result in very large reweighting factors, which 
 is unwanted for typical applications. We therefore enable to limit the 
 absolute (plus/minus) magnitude by which alphaS is allowed to vary by 
+<a name="anchor2"></a>
 <p/><code>parm&nbsp; </code><strong> UncertaintyBands:deltaAlphaSmax &nbsp;</strong> 
  (<code>default = <strong>0.2</strong></code>; <code>minimum = 0.0</code>; <code>maximum = 1.0</code>)<br/>
  The allowed range of variation of alphaS, interpreted as abs(alphaSprime 
@@ -56,6 +58,7 @@ capture uncertainties related to missing higher-order tree-level
 matrix elements and are hence normally uninteresting for very soft 
 branchings. The following parameter allows to switch off the 
 variations of non-singular terms below a fixed perturbative threshold: 
+<a name="anchor3"></a>
 <p/><code>parm&nbsp; </code><strong> UncertaintyBands:cNSpTmin &nbsp;</strong> 
  (<code>default = <strong>5.0</strong></code>; <code>minimum = 0.0</code>; <code>maximum = 20.0</code>)<br/>
 Variations of non-singular terms will not be performed for branchings 
@@ -69,6 +72,7 @@ resonance decays), but not for the showers off MPI systems
 which would be more properly labeled as underlying-event uncertainties. 
 If desired, the variations can be applied also to showers off MPI systems 
 via the following switch: 
+<a name="anchor4"></a>
 <p/><code>flag&nbsp; </code><strong> UncertaintyBands:MPIshowers &nbsp;</strong> 
  (<code>default = <strong>off</strong></code>)<br/>
 Flag specifying whether the automated shower variations include 
@@ -135,6 +139,7 @@ Once a list of variations defined as above has been decided on,
 the whole list should be passed to Pythia in the form of a single 
 <a href="SettingsScheme.html" target="page">"vector of strings"</a>, defined as 
 follows: 
+<a name="anchor5"></a>
 <p/><code>wvec&nbsp; </code><strong> UncertaintyBands:List &nbsp;</strong> 
  (<code>default = <strong>{alphaShi fsr:muRfac=0.5 isr:muRfac=0.5, alphaSlo fsr:muRfac=2.0 isr:muRfac=2.0, hardHi fsr:cNS=2.0 isr:cNS=2.0, hardLo fsr:cNS=-2.0 isr:cNS=-2.0}</strong></code>)<br/>
 Vector of uncertainty-variation strings defining which variations will be 
@@ -183,6 +188,7 @@ can be queried using <code>Pythia::info.nWeights()</code>.
 <h3>NLO Compensation Term for Renormalisation-Scale Variations</h3> 
  
 Additionally, there is a run-time parameter: 
+<a name="anchor6"></a>
 <p/><code>flag&nbsp; </code><strong> UncertaintyBands:muSoftCorr &nbsp;</strong> 
  (<code>default = <strong>on</strong></code>)<br/>
 This flags tells the shower to apply an O(&alpha;S<sup>2</sup>) 
@@ -229,6 +235,7 @@ the following switch can be used to control whether <i>b</i> and
 <i>t</i> quarks are considered to be <code>Q</code> or <code>X</code> 
 particles (e.g. providing a simple way to control top-quark or bottom-quark 
 radiation independently of the rest of the shower uncertainties): 
+<a name="anchor7"></a>
 <p/><code>mode&nbsp; </code><strong> UncertaintyBands:nFlavQ &nbsp;</strong> 
  (<code>default = <strong>6</strong></code>; <code>minimum = 2</code>; <code>maximum = 6</code>)<br/>
 Number of quark flavours controlled via <code>Q2QG</code> keywords, with 

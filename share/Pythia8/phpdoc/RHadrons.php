@@ -86,6 +86,7 @@ The maximum width of the gluino for which it is possible to form
 R-hadrons, provided that <code>RHadrons:allow</code> is on. 
    
  
+<a name="anchor1"></a>
 <p/><code>mode&nbsp; </code><strong> RHadrons:idGluino &nbsp;</strong> 
  (<code>default = <strong>1000021</strong></code>)<br/>
 The gluino identity code. For other scenarios than SUSY this code 
@@ -96,6 +97,7 @@ the above two criteria, <code>RHadrons:allow</code>
 and <code>RHadrons:maxWidth</code>, are met. 
    
  
+<a name="anchor2"></a>
 <p/><code>mode&nbsp; </code><strong> RHadrons:idStop &nbsp;</strong> 
  (<code>default = <strong>1000006</strong></code>)<br/>
 The lightest stop identity code. For other scenarios than SUSY this 
@@ -105,6 +107,7 @@ spirit. As above it could be set to 0 to forbid any stop R-hadron
 formation. 
    
  
+<a name="anchor3"></a>
 <p/><code>mode&nbsp; </code><strong> RHadrons:idSbottom &nbsp;</strong> 
  (<code>default = <strong>1000005</strong></code>)<br/>
 The lightest sbottom identity code. For other scenarios than SUSY this 

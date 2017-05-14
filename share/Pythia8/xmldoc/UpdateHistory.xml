@@ -12,6 +12,19 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
+<li>8.227: 14 May 2017 
+<ul> 
+ 
+<li>New search function introduced in the <code>html</code> documentation.
+You can type a word or phrase in the new "Search" box near the top of the 
+left-hand index field, and immediately get up a list of links to places 
+where it occurs.</li> 
+ 
+<li>Minor cosmectics in documentation.</li> 
+ 
+</ul> 
+</li> 
+ 
 <li>8.226: 26 April 2017 
 <ul> 
  

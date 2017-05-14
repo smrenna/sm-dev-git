@@ -237,9 +237,8 @@ bool convertFile(string nameRoot, string convType) {
     return false;
   }
 
-  // Current anchor for methods index.
-  int    methodNumber = 0;
-  string methodAnchor = "method";
+  // Current anchor for the tag.
+  int anchorNumber = 0;
 
   // Number of settings picked up.
   int settingnum = 0;
@@ -677,17 +676,15 @@ bool convertFile(string nameRoot, string convType) {
       linetmp += "<br/>";
       line = linetmp;
 
+      // Insert anchor for the tag.
+      ++anchorNumber;
+      ostringstream oNumber;
+      oNumber << anchorNumber;
+      string anchorTag = "anchor" + oNumber.str();
+      os << "<a name=\"" + anchorTag + "\"></a>" << endl;
+
       // Fill map of all methods and insert anchors to them.
       if (tagVal == "method" || tagVal == "methodmore") {
-
-        // Insert new anchor before method.
-        if (tagVal == "method") {
-          ++methodNumber;
-          ostringstream oNumber;
-          oNumber << methodNumber;
-          methodAnchor = "method" + oNumber.str();
-          os << "<a name=\"" + methodAnchor + "\"></a>" << endl;
-        }
 
         // Replace arguments list with ... to make more compact.
         string methodsTmp = nameVal;
@@ -714,7 +711,7 @@ bool convertFile(string nameRoot, string convType) {
         }
         // Insert entry into map.
         methodsMap[methodsTag] = MethodInfo(methodsVal, nameRoot,
-          methodAnchor);
+          anchorTag);
       }
     }
 

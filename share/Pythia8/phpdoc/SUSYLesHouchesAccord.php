@@ -159,6 +159,7 @@ ensure that sensible input is being given.
  
 <h3>SLHA Switches and Parameters</h3> 
  
+<a name="anchor1"></a>
 <p/><code>mode&nbsp; </code><strong> SLHA:readFrom &nbsp;</strong> 
  (<code>default = <strong>1</strong></code>; <code>minimum = 0</code>; <code>maximum = 2</code>)<br/>
 Controls from where SLHA information is read. 
@@ -237,6 +238,7 @@ particle, or you may include an SLHA <code>DECAY</code> table for it,
 with the width set explicitly to zero.) 
    
  
+<a name="anchor2"></a>
 <p/><code>mode&nbsp; </code><strong> SLHA:meMode &nbsp;</strong> 
  (<code>default = <strong>100</strong></code>; <code>minimum = 100</code>; <code>maximum = 103</code>)<br/>
 This value specifies how threshold, off-shell, and phase-space 
@@ -273,6 +275,7 @@ program.
  
 <h3>Internal SLHA Variables</h3> 
  
+<a name="anchor3"></a>
 <p/><code>mode&nbsp; </code><strong> SLHA:verbose &nbsp;</strong> 
  (<code>default = <strong>1</strong></code>; <code>minimum = 0</code>; <code>maximum = 3</code>)<br/>
 Controls amount of text output written by the SLHA interface, with a 

@@ -8,7 +8,7 @@
 # formed.
 
 import glob
-import xml.etree.ElementTree as xml
+import xml.etree.cElementTree as xml
 names = glob.glob('../share/Pythia8/xmldoc/*.xml')
 names = sorted(names)
 for name in names:

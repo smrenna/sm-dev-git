@@ -345,6 +345,7 @@ If turned on, then FxFx merging with aMC@NLO inputs is performed. Note that
 this requires event samples that are specifically generated for this task. 
    
  
+<a name="anchor1"></a>
 <p/><code>mode&nbsp; </code><strong> JetMatching:nPartonsNow &nbsp;</strong> 
  (<code>default = <strong>-1</strong></code>)<br/>
 The number of partons in Born-like events for the current input LHEF. If 
@@ -596,14 +597,14 @@ Pythia only stores all the information that is necessary to check (and apply)
 the shower-kT or kT-MLM vetoes externally by hand. This information can be 
 accessed by calling the functions 
  
-<a name="method1"></a>
+<a name="anchor2"></a>
 <p/><strong>Event JetMatchingMadgraph::getWorkEventJet() &nbsp;</strong> <br/>
 Return the event after parton showering, without resonance decay products and 
 particles that should not be included in the jet matching, as necessary to 
 implement the vetoes in the kT-MLM scheme. 
    
  
-<a name="method2"></a>
+<a name="anchor3"></a>
 <p/><strong>Event JetMatchingMadgraph::getProcessSubset() &nbsp;</strong> <br/>
 Return the event record containing the hard process, without resonance decay 
 products and particles that should not be included in the jet matching, as 
@@ -614,19 +615,19 @@ partons, minimal hard process pT, and to perform the matching of hard-process
 particles to shower jets. 
    
  
-<a name="method3"></a>
+<a name="anchor4"></a>
 <p/><strong>bool  JetMatchingMadgraph::getExclusive() &nbsp;</strong> <br/>
 Return flag to identify if exclusive or inclusive vetoes should be applied 
 to this event. 
    
  
-<a name="method4"></a>
+<a name="anchor5"></a>
 <p/><strong>double JetMatchingMadgraph::getPTfirst() &nbsp;</strong> <br/>
 Return the transverse momentum (w.r.t. the beam) of the first parton 
 shower emission, as needed for the shower-kT scheme. 
    
  
-<a name="method5"></a>
+<a name="anchor6"></a>
 <p/><strong>vector &lt;double&gt; JetMatchingMadgraph::getDJR() &nbsp;</strong> <br/>
 Return a vector of jet clustering scales produced by running the jet algorithm 
 used for jet matching on the event record without resonance decay products and 

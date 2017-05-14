@@ -642,10 +642,10 @@ should construct a class derived from <code>MergingHooks</code>, with
 a constructor and destructor 
  
 <p/> 
-<a name="method1"></a>
+<a name="anchor1"></a>
 <p/><strong>MergingHooks::MergingHooks() &nbsp;</strong> <br/>
    
-<a name="method2"></a>
+<a name="anchor2"></a>
 <p/><strong>virtual MergingHooks::~MergingHooks() &nbsp;</strong> <br/>
    
 The constructor and destructor do not need to do anything. 
@@ -664,7 +664,7 @@ An examples of this procedure are given in <code>main82.cc</code>.
 needs to  supply the process to be merged by defining a methods to 
 evaluate the merging scale variable. 
  
-<a name="method3"></a>
+<a name="anchor3"></a>
 <p/><strong>virtual double MergingHooks::tmsDefinition(const Event& event) &nbsp;</strong> <br/>
 This method will have to calculate the value of the merging scale 
 defined in  some variable from the input event record. An example of 
@@ -675,32 +675,32 @@ such a function is  given in <code>main82.cc</code>.
 giving  information on the hard process, to make the definition of the 
 merging scale as easy as possible: 
  
-<a name="method4"></a>
+<a name="anchor4"></a>
 <p/><strong>int MergingHooks::nMaxJets() &nbsp;</strong> <br/>
 Return the maximum number of additional jets to be merged. 
    
  
-<a name="method5"></a>
+<a name="anchor5"></a>
 <p/><strong>int MergingHooks::nHardOutPartons() &nbsp;</strong> <br/>
 Returns the number of outgoing partons in the hard core process. 
    
  
-<a name="method6"></a>
+<a name="anchor6"></a>
 <p/><strong>int MergingHooks::nHardOutLeptons() &nbsp;</strong> <br/>
 Returns the number of outgoing leptons in the hard core process. 
    
  
-<a name="method7"></a>
+<a name="anchor7"></a>
 <p/><strong>int MergingHooks::nHardInPartons() &nbsp;</strong> <br/>
 Returns the number of incoming partons in the hard core process. 
    
  
-<a name="method8"></a>
+<a name="anchor8"></a>
 <p/><strong>int MergingHooks::nHardInLeptons() &nbsp;</strong> <br/>
 Returns the number of incoming leptons in the hard core process. 
    
  
-<a name="method9"></a>
+<a name="anchor9"></a>
 <p/><strong>int MergingHooks::nResInCurrent() &nbsp;</strong> <br/>
 The number of resonances in the hard process reconstructed from the 
 current event. If e.g. the ME configuration was 
@@ -708,7 +708,7 @@ current event. If e.g. the ME configuration was
 both intermediate bosons into the LHE file, this will return 2. 
    
  
-<a name="method10"></a>
+<a name="anchor10"></a>
 <p/><strong>double MergingHooks::tms() &nbsp;</strong> <br/>
  Returns the value used as the merging scale. 
    
@@ -752,7 +752,7 @@ space differences for shower emissions and matrix element
 configurations due to LHEF generation cuts, the user has to  write a 
 small piece of code overwriting method 
  
-<a name="method11"></a>
+<a name="anchor11"></a>
 <p/><strong>virtual double MergingHooks::dampenIfFailCuts(const Event& event) &nbsp;</strong> <br/>
 multiplicity  reclustered state as an input Event. From this input 
 event, the user can then check if matrix element cuts are 
@@ -782,7 +782,7 @@ of histories directly. This should only be attempted by expert users. If you
 believe manipulations completely unavoidable, we advise you to take great care 
 when redefining the following functions. 
  
-<a name="method12"></a>
+<a name="anchor12"></a>
 <p/><strong>virtual bool MergingHooks::canCutOnRecState() &nbsp;</strong> <br/>
 In the base class this method returns false. If you redefine it 
 to return true then the method <code>doCutOnRecState(...)</code> 
@@ -790,7 +790,7 @@ will be called for each reclustered state encountered in the generation of
 all possible histories of the matrix element state. 
    
  
-<a name="method13"></a>
+<a name="anchor13"></a>
 <p/><strong>virtual bool MergingHooks::doCutOnRecState(const Event& event) &nbsp;</strong> <br/>
 This routine will be supplied internally with every possible reclustered 
 event that can be reached by reclustering any number of partons in 
@@ -814,7 +814,7 @@ sufficiently effective.
 <p/> The MergingHooks class also allows the expert user to define the matrix 
 element of the hard process, by defining the method 
  
-<a name="method14"></a>
+<a name="anchor14"></a>
 <p/><strong>virtual double MergingHooks::hardProcessME(const Event& inEvent) &nbsp;</strong> <br/>
 This routine will be supplied internally with the reconstructed 
 lowest-multiplicity event. From this, it is possible to calculate the squared 
@@ -1334,16 +1334,8 @@ of an external shower plugin. This will become possible as soon as new
 showers containing the necessary ingredients are available in Pythia. 
    
  
-<br/><br/><strong>Merging:useShowerPlugin</strong>  <input type="radio" name="41" value="on"><strong>On</strong>
-<input type="radio" name="41" value="off" checked="checked"><strong>Off</strong>
- &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
-Use the splitting probabilities, evolution variables and phase space mappings 
-of an external shower plugin. This will become possible as soon as new 
-showers containing the necessary ingredients are available in Pythia. 
-   
- 
-<br/><br/><strong>Merging:applyVeto</strong>  <input type="radio" name="42" value="on" checked="checked"><strong>On</strong>
-<input type="radio" name="42" value="off"><strong>Off</strong>
+<br/><br/><strong>Merging:applyVeto</strong>  <input type="radio" name="41" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="41" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 If off, no event veto based on the merging scale is applied in CKKW-L merging. 
 This means that the user has to implement the veto by hand in the Pythia main 
@@ -1351,8 +1343,8 @@ program. It can be useful to postpone event vetoes for the purpose of merging
 scale variations. 
    
  
-<br/><br/><strong>Merging:includeWeightInXsection</strong>  <input type="radio" name="43" value="on" checked="checked"><strong>On</strong>
-<input type="radio" name="43" value="off"><strong>Off</strong>
+<br/><br/><strong>Merging:includeWeightInXsection</strong>  <input type="radio" name="42" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="42" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 If on, then the reweighting of events in the CKKW-L scheme is included in 
 the event weight <code>Info::weight()</code>, the merging weight 
@@ -1575,19 +1567,14 @@ if($_POST["40"] != "off")
 $data = "Merging:useShowerPlugin = ".$_POST["40"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["41"] != "off")
+if($_POST["41"] != "on")
 {
-$data = "Merging:useShowerPlugin = ".$_POST["41"]."\n";
+$data = "Merging:applyVeto = ".$_POST["41"]."\n";
 fwrite($handle,$data);
 }
 if($_POST["42"] != "on")
 {
-$data = "Merging:applyVeto = ".$_POST["42"]."\n";
-fwrite($handle,$data);
-}
-if($_POST["43"] != "on")
-{
-$data = "Merging:includeWeightInXsection = ".$_POST["43"]."\n";
+$data = "Merging:includeWeightInXsection = ".$_POST["42"]."\n";
 fwrite($handle,$data);
 }
 fclose($handle);

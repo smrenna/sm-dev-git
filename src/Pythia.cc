@@ -23,7 +23,7 @@ namespace Pythia8 {
 
 // The current Pythia (sub)version number, to agree with XML version.
 const double Pythia::VERSIONNUMBERHEAD = PYTHIA_VERSION;
-const double Pythia::VERSIONNUMBERCODE = 8.226;
+const double Pythia::VERSIONNUMBERCODE = 8.227;
 
 //--------------------------------------------------------------------------
 

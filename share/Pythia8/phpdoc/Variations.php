@@ -158,6 +158,7 @@ the whole list should be passed to Pythia in the form of a single
 <?php $filepath = $_GET["filepath"];
 echo "<a href='SettingsScheme.php?filepath=".$filepath."' target='page'>";?>"vector of strings"</a>, defined as 
 follows: 
+<a name="anchor1"></a>
 <p/><code>wvec&nbsp; </code><strong> UncertaintyBands:List &nbsp;</strong> 
  (<code>default = <strong>{alphaShi fsr:muRfac=0.5 isr:muRfac=0.5, alphaSlo fsr:muRfac=2.0 isr:muRfac=2.0, hardHi fsr:cNS=2.0 isr:cNS=2.0, hardLo fsr:cNS=-2.0 isr:cNS=-2.0}</strong></code>)<br/>
 Vector of uncertainty-variation strings defining which variations will be 
@@ -253,6 +254,7 @@ the following switch can be used to control whether <i>b</i> and
 <i>t</i> quarks are considered to be <code>Q</code> or <code>X</code> 
 particles (e.g. providing a simple way to control top-quark or bottom-quark 
 radiation independently of the rest of the shower uncertainties): 
+<a name="anchor2"></a>
 <p/><code>mode&nbsp; </code><strong> UncertaintyBands:nFlavQ &nbsp;</strong> 
  (<code>default = <strong>6</strong></code>; <code>minimum = 2</code>; <code>maximum = 6</code>)<br/>
 Number of quark flavours controlled via <code>Q2QG</code> keywords, with 

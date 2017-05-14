@@ -73,12 +73,14 @@ branching fractions of cascade decays, but at present any difference between
 particle and antiparticle decay tables is not taken into account. This 
 possibility will be included in a future update. 
  
+<a name="anchor1"></a>
 <p/><code>flag&nbsp; </code><strong> SUSY:all &nbsp;</strong> 
  (<code>default = <strong>off</strong></code>)<br/>
 Common switch for production of supersymmetric particles, i.e. 
 particles with R-parity -1. 
    
  
+<a name="anchor2"></a>
 <p/><code>mode&nbsp; </code><strong> SUSY:idA &nbsp;</strong> 
  (<code>default = <strong>0</strong></code>; <code>minimum = 0</code>)<br/>
 Option to limit the sum over possible outgoing states in SUSY 
@@ -94,6 +96,7 @@ neutralino (code 1000021) to be present in a squark-squark production
 process will give no match. 
    
  
+<a name="anchor3"></a>
 <p/><code>mode&nbsp; </code><strong> SUSY:idB &nbsp;</strong> 
  (<code>default = <strong>0</strong></code>; <code>minimum = 0</code>)<br/>
 As for <code>SUSY:idA</code>, but requires an additional particle 
@@ -109,6 +112,7 @@ a match is searched for just like in the normal case with
 <code>SUSY:idA</code> nonzero and <code>SUSY:idB</code> zero.) 
    
  
+<a name="anchor4"></a>
 <p/><code>mvec&nbsp; </code><strong> SUSY:idVecA &nbsp;</strong> 
  (<code>default = <strong>0</strong></code>; <code>minimum = 0</code>)<br/>
 As for <code>SUSY:idA</code>, but as a vector of PDG codes. Thus, it 
@@ -119,6 +123,7 @@ to <code>SUSY:idA</code> takes precedence. Character-string input of
 this vector should be as a comma-separated list, without any blanks. 
    
  
+<a name="anchor5"></a>
 <p/><code>mvec&nbsp; </code><strong> SUSY:idVecB &nbsp;</strong> 
  (<code>default = <strong>0</strong></code>; <code>minimum = 0</code>)<br/>
 As for <code>SUSY:idB</code>, but as a vector of PDG codes. As above, 
@@ -133,6 +138,7 @@ Character-string input of this vector  should be as a comma-separated
 list, without any blanks. 
    
  
+<a name="anchor6"></a>
 <p/><code>mode&nbsp; </code><strong> SUSY:sin2thetaWMode &nbsp;</strong> 
  (<code>default = <strong>2</strong></code>; <code>minimum = 1</code>; <code>maximum = 3</code>)<br/>
 The value of <i>sin2(thetaW)</i> should be taken from 
@@ -150,11 +156,13 @@ present.
  
 <h4>Gluino Pair Production</h4> 
  
+<a name="anchor7"></a>
 <p/><code>flag&nbsp; </code><strong> SUSY:gg2gluinogluino &nbsp;</strong> 
  (<code>default = <strong>off</strong></code>)<br/>
 Pair production of gluinos by gluon-gluon initial states. 
    
  
+<a name="anchor8"></a>
 <p/><code>flag&nbsp; </code><strong> SUSY:qqbar2gluinogluino &nbsp;</strong> 
  (<code>default = <strong>off</strong></code>)<br/>
 Pair production of gluinos by quark-antiquark annihilation and 
@@ -166,6 +174,7 @@ squarks. Only the MFV case has been explicitly validated.
  
 <h4>Associated Squark-Gluino Production</h4> 
  
+<a name="anchor9"></a>
 <p/><code>flag&nbsp; </code><strong> SUSY:qg2squarkgluino &nbsp;</strong> 
  (<code>default = <strong>off</strong></code>)<br/>
 Associated production of a squark with a gluino. The cross section 
@@ -176,6 +185,7 @@ squarks. Only the MFV case has been explicitly validated.
  
 <h4>Squark Pair Production</h4> 
  
+<a name="anchor10"></a>
 <p/><code>flag&nbsp; </code><strong> SUSY:gg2squarkantisquark &nbsp;</strong> 
  (<code>default = <strong>off</strong></code>)<br/>
 Pair production of a scalar quark together with a scalar antiquark by 
@@ -185,6 +195,7 @@ The cross section expression follows [<a href="Bibliography.html" target="page">
 Only the MFV case has been explicitly validated. 
    
  
+<a name="anchor11"></a>
 <p/><code>flag&nbsp; </code><strong> SUSY:qqbar2squarkantisquark &nbsp;</strong> 
  (<code>default = <strong>off</strong></code>)<br/>
 Pair production of a scalar quark together with a scalar antiquark 
@@ -205,6 +216,7 @@ overcounted by a factor of 2. Starting from version 6.4.24, that
 generator now agrees with the implementation here.) 
    
  
+<a name="anchor12"></a>
 <p/><code>flag&nbsp; </code><strong> SUSY:qqbar2squarkantisquark:onlyQCD &nbsp;</strong> 
  (<code>default = <strong>off</strong></code>)<br/>
 When switched <code>on</code> this flag switches off all but the 
@@ -215,6 +227,7 @@ accurate physics simulation, leave this flag in the <code>off</code>
 position. 
    
  
+<a name="anchor13"></a>
 <p/><code>flag&nbsp; </code><strong> SUSY:qq2squarksquark &nbsp;</strong> 
  (<code>default = <strong>off</strong></code>)<br/>
 Pair production of scalar quarks (squark-squark and its charge 
@@ -230,6 +243,7 @@ below can be switched on to eliminate the chargino and neutralino
 contributions.) 
    
  
+<a name="anchor14"></a>
 <p/><code>flag&nbsp; </code><strong> SUSY:qq2squarksquark:onlyQCD &nbsp;</strong> 
  (<code>default = <strong>off</strong></code>)<br/>
 When switched <code>on</code> this flag causes the <i>t</i>- or 
@@ -241,6 +255,7 @@ leave this flag in the <code>off</code> position.
  
 <h4>Neutralino and Chargino Pair Production</h4> 
  
+<a name="anchor15"></a>
 <p/><code>flag&nbsp; </code><strong> SUSY:qqbar2chi0chi0 &nbsp;</strong> 
  (<code>default = <strong>off</strong></code>)<br/>
 Pair production of neutralinos by quark-antiquark annihilation. With 
@@ -249,6 +264,7 @@ four neutralino species this gives ten separate processes, codes
 Only the MFV case has been explicitly validated. 
    
  
+<a name="anchor16"></a>
 <p/><code>flag&nbsp; </code><strong> SUSY:qqbar2chi+-chi0 &nbsp;</strong> 
  (<code>default = <strong>off</strong></code>)<br/>
 Associated chargino-neutralino production by quark-antiquark 
@@ -259,6 +275,7 @@ follow [<a href="Bibliography.html" target="page">Boz07</a>].
 Only the MFV case has been explicitly validated. 
    
  
+<a name="anchor17"></a>
 <p/><code>flag&nbsp; </code><strong> SUSY:qqbar2chi+chi- &nbsp;</strong> 
  (<code>default = <strong>off</strong></code>)<br/>
 Pair production of charginos by quark-antiquark annihilation. With 
@@ -270,6 +287,7 @@ Only the MFV case has been explicitly validated.
  
 <h4>Associated Neutralino/Chargino + Squark/Gluino Production</h4> 
  
+<a name="anchor18"></a>
 <p/><code>flag&nbsp; </code><strong> SUSY:qg2chi0squark &nbsp;</strong> 
  (<code>default = <strong>off</strong></code>)<br/>
 Pair production of neutralinos from quark-gluon initial states. 
@@ -277,6 +295,7 @@ The cross section expressions follow [<a href="Bibliography.html" target="page">
 Only the MFV case has been explicitly validated. 
    
  
+<a name="anchor19"></a>
 <p/><code>flag&nbsp; </code><strong> SUSY:qg2chi+-squark &nbsp;</strong> 
  (<code>default = <strong>off</strong></code>)<br/>
 Associated chargino-squark production from quark-gluon initial states. 
@@ -285,6 +304,7 @@ follow [<a href="Bibliography.html" target="page">Boz07</a>].
 Only the MFV case has been explicitly validated. 
    
  
+<a name="anchor20"></a>
 <p/><code>flag&nbsp; </code><strong> SUSY:qqbar2chi0gluino &nbsp;</strong> 
  (<code>default = <strong>off</strong></code>)<br/>
 Associated neutralino-gluino production by quark-antiquark 
@@ -293,6 +313,7 @@ The cross section expressions follow
 [<a href="Bibliography.html" target="page">Fuk11</a>]. Only the MFV case has been explicitly validated. 
    
  
+<a name="anchor21"></a>
 <p/><code>flag&nbsp; </code><strong> SUSY:qqbar2chi+-gluino &nbsp;</strong> 
  (<code>default = <strong>off</strong></code>)<br/>
 Associated chargino-gluino production by quark-antiquark 
@@ -306,6 +327,7 @@ in PYTHIA 8; see <code>SUSY:sin2thetaWMode</code> above.)
    
  
 <h4>Slepton Production</h4> 
+<a name="anchor22"></a>
 <p/><code>flag&nbsp; </code><strong> SUSY:qqbar2sleptonantislepton &nbsp;</strong> 
  (<code>default = <strong>off</strong></code>)<br/>
 Pair production of slepton-antislepton via s-channel W, Z and gamma 
@@ -316,6 +338,7 @@ handed sneutrinos currently not supported.
  
 <h4>R-parity violating squark production</h4> 
  
+<a name="anchor23"></a>
 <p/><code>flag&nbsp; </code><strong> SUSY:qq2antisquark &nbsp;</strong> 
  (<code>default = <strong>off</strong></code>)<br/>
 Resonant squark production via R-parity violating UDD couplings. The 
@@ -355,6 +378,7 @@ Some 3-body decays have been implemented with Matrix Element weighting.
 In particular, those for a neutralino to a lighter neutralino and a 
 fermion pair can be enabled. 
  
+<a name="anchor24"></a>
 <p/><code>flag&nbsp; </code><strong> SUSYResonance:3BodyMatrixElement &nbsp;</strong> 
  (<code>default = <strong>off</strong></code>)<br/>
 When "on", the spin-averaged, squared matrix element is used 

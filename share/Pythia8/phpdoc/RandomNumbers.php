@@ -100,61 +100,61 @@ generator is provided in <code>main23.cc</code>.
  
 We here collect a more complete and formal overview of the methods. 
  
-<a name="method1"></a>
+<a name="anchor1"></a>
 <p/><strong>Rndm::Rndm() &nbsp;</strong> <br/>
 construct a random number generator, but does not initialize it. 
    
  
-<a name="method2"></a>
+<a name="anchor2"></a>
 <p/><strong>Rndm::Rndm(int seed) &nbsp;</strong> <br/>
 construct a random number generator, and initialize it for the 
 given seed number. 
    
  
-<a name="method3"></a>
+<a name="anchor3"></a>
 <p/><strong>bool Rndm::rndmEnginePtr( RndmEngine* rndmPtr) &nbsp;</strong> <br/>
 pass in pointer for external random number generation. 
    
  
-<a name="method4"></a>
+<a name="anchor4"></a>
 <p/><strong>void Rndm::init(int seed = 0) &nbsp;</strong> <br/>
 initialize, or reinitialize, the random number generator for the given 
 seed number. Not necessary if the seed was already set in the constructor. 
    
  
-<a name="method5"></a>
+<a name="anchor5"></a>
 <p/><strong>double Rndm::flat() &nbsp;</strong> <br/>
 generate next random number uniformly between 0 and 1. 
    
  
-<a name="method6"></a>
+<a name="anchor6"></a>
 <p/><strong>double Rndm::exp() &nbsp;</strong> <br/>
 generate random numbers according to <i>exp(-x)</i>. 
    
  
-<a name="method7"></a>
+<a name="anchor7"></a>
 <p/><strong>double Rndm::xexp() &nbsp;</strong> <br/>
 generate random numbers according to <i>x exp(-x)</i>. 
    
  
-<a name="method8"></a>
+<a name="anchor8"></a>
 <p/><strong>double Rndm::gauss() &nbsp;</strong> <br/>
 generate random numbers according to <i>exp(-x^2/2)</i>. 
    
  
-<a name="method9"></a>
+<a name="anchor9"></a>
 <p/><strong>pair&lt;double, double&gt; Rndm::gauss2() &nbsp;</strong> <br/>
 generate a pair of random numbers according to 
 <i>exp( -(x^2 + y^2) / 2)</i>. Is faster than two calls 
 to <code>gauss()</code>. 
    
  
-<a name="method10"></a>
+<a name="anchor10"></a>
 <p/><strong>int Rndm::pick(const vector&lt;double&gt;&amp; prob) &nbsp;</strong> <br/>
 pick one option among vector of (positive) probabilities. 
    
  
-<a name="method11"></a>
+<a name="anchor11"></a>
 <p/><strong>bool Rndm::dumpState(string fileName) &nbsp;</strong> <br/>
 save the current state of the random number generator to a binary 
 file. This involves two integers and 100 double-precision numbers. 
@@ -162,13 +162,13 @@ Intended for debug purposes. Note that binary files may be
 platform-dependent and thus not transportable. 
    
  
-<a name="method12"></a>
+<a name="anchor12"></a>
 <p/><strong>bool Rndm::readState(string fileName) &nbsp;</strong> <br/>
 set the state of the random number generator by reading in a binary 
 file saved by the above command. Comments as above. 
    
  
-<a name="method13"></a>
+<a name="anchor13"></a>
 <p/><strong>virtual double RndmEngine::flat() &nbsp;</strong> <br/>
 if you want to construct an external random number generator 
 (or generator interface) then you must implement this method 

@@ -377,15 +377,15 @@ shower plugins. More concretely, an external MM code will
 be used if a pointer to an instance of the external classes is transferred to 
 Pythia via the methods 
  
-<a name="method1"></a>
+<a name="anchor1"></a>
 <p/><strong>Pythia::setMergingPtr( Merging* myMerging) &nbsp;</strong> <br/>
    
  
-<a name="method2"></a>
+<a name="anchor2"></a>
 <p/><strong>Pythia::setMergingHooksPtr( MergingHooks* myMergingHooks) &nbsp;</strong> <br/>
    
  
-<a name="method3"></a>
+<a name="anchor3"></a>
 <p/><strong>MergingHooks::setHardProcessPtr( HardProcess* myHardProcess) &nbsp;</strong> <br/>
    
  
@@ -404,13 +404,13 @@ merging class to be interfaced to Pythia, the class needs to inherit from the
 <code>Pythia8::Merging</code> base class. It is further necessary to define 
 the following functions that serve as interface to Pythia: 
  
-<a name="method4"></a>
+<a name="anchor4"></a>
 <p/><strong>virtual ~MyMerging() &nbsp;</strong> <br/>
 A destructor for your ME+PS class. If not defined, the base class's empty 
 destructor will be used. 
    
  
-<a name="method5"></a>
+<a name="anchor5"></a>
 <p/><strong>virtual void MyMerging::init() &nbsp;</strong> <br/>
 A method that is used to initialize your merging class. Pythia will call 
 this function during its initialization and after all pointers to 
@@ -418,14 +418,14 @@ internal classes (e.g. to instances of the <code>Info</code> and
 <code>ParticleData</code> classes) have been set up. 
    
  
-<a name="method6"></a>
-<p/><strong>virtual void statistics() &nbsp;</strong> <br/>
+<a name="anchor6"></a>
+<p/><strong>virtual void MyMerging::statistics() &nbsp;</strong> <br/>
 This function can be used to collect and print merging information at the 
 end of the event generation. Pythia will call this function in the execution 
 of a <code>Pythia::stat()</code> call. 
    
  
-<a name="method7"></a>
+<a name="anchor7"></a>
 <p/><strong>virtual int MyMerging::mergeProcess( Event& process) &nbsp;</strong> <br/>
 This function should be the main interface of Pythia to the MM plugin. 
 Pythia will execute this function once the partonic (fixed-order) scattering 
@@ -468,13 +468,13 @@ instance <code>myMergingHooks</code>. For this class to be interfaced to
 Pythia, it will need to inherit from the <code>Pythia8::MergingHooks</code> 
 base class. 
  
-<a name="method8"></a>
+<a name="anchor8"></a>
 <p/><strong>virtual ~MyMergingHooks() &nbsp;</strong> <br/>
 A destructor for your MergingHooks class. If not defined, the base class's 
 empty destructor will be used. 
    
  
-<a name="method9"></a>
+<a name="anchor9"></a>
 <p/><strong>virtual void MyMergingHooks::init() &nbsp;</strong> <br/>
 A method that is used to initialize your <code>MyMergingHooks</code> class. 
 Pythia will call this function during its initialization and after all 
@@ -482,14 +482,14 @@ pointers to internal classes (e.g. to instances of the <code>Info</code> and
 <code>ParticleData</code> classes) have been set up. 
    
  
-<a name="method10"></a>
+<a name="anchor10"></a>
 <p/><strong>virtual bool MyMergingHooks::canVetoStep() &nbsp;</strong> <br/>
 This function will be used to tell Pythia if a CKKW-L-style event veto 
 after the first parton shower emission should be checked. If so, the function 
 should return true, and false otherwise. 
    
  
-<a name="method11"></a>
+<a name="anchor11"></a>
 <p/><strong>virtual bool MyMergingHooks::doVetoStep( const Event& process, const Event& event, bool doResonance = false ) &nbsp;</strong> <br/>
 This function will be used to implement the check of a CKKW-L-style event veto 
 after the first parton shower emission, i.e. to check if the first parton 
@@ -500,13 +500,13 @@ instead to veto the event and continue with a completely now hard scattering
 event, true should be returned. 
    
  
-<a name="method12"></a>
+<a name="anchor12"></a>
 <p/><strong>virtual bool MyMergingHooks::canVetoEmission() &nbsp;</strong> <br/>
 This function will be used to tell Pythia if a veto of emissions should 
 potentially be applied. 
    
  
-<a name="method13"></a>
+<a name="anchor13"></a>
 <p/><strong>virtual bool MyMergingHooks::doVetoStep( const Event& event) &nbsp;</strong> <br/>
 This function will be used to implement the check if shower emissions should 
 be discarded, as e.g. necessary in UMEPS or UNLOPS merging. 
@@ -516,7 +516,7 @@ Note that this veto does not lead to event rejections, only in potentially
 removing certain emissions during shower evolution. 
    
  
-<a name="method14"></a>
+<a name="anchor14"></a>
 <p/><strong>virtual bool MyMergingHooks::setShowerStartingScales( bool     isTrial, bool doMergeFirstEmm,     double& pTscaleIn, const Event& event,     double& pTmaxFSRIn, bool& limitPTmaxFSRin,     double& pTmaxISRIn, bool& limitPTmaxISRin,     double& pTmaxMPIIn, bool& limitPTmaxMPIin ) &nbsp;</strong> <br/>
 This function allows to set the starting scales for timelike and spacelike 
 showering as well as multiparton interactions. It is thus necessary to 
@@ -547,31 +547,31 @@ in <?php $filepath = $_GET["filepath"];
 echo "<a href='CKKWLMerging.php?filepath=".$filepath."' target='page'>";?>CKKW-L merging</a>. The additional (optional) 
 virtual functions are: 
  
-<a name="method15"></a>
+<a name="anchor15"></a>
 <p/><strong>  virtual double dampenIfFailCuts( const Event& inEvent ) &nbsp;</strong> <br/>
    
-<a name="method16"></a>
+<a name="anchor16"></a>
 <p/><strong>  virtual bool canCutOnRecState() &nbsp;</strong> <br/>
    
-<a name="method17"></a>
+<a name="anchor17"></a>
 <p/><strong>  virtual bool doCutOnRecState( const Event& event ) &nbsp;</strong> <br/>
    
-<a name="method18"></a>
+<a name="anchor18"></a>
 <p/><strong>  virtual bool canVetoTrialEmission() &nbsp;</strong> <br/>
    
-<a name="method19"></a>
+<a name="anchor19"></a>
 <p/><strong>  virtual bool doVetoTrialEmission( const Event&, const Event& ) &nbsp;</strong> <br/>
    
-<a name="method20"></a>
+<a name="anchor20"></a>
 <p/><strong>  virtual double hardProcessME( const Event& inEvent ) &nbsp;</strong> <br/>
    
-<a name="method21"></a>
-<p/><strong>virtual double MyMergingHooks::tmsDefinition( const Event& event) &nbsp;</strong> <br/>
+<a name="anchor21"></a>
+<p/><strong>virtual double tmsDefinition( const Event& event) &nbsp;</strong> <br/>
    
-<a name="method22"></a>
-<p/><strong>virtual int MyMergingHooks::getNumberOfClusteringSteps(const Event& event, bool resetNjetMax = false) &nbsp;</strong> <br/>
+<a name="anchor22"></a>
+<p/><strong>virtual int getNumberOfClusteringSteps(const Event& event, bool resetNjetMax = false) &nbsp;</strong> <br/>
    
-<a name="method23"></a>
+<a name="anchor23"></a>
 <p/><strong>  virtual bool useShowerPlugin() &nbsp;</strong> <br/>
    
  
@@ -590,34 +590,34 @@ Let us assume that you want to create a class of type
 <code>MergingHooks</code> (or the derived <code>MyMergingHooks</code> class), 
 it will need to inherit from the <code>Pythia8::HardProcess</code> base class. 
  
-<a name="method24"></a>
+<a name="anchor24"></a>
 <p/><strong>virtual ~MyHardProcess() &nbsp;</strong> <br/>
 A destructor for your HardProcess class. If not defined, the base class's 
 empty destructor will be used. 
    
  
-<a name="method25"></a>
+<a name="anchor25"></a>
 <p/><strong>virtual void MyHardProcess::initOnProcess( string process, ParticleData* particleData) &nbsp;</strong> <br/>
 This function can be used to initialize the instance of your HardProcess 
 class. In the internal Pythia implementation, this acts as a wrapper around 
 the next function. 
    
  
-<a name="method26"></a>
+<a name="anchor26"></a>
 <p/><strong>virtual void MyHardProcess::translateProcessString( string process) &nbsp;</strong> <br/>
 This function will use the string argument to set up the hard process 
 bookkeeping, e.g. how many incoming/outgoing particles of which flavour are 
 contained in the core (lowest multiplicity) scattering process. 
    
  
-<a name="method27"></a>
+<a name="anchor27"></a>
 <p/><strong>virtual void MyHardProcess::storeCandidates( const Event& event, string process) &nbsp;</strong> <br/>
 This function studies the input event and book-keeps the particles that 
 may be considered as part of the core scattering process. For this, it may 
 use the four next functions. 
    
  
-<a name="method28"></a>
+<a name="anchor28"></a>
 <p/><strong>virtual bool MyHardProcess::allowCandidates(int iPos, vector&lt;int&gt; Pos1, vector&lt;int&gt; Pos2, const Event& event) &nbsp;</strong> <br/>
 This function uses the input vectors of positions of particles in the input 
 event to decide if the particle with <code>iPos</code> could be member 
@@ -631,14 +631,14 @@ candidates. In this case, all candidates should be found (with the
 replaced (with <code>exchangeCandidates</code>). 
    
  
-<a name="method29"></a>
+<a name="anchor29"></a>
 <p/><strong>virtual bool MyHardProcess::matchesAnyOutgoing(int iPos, const Event& event) &nbsp;</strong> <br/>
 This function may be used to check if the particle with position 
 <code>iPos</code> in the input event should be considered an outgoing particle 
 of the core scattering. 
    
  
-<a name="method30"></a>
+<a name="anchor30"></a>
 <p/><strong>virtual bool MyHardProcess::findOtherCandidates(int iPos, const Event& event, bool doReplace) &nbsp;</strong> <br/>
 The argument <code>iPos</code> specifies the position of a particle in the 
 input event which is tagged as part of the core scattering. This function may 
@@ -653,7 +653,7 @@ The function should return false if no replacements can be found, and true
 otherwise. 
    
  
-<a name="method31"></a>
+<a name="anchor31"></a>
 <p/><strong>virtual bool MyHardProcess::exchangeCandidates( vector&lt;int&gt; candidates1, vector&lt;int&gt; candidates2, map&lt;int, int&gt; further1, map&lt;int, int&gt; further2) &nbsp;</strong> <br/>
 This function implements the replacement of a list of core scattering 
 candidates by another list of candidates. 
