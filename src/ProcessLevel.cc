@@ -357,11 +357,6 @@ bool ProcessLevel::init( Info* infoPtrIn, Settings& settings,
   if (!cutsAgree) allHardSame = false;
   someHardSame = !allHardSame && !noneHardSame;
 
-  // Reset counters for average impact-parameter enhancement.
-  nImpact       = 0;
-  sumImpactFac  = 0.;
-  sum2ImpactFac = 0.;
-
   // Done.
   return true;
 }
@@ -462,13 +457,6 @@ void ProcessLevel::accumulate( bool doAccumulate) {
   // Increase counter for a second hard interaction.
   if (doAccumulate) container2Ptrs[i2Container]->accumulate();
 
-  // Update statistics on average impact factor.
-  if (doAccumulate) {
-    ++nImpact;
-    sumImpactFac     += infoPtr->enhanceMPI();
-    sum2ImpactFac    += pow2(infoPtr->enhanceMPI());
-  }
-
   // Cross section estimate for second hard process.
   double sigma2Sum  = 0.;
   double sig2SelSum = 0.;
@@ -479,18 +467,15 @@ void ProcessLevel::accumulate( bool doAccumulate) {
     if (doAccumulate) sig2SelSum += container2Ptrs[i2]->sigmaSelMC();
   }
 
-  // Average impact-parameter factor and error.
-  double invN       = 1. / max(1, nImpact);
-  double impactFac  = max( 1., sumImpactFac * invN);
-  double impactErr2 = ( sum2ImpactFac * invN / pow2(impactFac) - 1.) * invN;
+  // Average impact-parameter factor.
+  double impactFac  = max( 1., infoPtr->enhanceMPIavg() );
 
   // Cross section estimate for combination of first and second process.
   // Combine two possible ways and take average.
   double sigmaComb  = 0.5 * (sigmaSum * sig2SelSum + sigSelSum * sigma2Sum);
   sigmaComb        *= impactFac / sigmaND;
   if (allHardSame) sigmaComb *= 0.5;
-  double deltaComb  = (nAccSum == 0) ? 0.
-                    : sqrtpos(2. / nAccSum + impactErr2) * sigmaComb;
+  double deltaComb  = (nAccSum == 0) ? 0. : sqrtpos(2. / nAccSum) * sigmaComb;
 
   // Store info and done.
   infoPtr->setSigma( 0, "sum", nTrySum, nSelSum, nAccSum, sigmaComb, deltaComb,
@@ -1431,10 +1416,8 @@ bool ProcessLevel::checkColours( Event& process) {
 
 void ProcessLevel::statistics2(bool reset) {
 
-  // Average impact-parameter factor and error.
-  double invN          = 1. / max(1, nImpact);
-  double impactFac     = max( 1., sumImpactFac * invN);
-  double impactErr2    = ( sum2ImpactFac * invN / pow2(impactFac) - 1.) * invN;
+  // Average impact-parameter factor.
+  double impactFac     = max( 1., infoPtr->enhanceMPIavg() );
 
   // Derive scaling factor to be applied to first set of processes.
   double sigma2SelSum  = 0.;
@@ -1444,7 +1427,7 @@ void ProcessLevel::statistics2(bool reset) {
     n2SelSum          += container2Ptrs[i2]->nSelected();
   }
   double factor1       = impactFac * sigma2SelSum / sigmaND;
-  double rel1Err       = sqrt(1. / max(1, n2SelSum) + impactErr2);
+  double rel1Err       = sqrt(1. / max(1, n2SelSum));
   if (allHardSame) factor1 *= 0.5;
 
   // Derive scaling factor to be applied to second set of processes.
@@ -1456,7 +1439,7 @@ void ProcessLevel::statistics2(bool reset) {
   }
   double factor2       = impactFac * sigma1SelSum / sigmaND;
   if (allHardSame) factor2 *= 0.5;
-  double rel2Err       = sqrt(1. / max(1, n1SelSum) + impactErr2);
+  double rel2Err       = sqrt(1. / max(1, n1SelSum));
 
   // Header.
   cout << "\n *-------  PYTHIA Event and Cross Section Statistics  ------"

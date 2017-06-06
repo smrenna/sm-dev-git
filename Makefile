@@ -35,7 +35,7 @@ CXX_COMMON:=-I$(LOCAL_INCLUDE) $(CXX_COMMON)
 
 # PYTHIA.
 OBJECTS=$(patsubst $(LOCAL_SRC)/%.cc,$(LOCAL_TMP)/%.o,\
-	$(wildcard $(LOCAL_SRC)/*.cc))
+	$(sort $(wildcard $(LOCAL_SRC)/*.cc)))
 TARGETS=$(LOCAL_LIB)/libpythia8.a
 ifeq ($(ENABLE_SHARED),true)
   TARGETS+=$(LOCAL_LIB)/libpythia8$(LIB_SUFFIX)

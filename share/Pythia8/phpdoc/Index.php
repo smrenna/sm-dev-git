@@ -30,15 +30,15 @@ echo "<font color='red'>NO FILE SELECTED YET.. PLEASE DO SO </font><a href='Save
 <img src="pythia99.gif" alt="Pythia logo" hspace="10"/> 
  
 <h2>PYTHIA 8 Index</h2> 
-<script>function link(href) {top.frames['page'].location.href = href}</script>
-<script src="Underscore.js"></script>
-<script src="Jquery.js" ></script>
-<script src="Search.js"></script>
-<form>
+<script>function link(href) {top.frames['page'].location.href = href}</script> 
+<script src="Underscore.js"></script> 
+<script src="Jquery.js" ></script> 
+<script src="Search.js"></script> 
+<form> 
   <input id="search-input" type="search" placeholder="Search" 
-	 style="color:#000000">
-  <ul id="search-result" style="list-style-type:none;padding:0"></ul>
-</form>
+	 style="color:#000000"> 
+  <ul id="search-result" style="list-style-type:none;padding:0"></ul> 
+</form> 
  
 <h4>Program Overview</h4> 
  

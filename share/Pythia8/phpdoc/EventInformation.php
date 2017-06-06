@@ -636,9 +636,17 @@ more than that for events with hard processes).
  
 <a name="anchor88"></a>
 <p/><strong>double Info::enhanceMPIavg() &nbsp;</strong> <br/>
-The average enhancement factor expected for hard processes in those 
+The average enhancement factor expected for hard processes, in those 
 cases where it can be calculated already at initialization, i.e. excluding 
-the <i>x</i>-dependent <i>b</i> profile. 
+the <i>x</i>-dependent <i>b</i> profile. The normalization is here 
+chosen to apply to cases with two hard interactions <i>A</i> and 
+<i>B</i> preselected in the process level, and there multiplies 
+<i>sigma_A * sigma_B / sigma_{nondiff}</i> to give the joint cross 
+section. (Additional corrections from joint PDF weights somewhat reduce 
+the final number.) The normalization is slightly different (typically 
+around 5%) from the average of the <code>enhanceMPI()</code> method above, 
+which instead is normalized to average value unity for nondiffractive events. 
+As used internally the two are consistent. 
    
  
 <a name="anchor89"></a>

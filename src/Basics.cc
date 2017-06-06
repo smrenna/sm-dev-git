@@ -615,7 +615,7 @@ bool pShift( Vec4& p1Move, Vec4& p2Move, double m1New, double m2New) {
 
 //--------------------------------------------------------------------------
 
-// Create two vectors that are perpendicular to the both input vectors.
+// Create two vectors that are perpendicular to both input vectors.
 
 pair<Vec4,Vec4> getTwoPerpendicular(const Vec4& v1, const Vec4& v2) {
 

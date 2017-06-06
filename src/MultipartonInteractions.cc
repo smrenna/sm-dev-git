@@ -2208,7 +2208,7 @@ void MultipartonInteractions::overlapInit() {
     zeroIntCorr = probOverlapInt / overlapInt;
     normOverlap = normPi * zeroIntCorr / avgOverlap;
     bAvg = bProbInt / probInt;
-    enhanceBavg = (overlap2Int * probInt) / (probOverlapInt * overlapInt);
+    enhanceBavg = (overlap2Int * probInt) / pow2(overlapInt);
 
   // Values for x-dependent matter profile.
   } else if (bProfile == 4) {

@@ -42,7 +42,7 @@ $(function() {
 		    return str.replace(
 			    /[\\^$.*+?|{[()]/g, "\\$&")}).join('.*'), "i");
 	    results = _.filter(index, function(result) {
-		return regexp.test(result.name + result.text)});
+		return regexp.test(result.text)});
 	}
 
 	// Format the search results.

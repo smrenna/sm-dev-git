@@ -161,11 +161,11 @@ public:
   // Impact parameter picture, as set by hardest interaction.
   double bMPI()               const {return (bIsSet) ? bMPISave : 1.;}
   double enhanceMPI()         const {return (bIsSet) ? enhanceMPISave : 1.;}
-  double enhanceMPIavg()     const {return (bIsSet) ? enhanceMPIavgSave : 1.;}
+  double enhanceMPIavg()      const {return (bIsSet) ? enhanceMPIavgSave : 1.;}
   double eMPI(int i)          const {return (bIsSet) ? eMPISave[i] : 1.;}
   double bMPIold()            const {return (bIsSet) ? bMPIoldSave : 1.;}
   double enhanceMPIold()      const {return (bIsSet) ? enhanceMPIoldSave : 1.;}
-  double enhanceMPIoldavg()  const {return (bIsSet)
+  double enhanceMPIoldavg()   const {return (bIsSet)
                                      ? enhanceMPIoldavgSave : 1.;}
 
   // Number of multiparton interactions, with code and pT for them.

@@ -39,11 +39,31 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.227: 14 May 2017 
+<li>8.227: 6 June 2017 
 <ul> 
  
-<li></li> 
+<li>New search function introduced in the <code>html</code> documentation. 
+You can type a word or phrase in the new "Search" box near the top of the 
+left-hand index field, and immediately get up a list of links to places 
+where it occurs.</li> 
  
+<li>New processes for <i>3S1</i> charmonium or bottomonium production 
+in association with a photon, accessible through the new switches 
+<code>Charmonium:gg2ccbar(3S1)[3S1(1)]gm</code> and 
+<code>Bottomonium:gg2ccbar(3S1)[3S1(1)]gm</code>.</li> 
+ 
+<li>Fix minor (order 5%) normalization error of the impact-parameter 
+enhancement factor in MPIs, see <code>Info::enhanceMPIavg()</code>.</li> 
+ 
+<li>Minor <code>Makefile</code> update for better compatibility across 
+platforms.</li> 
+ 
+<li>Minor fix in <code>pythia8-config</code> to solve some parsing issues. 
+Thanks to Gavin Salam, Dmitry Konstantinov and Emanuel Hoogeveen.</li> 
+ 
+<li>Fix typo in reweighting machinery in <code>SpaceShower.cc</code>.</li> 
+ 
+<li>Minor cosmectics in documentation.</li> 
  
 </ul> 
 </li> 

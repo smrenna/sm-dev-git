@@ -1096,7 +1096,7 @@ void SpaceShower::pT2nextQCD( double pT2begDip, double pT2endDip) {
     if (isEnhancedQ2QG) storeEnhanceFactor(pT2,"isr:Q2QG", enhanceNow);
     if (isEnhancedG2QQ) storeEnhanceFactor(pT2,"isr:G2QQ", enhanceNow);
     if (isEnhancedQ2GQ) storeEnhanceFactor(pT2,"isr:Q2GQ", enhanceNow);
-    if (isEnhancedG2QQ) storeEnhanceFactor(pT2,"isr:G2GG", enhanceNow);
+    if (isEnhancedG2GG) storeEnhanceFactor(pT2,"isr:G2GG", enhanceNow);
   }
 
   // Save values for (so far) acceptable branching.
