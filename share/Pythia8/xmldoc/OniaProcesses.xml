@@ -449,7 +449,7 @@ Colour-singlet production of <ei>3S1</ei> bottomonium states via
 Code 501. 
 </fvec> 
  
-<fvec name="Bottomonium:gg2ccbar(3S1)[3S1(1)]gm" default="off,off"> 
+<fvec name="Bottomonium:gg2bbbar(3S1)[3S1(1)]gm" default="off,off,off"> 
 Colour-singlet production of <ei>3S1</ei> bottomonium states via 
 <ei>g g &rarr; ccbar[3S1(1)] g</ei> with a hard <ei>gamma</ei>. 
 Code 511. 

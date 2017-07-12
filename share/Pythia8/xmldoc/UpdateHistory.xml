@@ -12,7 +12,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.227: 6 June 2017 
+<li>8.227: 11 July 2017 
 <ul> 
  
 <li>New search function introduced in the <code>html</code> documentation. 
@@ -35,8 +35,15 @@ platforms.</li>
 Thanks to Gavin Salam, Dmitry Konstantinov and Emanuel Hoogeveen.</li> 
  
 <li>Fix typo in reweighting machinery in <code>SpaceShower.cc</code>.</li> 
+
+<li>Several minor fixes to protect from rare occasions of division by zero.
+Thanks to Steffen Weber.</li> 
  
-<li>Minor cosmectics in documentation.</li> 
+<li>New option in the single-particle gun in <code>main21.cc</code>, 
+to allow the input particle have a lifetime and thus decay some distance 
+away from the origin. Thanks to Graham W. Wilson.</li> 
+ 
+<li>Minor cosmetics in documentation.</li> 
  
 </ul> 
 </li> 

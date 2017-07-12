@@ -246,6 +246,7 @@ Vec4 StringEnd::kinematicsHadron( StringSystem& system) {
     double root  = sqrtpos( r1*r1 - 4. * r2 * r0 );
     if (abs(r2) < TINY || root < TINY) return Vec4(0., 0., 0., -1.);
     xInvHad      = 0.5 * (root / abs(r2) - r1 / r2);
+    if (abs(cM2 + cM4 * xInvHad) < TINY) return Vec4(0., 0., 0., -1.);
     xDirHad      = (cM0 - cM3 * xInvHad) / (cM2 + cM4 * xInvHad);
 
     // Define position of new trial vertex.

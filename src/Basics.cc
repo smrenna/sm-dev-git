@@ -293,6 +293,7 @@ void Vec4::rotaxis(double phiIn, const Vec4& n) {
 void Vec4::bst(double betaX, double betaY, double betaZ) {
 
   double beta2 = betaX*betaX + betaY*betaY + betaZ*betaZ;
+  if (beta2 >= 1.) return;
   double gamma = 1. / sqrt(1. - beta2);
   double prod1 = betaX * xx + betaY * yy + betaZ * zz;
   double prod2 = gamma * (gamma * prod1 / (1. + gamma) + tt);
@@ -324,10 +325,12 @@ void Vec4::bst(double betaX, double betaY, double betaZ, double gamma) {
 
 void Vec4::bst(const Vec4& pIn) {
 
+  if (abs(pIn.tt) < Vec4::TINY) return;
   double betaX = pIn.xx / pIn.tt;
   double betaY = pIn.yy / pIn.tt;
   double betaZ = pIn.zz / pIn.tt;
   double beta2 = betaX*betaX + betaY*betaY + betaZ*betaZ;
+  if (beta2 >= 1.) return;
   double gamma = 1. / sqrt(1. - beta2);
   double prod1 = betaX * xx + betaY * yy + betaZ * zz;
   double prod2 = gamma * (gamma * prod1 / (1. + gamma) + tt);
@@ -344,6 +347,7 @@ void Vec4::bst(const Vec4& pIn) {
 
 void Vec4::bst(const Vec4& pIn, double mIn) {
 
+  if (abs(pIn.tt) < Vec4::TINY) return;
   double betaX = pIn.xx / pIn.tt;
   double betaY = pIn.yy / pIn.tt;
   double betaZ = pIn.zz / pIn.tt;
@@ -363,10 +367,12 @@ void Vec4::bst(const Vec4& pIn, double mIn) {
 
 void Vec4::bstback(const Vec4& pIn) {
 
+  if (abs(pIn.tt) < Vec4::TINY) return;
   double betaX = -pIn.xx / pIn.tt;
   double betaY = -pIn.yy / pIn.tt;
   double betaZ = -pIn.zz / pIn.tt;
   double beta2 = betaX*betaX + betaY*betaY + betaZ*betaZ;
+  if (beta2 >= 1.) return;
   double gamma = 1. / sqrt(1. - beta2);
   double prod1 = betaX * xx + betaY * yy + betaZ * zz;
   double prod2 = gamma * (gamma * prod1 / (1. + gamma) + tt);
@@ -383,6 +389,7 @@ void Vec4::bstback(const Vec4& pIn) {
 
 void Vec4::bstback(const Vec4& pIn, double mIn) {
 
+  if (abs(pIn.tt) < Vec4::TINY) return;
   double betaX = -pIn.xx / pIn.tt;
   double betaY = -pIn.yy / pIn.tt;
   double betaZ = -pIn.zz / pIn.tt;

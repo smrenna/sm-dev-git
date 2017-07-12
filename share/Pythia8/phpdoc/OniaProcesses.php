@@ -484,7 +484,7 @@ Colour-singlet production of <i>3S1</i> bottomonium states via
 Code 501. 
    
  
-<br/><br/><table><tr><td><strong>Bottomonium:gg2ccbar(3S1)[3S1(1)]gm  </td><td></td><td> <input type="text" name="53" value="off,off" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>off,off</strong></code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>Bottomonium:gg2bbbar(3S1)[3S1(1)]gm  </td><td></td><td> <input type="text" name="53" value="off,off,off" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>off,off,off</strong></code>)</td></tr></table>
 Colour-singlet production of <i>3S1</i> bottomonium states via 
 <i>g g &rarr; ccbar[3S1(1)] g</i> with a hard <i>gamma</i>. 
 Code 511. 
@@ -977,9 +977,9 @@ if($_POST["52"] != "off,off,off")
 $data = "Bottomonium:gg2bbbar(3S1)[3S1(1)]g = ".$_POST["52"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["53"] != "off,off")
+if($_POST["53"] != "off,off,off")
 {
-$data = "Bottomonium:gg2ccbar(3S1)[3S1(1)]gm = ".$_POST["53"]."\n";
+$data = "Bottomonium:gg2bbbar(3S1)[3S1(1)]gm = ".$_POST["53"]."\n";
 fwrite($handle,$data);
 }
 if($_POST["54"] != "off,off,off")

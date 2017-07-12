@@ -177,7 +177,7 @@ public:
 private:
 
   // Constants: could only be changed in the code itself.
-  static const double MINIMUMGAIN, MINIMUMGAINJUN, HBAR;
+  static const double MINIMUMGAIN, MINIMUMGAINJUN, HBAR, TINYP1P2;
   static const int MAXRECONNECTIONS;
 
   // Variables needed.
