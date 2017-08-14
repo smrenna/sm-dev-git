@@ -872,7 +872,7 @@ ostream& operator<<(ostream& os, const RotBstMatrix& M) {
 // These are of technical nature, as described for each.
 
 // Maximum number of bins in a histogram.
-const int    Hist::NBINMAX   = 1000;
+const int    Hist::NBINMAX   = 10000;
 
 // Maximum number of columns that can be printed for a histogram.
 const int    Hist::NCOLMAX   = 100;
@@ -906,7 +906,11 @@ void Hist::book(string titleIn, int nBinIn, double xMinIn,
   titleSave = titleIn;
   nBin  = nBinIn;
   if (nBinIn < 1) nBin = 1;
-  if (nBinIn > NBINMAX) nBin = NBINMAX;
+  if (nBinIn > NBINMAX) {
+    nBin = NBINMAX;
+    cout << " Warning: number of bins for histogram " << titleIn
+         << " reduced to " << NBINMAX << endl;
+  }
   xMin  = xMinIn;
   xMax  = xMaxIn;
   dx    = (xMax - xMin)/nBin;

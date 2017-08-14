@@ -3246,7 +3246,7 @@ double CJKL::hadronlikeB(double x, double s, double Q2) {
 //==========================================================================
 
 // The LHAGrid1 class.
-// Codes to read files i the LHAPDF6 lhagrid1 format,
+// Codes to read files in the LHAPDF6 lhagrid1 format,
 // assuming that the same x grid is used for all Q subgrids.
 // Results are not identical with LHAPDF6, owing to different interpolation.
 

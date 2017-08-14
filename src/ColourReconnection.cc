@@ -2515,7 +2515,7 @@ bool ColourReconnection::reconnectMPIs( Event&  event, int oldSize) {
         Vec4   pGlu      = event[iGlu].p();
         int    iDipMin   = 0;
         double pT2DipMin = sCM;
-        for (int iDip = 0; iDip < int(bmdipoles.size()); ++iDip) 
+        for (int iDip = 0; iDip < int(bmdipoles.size()); ++iDip)
         if (bmdipoles[iDip].p1p2 > TINYP1P2) {
           double pT2Dip = (pGlu * event[bmdipoles[iDip].iCol].p())
             * (pGlu * event[bmdipoles[iDip].iAcol].p()) / bmdipoles[iDip].p1p2;

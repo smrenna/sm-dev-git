@@ -140,7 +140,7 @@ void LHAPDF6::init(string setName, int member, Info *info) {
 void LHAPDF6::xfUpdate(int, double x, double Q2) {
 
   // Freeze at boundary value if PDF is evaluated outside the fit region.
-  if (x < pdf->xMin() )    x = pdf->xMin();
+  if (x < pdf->xMin() && !extrapol) x = pdf->xMin();
   if (x > pdf->xMax() )    x = pdf->xMax();
   if (Q2 < pdf->q2Min() ) Q2 = pdf->q2Min();
   if (Q2 > pdf->q2Max() ) Q2 = pdf->q2Max();

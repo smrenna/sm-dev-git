@@ -81,12 +81,6 @@ self-study.
 <h2>Authors</h2> 
  
 <p/> 
-<b>Torbj&ouml;rn Sj&ouml;strand</b><br/> 
-Department of Astronomy and Theoretical Physics, Lund University, 
-S&ouml;lvegatan 14A, SE-223 62 Lund, Sweden<br/> 
-e-mail: torbjorn@thep.lu.se 
- 
-<p/> 
 <b>Nishita Desai</b><br/> 
 Laboratoire Charles Coulomb (L2C) & Laboratoire Univers et Particules 
 de Montpellier (LUPM), CNRS-Universit&eacute; de Montpellier, 
@@ -135,6 +129,12 @@ e-mail: sprestel@fnal.gov
 Department of Astronomy and Theoretical Physics, Lund University, 
 S&ouml;lvegatan 14A, SE-223 62 Lund, Sweden<br/> 
 e-mail: christine.rasmussen@thep.lu.se 
+ 
+<p/> 
+<b>Torbj&ouml;rn Sj&ouml;strand</b><br/> 
+Department of Astronomy and Theoretical Physics, Lund University, 
+S&ouml;lvegatan 14A, SE-223 62 Lund, Sweden<br/> 
+e-mail: torbjorn@thep.lu.se 
  
 <p/> 
 <b>Peter Skands</b><br/> 
@@ -186,6 +186,8 @@ by <b>Anil Pratap Singh</b>.
 <b>Juan Rojo</b> and <b>Stefano Carrazza</b>. 
 <br/>The fjcore code from FastJet provided by <b>Matteo Cacciari</b>, 
 <b>Gavin Salam</b> and <b>Gregory Soyez</b>. 
+<br/>The initial-final dipole approach has been developed and 
+implemented by <b>Baptiste Cabouat</b>. 
  
 <br/><b>Note</b>: in several cases modifications have been made to 
 the original code, in order to integrate it with PYTHIA. In these cases 

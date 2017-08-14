@@ -38,33 +38,37 @@ public:
   SpaceDipoleEnd( int systemIn = 0, int sideIn = 0, int iRadiatorIn = 0,
     int iRecoilerIn = 0, double pTmaxIn = 0., int colTypeIn = 0,
     int chgTypeIn = 0, int weakTypeIn = 0,  int MEtypeIn = 0,
-    bool normalRecoilIn = true, int weakPolIn = 0) :
+    bool normalRecoilIn = true, int weakPolIn = 0,
+    int iColPartnerIn = 0, int idColPartnerIn = 0) :
     system(systemIn), side(sideIn), iRadiator(iRadiatorIn),
     iRecoiler(iRecoilerIn), pTmax(pTmaxIn), colType(colTypeIn),
     chgType(chgTypeIn), weakType(weakTypeIn), MEtype(MEtypeIn),
-    normalRecoil(normalRecoilIn), weakPol(weakPolIn), nBranch(0),
-    pT2Old(0.), zOld(0.5) { }
+    normalRecoil(normalRecoilIn), weakPol(weakPolIn),
+    iColPartner(iColPartnerIn), idColPartner(idColPartnerIn),
+    nBranch(0), pT2Old(0.), zOld(0.5) { }
 
   // Store values for trial emission.
   void store( int idDaughterIn, int idMotherIn, int idSisterIn,
     double x1In, double x2In, double m2DipIn, double pT2In, double zIn,
     double xMoIn, double Q2In, double mSisterIn, double m2SisterIn,
-    double pT2corrIn) {idDaughter = idDaughterIn; idMother = idMotherIn;
+    double pT2corrIn, int iColPartnerIn, double m2IFIn, double mColPartnerIn)
+    {idDaughter = idDaughterIn; idMother = idMotherIn;
     idSister = idSisterIn; x1 = x1In; x2 = x2In; m2Dip = m2DipIn;
     pT2 = pT2In; z = zIn; xMo = xMoIn; Q2 = Q2In; mSister = mSisterIn;
-    m2Sister = m2SisterIn; pT2corr = pT2corrIn;}
+    m2Sister = m2SisterIn; pT2corr = pT2corrIn; iColPartner = iColPartnerIn;
+    m2IF = m2IFIn; mColPartner = mColPartnerIn;}
 
   // Basic properties related to evolution and matrix element corrections.
   int    system, side, iRadiator, iRecoiler;
   double pTmax;
   int    colType, chgType, weakType, MEtype;
   bool   normalRecoil;
-  int    weakPol;
+  int    weakPol, iColPartner, idColPartner;
 
   // Properties specific to current trial emission.
   int    nBranch, idDaughter, idMother, idSister, iFinPol;
   double x1, x2, m2Dip, pT2, z, xMo, Q2, mSister, m2Sister, pT2corr,
-         pT2Old, zOld, asymPol;
+         pT2Old, zOld, asymPol, m2IF, mColPartner;
 
   // Properties needed for the evaluation of parameter variations
   double pAccept;
@@ -245,7 +249,8 @@ private:
          doPhiPolAsymHard, doPhiIntAsym, doRapidityOrder, useFixedFacScale,
          doSecondHard, canVetoEmission, hasUserHooks, alphaSuseCMW,
          singleWeakEmission, vetoWeakJets, weakExternal, doRapidityOrderMPI,
-         doUncertainties, uVarMuSoftCorr, uVarMPIshowers, doMPI, gamma2qqbar;
+         doUncertainties, uVarMuSoftCorr, uVarMPIshowers, doMPI, gamma2qqbar,
+         doDipoleRecoil;
   int    pTmaxMatch, pTdampMatch, alphaSorder, alphaSnfmax, alphaEMorder,
          nQuarkIn, enhanceScreening, weakMode;
   double pTdampFudge, mc, mb, m2c, m2b, renormMultFac, factorMultFac,
@@ -264,7 +269,8 @@ private:
   bool   sideA, dopTlimit1, dopTlimit2, dopTdamp, hasWeaklyRadiated, tChannel,
          doUncertaintiesNow;
   int    iNow, iRec, idDaughter, nRad, idResFirst, idResSecond;
-  double xDaughter, x1Now, x2Now, m2Dip, m2Rec, pT2damp, pTbegRef, pdfScale2;
+  double xDaughter, x1Now, x2Now, m2ColPair, mColPartner, m2ColPartner,
+         m2Dip, m2Rec, pT2damp, pTbegRef, pdfScale2;
 
   // Bookkeeping of enhanced  actual or trial emissions (see EPJC (2013) 73).
   bool doTrialNow, canEnhanceEmission, canEnhanceTrial, canEnhanceET;
@@ -294,7 +300,7 @@ private:
   // Evolve a QCD and QED dipole end near heavy quark threshold region.
   void pT2nearThreshold( BeamParticle& beam, double m2Massive,
     double m2Threshold, double xMaxAbs, double zMinAbs,
-    double zMaxMassive);
+    double zMaxMassive, int iColPartner);
 
   // Evolve a QED dipole end.
   void pT2nextQED( double pT2begDip, double pT2endDip);
@@ -325,6 +331,9 @@ private:
   map<int,double> varG2GGmuRfac, varQ2QGmuRfac, varQ2GQmuRfac, varG2QQmuRfac,
     varX2XGmuRfac;
   map<int,double> varG2GGcNS, varQ2QGcNS, varQ2GQcNS, varG2QQcNS, varX2XGcNS;
+
+  // Find a possible colour partner in the case of dipole recoil.
+  int findColPartner(Event& event, int iSideA, int iSideB, int iSystem);
 
 };
 

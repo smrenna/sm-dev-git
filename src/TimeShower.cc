@@ -95,6 +95,11 @@ void TimeShower::init( BeamParticle* beamAPtrIn,
   recoilToColoured   = settingsPtr->flag("TimeShower:recoilToColoured");
   allowMPIdipole     = settingsPtr->flag("TimeShower:allowMPIdipole");
 
+  // If SpaceShower does dipole recoil then TimeShower must adjust.
+  doDipoleRecoil     = settingsPtr->flag("SpaceShower:dipoleRecoil");
+  if (doDipoleRecoil) allowBeamRecoil  = true;
+  if (doDipoleRecoil) dampenBeamRecoil = false;
+
   // Matching in pT of hard interaction or MPI to shower evolution.
   pTmaxMatch         = settingsPtr->mode("TimeShower:pTmaxMatch");
   pTdampMatch        = settingsPtr->mode("TimeShower:pTdampMatch");
@@ -587,7 +592,7 @@ void TimeShower::prepareGlobal( Event& event) {
   string nNow = infoPtr->getEventAttribute("npNLO",true);
   if (nNow != "" && nFinalBorn == -1){
     nFinalBorn = max(0, atoi((char*)nNow.c_str()));
-    // Add number of heavy colored objects in lowest multiplicity state.
+    // Add number of heavy coloured objects in lowest multiplicity state.
     nFinalBorn += nHeavyCol;
   }
 
@@ -1292,7 +1297,7 @@ void TimeShower::setupQCDdip( int iSys, int i, int colTag, int colSign,
 
           }     // End if-then-else of junction kinds
 
-        }       // End if leg has right color tag
+        }       // End if leg has right colour tag
       }         // End of loop over junction legs
     }           // End loop over junctions
 
@@ -2043,10 +2048,14 @@ void TimeShower::pT2nextQCD(double pT2begDip, double pT2sel,
   double pT2endDip = max( pT2sel, pT2colCut );
   if (pT2begDip < pT2endDip) return;
 
+  // For dipole recoil: no emission if the radiator is a quark,
+  // since then a unified description is in SpaceShower.
+  int    colTypeAbs = abs(dip.colType);
+  if (doDipoleRecoil && dip.isrType != 0 && colTypeAbs == 1) return;
+
   // Upper estimate for matrix element weighting and colour factor.
   // Special cases for triplet recoiling against gluino and octet onia.
   // Note that g -> g g and g -> q qbar are split on two sides.
-  int    colTypeAbs = abs(dip.colType);
   double wtPSglue   = 2.;
   double colFac     = (colTypeAbs == 1) ? 4./3. : 3./2.;
   if (dip.MEgluinoRec)  colFac  = 3.;
@@ -2120,7 +2129,7 @@ void TimeShower::pT2nextQCD(double pT2begDip, double pT2sel,
       if (zMinAbs < SIMPLIFYROOT) zMinAbs = pT2min / dip.m2DipCorr;
       if (zMinAbs > 0.499) { dip.pT2 = 0.; return; }
 
-      // Find emission coefficients for X -> X g and g -> q qbar.
+      // Find emission coefficient for X -> X g.
       emitCoefGlue = overFac * wtPSglue * colFac * log(1. / zMinAbs - 1.);
       // Optionally enhanced branching rate.
       if (canEnhanceET && colTypeAbs == 2)
@@ -2128,6 +2137,11 @@ void TimeShower::pT2nextQCD(double pT2begDip, double pT2sel,
       if (canEnhanceET && colTypeAbs == 1)
         emitCoefGlue *= userHooksPtr->enhanceFactor("fsr:Q2QG");
 
+      // For dipole recoil: no g -> g g branching, since in SpaceShower.
+      if (doDipoleRecoil && dip.isrType != 0 && colTypeAbs == 2)
+        emitCoefGlue = 0.;
+
+      // Find emission coefficient for g -> q qbar.
       emitCoefTot  = emitCoefGlue;
       if (colTypeAbs == 2 && event[dip.iRadiator].id() == 21) {
         emitCoefQqbar = overFac * wtPSqqbar * (1. - 2. * zMinAbs);
@@ -3479,7 +3493,7 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
     // Optionally also kill ME corrections after first emission.
     if (!doMEafterFirst) dipSel->MEtype = 0;
     // PS dec 2010: check normalization of radiating dipole
-    // Dipole corresponding to the newly created color tag has normal strength
+    // Dipole corresponding to the newly created colour tag has normal strength
     double flexFactor  = (isFlexible) ? dipSel->flexFactor : 1.0;
     dipSel->isFlexible = false;
     for (int i = 0; i < int(dipEnd.size()); ++i) {
@@ -4773,7 +4787,7 @@ double TimeShower::findMEcorr(TimeDipoleEnd* dip, Particle& rad,
 //      = 15 : q -> ~q ~g
 //      = 16 : (9/4)*(eikonal) for gg -> ~g ~g
 //      = 30 : Dv -> d qv     (Dv= hidden valley fermion, qv= valley scalar)
-//      = 31 : S  -> Dv Dvbar (S=scalar color singlet)
+//      = 31 : S  -> Dv Dvbar (S=scalar colour singlet)
 // Note that the order of the decay products is important.
 // combi = 1 : pure non-gamma5, i.e. vector/scalar/...
 //       = 2 : pure gamma5, i.e. axial vector/pseudoscalar/....

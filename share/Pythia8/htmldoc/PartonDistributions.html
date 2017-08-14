@@ -60,11 +60,13 @@ updating this information.
  
 <p/> 
 A method <code>setExtrapolate(bool)</code> allows you to switch between 
-freezing parametrizations  at the <i>x</i> and <i>Q^2</i> boundaries 
-(<code>false</code>) or extrapolating them outside the boundaries 
-(<code>true</code>). This method is only implemented for the LHAPDF5 class 
-below. If you implement a new PDF you are free to use this method, but it 
-would be smarter to hardcode the desired limiting behaviour. 
+freezing parametrizations  at the low-<i>x</i> boundary 
+(<code>false</code>) or extrapolate them outside the boundary 
+(<code>true</code>). This method works both for LHAPDF 5, LHAPDF6 and 
+modern internal PDFs. (For some older PDFs the behaviour implemented by 
+the original authors is maintained.) In either case the PDFs are frozen 
+at <i>Q_min</i> and <i>Q_max</i>. (And also at <i>x_max</i>, but 
+this is irrelevant when <i>x_max = 1</i>.) 
  
 <p/> 
 With <code>insideBounds(double x, double Q2)</code> you can probe whether 

@@ -30,17 +30,25 @@ echo "<font color='red'>NO FILE SELECTED YET.. PLEASE DO SO </font><a href='Save
 <h2>Update History</h2> 
  
 These update notes describe major updates relative to the 
-PYTHIA 8.186 version, which was the last regular 8.1 release. 
-(Minor bug fixes will continue to appear.) The step from 
-8.1 to 8.2 gave an occasion to break backwards compatibility, 
+PYTHIA 8.186 version, which was the last 8.1 release. The step 
+from 8.1 to 8.2 gave an occasion to break backwards compatibility, 
 but this should only affect a small part of the user code. 
  
 <h3>Main news by version</h3> 
  
 <ul> 
  
-<li>8.227: 11 July 2017 
+<li>8.227: 14 August 2017 
 <ul> 
+ 
+<li>New dipole-shower option for initial-state radiation 
+contributed by Baptiste Cabouat, see 
+<?php $filepath = $_GET["filepath"];
+echo "<a href='SpacelikeShowers.php?filepath=".$filepath."' target='page'>";?><code>SpaceShower:dipoleRecoil</code></a>. 
+More specifically, a unified description of initial-final and 
+final-initial dipole ends is introduced, as described in 
+[<a href="Bibliography.php" target="page">Cab17</a>]. This allows a descriptiom of showers in Deeply 
+Inelastic Scattering, illustrated by <code>main36.cc</code>.</li> 
  
 <li>New search function introduced in the <code>html</code> documentation. 
 You can type a word or phrase in the new "Search" box near the top of the 
@@ -52,8 +60,18 @@ in association with a photon, accessible through the new switches
 <code>Charmonium:gg2ccbar(3S1)[3S1(1)]gm</code> and 
 <code>Bottomonium:gg2ccbar(3S1)[3S1(1)]gm</code>.</li> 
  
+<li>Fix up the extrapolation procedure of external PDFs, notably the 
+ones accessed by the LHAPDF5 interface (also available for LHAPDF6). 
+PDFs are now explicitly frozen at borders, except that 
+<code>PDF:extrapolate</code> can be switched on to allow extrapolation 
+to low <i>x</i>. Note that, as a consequence, results can change if 
+you have used external PDFs for the MPI description. The native LHAPDF6 
+interface already froze at borders, but now optionally allows 
+low-<i>x</i> extrapolation. Thanks to Radek Zlebcik.</li> 
+ 
 <li>Fix minor (order 5%) normalization error of the impact-parameter 
-enhancement factor in MPIs, see <code>Info::enhanceMPIavg()</code>.</li> 
+enhancement factor for two preselected hard processes in the MPI 
+framework, see <code>Info::enhanceMPIavg()</code>.</li> 
  
 <li>Minor <code>Makefile</code> update for better compatibility across 
 platforms.</li> 
@@ -62,13 +80,24 @@ platforms.</li>
 Thanks to Gavin Salam, Dmitry Konstantinov and Emanuel Hoogeveen.</li> 
  
 <li>Fix typo in reweighting machinery in <code>SpaceShower.cc</code>.</li> 
-
-<li>Several minor fixes to protect from rare occasions of division by zero.
+ 
+<li>Several minor fixes to protect from rare occasions of division by zero. 
 Thanks to Steffen Weber.</li> 
  
 <li>New option in the single-particle gun in <code>main21.cc</code>, 
 to allow the input particle have a lifetime and thus decay some distance 
 away from the origin. Thanks to Graham W. Wilson.</li> 
+ 
+<li>Maximal number of histogram bins increased to 10000 and a warning is 
+printed of this limit is exceeded. Thanks to Roberto Franceschini.</li> 
+ 
+<li>Ensure that the "thermal string fragmentation" is not inadvertently 
+used for Hidden Valley fragmentation.</li> 
+ 
+<li>New method <code>RotBstMatrix::value(int i, int j)</code> returns the 
+value stored in the <i>(i,j)</i> element of the matrix.</li> 
+ 
+<li>PYTHIA author list rearranged alphabetically.</li> 
  
 <li>Minor cosmetics in documentation.</li> 
  

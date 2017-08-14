@@ -22,15 +22,18 @@ The sixth gives the possibility to switch off the lepton
 <a name="anchor1"></a>
 <p/><code>flag&nbsp; </code><strong> PDF:extrapolate &nbsp;</strong> 
  (<code>default = <strong>off</strong></code>)<br/>
-Allow PDF sets to be extrapolated, notably to small <i>x</i> values. 
-This is a global flag that affects all PDF sets used, whenever 
-extrapolation has been implemented. Currently the main use is for LHAPDF5, 
-while LHAPDF6 sets are not affected. Among internal PDFs, all Pomeron sets 
-are affected by this flag, as are the CTEQ6/CT09 proton ones. For the rest 
-some by default extrapolate to small <i>x</i> (GRV 94 L, MRST/MSTW) while 
-others are frozen at the border (CTEQ 5 L, NNPDF). When in doubt, check 
-whether and how the behaviour depends on the choice made for your region 
-of interest. 
+Allow PDF sets to be extrapolated to small <i>x</i> values, instead of 
+being frozen at <i>x_min</i>. This is a global flag that affects all 
+PDF sets used, whenever extrapolation has been implemented. Among 
+internal PDFs, all Pomeron sets are affected by this flag, as are 
+the CTEQ6/CT09 proton ones, the NNPDF 3.1 ones and others accessed 
+by the <code>LHAGrid1</code> approach. For the rest some by default 
+extrapolate to small <i>x</i> (GRV 94 L, MRST/MSTW) while others are 
+frozen at the border (CTEQ 5 L, NNPDF 2.3). When in doubt, check whether 
+and how the behaviour depends on the choice made for your region of 
+interest. When LHAPDF (5 or 6) is used, the extrapolation switch is set 
+according to the choice here, and the behaviour is according to the 
+rules of the respective program. 
 <br/>To put the issue in context, parton densities have a guaranteed 
 range of validity in <i>x</i> and <i>Q^2</i>, and what should be done 
 beyond that range usually is not explained by the authors of PDF sets. 
@@ -47,6 +50,18 @@ problem is that some of the PDF-set codes will write a warning message
 anytime the limits are exceeded, thus swamping your output 
 file. Therefore you should study a set seriously before you run it 
 with this switch on. 
+<br/><b>Warning:</b>It has been found out that the LHAPDF program by 
+default uses a damping of PDFs at low <i>Q</i> scales, below 
+<i>Q_min</i>, based on an anomalous dimension ansatz. This overlaps 
+with the damping imposed in the MPI framework by the <i>p_T0</i> 
+parameter, and to have both would probably imply doublecounting of 
+effects. Therefore, as of version 8.227, PDFs are frozen below 
+<i>Q_min</i>. This change affects the LHAPDF 5 interface, which is 
+also supported in LHAPDF 6. The native LHAPDF 6 interface already 
+contained this restriction, as does the PDFs that come with PYTHIA. 
+Also limits at <i>Q_max</i> and <i>x_max</i> are checked and PDFs 
+frozen outside them, so the extrapolate option now is strictly a choice 
+of low-<i>x</i> behaviour. 
    
  
 <h3>Parton densities for protons</h3> 

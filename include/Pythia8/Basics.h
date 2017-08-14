@@ -327,6 +327,9 @@ public:
   void invert();
   void reset();
 
+  // Return value of matrix element.
+  double value(int i, int j) { return M[i][j];}
+
   // Crude estimate deviation from unit matrix.
   double deviation() const;
 

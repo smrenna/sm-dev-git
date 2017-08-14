@@ -213,6 +213,9 @@ within the Python interface.</li>
 events with the external HelacOnia package interfaced to Pythia, 
 and compare results with the internal implementation.</li> 
  
+<li><code>main36.cc</code> : demonstrates how to generate 
+Deeply Inelastic Scattering events, e.g. in a HERA configuration.</li> 
+ 
 <li><code>main37.cc</code> : shows how LHEF version 3.0 files can be 
 read and used to fill several histograms of the same property, but with 
 different event weights.</li> 

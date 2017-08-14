@@ -552,6 +552,11 @@ reset to no rotation/boost; i.e. the default at creation.
    
  
 <a name="anchor87"></a>
+<p/><strong>double RotBstMatrix::value(int i, int j) &nbsp;</strong> <br/>
+return the value of the (i,j) = [i][j] matrix element. 
+   
+ 
+<a name="anchor88"></a>
 <p/><strong>double RotBstMatrix::deviation() &nbsp;</strong> <br/>
 crude estimate how much a matrix deviates from the unit matrix: 
 the sum of the absolute values of all non-diagonal matrix elements 
@@ -559,7 +564,7 @@ plus the sum of the absolute deviation of the diagonal matrix
 elements from unity. 
    
  
-<a name="anchor88"></a>
+<a name="anchor89"></a>
 <p/><strong>friend ostream& operator&lt;&lt;(ostream&, const RotBstMatrix& M) &nbsp;</strong> <br/>
 writes out the values of the sixteen components of a 
 <code>RotBstMatrix</code>, on four consecutive lines and 

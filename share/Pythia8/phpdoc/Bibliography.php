@@ -168,7 +168,10 @@ at TeV Colliders, Les Houches, France, 21 May - 1 Jun 2001
 [arXiv:1412.7420 [hep-ph]]</dd> 
  
 <dt>But14</dt> 
-<dd>J. Butterworth et al., arXiv:1405.1067 [hep-ph]]</dd> 
+<dd>J. Butterworth et al., arXiv:1405.1067 [hep-ph]</dd> 
+ 
+<dt>Cab17</dt> 
+<dd>B. Cabouat, LU TP 17-174, arXiv:1708.????? [hep-ph]</dd> 
  
 <dt>Cac06</dt> 
 <dd>M. Cacciari and G.P. Salam, Phys. Lett. B641 (2006) 57 

@@ -631,10 +631,6 @@ bool Pythia::init() {
 
   hasMerging  = (mergingPtr != 0);
 
-  // Initialise counting of events significantly above the
-  // merging scale.
-  info.setCounter(41,0);
-
   // Initialization with internal processes: read in and set values.
   if (frameType < 4 ) {
     doLHA     = false;
@@ -2138,12 +2134,6 @@ void Pythia::banner() {
        << "    Now is " << dateNow << " at " << timeNow << "    |  | \n"
        << " |  |                                        "
        << "                                      |  | \n"
-       << " |  |   Torbjorn Sjostrand;  Department of As"
-       << "tronomy and Theoretical Physics,      |  | \n"
-       << " |  |      Lund University, Solvegatan 14A, S"
-       << "E-223 62 Lund, Sweden;                |  | \n"
-       << " |  |      e-mail: torbjorn@thep.lu.se       "
-       << "                                      |  | \n"
        << " |  |   Nishita Desai;  Laboratoire Charles C"
        << "oulomb (L2C),                         |  | \n"
        << " |  |      CNRS-Universite de Montpellier, 34"
@@ -2192,6 +2182,12 @@ void Pythia::banner() {
        << "E-223 62 Lund, Sweden;                |  | \n"
        << " |  |      e-mail: christine.rasmussen@thep.l"
        << "u.se                                  |  | \n"
+       << " |  |   Torbjorn Sjostrand;  Department of As"
+       << "tronomy and Theoretical Physics,      |  | \n"
+       << " |  |      Lund University, Solvegatan 14A, S"
+       << "E-223 62 Lund, Sweden;                |  | \n"
+       << " |  |      e-mail: torbjorn@thep.lu.se       "
+       << "                                      |  | \n"
        << " |  |   Peter Skands;  School of Physics,    "
        << "                                      |  | \n"
        << " |  |      Monash University, PO Box 27, 3800"

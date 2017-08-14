@@ -14,7 +14,7 @@ transverse-momentum-ordered backwards evolution scheme is introduced,
 with the extension to fully interleaved evolution covered in 
 [<a href="Bibliography.html" target="page">Cor10a</a>]. 
 This algorithm is a further development of the virtuality-ordered one 
-presented in [<a href="Bibliography.html" target="page">Sj085</a>], with matching to first-order matrix 
+presented in [<a href="Bibliography.html" target="page">Sjo85</a>], with matching to first-order matrix 
 element for <i>Z^0</i>, <i>W^+-</i> and Higgs (in the 
 <i>m_t &rarr; infinity</i> limit) production as introduced in 
 [<a href="Bibliography.html" target="page">Miu99</a>]. 
@@ -367,6 +367,51 @@ scattering systems from MPIs are forced to be ordered in rapidity.
 Each MPI is ordered separately from the others. 
    
  
+<h3>Dipole showers</h3> 
+ 
+By default the recoil of an ISR emission is taken by the whole final 
+state. The option below gives an alternative approach with local recoils, 
+where only one final-state parton takes the recoil of an emission. 
+See [<a href="Bibliography.html" target="page">Cab17</a>] for further details on the philosophy and 
+implementation. 
+ 
+<p/> 
+The existing initial-initial global recoil scheme is maintained for 
+an emission off a colour line that stretches through the hard process, 
+so it is the handling of initial-final dipole ends that is changed. 
+Here the single recoiler is picked based on the colour flow of the 
+hard process. Additionally the description unifies the emission of 
+a gluon from the initial-final and final-initial dipole ends, and 
+handles both as part of the ISR framework. Therefore the separation 
+into ISR and FSR is not a meaningful classification, and either both 
+should be simulated or none. 
+ 
+<p/> 
+Note that this option should not be combined with the global option 
+for FSR, <code>TimeShower:globalRecoil</code>. Furthermore some settings 
+are neglected internally to ensure the same behaviour as obtained for 
+<code>TimeShower:allowBeamRecoil = on</code>, 
+<code>TimeShower:dampenBeamRecoil = off</code>, and 
+<code>SpaceShower:phiIntAsym = off</code>. 
+ 
+<p/> 
+The dipole recoil option for the first time allows the simulation 
+of Deeply Inelastic Scattering processes in PYTHIA 8, see the 
+<code>main36.cc</code> example. Note that the simultaneous emission of 
+photons off the lepton leg has not yet been implemented, so you need to 
+set <code>PDF:lepton = off</code> and 
+<code>TimeShower:QEDshowerByL = off</code>. You are further recommended 
+to set <code>SpaceShower:pTmaxMatch = 2</code> to fill the whole phase 
+space with parton showers. This is allowed since the shower and 
+matrix-element behaviours match well over the whole phase space 
+(at least for the first emission). 
+ 
+<a name="anchor21"></a>
+<p/><code>flag&nbsp; </code><strong> SpaceShower:dipoleRecoil &nbsp;</strong> 
+ (<code>default = <strong>off</strong></code>)<br/>
+Option to switch on the dipole-recoil scheme as described above. 
+   
+ 
 <h3>Weak showers</h3> 
  
 The emission of weak gauge bosons is an integrated part of the initial- 
@@ -375,13 +420,13 @@ The following settings are those specifically related to the initial-state
 weak radiation, while common settings are found in the 
 <a href="WeakShowers.html" target="page">Weak Showers</a> description. 
  
-<a name="anchor21"></a>
+<a name="anchor22"></a>
 <p/><code>flag&nbsp; </code><strong> SpaceShower:weakShower &nbsp;</strong> 
  (<code>default = <strong>off</strong></code>)<br/>
 Allow a weak shower, yes or no. 
    
  
-<a name="anchor22"></a>
+<a name="anchor23"></a>
 <p/><code>mode&nbsp; </code><strong> SpaceShower:weakShowerMode &nbsp;</strong> 
  (<code>default = <strong>0</strong></code>; <code>minimum = 0</code>; <code>maximum = 2</code>)<br/>
 Determine which branchings are allowed. 
@@ -391,7 +436,7 @@ Determine which branchings are allowed.
 <br/><code>option </code><strong> 2</strong> :  only <i>Z^0</i> branchings.    
    
  
-<a name="anchor23"></a>
+<a name="anchor24"></a>
 <p/><code>parm&nbsp; </code><strong> SpaceShower:pTminWeak &nbsp;</strong> 
  (<code>default = <strong>1.0</strong></code>; <code>minimum = 0.1</code>; <code>maximum = 2.0</code>)<br/>
 Parton shower cut-off <i>pT</i> for weak branchings. 
@@ -406,19 +451,19 @@ cross-checks.
 There are three flags you can use to switch on or off selected 
 branchings in the shower: 
  
-<a name="anchor24"></a>
+<a name="anchor25"></a>
 <p/><code>flag&nbsp; </code><strong> SpaceShower:QCDshower &nbsp;</strong> 
  (<code>default = <strong>on</strong></code>)<br/>
 Allow a QCD shower; on/off = true/false. 
    
  
-<a name="anchor25"></a>
+<a name="anchor26"></a>
 <p/><code>flag&nbsp; </code><strong> SpaceShower:QEDshowerByQ &nbsp;</strong> 
  (<code>default = <strong>on</strong></code>)<br/>
 Allow quarks to radiate photons; on/off = true/false. 
    
  
-<a name="anchor26"></a>
+<a name="anchor27"></a>
 <p/><code>flag&nbsp; </code><strong> SpaceShower:QEDshowerByL &nbsp;</strong> 
  (<code>default = <strong>on</strong></code>)<br/>
 Allow leptons to radiate photons; on/off = true/false. 
@@ -427,13 +472,13 @@ Allow leptons to radiate photons; on/off = true/false.
 <p/> 
 There are some further possibilities to modify the shower: 
  
-<a name="anchor27"></a>
+<a name="anchor28"></a>
 <p/><code>flag&nbsp; </code><strong> SpaceShower:MEcorrections &nbsp;</strong> 
  (<code>default = <strong>on</strong></code>)<br/>
 Use of matrix element corrections; on/off = true/false. 
    
  
-<a name="anchor28"></a>
+<a name="anchor29"></a>
 <p/><code>flag&nbsp; </code><strong> SpaceShower:MEafterFirst &nbsp;</strong> 
  (<code>default = <strong>on</strong></code>)<br/>
 Use of matrix element corrections also after the first emission, 
@@ -442,33 +487,33 @@ Only has a meaning if <code>MEcorrections</code> above is
 switched on. 
    
  
-<a name="anchor29"></a>
+<a name="anchor30"></a>
 <p/><code>flag&nbsp; </code><strong> SpaceShower:phiPolAsym &nbsp;</strong> 
  (<code>default = <strong>on</strong></code>)<br/>
 Azimuthal asymmetry induced by gluon polarization; on/off = true/false. 
    
  
-<a name="anchor30"></a>
+<a name="anchor31"></a>
 <p/><code>flag&nbsp; </code><strong> SpaceShower:phiPolAsymHard &nbsp;</strong> 
  (<code>default = <strong>on</strong></code>)<br/>
 Extend the above azimuthal asymmetry (if on) also back to gluons produced 
 in the hard process itself, where feasible; on/off = true/false. 
    
  
-<a name="anchor31"></a>
+<a name="anchor32"></a>
 <p/><code>flag&nbsp; </code><strong> SpaceShower:phiIntAsym &nbsp;</strong> 
  (<code>default = <strong>on</strong></code>)<br/>
 Azimuthal asymmetry induced by interference; on/off = true/false. 
    
  
-<a name="anchor32"></a>
+<a name="anchor33"></a>
 <p/><code>parm&nbsp; </code><strong> SpaceShower:strengthIntAsym &nbsp;</strong> 
  (<code>default = <strong>0.7</strong></code>; <code>minimum = 0.</code>; <code>maximum = 0.9</code>)<br/>
 Size of asymmetry induced by interference. Natural value of order 0.5; 
 expression would blow up for a value of 1. 
    
  
-<a name="anchor33"></a>
+<a name="anchor34"></a>
 <p/><code>mode&nbsp; </code><strong> SpaceShower:nQuarkIn &nbsp;</strong> 
  (<code>default = <strong>5</strong></code>; <code>minimum = 0</code>; <code>maximum = 5</code>)<br/>
 Number of allowed quark flavours in <i>g &rarr; q qbar</i> branchings, 
@@ -476,7 +521,7 @@ when kinematically allowed, and thereby also in incoming beams.
 Changing it to 4 would forbid <i>g &rarr; b bbar</i>, etc. 
    
  
-<a name="anchor34"></a>
+<a name="anchor35"></a>
 <p/><code>flag&nbsp; </code><strong> SpaceShower:useFixedFacScale &nbsp;</strong> 
  (<code>default = <strong>off</strong></code>)<br/>
 Allow the possibility to use a fixed factorization scale, set by 
@@ -484,7 +529,7 @@ the <code>parm</code> below. This option is unphysical and only
 intended for toy-model and debug studies. 
    
  
-<a name="anchor35"></a>
+<a name="anchor36"></a>
 <p/><code>parm&nbsp; </code><strong> SpaceShower:fixedFacScale &nbsp;</strong> 
  (<code>default = <strong>100.</strong></code>; <code>minimum = 1.</code>)<br/>
 The fixed factorization scale, in GeV, that would be used in the 
@@ -493,8 +538,8 @@ evaluation of parton densities if the <code>flag</code> above is on.
  
 <h3>Technical notes</h3> 
  
-Almost everything is equivalent to the algorithm in [1]. Minor changes 
-are as follows. 
+Almost everything is equivalent to the algorithm in 
+[<a href="Bibliography.html" target="page">Sjo05,Cor10a</a>]. Minor changes are as follows. 
 <ul> 
 <li> 
 It is now possible to have a second-order running <i>alpha_s</i>, 
