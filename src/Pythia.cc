@@ -23,7 +23,7 @@ namespace Pythia8 {
 
 // The current Pythia (sub)version number, to agree with XML version.
 const double Pythia::VERSIONNUMBERHEAD = PYTHIA_VERSION;
-const double Pythia::VERSIONNUMBERCODE = 8.227;
+const double Pythia::VERSIONNUMBERCODE = 8.228;
 
 //--------------------------------------------------------------------------
 
@@ -220,6 +220,9 @@ Pythia::~Pythia() {
   if (useNewTimes && !useNewTimesDec) delete timesPtr;
   if (useNewSpace) delete spacePtr;
 
+   // Delete the parton vertex object created with new.
+   if (useNewPartonVertex) delete partonVertexPtr;
+
 }
 
 //--------------------------------------------------------------------------
@@ -292,6 +295,10 @@ void Pythia::initPtrs() {
   timesDecPtr        = 0;
   timesPtr           = 0;
   spacePtr           = 0;
+
+  // Initial values for pointer parton-vertex setting.
+  useNewPartonVertex = false;
+  partonVertexPtr    = 0;
 
 }
 
@@ -628,7 +635,6 @@ bool Pythia::init() {
     mergingPtr = new Merging();
     hasOwnMerging = true;
   }
-
   hasMerging  = (mergingPtr != 0);
 
   // Initialization with internal processes: read in and set values.
@@ -839,6 +845,16 @@ bool Pythia::init() {
   // Set up R-hadrons particle data, where relevant.
   rHadrons.init( &info, settings, &particleData, &rndm);
 
+  // Set up and initialize setting of parton production vertices.
+  if (settings.flag("PartonVertex:setVertex")) {
+    if (partonVertexPtr == 0) {
+      partonVertexPtr    = new PartonVertex();
+      useNewPartonVertex = true;
+    }
+    partonVertexPtr->initPtr( &info, &settings, &rndm);
+    partonVertexPtr->init();
+  }
+
   // Set up objects for timelike and spacelike showers.
   if (timesDecPtr == 0 || timesPtr == 0) {
     TimeShower* timesNow = new TimeShower();
@@ -858,11 +874,11 @@ bool Pythia::init() {
 
   // Initialize pointers in showers.
   timesPtr->initPtr( &info, &settings, &particleData, &rndm, couplingsPtr,
-    &partonSystems, userHooksPtr, mergingHooksPtr);
+    &partonSystems, userHooksPtr, mergingHooksPtr, partonVertexPtr);
   timesDecPtr->initPtr( &info, &settings, &particleData, &rndm, couplingsPtr,
-    &partonSystems, userHooksPtr, mergingHooksPtr);
+    &partonSystems, userHooksPtr, mergingHooksPtr, partonVertexPtr);
   spacePtr->initPtr( &info, &settings, &particleData, &rndm, couplingsPtr,
-    &partonSystems, userHooksPtr, mergingHooksPtr);
+    &partonSystems, userHooksPtr, mergingHooksPtr, partonVertexPtr);
 
   // Set up values related to beam shape.
   if (beamShapePtr == 0) {
@@ -974,7 +990,8 @@ bool Pythia::init() {
   if ( doPartonLevel && doProcessLevel && !partonLevel.init( &info, settings,
     &particleData, &rndm, &beamA, &beamB, &beamPomA, &beamPomB, &beamGamA,
     &beamGamB, couplingsPtr, &partonSystems, &sigmaTot, timesDecPtr, timesPtr,
-    spacePtr, &rHadrons, userHooksPtr, mergingHooksPtr, false) ) {
+    spacePtr, &rHadrons, userHooksPtr, mergingHooksPtr, partonVertexPtr,
+    false) ) {
     info.errorMsg("Abort from Pythia::init: "
       "partonLevel initialization failed" );
     return false;
@@ -987,13 +1004,14 @@ bool Pythia::init() {
   // Alternatively only initialize final-state showers in resonance decays.
   if ( !doProcessLevel || !doPartonLevel) partonLevel.init( &info, settings,
     &particleData, &rndm, 0, 0, 0, 0, 0, 0, couplingsPtr, &partonSystems, 0,
-    timesDecPtr, 0, 0, &rHadrons, 0, 0, false);
+    timesDecPtr, 0, 0, &rHadrons, 0, 0, partonVertexPtr, false);
 
   // Send info/pointers to parton level for trial shower initialization.
   if ( doMerging && !trialPartonLevel.init( &info, settings, &particleData,
       &rndm, &beamA, &beamB, &beamPomA, &beamPomB, &beamGamA, &beamGamB,
       couplingsPtr, &partonSystems, &sigmaTot, timesDecPtr, timesPtr,
-      spacePtr, &rHadrons, userHooksPtr, mergingHooksPtr, true) ) {
+      spacePtr, &rHadrons, userHooksPtr, mergingHooksPtr, partonVertexPtr,
+      true) ) {
     info.errorMsg("Abort from Pythia::init: "
       "trialPartonLevel initialization failed");
     return false;
@@ -2134,6 +2152,12 @@ void Pythia::banner() {
        << "    Now is " << dateNow << " at " << timeNow << "    |  | \n"
        << " |  |                                        "
        << "                                      |  | \n"
+       << " |  |   Christian Bierlich;  Department of As"
+       << "tronomy and Theoretical Physics,      |  | \n"
+       << " |  |      Lund University, Solvegatan 14A, S"
+       << "E-223 62 Lund, Sweden;                |  | \n"
+       << " |  |      e-mail: christian.bierlich@thep.lu"
+       << ".se                                   |  | \n"
        << " |  |   Nishita Desai;  Laboratoire Charles C"
        << "oulomb (L2C),                         |  | \n"
        << " |  |      CNRS-Universite de Montpellier, 34"

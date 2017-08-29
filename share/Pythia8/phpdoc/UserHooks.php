@@ -41,7 +41,7 @@ comes with the program, mainly as illustration, and the
 a derived class could be set up and used. 
  
 <p/> 
-There are eleven sets of routines, that give you different kinds of 
+There are ten sets of routines, that give you different kinds of 
 freedom. They are, in no particular order: 
 <br/>(i) Ones that give you access to the event record in between 
 the process-level and parton-level steps, or in between the 
@@ -70,8 +70,6 @@ with resonance decays.
 <br/>(x) Ones that give you access to to hadronization parameters 
 in each step in the hadronization process, and allows for a veto 
 of individual hadrons. 
-<br/>(xi) Ones that allow on-the-fly assignment of vertex (space-time) 
-information in MPI+FSR+ISR. 
  
 <br/>They are described further in the following numbered subsections. 
  
@@ -1224,61 +1222,6 @@ This method can veto the production of a hadron, whereby the current
 string break is redone. 
 <br/><code>argument</code><strong> had </strong>  :  is a (copy of) the hadron being produced, 
 just before it is added to the event record. 
-   
-   
- 
-<h3>(xi) Vertex information</h3> 
- 
-The methods in this group can be used to add vertex information to 
-produced particles, at creation time, in MPI, FSR and ISR. 
-The assigned vertex information will afterwards be accessible as 
-properties of the individual particles. 
-Particles produced in other types of processes than the ones mentioned 
-above will not have vertex information assigned (i.e. hard process, 
-beam remnants etc.), neither will particles produced in the weak shower. 
- 
-<a name="anchor50"></a>
-<p/><strong>virtual bool canSetProductionVertex() &nbsp;</strong> <br/>
-In the base class this method returns false. If you redefine it to 
-return true, it will enable the methods <code>vertexForMPI(...)</code>, 
-<code>vertexForFSR(...)</code> and <code>vertexForISR(...)</code>. 
-   
- 
-<a name="anchor51"></a>
-<p/><strong>virtual Vec4 vertexForMPI( Particle parton, double bNow) &nbsp;</strong> <br/>
-Method to assign a production vertex to a particle produced in the MPI 
-framework. Should return the production vertex as a <code>Vec4</code>. 
-<br/><code>argument</code><strong> parton </strong>  :  is (a copy of) the particle, with momentum and 
-id information present. 
-   
-<br/><code>argument</code><strong> bNow </strong>  :  is the impact parameter of the event. It is not 
-expressed in physical units (like fm), but rescaled such that the average 
-is unity for MPI events. See the section on 
-<?php $filepath = $_GET["filepath"];
-echo "<a href='MultipartonInteractions.php?filepath=".$filepath."' target='page'>";?>Multiparton Interactions</a> for 
-a description of choices for the <i>b</i> dependence. 
-   
-   
- 
-<a name="anchor52"></a>
-<p/><strong>virtual Vec4 vertexForFSR( Particle& rad) &nbsp;</strong> <br/>
-Method to assign production vertex to a particle produced in FSR 
-(<code>TimeShower</code>). Should return the production 
-vertex as a <code>Vec4</code>. 
-<br/><code>argument</code><strong> rad </strong>  :  is (the address of) the radiating particle, 
-i.e. the mother particle. It can be accessed for information 
-going into the calculation of the vertex, and one can even set 
-vertex information of the mother, if it has not been set previously. 
-   
-   
- 
-<a name="anchor53"></a>
-<p/><strong>virtual Vec4 vertexForISR( Particle& rad) &nbsp;</strong> <br/>
-Method to assign production vertex to a particle produced in ISR 
-(<code>SpaceShower</code>). Should return the production 
-vertex as a <code>Vec4</code>. 
-<br/><code>argument</code><strong> rad </strong>  :  is (the address of) the radiating particle 
-as above. 
    
    
  

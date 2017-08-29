@@ -38,17 +38,36 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.227: 14 August 2017 
+<li>8.228: 29 August 2017 
 <ul> 
+ 
+<li>Christian Bierlich joins as co-author.</li> 
  
 <li>New dipole-shower option for initial-state radiation 
 contributed by Baptiste Cabouat, see 
-<?php $filepath = $_GET["filepath"];
-echo "<a href='SpacelikeShowers.php?filepath=".$filepath."' target='page'>";?><code>SpaceShower:dipoleRecoil</code></a>. 
+<code><?php $filepath = $_GET["filepath"];
+echo "<a href='SpacelikeShowers.php?filepath=".$filepath."' target='page'>";?>SpaceShower:dipoleRecoil</a></code>. 
 More specifically, a unified description of initial-final and 
 final-initial dipole ends is introduced, as described in 
-[<a href="Bibliography.php" target="page">Cab17</a>]. This allows a descriptiom of showers in Deeply 
+[<a href="Bibliography.php" target="page">Cab17</a>]. This allows a description of showers in Deeply 
 Inelastic Scattering, illustrated by <code>main36.cc</code>.</li> 
+ 
+<li>New <?php $filepath = $_GET["filepath"];
+echo "<a href='RopeHadronization.php?filepath=".$filepath."' target='page'>";?>Rope Hadronization</a> 
+framework made available. This introduces the possibility to enable 
+string shoving as described in [<a href="Bibliography.php" target="page">Bie16</a>] and flavour ropes as 
+described in [<a href="Bibliography.php" target="page">Bie14</a>]. Both models attempt to model 
+collective effects at a microscopic level, with inspiration 
+from lattice QCD and the dual superconductor picture. These methods 
+are still being actively developed, and users should expect changes 
+in coming versions of Pythia. User feedback is encouraged.</li> 
+ 
+<li>New framework for setting partonic production vertices in MPI, 
+FSR and ISR, see further <?php $filepath = $_GET["filepath"];
+echo "<a href='VertexInformation.php?filepath=".$filepath."' target='page'>";?>here</a>. 
+Still at a primitive stage, and currenly only used for the 
+rope hadronization framework. It replaces a previous setup with 
+UserHooks. The <code>main65.cc</code> example has been removed.</li> 
  
 <li>New search function introduced in the <code>html</code> documentation. 
 You can type a word or phrase in the new "Search" box near the top of the 
@@ -93,6 +112,11 @@ printed of this limit is exceeded. Thanks to Roberto Franceschini.</li>
  
 <li>Ensure that the "thermal string fragmentation" is not inadvertently 
 used for Hidden Valley fragmentation.</li> 
+ 
+<li>New particle methods <code>y( double mCut)</code> and 
+<code>y(double mCut, RotBstMatrix& M)</code> to calculate rapidity 
+assuming a minimum mass, and optionally after a rotation/boost 
+operation.</li> 
  
 <li>New method <code>RotBstMatrix::value(int i, int j)</code> returns the 
 value stored in the <i>(i,j)</i> element of the matrix.</li> 

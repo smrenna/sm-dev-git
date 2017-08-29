@@ -874,6 +874,17 @@ the default value 0 then the internal shower routine will be used.
 <note>Note:</note> The method currently always returns true. 
 </method> 
  
+<method name="bool Pythia::setPartonVertexPtr( PartonVertex* 
+partonVertexPtrIn)"> 
+offers the possibility to set production vertices for the MPI, 
+FSR and ISR parton-level evolution, instead of the default framework, 
+see further <aloc href="VertexInformation">here</aloc>. 
+This part of the program is still in the early stages, and is 
+likely to evolve further. Currently it is only used for the 
+<aloc href="RopeHadronization">Rope Hadronization</aloc> framework. 
+<note>Note:</note> The method currently always returns true. 
+</method> 
+ 
 <h3>Initialize</h3> 
  
 At the initialization stage all the information provided above is 

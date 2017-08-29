@@ -106,6 +106,8 @@ echo "<a href='SaveSettings.php?returning=1&filename=".$filename."' target='page
 <a href='ColourReconnection.php?filepath=".$filepath."' target='page'>Colour Reconnection</a><br/> 
 <a href='Diffraction.php?filepath=".$filepath."' target='page'>Diffraction</a><br/> 
 <a href='Fragmentation.php?filepath=".$filepath."' target='page'>Fragmentation</a><br/> 
+<a href='RopeHadronization.php?filepath=".$filepath."' target='page'>Rope Hadronization</a><br/> 
+<a href='VertexInformation.php?filepath=".$filepath."' target='page'>Vertex Information</a><br/> 
 <a href='FlavourSelection.php?filepath=".$filepath."' target='page'>Flavour Selection</a><br/> 
 <a href='ParticleDecays.php?filepath=".$filepath."' target='page'>Particle Decays</a><br/> 
 <a href='RHadrons.php?filepath=".$filepath."' target='page'>R-hadrons</a><br/> 

@@ -273,6 +273,10 @@ void TimeShower::init( BeamParticle* beamAPtrIn,
   uVarMPIshowers     = settingsPtr->flag("UncertaintyBands:MPIshowers");
   cNSpTmin           = settingsPtr->parm("UncertaintyBands:cNSpTmin");
 
+  // Possibility to set parton vertex information.
+  doPartonVertex     = settingsPtr->flag("PartonVertex:setVertex")
+                    && (partonVertexPtr != 0);
+
 }
 
 //--------------------------------------------------------------------------
@@ -3302,14 +3306,14 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
   }
   if (recBef.hasVertex()) rec.vProd( recBef.vProd() );
 
-  // Allow setting of parton production vertex.
-  if (userHooksPtr && userHooksPtr->canSetProductionVertex() )
-    emt.vProd( userHooksPtr->vertexForFSR( rad) );
-
   // Put new particles into the event record.
-  // Mark original dipole partons as branched and set daughters/mothers.
   int iRad = event.append(rad);
   int iEmt = event.append(emt);
+
+  // Allow setting of new parton production vertex.
+  if (doPartonVertex) partonVertexPtr->vertexFSR( iEmt, event);
+
+  // Mark original dipole partons as branched and set daughters/mothers.
   event[iRadBef].statusNeg();
   event[iRadBef].daughters( iRad, iEmt);
   int iRec = 0;

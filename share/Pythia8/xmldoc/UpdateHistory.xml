@@ -11,16 +11,33 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.227: 14 August 2017 
+<li>8.228: 29 August 2017 
 <ul> 
+ 
+<li>Christian Bierlich joins as co-author.</li> 
  
 <li>New dipole-shower option for initial-state radiation 
 contributed by Baptiste Cabouat, see 
-<aloc href="SpacelikeShowers"><code>SpaceShower:dipoleRecoil</code></aloc>. 
+<code><aloc href="SpacelikeShowers">SpaceShower:dipoleRecoil</aloc></code>. 
 More specifically, a unified description of initial-final and 
 final-initial dipole ends is introduced, as described in 
-<ref>Cab17</ref>. This allows a descriptiom of showers in Deeply 
+<ref>Cab17</ref>. This allows a description of showers in Deeply 
 Inelastic Scattering, illustrated by <code>main36.cc</code>.</li> 
+ 
+<li>New <aloc href="RopeHadronization">Rope Hadronization</aloc> 
+framework made available. This introduces the possibility to enable 
+string shoving as described in <ref>Bie16</ref> and flavour ropes as 
+described in <ref>Bie14</ref>. Both models attempt to model 
+collective effects at a microscopic level, with inspiration 
+from lattice QCD and the dual superconductor picture. These methods 
+are still being actively developed, and users should expect changes 
+in coming versions of Pythia. User feedback is encouraged.</li> 
+ 
+<li>New framework for setting partonic production vertices in MPI, 
+FSR and ISR, see further <aloc href="VertexInformation">here</aloc>. 
+Still at a primitive stage, and currenly only used for the 
+rope hadronization framework. It replaces a previous setup with 
+UserHooks. The <code>main65.cc</code> example has been removed.</li> 
  
 <li>New search function introduced in the <code>html</code> documentation. 
 You can type a word or phrase in the new "Search" box near the top of the 
@@ -65,6 +82,11 @@ printed of this limit is exceeded. Thanks to Roberto Franceschini.</li>
  
 <li>Ensure that the "thermal string fragmentation" is not inadvertently 
 used for Hidden Valley fragmentation.</li> 
+ 
+<li>New particle methods <code>y( double mCut)</code> and 
+<code>y(double mCut, RotBstMatrix& M)</code> to calculate rapidity 
+assuming a minimum mass, and optionally after a rotation/boost 
+operation.</li> 
  
 <li>New method <code>RotBstMatrix::value(int i, int j)</code> returns the 
 value stored in the <ei>(i,j)</ei> element of the matrix.</li> 

@@ -51,12 +51,30 @@ int Particle::intPol() const {
 
 double Particle::y() const {
   double temp = log( ( pSave.e() + abs(pSave.pz()) ) / max( TINY, mT() ) );
-  return (pSave.pz() > 0) ? temp : -temp;
+  return (pSave.pz() > 0.) ? temp : -temp;
 }
 
 double Particle::eta() const {
   double temp = log( ( pSave.pAbs() + abs(pSave.pz()) ) / max( TINY, pT() ) );
-  return (pSave.pz() > 0) ? temp : -temp;
+  return (pSave.pz() > 0.) ? temp : -temp;
+}
+
+// Rapidity with minimal transverse mass, and after rotation/boost.
+
+double Particle::y(double mCut) const {
+  double mTmin = max( mCut, mT() );
+  double eMin  = sqrt( pow2(mTmin) + pow2(pSave.pz()) );
+  double temp  = log( ( eMin + abs(pSave.pz()) ) / mTmin );
+  return (pSave.pz() > 0.) ? temp : -temp;
+}
+
+double Particle::y(double mCut, RotBstMatrix& M) const {
+  Vec4 pCopy = pSave;
+  pCopy.rotbst(M);
+  double mTmin = max( mCut, sqrt( m2() + pCopy.pT2()) );
+  double eMin  = sqrt( pow2(mTmin) + pow2(pCopy.pz()) );
+  double temp = log( ( eMin + abs(pCopy.pz()) ) / mTmin );
+  return (pCopy.pz() > 0.) ? temp : -temp;
 }
 
 //--------------------------------------------------------------------------

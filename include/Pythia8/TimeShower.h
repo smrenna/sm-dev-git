@@ -17,6 +17,7 @@
 #include "Pythia8/ParticleData.h"
 #include "Pythia8/PartonSystems.h"
 #include "Pythia8/PythiaStdlib.h"
+#include "Pythia8/PartonVertex.h"
 #include "Pythia8/Settings.h"
 #include "Pythia8/StandardModel.h"
 #include "Pythia8/UserHooks.h"
@@ -90,11 +91,13 @@ public:
   void initPtr(Info* infoPtrIn, Settings* settingsPtrIn,
     ParticleData* particleDataPtrIn, Rndm* rndmPtrIn,
     CoupSM* coupSMPtrIn, PartonSystems* partonSystemsPtrIn,
-    UserHooks* userHooksPtrIn, MergingHooks* mergingHooksPtrIn = 0) {
-    infoPtr = infoPtrIn; settingsPtr = settingsPtrIn;
-    particleDataPtr = particleDataPtrIn; rndmPtr = rndmPtrIn;
-    coupSMPtr = coupSMPtrIn; partonSystemsPtr = partonSystemsPtrIn;
-    userHooksPtr = userHooksPtrIn; mergingHooksPtr = mergingHooksPtrIn;}
+    UserHooks* userHooksPtrIn, MergingHooks* mergingHooksPtrIn,
+    PartonVertex* partonVertexPtrIn) { infoPtr = infoPtrIn;
+    settingsPtr = settingsPtrIn; particleDataPtr = particleDataPtrIn;
+    rndmPtr = rndmPtrIn; coupSMPtr = coupSMPtrIn;
+    partonSystemsPtr = partonSystemsPtrIn; userHooksPtr = userHooksPtrIn;
+    mergingHooksPtr = mergingHooksPtrIn; partonVertexPtr = partonVertexPtrIn;
+  }
 
   // Initialize alphaStrong and related pTmin parameters.
   virtual void init( BeamParticle* beamAPtrIn = 0,
@@ -231,6 +234,9 @@ protected:
   // Pointer to userHooks object for user interaction with program.
   UserHooks*     userHooksPtr;
 
+  // Pointer to assign space-time vertices during parton evolution.
+  PartonVertex*  partonVertexPtr;
+
   // Weak matrix elements used for corrections both of ISR and FSR.
   WeakShowerMEs  weakShowerMEs;
 
@@ -257,7 +263,7 @@ private:
          globalRecoil, useLocalRecoilNow, doSecondHard, hasUserHooks,
          singleWeakEmission, alphaSuseCMW, vetoWeakJets, allowMPIdipole,
          weakExternal, recoilDeadCone, doUncertainties, uVarMuSoftCorr,
-         uVarMPIshowers, doDipoleRecoil;
+         uVarMPIshowers, doDipoleRecoil, doPartonVertex;
   int    pTmaxMatch, pTdampMatch, alphaSorder, alphaSnfmax, nGluonToQuark,
          weightGluonToQuark, alphaEMorder, nGammaToQuark, nGammaToLepton,
          nCHV, idHV, alphaHVorder, nMaxGlobalRecoil, weakMode;

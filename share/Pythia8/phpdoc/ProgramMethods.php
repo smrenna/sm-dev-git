@@ -39,12 +39,6 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
-<td>virtual bool</td>
-<td><a href="UserHooks.php#anchor50" target="page">canSetProductionVertex()</a></td>
-<td>User Hooks</td>
-</tr>
-
-<tr>
 <td>  virtual bool</td>
 <td><a href="MatchingAndMerging.php#anchor18" target="page">canVetoTrialEmission()</a></td>
 <td>Matching And Merging</td>
@@ -136,7 +130,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>PDF*</td>
-<td><a href="ProgramFlow.php#anchor35" target="page">getPDFPtr(...)</a></td>
+<td><a href="ProgramFlow.php#anchor36" target="page">getPDFPtr(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
@@ -150,6 +144,12 @@ Many of them are only intended for experts, while undocumented ones are only for
 <td>  virtual double</td>
 <td><a href="MatchingAndMerging.php#anchor20" target="page">hardProcessME(...)</a></td>
 <td>Matching And Merging</td>
+</tr>
+
+<tr>
+<td>virtual void</td>
+<td><a href="VertexInformation.php#anchor1" target="page">init()</a></td>
+<td>Vertex Information</td>
 </tr>
 
 <tr>
@@ -172,7 +172,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#anchor61" target="page">m(...)</a></td>
+<td><a href="ParticleProperties.php#anchor63" target="page">m(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -184,7 +184,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#anchor62" target="page">m2(...)</a></td>
+<td><a href="ParticleProperties.php#anchor64" target="page">m2(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -340,7 +340,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>ParticleDataEntry&</td>
-<td><a href="ParticleProperties.php#anchor89" target="page">particleDataEntry()</a></td>
+<td><a href="ParticleProperties.php#anchor91" target="page">particleDataEntry()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -412,20 +412,20 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>virtual Vec4</td>
-<td><a href="UserHooks.php#anchor52" target="page">vertexForFSR(...)</a></td>
-<td>User Hooks</td>
+<td><a href="VertexInformation.php#anchor3" target="page">vertexFSR(...)</a></td>
+<td>Vertex Information</td>
 </tr>
 
 <tr>
 <td>virtual Vec4</td>
-<td><a href="UserHooks.php#anchor53" target="page">vertexForISR(...)</a></td>
-<td>User Hooks</td>
+<td><a href="VertexInformation.php#anchor4" target="page">vertexISR(...)</a></td>
+<td>Vertex Information</td>
 </tr>
 
 <tr>
-<td>virtual Vec4</td>
-<td><a href="UserHooks.php#anchor51" target="page">vertexForMPI(...)</a></td>
-<td>User Hooks</td>
+<td>virtual void</td>
+<td><a href="VertexInformation.php#anchor2" target="page">vertexMPI(...)</a></td>
+<td>Vertex Information</td>
 </tr>
 
 <tr>
@@ -2968,18 +2968,6 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="ParticleProperties.php#anchor107" target="page">Particle::bst(...)</a></td>
-<td>Particle Properties</td>
-</tr>
-
-<tr>
-<td>void</td>
-<td><a href="ParticleProperties.php#anchor108" target="page">Particle::bst(...)</a></td>
-<td>Particle Properties</td>
-</tr>
-
-<tr>
-<td>void</td>
 <td><a href="ParticleProperties.php#anchor109" target="page">Particle::bst(...)</a></td>
 <td>Particle Properties</td>
 </tr>
@@ -2992,31 +2980,43 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="ParticleProperties.php#anchor111" target="page">Particle::bstback(...)</a></td>
+<td><a href="ParticleProperties.php#anchor111" target="page">Particle::bst(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleProperties.php#anchor112" target="page">Particle::bstback(...)</a></td>
+<td><a href="ParticleProperties.php#anchor112" target="page">Particle::bst(...)</a></td>
+<td>Particle Properties</td>
+</tr>
+
+<tr>
+<td>void</td>
+<td><a href="ParticleProperties.php#anchor113" target="page">Particle::bstback(...)</a></td>
+<td>Particle Properties</td>
+</tr>
+
+<tr>
+<td>void</td>
+<td><a href="ParticleProperties.php#anchor114" target="page">Particle::bstback(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#anchor79" target="page">Particle::canDecay()</a></td>
+<td><a href="ParticleProperties.php#anchor81" target="page">Particle::canDecay()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#anchor66" target="page">Particle::charge()</a></td>
+<td><a href="ParticleProperties.php#anchor68" target="page">Particle::charge()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleProperties.php#anchor67" target="page">Particle::chargeType()</a></td>
+<td><a href="ParticleProperties.php#anchor69" target="page">Particle::chargeType()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3034,13 +3034,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>int</td>
-<td><a href="ParticleProperties.php#anchor70" target="page">Particle::colType()</a></td>
+<td><a href="ParticleProperties.php#anchor72" target="page">Particle::colType()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#anchor76" target="page">Particle::constituentMass()</a></td>
+<td><a href="ParticleProperties.php#anchor78" target="page">Particle::constituentMass()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3058,13 +3058,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>vector&lt;int&gt;</td>
-<td><a href="ParticleProperties.php#anchor96" target="page">Particle::daughterList()</a></td>
+<td><a href="ParticleProperties.php#anchor98" target="page">Particle::daughterList()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>vector&lt;int&gt;</td>
-<td><a href="ParticleProperties.php#anchor97" target="page">Particle::daughterListRecursive()</a></td>
+<td><a href="ParticleProperties.php#anchor99" target="page">Particle::daughterListRecursive()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3076,7 +3076,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#anchor80" target="page">Particle::doExternalDecay()</a></td>
+<td><a href="ParticleProperties.php#anchor82" target="page">Particle::doExternalDecay()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3118,13 +3118,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>int</td>
-<td><a href="ParticleProperties.php#anchor92" target="page">Particle::iBotCopy()</a></td>
+<td><a href="ParticleProperties.php#anchor94" target="page">Particle::iBotCopy()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleProperties.php#anchor94" target="page">Particle::iBotCopyId(...)</a></td>
+<td><a href="ParticleProperties.php#anchor96" target="page">Particle::iBotCopyId(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3142,7 +3142,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="ParticleProperties.php#anchor90" target="page">Particle::index()</a></td>
+<td><a href="ParticleProperties.php#anchor92" target="page">Particle::index()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3154,19 +3154,19 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#anchor99" target="page">Particle::isAncestor(...)</a></td>
+<td><a href="ParticleProperties.php#anchor101" target="page">Particle::isAncestor(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#anchor68" target="page">Particle::isCharged()</a></td>
+<td><a href="ParticleProperties.php#anchor70" target="page">Particle::isCharged()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#anchor86" target="page">Particle::isDiquark()</a></td>
+<td><a href="ParticleProperties.php#anchor88" target="page">Particle::isDiquark()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3178,43 +3178,43 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#anchor100" target="page">Particle::isFinalPartonLevel()</a></td>
+<td><a href="ParticleProperties.php#anchor102" target="page">Particle::isFinalPartonLevel()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#anchor85" target="page">Particle::isGluon()</a></td>
+<td><a href="ParticleProperties.php#anchor87" target="page">Particle::isGluon()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#anchor88" target="page">Particle::isHadron()</a></td>
+<td><a href="ParticleProperties.php#anchor90" target="page">Particle::isHadron()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#anchor83" target="page">Particle::isLepton()</a></td>
+<td><a href="ParticleProperties.php#anchor85" target="page">Particle::isLepton()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#anchor69" target="page">Particle::isNeutral()</a></td>
+<td><a href="ParticleProperties.php#anchor71" target="page">Particle::isNeutral()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#anchor87" target="page">Particle::isParton()</a></td>
+<td><a href="ParticleProperties.php#anchor89" target="page">Particle::isParton()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#anchor84" target="page">Particle::isQuark()</a></td>
+<td><a href="ParticleProperties.php#anchor86" target="page">Particle::isQuark()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3226,25 +3226,25 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#anchor81" target="page">Particle::isResonance()</a></td>
+<td><a href="ParticleProperties.php#anchor83" target="page">Particle::isResonance()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#anchor82" target="page">Particle::isVisible()</a></td>
+<td><a href="ParticleProperties.php#anchor84" target="page">Particle::isVisible()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleProperties.php#anchor91" target="page">Particle::iTopCopy()</a></td>
+<td><a href="ParticleProperties.php#anchor93" target="page">Particle::iTopCopy()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleProperties.php#anchor93" target="page">Particle::iTopCopyId(...)</a></td>
+<td><a href="ParticleProperties.php#anchor95" target="page">Particle::iTopCopyId(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3256,7 +3256,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#anchor71" target="page">Particle::m0()</a></td>
+<td><a href="ParticleProperties.php#anchor73" target="page">Particle::m0()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3274,7 +3274,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#anchor78" target="page">Particle::mayDecay()</a></td>
+<td><a href="ParticleProperties.php#anchor80" target="page">Particle::mayDecay()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3286,13 +3286,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#anchor74" target="page">Particle::mMax()</a></td>
+<td><a href="ParticleProperties.php#anchor76" target="page">Particle::mMax()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#anchor73" target="page">Particle::mMin()</a></td>
+<td><a href="ParticleProperties.php#anchor75" target="page">Particle::mMin()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3310,7 +3310,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>vector&lt;int&gt;</td>
-<td><a href="ParticleProperties.php#anchor95" target="page">Particle::motherList()</a></td>
+<td><a href="ParticleProperties.php#anchor97" target="page">Particle::motherList()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3322,7 +3322,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#anchor75" target="page">Particle::mSel()</a></td>
+<td><a href="ParticleProperties.php#anchor77" target="page">Particle::mSel()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3340,37 +3340,37 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#anchor72" target="page">Particle::mWidth()</a></td>
+<td><a href="ParticleProperties.php#anchor74" target="page">Particle::mWidth()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>string</td>
-<td><a href="ParticleProperties.php#anchor63" target="page">Particle::name()</a></td>
+<td><a href="ParticleProperties.php#anchor65" target="page">Particle::name()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>string</td>
-<td><a href="ParticleProperties.php#anchor64" target="page">Particle::nameWithStatus()</a></td>
+<td><a href="ParticleProperties.php#anchor66" target="page">Particle::nameWithStatus()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleProperties.php#anchor115" target="page">Particle::offsetCol(...)</a></td>
+<td><a href="ParticleProperties.php#anchor117" target="page">Particle::offsetCol(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleProperties.php#anchor114" target="page">Particle::offsetHistory(...))</a></td>
+<td><a href="ParticleProperties.php#anchor116" target="page">Particle::offsetHistory(...))</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>Particle&</td>
-<td><a href="ParticleProperties.php#anchor120" target="page">Particle::operator=(...)</a></td>
+<td><a href="ParticleProperties.php#anchor122" target="page">Particle::operator=(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3400,25 +3400,25 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td> </td>
-<td><a href="ParticleProperties.php#anchor116" target="page">Particle::Particle()</a></td>
-<td>Particle Properties</td>
-</tr>
-
-<tr>
-<td> </td>
-<td><a href="ParticleProperties.php#anchor117" target="page">Particle::Particle(...)</a></td>
-<td>Particle Properties</td>
-</tr>
-
-<tr>
-<td> </td>
-<td><a href="ParticleProperties.php#anchor118" target="page">Particle::Particle(...)</a></td>
+<td><a href="ParticleProperties.php#anchor118" target="page">Particle::Particle()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td> </td>
 <td><a href="ParticleProperties.php#anchor119" target="page">Particle::Particle(...)</a></td>
+<td>Particle Properties</td>
+</tr>
+
+<tr>
+<td> </td>
+<td><a href="ParticleProperties.php#anchor120" target="page">Particle::Particle(...)</a></td>
+<td>Particle Properties</td>
+</tr>
+
+<tr>
+<td> </td>
+<td><a href="ParticleProperties.php#anchor121" target="page">Particle::Particle(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3478,31 +3478,31 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="ParticleProperties.php#anchor103" target="page">Particle::rescale3(...)</a></td>
+<td><a href="ParticleProperties.php#anchor105" target="page">Particle::rescale3(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleProperties.php#anchor104" target="page">Particle::rescale4(...)</a></td>
+<td><a href="ParticleProperties.php#anchor106" target="page">Particle::rescale4(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleProperties.php#anchor105" target="page">Particle::rescale5(...)</a></td>
+<td><a href="ParticleProperties.php#anchor107" target="page">Particle::rescale5(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleProperties.php#anchor106" target="page">Particle::rot(...)</a></td>
+<td><a href="ParticleProperties.php#anchor108" target="page">Particle::rot(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleProperties.php#anchor113" target="page">Particle::rotbst(...)</a></td>
+<td><a href="ParticleProperties.php#anchor115" target="page">Particle::rotbst(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3514,25 +3514,25 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="ParticleProperties.php#anchor121" target="page">Particle::setEvtPtr(...)</a></td>
+<td><a href="ParticleProperties.php#anchor123" target="page">Particle::setEvtPtr(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ParticleProperties.php#anchor122" target="page">Particle::setPDEPtr(...)</a></td>
+<td><a href="ParticleProperties.php#anchor124" target="page">Particle::setPDEPtr(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>vector&lt;int&gt;</td>
-<td><a href="ParticleProperties.php#anchor98" target="page">Particle::sisterList(...)</a></td>
+<td><a href="ParticleProperties.php#anchor100" target="page">Particle::sisterList(...)</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ParticleProperties.php#anchor65" target="page">Particle::spinType()</a></td>
+<td><a href="ParticleProperties.php#anchor67" target="page">Particle::spinType()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3556,7 +3556,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>int</td>
-<td><a href="ParticleProperties.php#anchor101" target="page">Particle::statusHepMC()</a></td>
+<td><a href="ParticleProperties.php#anchor103" target="page">Particle::statusHepMC()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3580,13 +3580,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#anchor77" target="page">Particle::tau0()</a></td>
+<td><a href="ParticleProperties.php#anchor79" target="page">Particle::tau0()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#anchor59" target="page">Particle::tDec()</a></td>
+<td><a href="ParticleProperties.php#anchor61" target="page">Particle::tDec()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3610,13 +3610,13 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
-<td><a href="ParticleProperties.php#anchor102" target="page">Particle::undoDecay()</a></td>
+<td><a href="ParticleProperties.php#anchor104" target="page">Particle::undoDecay()</a></td>
 <td>Particle Properties</td>
 </tr>
 
 <tr>
 <td>Vec4</td>
-<td><a href="ParticleProperties.php#anchor60" target="page">Particle::vDec()</a></td>
+<td><a href="ParticleProperties.php#anchor62" target="page">Particle::vDec()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3634,7 +3634,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#anchor56" target="page">Particle::xDec()</a></td>
+<td><a href="ParticleProperties.php#anchor58" target="page">Particle::xDec()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3652,7 +3652,19 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#anchor57" target="page">Particle::yDec()</a></td>
+<td><a href="ParticleProperties.php#anchor56" target="page">Particle::y(...)</a></td>
+<td>Particle Properties</td>
+</tr>
+
+<tr>
+<td>double</td>
+<td><a href="ParticleProperties.php#anchor57" target="page">Particle::y(...)</a></td>
+<td>Particle Properties</td>
+</tr>
+
+<tr>
+<td>double</td>
+<td><a href="ParticleProperties.php#anchor59" target="page">Particle::yDec()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -3664,7 +3676,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>double</td>
-<td><a href="ParticleProperties.php#anchor58" target="page">Particle::zDec()</a></td>
+<td><a href="ParticleProperties.php#anchor60" target="page">Particle::zDec()</a></td>
 <td>Particle Properties</td>
 </tr>
 
@@ -4768,49 +4780,49 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>CoupSM</td>
-<td><a href="ProgramFlow.php#anchor42" target="page">Pythia::coupSM</a></td>
+<td><a href="ProgramFlow.php#anchor43" target="page">Pythia::coupSM</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>Event</td>
-<td><a href="ProgramFlow.php#anchor37" target="page">Pythia::event</a></td>
+<td><a href="ProgramFlow.php#anchor38" target="page">Pythia::event</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor31" target="page">Pythia::flag(...)</a></td>
+<td><a href="ProgramFlow.php#anchor32" target="page">Pythia::flag(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor25" target="page">Pythia::forceHadronLevel(...)</a></td>
+<td><a href="ProgramFlow.php#anchor26" target="page">Pythia::forceHadronLevel(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor27" target="page">Pythia::forceRHadronDecays()</a></td>
+<td><a href="ProgramFlow.php#anchor28" target="page">Pythia::forceRHadronDecays()</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ProgramFlow.php#anchor24" target="page">Pythia::forceTimeShower(...)</a></td>
+<td><a href="ProgramFlow.php#anchor25" target="page">Pythia::forceTimeShower(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>Info</td>
-<td><a href="ProgramFlow.php#anchor38" target="page">Pythia::info</a></td>
+<td><a href="ProgramFlow.php#anchor39" target="page">Pythia::info</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor22" target="page">Pythia::init()</a></td>
+<td><a href="ProgramFlow.php#anchor23" target="page">Pythia::init()</a></td>
 <td>Program Flow</td>
 </tr>
 
@@ -4822,55 +4834,55 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="ProgramFlow.php#anchor28" target="page">Pythia::LHAeventList()</a></td>
+<td><a href="ProgramFlow.php#anchor29" target="page">Pythia::LHAeventList()</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor29" target="page">Pythia::LHAeventSkip(...)</a></td>
+<td><a href="ProgramFlow.php#anchor30" target="page">Pythia::LHAeventSkip(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ProgramFlow.php#anchor32" target="page">Pythia::mode(...)</a></td>
+<td><a href="ProgramFlow.php#anchor33" target="page">Pythia::mode(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor26" target="page">Pythia::moreDecays()</a></td>
+<td><a href="ProgramFlow.php#anchor27" target="page">Pythia::moreDecays()</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor23" target="page">Pythia::next()</a></td>
+<td><a href="ProgramFlow.php#anchor24" target="page">Pythia::next()</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ProgramFlow.php#anchor33" target="page">Pythia::parm(...)</a></td>
+<td><a href="ProgramFlow.php#anchor34" target="page">Pythia::parm(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>ParticleData</td>
-<td><a href="ProgramFlow.php#anchor40" target="page">Pythia::particleData</a></td>
+<td><a href="ProgramFlow.php#anchor41" target="page">Pythia::particleData</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>PartonSystems</td>
-<td><a href="ProgramFlow.php#anchor44" target="page">Pythia::partonSystems</a></td>
+<td><a href="ProgramFlow.php#anchor45" target="page">Pythia::partonSystems</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>Event</td>
-<td><a href="ProgramFlow.php#anchor36" target="page">Pythia::process</a></td>
+<td><a href="ProgramFlow.php#anchor37" target="page">Pythia::process</a></td>
 <td>Program Flow</td>
 </tr>
 
@@ -4924,7 +4936,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>Rndm</td>
-<td><a href="ProgramFlow.php#anchor41" target="page">Pythia::rndm</a></td>
+<td><a href="ProgramFlow.php#anchor42" target="page">Pythia::rndm</a></td>
 <td>Program Flow</td>
 </tr>
 
@@ -4960,6 +4972,12 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
+<td><a href="ProgramFlow.php#anchor22" target="page">Pythia::setPartonVertexPtr(...)</a></td>
+<td>Program Flow</td>
+</tr>
+
+<tr>
+<td>bool</td>
 <td><a href="ProgramFlow.php#anchor12" target="page">Pythia::setPDFPtr(...)</a></td>
 <td>Program Flow</td>
 </tr>
@@ -4990,7 +5008,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>Settings</td>
-<td><a href="ProgramFlow.php#anchor39" target="page">Pythia::settings</a></td>
+<td><a href="ProgramFlow.php#anchor40" target="page">Pythia::settings</a></td>
 <td>Program Flow</td>
 </tr>
 
@@ -5002,19 +5020,19 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>SusyLesHouches</td>
-<td><a href="ProgramFlow.php#anchor43" target="page">Pythia::slha</a></td>
+<td><a href="ProgramFlow.php#anchor44" target="page">Pythia::slha</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ProgramFlow.php#anchor30" target="page">Pythia::stat()</a></td>
+<td><a href="ProgramFlow.php#anchor31" target="page">Pythia::stat()</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>string</td>
-<td><a href="ProgramFlow.php#anchor34" target="page">Pythia::word(...)</a></td>
+<td><a href="ProgramFlow.php#anchor35" target="page">Pythia::word(...)</a></td>
 <td>Program Flow</td>
 </tr>
 

@@ -273,6 +273,10 @@ void SpaceShower::init( BeamParticle* beamAPtrIn,
   uVarMPIshowers     = settingsPtr->flag("UncertaintyBands:MPIshowers");
   cNSpTmin           = settingsPtr->parm("UncertaintyBands:cNSpTmin");
 
+  // Possibility to set parton vertex information.
+  doPartonVertex     = settingsPtr->flag("PartonVertex:setVertex")
+                    && (partonVertexPtr != 0);
+
 }
 
 //--------------------------------------------------------------------------
@@ -2247,32 +2251,21 @@ bool SpaceShower::branch( Event& event) {
     double cPol    = dipEndSel->asymPol;
     double phiPol  = (iFinPol == 0) ? 0. : event[iFinPol].phi();
 
-    // Bias phi distribution for polarization.
+   // Bias phi distribution for polarization.
     if (iFinPol != 0) {
       double cPhiPol, weight;
       // Boost back to the rest frame of daughter + recoiler.
       RotBstMatrix M;
       M.fromCMframe( event[iDaughter].p(), event[iColPartner].p() );
-      M.bst(0., 0., (x2 - x1) / (x1 + x2) );
-      double ax = M.value(1,1) * sqrt(pT2corr);
-      double bx = M.value(1,2) * sqrt(pT2corr);
-      double cx = M.value(1,0) * pSister.e() + M.value(1,3) * pSister.pz();
-      double ay = M.value(2,1) * sqrt(pT2corr);
-      double by = M.value(2,2) * sqrt(pT2corr);
-      double cy = M.value(2,0) * pSister.e() + M.value(2,3) * pSister.pz();
+      double pTcorr = sqrt(pT2corr);
       do {
         phi     = 2. * M_PI * rndmPtr->flat();
         weight  = 1.;
-        if (iFinPol !=0 ) {
-          double pxstar  = ax * cos(phi) + bx * sin(phi) + cx;
-          double pystar  = ay * cos(phi) + by * sin(phi) + cy;
-          //TS?? don't you want atan2(pystar, pxstar) ?
-          double phistar = (pystar > 0.) ? 0.5 * M_PI + atan(pystar / pxstar)
-            : 1.5 * M_PI + atan(pystar / pxstar);
-          cPhiPol = cos(phistar - phiPol);
-          weight *= ( 1. + cPol * (2. * pow2(cPhiPol) - 1.) )
-                  / ( 1. + abs(cPol) );
-        }
+        Vec4 pSisTmp = pSister + pTcorr * Vec4( cos(phi), sin(phi), 0., 0.);
+        pSisTmp.rotbst(M);
+        cPhiPol = cos(pSisTmp.phi() - phiPol);
+        weight *= ( 1. + cPol * (2. * pow2(cPhiPol) - 1.) )
+                / ( 1. + abs(cPol) );
       } while (weight < rndmPtr->flat());
     }
 
@@ -2294,7 +2287,7 @@ bool SpaceShower::branch( Event& event) {
   int ev2Dau1V = event[beamOff2].daughter1();
   vector<int> statusV, mother1V, mother2V, daughter1V, daughter2V;
 
-  // Check if the first emission shoild be checked for removal
+  // Check if the first emission should be checked for removal.
   bool canMergeFirst = (mergingHooksPtr != 0)
                      ? mergingHooksPtr->canVetoEmission() : false;
 
@@ -2388,24 +2381,21 @@ bool SpaceShower::branch( Event& event) {
 
   // Indices of partons involved. Add new sister.
   int iMother       = eventSizeOld + side - 1;
-  int iNewRecoiler  = eventSizeOld + 2 - side;
+  int iNewRec       = eventSizeOld + 2 - side;
   int iSister       = event.append( idSister, 43, iMother, 0, 0, 0,
      colSister, acolSister, pSister, mSister, sqrt(pT2) );
 
   // References to the partons involved.
   Particle& daughter    = event[iDaughter];
   Particle& mother      = event[iMother];
-  Particle& newRecoiler = event[iNewRecoiler];
+  Particle& newRecoiler = event[iNewRec];
   Particle& sister      = event.back();
 
   // Allow setting of vertex for daughter parton, recoiler and sister.
-  if (userHooksPtr && userHooksPtr->canSetProductionVertex() ){
-    if (!daughter.hasVertex())
-      daughter.vProd( userHooksPtr->vertexForISR(mother) );
-    if (!newRecoiler.hasVertex())
-      newRecoiler.vProd( userHooksPtr->vertexForISR(mother) );
-    if (!sister.hasVertex())
-      sister.vProd( userHooksPtr->vertexForISR(mother) );
+  if (doPartonVertex) {
+    if (!daughter.hasVertex())  partonVertexPtr->vertexISR( iDaughter, event);
+    if (!newRecoiler.hasVertex()) partonVertexPtr->vertexISR( iNewRec, event);
+     if (!sister.hasVertex())     partonVertexPtr->vertexISR( iSister, event);
   }
 
   // Replace old by new mother; update new recoiler.
@@ -2424,8 +2414,8 @@ bool SpaceShower::branch( Event& event) {
   daughter.mothers( iMother, 0);
   mother.daughters( iSister, iDaughter);
   if (iSysSel == 0) {
-    event[beamOff1].daughter1( (side == 1) ? iMother : iNewRecoiler );
-    event[beamOff2].daughter1( (side == 2) ? iMother : iNewRecoiler );
+    event[beamOff1].daughter1( (side == 1) ? iMother : iNewRec );
+    event[beamOff2].daughter1( (side == 2) ? iMother : iNewRec );
   }
 
   // Special checks to set weak particles status equal to 47.
@@ -2769,7 +2759,7 @@ bool SpaceShower::branch( Event& event) {
   if (idDaughter == 21 && idMother != 21) {
     if (doQEDshowerByQ) {
       dipEnd.push_back( SpaceDipoleEnd( iSysSel, side, iMother,
-         iNewRecoiler, pT2, 0, mother.chargeType(), 0, 0, normalRecoil) );
+         iNewRec, pT2, 0, mother.chargeType(), 0, 0, normalRecoil) );
     }
     if (doWeakShower && iSysSel == 0) {
       int MEtypeNew = 203;
@@ -2781,10 +2771,10 @@ bool SpaceShower::branch( Event& event) {
       event[iMother].pol(weakPol);
       if ((weakMode == 0 || weakMode == 1) && weakPol == -1)
         dipEnd.push_back( SpaceDipoleEnd( iSysSel, side, iMother,
-         iNewRecoiler, pT2, 0, 0, 1, MEtypeNew, normalRecoil, weakPol) );
+         iNewRec, pT2, 0, 0, 1, MEtypeNew, normalRecoil, weakPol) );
       if (weakMode == 0 || weakMode == 2)
         dipEnd.push_back( SpaceDipoleEnd( iSysSel, side, iMother,
-         iNewRecoiler, pT2, 0, 0, 2, MEtypeNew + 5, normalRecoil, weakPol) );
+         iNewRec, pT2, 0, 0, 2, MEtypeNew + 5, normalRecoil, weakPol) );
     }
   }
 
@@ -2792,15 +2782,15 @@ bool SpaceShower::branch( Event& event) {
   if (idDaughter == 22 && idMother != 22) {
     if (doQCDshower && mother.colType() != 0) {
       dipEnd.push_back( SpaceDipoleEnd( iSysSel, side, iMother,
-        iNewRecoiler, pT2, mother.colType(), 0, 0, 0, normalRecoil) );
+        iNewRec, pT2, mother.colType(), 0, 0, 0, normalRecoil) );
     }
     if (doQEDshowerByQ && mother.chargeType() != 3) {
       dipEnd.push_back( SpaceDipoleEnd( iSysSel, side, iMother,
-        iNewRecoiler, pT2, 0, mother.chargeType(), 0, 0, normalRecoil) );
+        iNewRec, pT2, 0, mother.chargeType(), 0, 0, normalRecoil) );
     }
     if (doQEDshowerByL && mother.chargeType() == 3) {
       dipEnd.push_back( SpaceDipoleEnd( iSysSel, side, iMother,
-         iNewRecoiler, pT2, 0, mother.chargeType(), 0, 0, normalRecoil) );
+         iNewRec, pT2, 0, mother.chargeType(), 0, 0, normalRecoil) );
     }
     if (doWeakShower && iSysSel == 0) {
       int MEtypeNew = 203;
@@ -2812,10 +2802,10 @@ bool SpaceShower::branch( Event& event) {
       event[iMother].pol(weakPol);
       if ((weakMode == 0 || weakMode == 1) && weakPol == -1)
         dipEnd.push_back( SpaceDipoleEnd( iSysSel, side, iMother,
-         iNewRecoiler, pT2, 0, 0, 1, MEtypeNew, normalRecoil, weakPol) );
+         iNewRec, pT2, 0, 0, 1, MEtypeNew, normalRecoil, weakPol) );
       if (weakMode == 0 || weakMode == 2)
         dipEnd.push_back( SpaceDipoleEnd( iSysSel, side, iMother,
-          iNewRecoiler, pT2, 0, 0, 2, MEtypeNew + 5, normalRecoil, weakPol) );
+          iNewRec, pT2, 0, 0, 2, MEtypeNew + 5, normalRecoil, weakPol) );
     }
   }
 
@@ -2839,7 +2829,7 @@ bool SpaceShower::branch( Event& event) {
   if ( dipEnd[iDip].system == iSysSel) {
     if (abs(dipEnd[iDip].side) == side) {
       dipEnd[iDip].iRadiator = iMother;
-      dipEnd[iDip].iRecoiler = iNewRecoiler;
+      dipEnd[iDip].iRecoiler = iNewRec;
       // Look if there is a IF dipole in case of dipole recoil.
       dipEnd[iDip].iColPartner = (doDipoleRecoil) ? findColPartner( event,
         dipEnd[iDip].iRadiator, dipEnd[iDip].iRecoiler, iSysSel) : 0;
@@ -2867,7 +2857,7 @@ bool SpaceShower::branch( Event& event) {
 
     // Update info on recoiling dipole ends (QCD or QED).
     } else {
-      dipEnd[iDip].iRadiator = iNewRecoiler;
+      dipEnd[iDip].iRadiator = iNewRec;
       dipEnd[iDip].iRecoiler = iMother;
       // Look if there is an IF dipole in case of dipole recoil.
       dipEnd[iDip].iColPartner = (doDipoleRecoil) ? findColPartner( event,
@@ -2896,7 +2886,7 @@ bool SpaceShower::branch( Event& event) {
     beamNow.pickValSeaComp();
   }
   BeamParticle& beamRec = (side == 1) ? *beamBPtr : *beamAPtr;
-  beamRec[iSysSel].iPos( iNewRecoiler);
+  beamRec[iSysSel].iPos( iNewRec);
 
   // Store branching values of current dipole. (For rapidity ordering.)
   ++dipEndSel->nBranch;
@@ -2905,7 +2895,7 @@ bool SpaceShower::branch( Event& event) {
 
   // Update history if recoiler rescatters.
   if (!normalRecoil)
-    event[iRecoilMother].daughters( iNewRecoiler, iNewRecoiler);
+    event[iRecoilMother].daughters( iNewRec, iNewRec);
 
   // Start list of rescatterers that force changed kinematics.
   vector<int> iRescatterer;

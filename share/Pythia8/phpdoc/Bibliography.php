@@ -100,6 +100,9 @@ JHEP 1201 (2012) 018 [arXiv:1108.2396 [hep-ph]] </dd>
 <dt>Bai83</dt> 
 <dd>R. Baier and R. R&uuml;ckl, Z. Phys. C19 (1983) 251</dd> 
  
+<dt>Bal00</dt> 
+<dd>G. S. Bali, Phys.Rev. D62 (2000) 114503</dd> 
+ 
 <dt>Bar94</dt> 
 <dd>E. Barberio and Z. Was, Comput. Phys.Commun. 79 (1994) 291</dd> 
  
@@ -137,8 +140,22 @@ Phys. Lett. 103B (1981) 124</dd>
 <dt>Ber12</dt> 
 <dd>Particle Data Group, J. Beringer et al., Phys. Rev. D86 (2012) 010001</dd> 
  
+<dt>Bie14</dt> 
+<dd>C. Bierlich et al., JHEP 1503 (2015) 148, arXiv:1412.6259 [hep-ph]</dd> 
+ 
+<dt>Bie15</dt> 
+<dd>C. Bierlich and J. R. Christiansen, Phys.Rev. D92 (2015) no.9, 094010 
+arXiv:1507.02091 [hep-ph]</dd> 
+ 
+<dt>Bie16</dt> 
+<dd>C. Bierlich, G. Gustafson and L. L&ouml;nnblad, LU-TP-16-64, 
+arXiv:1612.05132 [hep-ph]</dd> 
+ 
 <dt>Bij01</dt> 
 <dd>J. Bijnens et al., Phys. Lett. B503 (2001) 341</dd> 
+ 
+<dt>Bir84</dt> 
+<dd>T. Biro et al., Nucl.Phys. B245 (1984) 449</dd> 
  
 <dt>Boo01</dt> 
 <dd>E. Boos et al., in the Proceedings of the Workshop on Physics 
@@ -283,8 +300,12 @@ Phys. Rev. D63 (2001) 075004</dd>
 p. 806</dd> 
  
 <dt>Fis16</dt> 
-<dd>N. Fischer and T. Sj&ouml;strand, LU TP 16-57, CoEPP-MN-16-25, 
-arXiv:1610.09818 [hep-ph]</dd> 
+<dd>N. Fischer and T. Sj&ouml;strand, JHEP 1701 (2017) 140 
+[arXiv:1610.09818 [hep-ph]]</dd> 
+ 
+<dt>Fle10</dt> 
+<dd>C. Flensburg and G. Gustafson, JHEP 1004 (2010) 014 
+[arXiv:1004.5502 [hep-ph]]</dd> 
  
 <dt>Fra11</dt> 
 <dd>R. Franceschini, G.F. Giudice, P.P. Giardino, P. Lodone and A. Strumia, 

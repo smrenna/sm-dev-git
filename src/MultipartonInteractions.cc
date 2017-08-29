@@ -341,7 +341,8 @@ bool MultipartonInteractions::init( bool doMPIinit, int iDiffSysIn,
   Info* infoPtrIn, Settings& settings, ParticleData* particleDataPtr,
   Rndm* rndmPtrIn, BeamParticle* beamAPtrIn, BeamParticle* beamBPtrIn,
   Couplings* couplingsPtrIn, PartonSystems* partonSystemsPtrIn,
-  SigmaTotal* sigmaTotPtrIn, UserHooks* userHooksPtrIn, bool hasGammaIn) {
+  SigmaTotal* sigmaTotPtrIn, UserHooks* userHooksPtrIn,
+  PartonVertex* partonVertexPtrIn, bool hasGammaIn) {
 
   // Store input pointers for future use. Done if no initialization.
   iDiffSys         = iDiffSysIn;
@@ -353,6 +354,7 @@ bool MultipartonInteractions::init( bool doMPIinit, int iDiffSysIn,
   partonSystemsPtr = partonSystemsPtrIn;
   sigmaTotPtr      = sigmaTotPtrIn;
   userHooksPtr     = userHooksPtrIn;
+  partonVertexPtr  = partonVertexPtrIn;
   hasGamma         = hasGammaIn;
   if (!doMPIinit) return false;
 
@@ -443,9 +445,13 @@ bool MultipartonInteractions::init( bool doMPIinit, int iDiffSysIn,
   // Beam particles might not be found from the usual positions.
   beamOffset = 0;
 
-  // Possibility to allow user veto of MPI
+  // Possibility to allow user veto of MPI.
   canVetoMPI = (userHooksPtr != 0) ? userHooksPtr->canVetoMPIEmission()
              : false;
+
+  // Possibility to set parton vertex information.
+  doPartonVertex = settings.flag("PartonVertex:setVertex")
+                && (partonVertexPtr != 0);
 
   // Some common combinations for double Gaussian, as shorthand.
   if (bProfile == 2) {
@@ -1241,13 +1247,14 @@ bool MultipartonInteractions::scatter( Event& event) {
     if (col > 0) parton.col( col + colOffset);
     int acol = parton.acol();
     if (acol > 0) parton.acol( acol + colOffset);
-    // Allow setting of parton production vertex.
-    if (userHooksPtr && userHooksPtr->canSetProductionVertex())
-      parton.vProd(userHooksPtr->vertexForMPI(parton, bNow));
 
     // Put the partons into the event record.
     event.append(parton);
   }
+
+  // Allow setting of new parton production vertices.
+  if (doPartonVertex)
+    partonVertexPtr->vertexMPI( sizeProc, 4, bNow, event);
 
   // Allow veto of MPI. If so restore event record to before scatter.
   if (canVetoMPI && userHooksPtr->doVetoMPIEmission(sizeProc, event)) {

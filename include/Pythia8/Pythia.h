@@ -10,8 +10,8 @@
 #define Pythia8_Pythia_H
 
 // Version number defined for use in macros and for consistency checks.
-#define PYTHIA_VERSION 8.227
-#define PYTHIA_VERSION_INTEGER 8227
+#define PYTHIA_VERSION 8.228
+#define PYTHIA_VERSION_INTEGER 8228
 
 // Header files for the Pythia class and for what else the user may need.
 #include "Pythia8/Analysis.h"
@@ -32,10 +32,12 @@
 #include "Pythia8/ParticleData.h"
 #include "Pythia8/PartonDistributions.h"
 #include "Pythia8/PartonSystems.h"
+#include "Pythia8/PartonVertex.h"
 #include "Pythia8/ProcessLevel.h"
 #include "Pythia8/PythiaStdlib.h"
 #include "Pythia8/ResonanceWidths.h"
 #include "Pythia8/RHadrons.h"
+#include "Pythia8/Ropewalk.h"
 #include "Pythia8/Settings.h"
 #include "Pythia8/SigmaTotal.h"
 #include "Pythia8/SpaceShower.h"
@@ -153,6 +155,10 @@ public:
     TimeShower* timesPtrIn = 0, SpaceShower* spacePtrIn = 0)
     { timesDecPtr = timesDecPtrIn; timesPtr = timesPtrIn;
     spacePtr = spacePtrIn; return true;}
+
+  // Possibility to pass in pointer for setting of parton space-time vertices.
+  bool setPartonVertexPtr( PartonVertex* partonVertexPtrIn)
+    { partonVertexPtr = partonVertexPtrIn; return true;}
 
   // Initialize.
   bool init();
@@ -342,6 +348,10 @@ private:
   TimeShower*  timesPtr;
   SpaceShower* spacePtr;
   bool         useNewTimesDec, useNewTimes, useNewSpace;
+
+  // Pointer to assign space-time vertices during parton evolution.
+  PartonVertex* partonVertexPtr;
+  bool          useNewPartonVertex;
 
   // The main generator class to define the core process of the event.
   ProcessLevel processLevel;
