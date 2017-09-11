@@ -173,6 +173,14 @@ public:
   double xfMax(int idIn, double x, double Q2)
     {return pdfHardBeamPtr->xfMax(idIn, x, Q2);}
 
+  // Accurate and approximated photon flux and PDFs.
+  double xfFlux(int idIn, double x, double Q2)
+    {return pdfHardBeamPtr->xfFlux(idIn, x, Q2);}
+  double xfApprox(int idIn, double x, double Q2)
+    {return pdfHardBeamPtr->xfApprox(idIn, x, Q2);}
+  double xfGamma(int idIn, double x, double Q2)
+    {return pdfHardBeamPtr->xfGamma(idIn, x, Q2);}
+
   // Do not sample the x_gamma value to get correct cross section with
   // possible second call.
   double xfSame(int idIn, double x, double Q2)
@@ -340,6 +348,11 @@ public:
   void newGammaKTPhi(double kTIn, double phiIn)
     { kTgamma = kTIn; phiGamma = phiIn; }
 
+  // Get the kinematic limits for photons emitted by the beam.
+  double Q2minPDF()     { return pdfHardBeamPtr->getQ2min(); }
+  double xGammaMin()    { return pdfHardBeamPtr->getXmin(); }
+  double xGammaHadr()   { return pdfHardBeamPtr->getXhadr(); }
+
   // Get the kinematics related photons form lepton beams.
   double xGamma()   const { return xGm; }
   double Q2Gamma()  const { return Q2gm; }
@@ -347,6 +360,12 @@ public:
   double gammaKTy() const { return kTgamma*sin(phiGamma); }
   double gammaKT()  const { return kTgamma; }
   double gammaPhi() const { return phiGamma; }
+
+  // Sample x and Q2 for emitted photons according to flux.
+  double sampleXgamma()
+    { xGm = pdfHardBeamPtr->sampleXgamma(); return xGm; }
+  double sampleQ2gamma(double Q2min)
+    { Q2gm = pdfHardBeamPtr->sampleQ2gamma(Q2min); return Q2gm;}
 
 private:
 

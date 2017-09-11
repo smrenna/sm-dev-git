@@ -99,6 +99,8 @@ inline double pow3(const double& x) {return x*x*x;}
 inline double pow4(const double& x) {return x*x*x*x;}
 inline double pow5(const double& x) {return x*x*x*x*x;}
 inline double pow6(const double& x) {return x*x*x*x*x*x;}
+inline double pow7(const double& x) {return x*x*x*x*x*x*x;}
+inline double pow8(const double& x) {return x*x*x*x*x*x*x*x;}
 
 // Avoid problem with negative square root argument (from roundoff).
 inline double sqrtpos(const double& x) {return sqrt( max( 0., x));}
@@ -113,6 +115,12 @@ inline void toLowerRep(string& name, bool trim = true) {
 
 // The Gamma function for real argument.
 double GammaReal(double x);
+
+// Modified Bessel functions of the first and second kinds.
+double besselI0(double x);
+double besselI1(double x);
+double besselK0(double x);
+double besselK1(double x);
 
 } // end namespace Pythia8
 

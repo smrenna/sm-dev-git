@@ -130,7 +130,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>PDF*</td>
-<td><a href="ProgramFlow.php#anchor36" target="page">getPDFPtr(...)</a></td>
+<td><a href="ProgramFlow.php#anchor37" target="page">getPDFPtr(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
@@ -4768,7 +4768,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor17" target="page">Pythia::addUserHooksPtr(...)</a></td>
+<td><a href="ProgramFlow.php#anchor18" target="page">Pythia::addUserHooksPtr(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
@@ -4780,49 +4780,49 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>CoupSM</td>
-<td><a href="ProgramFlow.php#anchor43" target="page">Pythia::coupSM</a></td>
+<td><a href="ProgramFlow.php#anchor44" target="page">Pythia::coupSM</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>Event</td>
-<td><a href="ProgramFlow.php#anchor38" target="page">Pythia::event</a></td>
+<td><a href="ProgramFlow.php#anchor39" target="page">Pythia::event</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor32" target="page">Pythia::flag(...)</a></td>
+<td><a href="ProgramFlow.php#anchor33" target="page">Pythia::flag(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor26" target="page">Pythia::forceHadronLevel(...)</a></td>
+<td><a href="ProgramFlow.php#anchor27" target="page">Pythia::forceHadronLevel(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor28" target="page">Pythia::forceRHadronDecays()</a></td>
+<td><a href="ProgramFlow.php#anchor29" target="page">Pythia::forceRHadronDecays()</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ProgramFlow.php#anchor25" target="page">Pythia::forceTimeShower(...)</a></td>
+<td><a href="ProgramFlow.php#anchor26" target="page">Pythia::forceTimeShower(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>Info</td>
-<td><a href="ProgramFlow.php#anchor39" target="page">Pythia::info</a></td>
+<td><a href="ProgramFlow.php#anchor40" target="page">Pythia::info</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor23" target="page">Pythia::init()</a></td>
+<td><a href="ProgramFlow.php#anchor24" target="page">Pythia::init()</a></td>
 <td>Program Flow</td>
 </tr>
 
@@ -4834,55 +4834,55 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="ProgramFlow.php#anchor29" target="page">Pythia::LHAeventList()</a></td>
+<td><a href="ProgramFlow.php#anchor30" target="page">Pythia::LHAeventList()</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor30" target="page">Pythia::LHAeventSkip(...)</a></td>
+<td><a href="ProgramFlow.php#anchor31" target="page">Pythia::LHAeventSkip(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ProgramFlow.php#anchor33" target="page">Pythia::mode(...)</a></td>
+<td><a href="ProgramFlow.php#anchor34" target="page">Pythia::mode(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor27" target="page">Pythia::moreDecays()</a></td>
+<td><a href="ProgramFlow.php#anchor28" target="page">Pythia::moreDecays()</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor24" target="page">Pythia::next()</a></td>
+<td><a href="ProgramFlow.php#anchor25" target="page">Pythia::next()</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ProgramFlow.php#anchor34" target="page">Pythia::parm(...)</a></td>
+<td><a href="ProgramFlow.php#anchor35" target="page">Pythia::parm(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>ParticleData</td>
-<td><a href="ProgramFlow.php#anchor41" target="page">Pythia::particleData</a></td>
+<td><a href="ProgramFlow.php#anchor42" target="page">Pythia::particleData</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>PartonSystems</td>
-<td><a href="ProgramFlow.php#anchor45" target="page">Pythia::partonSystems</a></td>
+<td><a href="ProgramFlow.php#anchor46" target="page">Pythia::partonSystems</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>Event</td>
-<td><a href="ProgramFlow.php#anchor37" target="page">Pythia::process</a></td>
+<td><a href="ProgramFlow.php#anchor38" target="page">Pythia::process</a></td>
 <td>Program Flow</td>
 </tr>
 
@@ -4936,25 +4936,25 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>Rndm</td>
-<td><a href="ProgramFlow.php#anchor42" target="page">Pythia::rndm</a></td>
+<td><a href="ProgramFlow.php#anchor43" target="page">Pythia::rndm</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor18" target="page">Pythia::setBeamShapePtr(...)</a></td>
+<td><a href="ProgramFlow.php#anchor19" target="page">Pythia::setBeamShapePtr(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor14" target="page">Pythia::setDecayPtr(...)</a></td>
+<td><a href="ProgramFlow.php#anchor15" target="page">Pythia::setDecayPtr(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor13" target="page">Pythia::setLHAupPtr(...)</a></td>
+<td><a href="ProgramFlow.php#anchor14" target="page">Pythia::setLHAupPtr(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
@@ -4972,7 +4972,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor22" target="page">Pythia::setPartonVertexPtr(...)</a></td>
+<td><a href="ProgramFlow.php#anchor23" target="page">Pythia::setPartonVertexPtr(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
@@ -4984,55 +4984,61 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor20" target="page">Pythia::setResonancePtr(...)</a></td>
+<td><a href="ProgramFlow.php#anchor13" target="page">Pythia::setPhotonFluxPtr(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor15" target="page">Pythia::setRndmEnginePtr(...)</a></td>
+<td><a href="ProgramFlow.php#anchor21" target="page">Pythia::setResonancePtr(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor21" target="page">Pythia::setShowerPtr(...)</a></td>
+<td><a href="ProgramFlow.php#anchor16" target="page">Pythia::setRndmEnginePtr(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor19" target="page">Pythia::setSigmaPtr(...)</a></td>
+<td><a href="ProgramFlow.php#anchor22" target="page">Pythia::setShowerPtr(...)</a></td>
+<td>Program Flow</td>
+</tr>
+
+<tr>
+<td>bool</td>
+<td><a href="ProgramFlow.php#anchor20" target="page">Pythia::setSigmaPtr(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>Settings</td>
-<td><a href="ProgramFlow.php#anchor40" target="page">Pythia::settings</a></td>
+<td><a href="ProgramFlow.php#anchor41" target="page">Pythia::settings</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor16" target="page">Pythia::setUserHooksPtr(...)</a></td>
+<td><a href="ProgramFlow.php#anchor17" target="page">Pythia::setUserHooksPtr(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>SusyLesHouches</td>
-<td><a href="ProgramFlow.php#anchor44" target="page">Pythia::slha</a></td>
+<td><a href="ProgramFlow.php#anchor45" target="page">Pythia::slha</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ProgramFlow.php#anchor31" target="page">Pythia::stat()</a></td>
+<td><a href="ProgramFlow.php#anchor32" target="page">Pythia::stat()</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>string</td>
-<td><a href="ProgramFlow.php#anchor35" target="page">Pythia::word(...)</a></td>
+<td><a href="ProgramFlow.php#anchor36" target="page">Pythia::word(...)</a></td>
 <td>Program Flow</td>
 </tr>
 

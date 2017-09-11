@@ -220,8 +220,8 @@ Pythia::~Pythia() {
   if (useNewTimes && !useNewTimesDec) delete timesPtr;
   if (useNewSpace) delete spacePtr;
 
-   // Delete the parton vertex object created with new.
-   if (useNewPartonVertex) delete partonVertexPtr;
+  // Delete the parton vertex object created with new.
+  if (useNewPartonVertex) delete partonVertexPtr;
 
 }
 
@@ -259,6 +259,10 @@ void Pythia::initPtrs() {
   pdfUnresBPtr       = 0;
   pdfUnresGamAPtr    = 0;
   pdfUnresGamBPtr    = 0;
+
+  // Initial pointers to externally provided photon fluxes.
+  pdfGamFluxAPtr    = 0;
+  pdfGamFluxBPtr    = 0;
 
   // Initial values for pointers to Les Houches Event objects.
   doLHA              = false;
@@ -1507,6 +1511,27 @@ bool Pythia::initPDFs() {
     useNewPdfHard = true;
   }
 
+  // Optionally use nuclear modifications for hard process PDFs.
+  if (settings.flag("PDF:useHardNPDFA")) {
+    int idANucleus = settings.mode("PDF:nPDFBeamA");
+    pdfHardAPtr = getPDFPtr(idANucleus, 2, "A");
+    if (!pdfHardAPtr->isSetup()) {
+      info.errorMsg("Error in Pythia::init: "
+        "could not set up nuclear PDF for beam A");
+      return false;
+    }
+    useNewPdfHard = true;
+  }
+  if (settings.flag("PDF:useHardNPDFB")) {
+    int idBNucleus = settings.mode("PDF:nPDFBeamB");
+    pdfHardBPtr = getPDFPtr(idBNucleus, 2, "B");
+    if (!pdfHardBPtr->isSetup()) {
+      info.errorMsg("Error in Pythia::init: "
+        "could not set up nuclear PDF for beam B");
+      return false;
+    }
+  }
+
   // Optionally set up additional unresolved PDFs for photon beams.
   if ( (idA == 22 || idB == 22) && gammaMode != 1 ) {
     if ( idA == 22 && pdfUnresAPtr == 0 ) {
@@ -2751,6 +2776,21 @@ PDF* Pythia::getPDFPtr(int idIn, int sequence, string beam, bool resolved) {
     else tempPDFPtr = 0;
   }
 
+  // Set up nuclear PDFs.
+  else if (idIn > 100000000) {
+
+    // Which nPDF set to use.
+    int nPDFSet = (beam == "B") ? settings.mode("PDF:nPDFSetB")
+                                : settings.mode("PDF:nPDFSetA");
+
+    // Temporary pointer for storing proton PDF pointer.
+    PDF* tempProtonPDFPtr = (beam == "B") ? pdfHardBPtr : pdfHardAPtr;
+    if (nPDFSet == 0) tempPDFPtr = new Isospin(idIn, tempProtonPDFPtr);
+    if (nPDFSet == 1 || nPDFSet == 2) tempPDFPtr = new EPS09(idIn, nPDFSet, 1,
+      xmlPath, tempProtonPDFPtr, &info);
+    else tempPDFPtr = 0;
+  }
+
   // Photon beam, either point-like (unresolved) or resolved.
   else if (abs(idIn) == 22) {
 
@@ -2801,7 +2841,7 @@ PDF* Pythia::getPDFPtr(int idIn, int sequence, string beam, bool resolved) {
     if (abs(idIn)%2 == 0) tempPDFPtr = new NeutrinoPoint(idIn);
 
     // Set up resolved photon inside lepton for beam A.
-    if  ( beamAhasResGamma && !(beam == "B") && resolved ) {
+    if ( beamAhasResGamma && !(beam == "B") && resolved ) {
 
       // Find the pre-set photon PDF, hard or normal.
       PDF* tempGammaPDFPtr = 0;
@@ -2809,14 +2849,25 @@ PDF* Pythia::getPDFPtr(int idIn, int sequence, string beam, bool resolved) {
       else                tempGammaPDFPtr = pdfGamAPtr;
 
       // Get the mass of lepton and maximum virtuality of the photon.
-      double m2lepton   = pow2(particleData.m0(idIn));
+      double m2beam     = pow2(particleData.m0(idIn));
       double Q2maxGamma = settings.parm("Photon:Q2max");
 
-      // Initialize the gamma-inside-lepton PDFs.
-      int lepton2gammaSet = settings.mode("PDF:lepton2gammaSet");
-      if (lepton2gammaSet == 1) {
-        tempPDFPtr = new Lepton2gamma(idIn, m2lepton, Q2maxGamma,
+      // Initialize the gamma-inside-lepton PDFs with internal photon flux.
+      if (settings.mode("PDF:lepton2gammaSet") == 1) {
+        tempPDFPtr = new Lepton2gamma(idIn, m2beam, Q2maxGamma,
           tempGammaPDFPtr, &info, &rndm);
+
+      // Initialize the gamma-inside-lepton PDFs with external photon flux.
+      // Requires that the pointer to the flux set.
+      } else if ( settings.mode("PDF:lepton2gammaSet") == 2 ) {
+        PDF* tempGammaFluxPtr = pdfGamFluxAPtr;
+        if ( tempGammaFluxPtr != 0) tempPDFPtr = new EPAexternal(idIn, m2beam,
+          tempGammaFluxPtr, tempGammaPDFPtr, &settings, &info, &rndm );
+        else {
+          tempPDFPtr = 0;
+          info.errorMsg("Error in Pythia::getPDFPtr: "
+            "No external photon flux provided with PDF:lepton2gammaSet == 2");
+        }
       } else tempPDFPtr = 0;
 
     // Set up resolved photon inside lepton for beam B.
@@ -2828,19 +2879,46 @@ PDF* Pythia::getPDFPtr(int idIn, int sequence, string beam, bool resolved) {
       else                tempGammaPDFPtr = pdfGamBPtr;
 
       // Get the mass of lepton and maximum virtuality of the photon.
-      double m2lepton   = pow2(particleData.m0(idIn));
+      double m2beam     = pow2(particleData.m0(idIn));
       double Q2maxGamma = settings.parm("Photon:Q2max");
 
-      // Initialize the gamma-inside-lepton PDFs.
-      int lepton2gammaSet  = settings.mode("PDF:lepton2gammaSet");
-      if (lepton2gammaSet == 1) {
-        tempPDFPtr = new Lepton2gamma(idIn, m2lepton, Q2maxGamma,
+      // Initialize the gamma-inside-lepton PDFs with internal photon flux.
+      if (settings.mode("PDF:lepton2gammaSet") == 1) {
+        tempPDFPtr = new Lepton2gamma(idIn, m2beam, Q2maxGamma,
           tempGammaPDFPtr, &info, &rndm);
+
+      // Initialize the gamma-inside-lepton PDFs with external photon flux.
+      } else if ( settings.mode("PDF:lepton2gammaSet") == 2 ) {
+        PDF* tempGammaFluxPtr = pdfGamFluxBPtr;
+        if ( tempGammaFluxPtr != 0) tempPDFPtr = new EPAexternal(idIn, m2beam,
+          tempGammaFluxPtr, tempGammaPDFPtr, &settings, &info, &rndm );
+        else {
+          tempPDFPtr = 0;
+          info.errorMsg("Error in Pythia::getPDFPtr: "
+            "No external photon flux provided with PDF:lepton2gammaSet == 2");
+        }
       } else tempPDFPtr = 0;
 
+    // Usual lepton PDFs.
     } else if (settings.flag("PDF:lepton")) {
+      double m2beam = pow2(particleData.m0(idIn));
       double Q2maxGamma = settings.parm("Photon:Q2max");
-      tempPDFPtr = new Lepton(idIn, Q2maxGamma, &info);
+      if (settings.mode("PDF:lepton2gammaSet") == 1 ) {
+        tempPDFPtr = new Lepton(idIn, Q2maxGamma, &info, &rndm);
+
+      // External photon flux for direct-photon processes.
+      } else if (settings.mode("PDF:lepton2gammaSet") == 2 ) {
+        PDF* tempGammaPDFPtr  = 0;
+        PDF* tempGammaFluxPtr = (beam == "B") ?
+          pdfGamFluxBPtr : pdfGamFluxAPtr;
+        if ( tempGammaFluxPtr != 0) tempPDFPtr = new EPAexternal(idIn, m2beam,
+          tempGammaFluxPtr, tempGammaPDFPtr, &settings, &info, &rndm );
+        else {
+          tempPDFPtr = 0;
+          info.errorMsg("Error in Pythia::getPDFPtr: "
+            "No external photon flux provided with PDF:lepton2gammaSet == 2");
+        }
+      } else tempPDFPtr = 0;
     }
     else tempPDFPtr = new LeptonPoint(idIn);
 

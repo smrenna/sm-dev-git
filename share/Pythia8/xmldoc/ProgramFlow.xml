@@ -305,7 +305,8 @@ event than the ones being used for everything else, the extended form
       pythia.setPDFptr( pdfAPtr, pdfBPtr, pdfHardAPtr, pdfHardBPtr); 
 </pre> 
 allows you to specify those separately, and then the first two sets 
-would only be used for the showers and for multiparton interactions. 
+would only be used for the showers and for multiparton interactions.<br/> 
+There is a further method to set photon fluxes in a similar spirit. 
 </li> 
  
 <p/> 
@@ -706,6 +707,19 @@ call <code>setPDFPtr</code> with new arguments before each
 <code>Pythia::init()</code> call. To revert from external PDF's 
 to the normal internal PDF selection you must call 
 <code>setPDFPtr(0, 0)</code> before <code>Pythia::init()</code>. 
+</method> 
+ 
+<method name="bool Pythia::setPhotonFluxPtr( PDF* photonFluxAIn, 
+PDF* photonFluxBIn)"> 
+offers the possibility to link in external photon fluxes for usage 
+inside the program. The rules for constructing your own class from 
+the <code>PDF</code> base class are described 
+<aloc href="PartonDistributions">here</aloc>. 
+<argument name="photonFluxAIn, photonFluxBIn"> 
+pointers to two <code>PDF</code>-derived objects, one for each of 
+the incoming beams. The two objects have to be instantiated by you 
+in your program. 
+</argument> 
 </method> 
  
 <method name="bool Pythia::setLHAupPtr( LHAup* lhaUpPtrIn)"> 

@@ -79,7 +79,7 @@ int main(int argc, char* argv[]) {
   }
 
   // Vector of files to be read. Only one if not directory.
-  vector<string> files;
+  vector<string> files, problemFiles;
   string fileOrDir = argv1;
   if (fileOrDir == "-f" || fileOrDir == "-d") fileOrDir = argv2;
   if (!doDir) files.push_back( fileOrDir);
@@ -121,11 +121,18 @@ int main(int argc, char* argv[]) {
     // Process code and xml files; also others with -f option.
     if (isCode || isXML || doForce) {
       cout << "\n Begin trimming file " << fileName << endl;
-      trimFile( fileName, isXML);
+      if (!trimFile( fileName, isXML)) problemFiles.push_back( fileName);
     } else {
       cout << "\n File " << fileName << " is not processed" << endl;
     }
   }
+
+  // Write error summary info for processing of files.
+  if (doDir && problemFiles.size() > 0) {
+    cout << "\n The following files have unresolved problems: " << endl;
+    for (int i = 0; i < int(problemFiles.size()); ++i)
+      cout << "    " <<problemFiles[i] << endl; 
+  } 
 
   // Done.
   return 0;
@@ -134,6 +141,8 @@ int main(int argc, char* argv[]) {
 //--------------------------------------------------------------------------
 
 bool trimFile(string fileName, bool doPad) {
+
+  bool allFine = true;
 
   // Open input file.
   ifstream is( fileName.c_str() );
@@ -176,10 +185,16 @@ bool trimFile(string fileName, bool doPad) {
     }
 
     // Detect long lines or lines with tab characters.
-    if (warnLong && line.size() > maxLen) cout << "    Warning: line " 
-      << i + 1 << " is " << line.size() << " characters long" << endl;
-    if (line.find("\t") != string::npos) cout << "    Warning: line "
-      << i + 1 << " contains a tab character " << endl;
+    if (warnLong && line.size() > maxLen) {
+      cout << "    Warning: line " << i + 1 << " is " << line.size() 
+           << " characters long" << endl;
+      allFine = false;
+    }
+    if (line.find("\t") != string::npos) {
+      cout << "    Warning: line " << i + 1 << " contains a tab character " 
+           << endl;
+      allFine = false;
+    }
 
     // Replace processed line.
     lines[i] = line;
@@ -205,7 +220,7 @@ bool trimFile(string fileName, bool doPad) {
   if (nReplace > 0) cout << "    with " << nReplace << " replacements" << endl;
 
   // Done.
-  return true;
+  return allFine;
 }
 
 //==========================================================================

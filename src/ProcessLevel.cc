@@ -1174,7 +1174,7 @@ void ProcessLevel::findJunctions( Event& junEvent) {
       else if ( abs(junEvent[iMot].colType()) == 3)
         barSum -= 2*junEvent[iMot].colType()/3;
       int col  = junEvent[iMot].acol();
-      int acol  = junEvent[iMot].col();
+      int acol = junEvent[iMot].col();
 
       // If unmatched (so far), add end. Else erase matching parton.
       if (col > 0) {
@@ -1258,8 +1258,40 @@ void ProcessLevel::findJunctions( Event& junEvent) {
          it != colJun.end(); it++) {
       int col  = it->first;
       int iCol = it->second;
+      // Step across final-state gluons (if they come from ISR => kindJun += 2)
+      int iColNow = iCol;
+      int colNow  = col;
+      int nLoop   = 0;
+      while (junEvent[iColNow].isFinal() && junEvent[iColNow].id() == 21) {
+        colNow = (kindJun % 2 == 1) ? junEvent[iColNow].acol()
+          : junEvent[iColNow].col();
+        ++nLoop;
+        for (int j=0; j<(int)junEvent.size(); ++j) {
+          // Check for matching initial-state (anti)colour
+          if ( !junEvent[j].isFinal() ) {
+            if ( (kindJun%2 == 1 && junEvent[j].acol() == colNow)
+                 || (kindJun%2 == 0 && junEvent[j].col() == colNow) ) {
+              iColNow = j;
+              break;
+            }
+          }
+          // Step across final-state gluon
+          else if ( (kindJun%2 == 1 && junEvent[j].col() == colNow)
+                    || (kindJun%2 == 0 && junEvent[j].acol() == colNow) ) {
+            iColNow = j;
+            break;
+          }
+        }
+        // Check for infinite loop
+        if (nLoop > (int)junEvent.size()) {
+          infoPtr->errorMsg("Error in ProcessLevel::findJunctions: "
+                            "failed to trace across final-state gluons");
+          iColNow = iCol;
+          break;
+        }
+      }
       for (unsigned int indx = 0; indx < motherList.size(); indx++) {
-        if (iCol == motherList[indx]) {
+        if (iColNow == motherList[indx]) {
           kindJun += 2;
           colVec.insert(colVec.begin(),col);
         }
@@ -1272,6 +1304,73 @@ void ProcessLevel::findJunctions( Event& junEvent) {
 
   }
 
+  // Check if any junction colour lines appear both as incoming and outgoing
+  // E.g. MadGraph writes out 501 + 502 -> -503 -> 501 + 502. Repaint such
+  // cases so that the outgoing tags are different from the incoming ones.
+  bool foundMatch = true;
+  while (foundMatch) {
+    foundMatch = false;
+    for (int iJun=0; iJun<junEvent.sizeJunction(); ++iJun) {
+      int kindJunA = junEvent.kindJunction(iJun);
+      for (int jJun=iJun+1; jJun<junEvent.sizeJunction(); ++jJun) {
+        int kindJunB = junEvent.kindJunction(jJun);
+        // Only consider junction-antijunction combinations
+        if ( kindJunA % 2 == kindJunB % 2 ) continue;
+        // Check if all tags same
+        int nMatch = 0;
+        for (int iLeg=0; iLeg<3; ++iLeg)
+          for (int jLeg=0; jLeg<3; ++jLeg)
+            if (junEvent.colJunction(iJun, iLeg) ==
+                junEvent.colJunction(jJun, jLeg)) ++nMatch;
+        if (nMatch == 3) {
+          foundMatch = true;
+          // Decide which junction to repaint the final-state legs of
+          // (If both are types 3-4, arbitrarily decide to repaint iJun)
+          int kJun = 0;
+          if (kindJunA >= 5 || kindJunA <= 2) kJun = jJun;
+          else  kJun = iJun;
+          int kindJun = junEvent.kindJunction(kJun);
+          int col = junEvent.colJunction(kJun,0);
+          // Find the corresponding decay vertex: repaint daughters recursively
+          for (int i=0; i<junEvent.size(); ++i) {
+            // Find a resonance with the right colour
+            if ( kindJun % 2 == 0 && junEvent[i].col() != col ) continue;
+            else if ( kindJun % 2 == 1 && junEvent[i].acol() != col ) continue;
+            else if ( junEvent[i].status() != -22 ) continue;
+            // Check if colour is conserved in decay
+            int iDau1 = junEvent[i].daughter1();
+            int iDau2 = junEvent[i].daughter2();
+            bool isBNV = true;
+            for (int iDau = iDau1; iDau <= iDau2; ++iDau)
+              if ( (kindJun % 2 == 0 && junEvent[iDau].col() == col)
+                   || (kindJun % 2 == 1 && junEvent[iDau].acol() == col) )
+                isBNV = false;
+            if ( !isBNV ) continue;
+            vector<int> daughters = junEvent[i].daughterListRecursive();
+            int lastColTag = junEvent.lastColTag();
+            for (int iLeg = 1; iLeg <= 2; ++iLeg) {
+              // Encode new colour tag so last digit remains the same
+              // (That way, new CR type models would still allow reconnection)
+              int colOld = junEvent.colJunction(kJun, iLeg);
+              int colNew = (lastColTag/10) * 10 + 10 + colOld % 10 ;
+              // Count up used colour tags until we reach colNew
+              while (junEvent.lastColTag() < colNew) junEvent.nextColTag();
+              junEvent.colJunction(kJun,iLeg,colNew);
+              for (int jDau = 0; jDau < (int)daughters.size(); ++jDau) {
+                int iDau = daughters[jDau];
+                if ( kindJun % 2 == 1 && junEvent[iDau].col() == colOld)
+                  junEvent[iDau].col(colNew);
+                else if  ( kindJun % 2 == 0 && junEvent[iDau].acol() == colOld)
+                  junEvent[iDau].acol(colNew);
+              }
+            }
+            // Done (we found the right BNV vertex and acted recursively)
+            break;
+          }
+        }
+      }
+    }
+  }
 }
 //--------------------------------------------------------------------------
 

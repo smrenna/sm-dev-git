@@ -3555,7 +3555,7 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
 
         // Note: gluino -> quark + squark gives a deeper radiation dip than
         // the more obvious alternative photon decay, so is more realistic.
-        dipEnd[i].MEtype = 66;
+        dipEnd[i].MEtype = (doMEcorrections && doMEafterFirst) ? 66 : 0;
         if (&dipEnd[i] == dipSel) dipEnd[i].iMEpartner = iRad;
         else                      dipEnd[i].iMEpartner = iEmt;
       }
@@ -3577,10 +3577,11 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
     // the more obvious alternative photon decay, so is more realistic.
     if (doQEDshowerByQ) {
       int chgType = event[iRad].chargeType();
+      int meType = (doMEcorrections && doMEafterFirst) ? 66 : 0;
       dipEnd.push_back( TimeDipoleEnd(iRad, iEmt, pTsel,
-        0,  chgType, 0, 0, 0, iSysSel, 66, iEmt));
+        0,  chgType, 0, 0, 0, iSysSel, meType, iEmt));
       dipEnd.push_back( TimeDipoleEnd(iEmt, iRad, pTsel,
-        0, -chgType, 0, 0, 0, iSysSel, 66, iRad));
+        0, -chgType, 0, 0, 0, iSysSel, meType, iRad));
     }
 
     // Gluon branching to q qbar: also add weak dipoles.

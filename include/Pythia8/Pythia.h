@@ -98,6 +98,12 @@ public:
     PDF* pdfUnresBPtrIn = 0, PDF* pdfUnresGamAPtrIn = 0,
     PDF* pdfUnresGamBPtrIn = 0);
 
+  // Set photon fluxes externally. Used with option "PDF:lepton2gammaSet = 2".
+  bool setPhotonFluxPtr( PDF* photonFluxAIn, PDF* photonFluxBIn) {
+    if ( photonFluxAIn != 0 ) pdfGamFluxAPtr = photonFluxAIn;
+    if ( photonFluxBIn != 0 ) pdfGamFluxBPtr = photonFluxBIn;
+    return true;}
+
   // Possibility to pass in pointer to external LHA-interfaced generator.
   bool setLHAupPtr( LHAup* lhaUpPtrIn) {lhaUpPtr = lhaUpPtrIn; return true;}
 
@@ -302,6 +308,10 @@ private:
   PDF* pdfUnresBPtr;
   PDF* pdfUnresGamAPtr;
   PDF* pdfUnresGamBPtr;
+
+  // PDF pointers to externally provided photon fluxes.
+  PDF* pdfGamFluxAPtr;
+  PDF* pdfGamFluxBPtr;
 
   // Keep track when "new" has been used and needs a "delete" for PDF's etc.
   bool useNewPdfA, useNewPdfB, useNewPdfHard, useNewPdfPomA, useNewPdfPomB,

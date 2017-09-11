@@ -277,13 +277,65 @@ for <code>PDF:pSet</code>. If this option is set to <code>void</code>
 then the same PDF set as <code>PDF:pHardSet</code> is used. 
 </word> 
  
+<h3>Nuclear modifications of parton densities</h3> 
+ 
+<p> 
+Nuclear modifications of the PDFs are implemented for the hard-process 
+generation only. The final PDF value is calculated for an average nucleon 
+within given nucleus, i.e. 
+<ei>f_i^A(x,Q^2) = (Z/A)*f_i^(p/A) + ((A-Z)/A)*f_i^(n/A)</ei>, where 
+<ei>A</ei> is the nuclear mass number and <ei>Z</ei> the number of protons, 
+set using the PDG code for nucleus. The neutron PDFs are obtained by 
+applying isospin symmetry, e.g. <ei>f_u^(n/A)(x,Q^2) = f_d^(p/A)(x,Q^2)</ei>. 
+The nuclear PDFs implemented provide only the nuclear modification so the 
+full PDF is calculated by multiplying the selected free proton PDF with the 
+modication. 
+<p/> 
+ 
+<flag name="PDF:useHardNPDFA" default="off"> 
+If on, the hard processes are generated with nuclear modifications for 
+beam A. 
+</flag> 
+ 
+<flag name="PDF:useHardNPDFB" default="off"> 
+If on, the hard processes are generated with nuclear modifications for 
+beam B. 
+</flag> 
+ 
+<modepick name="PDF:nPDFSetA" default="1" min="0" max="2"> 
+The nuclear modication to be used for beam A if enabled with the switch above. 
+<option value = "0"> Only Isospin effect</option> 
+<option value = "1"> EPS09, LO, </option> 
+<option value = "2"> EPS09, NLO. The grid files can be found from 
+<a href="https://www.jyu.fi/fysiikka/en/research/highenergy/urhic/eps09"> 
+here</a> and are to be stored in the same folder as other PDF grid files 
+(usually share/Pythia8/xmldoc/). 
+</option> 
+</modepick> 
+ 
+<modepick name="PDF:nPDFSetB" default="1" min="0" max="2"> 
+The nuclear modication to be used for beam B. Same options as above. 
+<option value = "0"> Only Isospin effect</option> 
+<option value = "1"> EPS09, LO, </option> 
+<option value = "2"> EPS09, NLO.</option> 
+</modepick> 
+ 
+<modeopen name="PDF:nPDFBeamA" default="100822080"> 
+The PDG code for nuclear beam A, provides the number of protons and 
+neutrons. Default code for Pb. 
+</modeopen> 
+ 
+<modeopen name="PDF:nPDFBeamB" default="100822080"> 
+The PDG code for nucleus B. 
+</modeopen> 
+ 
 <h3>Parton densities for pions</h3> 
  
 The parton densities of the pion are considerably less well known than 
 those of the proton. There are only rather few sets on the market, 
 and none particularly recent. Only one comes built-in, but others can 
 be accessed from LHAPDF. Input parametrizations are for the <ei>pi+</ei>. 
-From this the <ei>pi-</ei> is obtained by charge conjugation and the 
+>From this the <ei>pi-</ei> is obtained by charge conjugation and the 
 <ei>pi0</ei> from averaging (half the pions have <ei>d dbar</ei> 
 valence quark content, half <ei>u ubar</ei>. 
  
@@ -438,6 +490,21 @@ diffractive processes.
 <h3>Parton densities for photons</h3> 
  
 Photon PDFs describe the partonic content of the resolved photons and 
+can be used to generate any hard process initiated by quarks and gluons. 
+Currently parton-level generation is not included for photon beams. 
+ 
+There are several PDF sets available for photons, although there have not 
+been much activity recently. Currently only one set is included. 
+ 
+<modepick name="PDF:GammaSet" default="1"> 
+Parton densities that can be used for photon beams. 
+<option value="1"> CJKL, based on <ref>Cor03</ref> but the rescaling 
+for heavy quarks due to kinematic constraints in DIS is undone to obtain 
+correct behaviour for photon-photon collisions.</option> 
+ 
+<h3>Parton densities for photons</h3> 
+ 
+Photon PDFs describe the partonic content of the resolved photons and 
 can be used to generate any process initiated by quarks and gluons. 
  
 <p/> 
@@ -508,8 +575,8 @@ but then additional phase-space cuts (e.g. cut on the invariant mass of the
 photon-photon pair) are not applied. 
 </flag> 
  
-<modepick name="PDF:lepton2gammaSet" default="1" min="1" max="1"> 
-The photon flux. Currently one option available. 
+<modepick name="PDF:lepton2gammaSet" default="1" min="1" max="2"> 
+The type of photon flux. 
 <option value="1"> Convolute the photon flux from EPA with the selected photon 
 PDF set. Convolution integral is performed "on the fly", meaning that the 
 actual integral is not computed but the <ei>x_gamma</ei> is sampled 
@@ -517,6 +584,13 @@ event-by-event. Since the final PDF value depends on the sampled value for
 <ei>x_gamma</ei> the phase-space sampling is set up using an overestimate for 
 the PDFs. This makes the process selection somewhat less efficient compared 
 to the case where the PDFs are fixed (e.g. for protons).</option> 
+<option value="2"> Uses an approximation of the photon flux to sample 
+processes and corrects this later with an externally provided flux. For 
+leptons a bit less efficient than option 1 but allows straightforward 
+implementation of photon fluxes from different particles. To use this option 
+user has to provide the external photon flux using method 
+<code>Pythia::setPhotonFluxPtr(PDF*, PDF*)</code> as demostrated in the 
+sample program <code>main70.cc</code>. </option> 
 </modepick> 
  
 <h3>Incoming parton selection</h3> 

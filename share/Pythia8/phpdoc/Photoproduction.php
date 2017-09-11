@@ -253,8 +253,10 @@ the upper limit for the <i>k_T</i> of the photon, which in turn will
 be the same as the <i>k_T</i> of the scattered lepton. Also some other 
 cuts can be imposed. 
  
-<br/><br/><table><tr><td><strong>Photon:Q2max </td><td></td><td> <input type="text" name="4" value="1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.0</strong></code>; <code>minimum = 0.01</code>; <code>maximum = 2.0</code>)</td></tr></table>
-Upper limit for (quasi-)real photon virtuality in <i>GeV^2</i>. 
+<br/><br/><table><tr><td><strong>Photon:Q2max </td><td></td><td> <input type="text" name="4" value="1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.0</strong></code>; <code>maximum = 2.0</code>)</td></tr></table>
+Upper limit for (quasi-)real photon virtuality in <i>GeV^2</i>. Too low 
+value might cause problems, e.g. if the lower <i>Q^2</i> limit derived from 
+kinematics becomes larger than upper limit. 
    
  
 <br/><br/><table><tr><td><strong>Photon:Wmin </td><td></td><td> <input type="text" name="5" value="10.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>10.0</strong></code>; <code>minimum = 5.0</code>)</td></tr></table>
@@ -282,6 +284,17 @@ restrictive unless a very small angle is used.
 As above but for lepton B. 
    
  
+<br/><br/><strong>Photon:sampleQ2</strong>  <input type="radio" name="9" value="on"><strong>On</strong>
+<input type="radio" name="9" value="off"><strong>Off</strong>
+<br/>
+Determines whether the sampling for the photon virtuality is done. This can 
+be used only with <code>PDF:lepton2gammaSet = 2</code> option where 
+<i>Q^2</i>-integrated photon is provided by the user with 
+<code>Pythia::setPhotonFluxPtr(PDF*, PDF*)</code> method. In this case the 
+virtuality and the transverse momentum of the photon (and recoiling particle) 
+is set to zero which strictly speaking is kinematically not possible. The 
+error here is, however, very small for the cases where the virtualities 
+are negligible (e.g. photons from heavy ions).   
 </p> 
  
 <h4>MPIs with lepton beams</h4> 
@@ -349,6 +362,11 @@ fwrite($handle,$data);
 if($_POST["8"] != "-1.0")
 {
 $data = "Photon:thetaBMax = ".$_POST["8"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["9"] != "")
+{
+$data = "Photon:sampleQ2 = ".$_POST["9"]."\n";
 fwrite($handle,$data);
 }
 fclose($handle);

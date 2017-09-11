@@ -316,13 +316,69 @@ for <code>PDF:pSet</code>. If this option is set to <code>void</code>
 then the same PDF set as <code>PDF:pHardSet</code> is used. 
    
  
+<h3>Nuclear modifications of parton densities</h3> 
+ 
+<p> 
+Nuclear modifications of the PDFs are implemented for the hard-process 
+generation only. The final PDF value is calculated for an average nucleon 
+within given nucleus, i.e. 
+<i>f_i^A(x,Q^2) = (Z/A)*f_i^(p/A) + ((A-Z)/A)*f_i^(n/A)</i>, where 
+<i>A</i> is the nuclear mass number and <i>Z</i> the number of protons, 
+set using the PDG code for nucleus. The neutron PDFs are obtained by 
+applying isospin symmetry, e.g. <i>f_u^(n/A)(x,Q^2) = f_d^(p/A)(x,Q^2)</i>. 
+The nuclear PDFs implemented provide only the nuclear modification so the 
+full PDF is calculated by multiplying the selected free proton PDF with the 
+modication. 
+<p/> 
+ 
+<br/><br/><strong>PDF:useHardNPDFA</strong>  <input type="radio" name="7" value="on"><strong>On</strong>
+<input type="radio" name="7" value="off" checked="checked"><strong>Off</strong>
+ &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
+If on, the hard processes are generated with nuclear modifications for 
+beam A. 
+   
+ 
+<br/><br/><strong>PDF:useHardNPDFB</strong>  <input type="radio" name="8" value="on"><strong>On</strong>
+<input type="radio" name="8" value="off" checked="checked"><strong>Off</strong>
+ &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
+If on, the hard processes are generated with nuclear modifications for 
+beam B. 
+   
+ 
+<br/><br/><table><tr><td><strong>PDF:nPDFSetA  </td><td>  &nbsp;&nbsp;(<code>default = <strong>1</strong></code>; <code>minimum = 0</code>; <code>maximum = 2</code>)</td></tr></table>
+The nuclear modication to be used for beam A if enabled with the switch above. 
+<br/>
+<option value = "0"> Only Isospin effect</option> 
+<option value = "1"> EPS09, LO, </option> 
+<option value = "2"> EPS09, NLO. The grid files can be found from 
+<a href="https://www.jyu.fi/fysiikka/en/research/highenergy/urhic/eps09"> 
+here</a> and are to be stored in the same folder as other PDF grid files 
+(usually share/Pythia8/xmldoc/). 
+</option> 
+ 
+<br/><br/><table><tr><td><strong>PDF:nPDFSetB  </td><td>  &nbsp;&nbsp;(<code>default = <strong>1</strong></code>; <code>minimum = 0</code>; <code>maximum = 2</code>)</td></tr></table>
+The nuclear modication to be used for beam B. Same options as above. 
+<br/>
+<option value = "0"> Only Isospin effect</option> 
+<option value = "1"> EPS09, LO, </option> 
+<option value = "2"> EPS09, NLO.</option> 
+ 
+<br/><br/><table><tr><td><strong>PDF:nPDFBeamA  </td><td></td><td> <input type="text" name="11" value="100822080" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>100822080</strong></code>)</td></tr></table>
+The PDG code for nuclear beam A, provides the number of protons and 
+neutrons. Default code for Pb. 
+   
+ 
+<br/><br/><table><tr><td><strong>PDF:nPDFBeamB  </td><td></td><td> <input type="text" name="12" value="100822080" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>100822080</strong></code>)</td></tr></table>
+The PDG code for nucleus B. 
+   
+ 
 <h3>Parton densities for pions</h3> 
  
 The parton densities of the pion are considerably less well known than 
 those of the proton. There are only rather few sets on the market, 
 and none particularly recent. Only one comes built-in, but others can 
 be accessed from LHAPDF. Input parametrizations are for the <i>pi+</i>. 
-From this the <i>pi-</i> is obtained by charge conjugation and the 
+>From this the <i>pi-</i> is obtained by charge conjugation and the 
 <i>pi0</i> from averaging (half the pions have <i>d dbar</i> 
 valence quark content, half <i>u ubar</i>. 
  
@@ -333,7 +389,7 @@ not seen the need to allow separate parton densities for hard processes.
 When using LHAPDF the <code>PDF:extrapolateLHAPDF</code> switch of the 
 proton also applies to pions. 
  
-<br/><br/><table><tr><td><strong>PDF:piSet  </td><td></td><td> <input type="text" name="7" value="1" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1</strong></code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>PDF:piSet  </td><td></td><td> <input type="text" name="13" value="1" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1</strong></code>)</td></tr></table>
 Parton densities that can be used for pion beams, currently with 
 only one internal choice. 
 <br/><code>option </code><strong> 1</strong> : GRV 92 L.   
@@ -354,7 +410,7 @@ LHAPDF6 format, cf. the corresponding proton option.
    
    
  
-<br/><br/><table><tr><td><strong>PDF:piSetB  </td><td></td><td> <input type="text" name="8" value="void" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>void</strong></code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>PDF:piSetB  </td><td></td><td> <input type="text" name="14" value="void" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>void</strong></code>)</td></tr></table>
 Parton density for <i>pion beam B</i>. If this option is set 
 to <code>void</code> then the same PDF set as <code>PDF:piSet</code> 
 is used. 
@@ -369,7 +425,7 @@ Most experimental parametrizations are NLO, which makes them less
 well suited for Monte Carlo applications. Furthermore note that 
 the momentum sum is arbitrarily normalized to a non-unity value. 
  
-<br/><br/><table><tr><td><strong>PDF:PomSet  </td><td></td><td> <input type="text" name="9" value="6" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>6</strong></code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>PDF:PomSet  </td><td></td><td> <input type="text" name="15" value="6" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>6</strong></code>)</td></tr></table>
 Parton densities that can be used for Pomeron beams. 
 <br/><code>option </code><strong> 1</strong> : <i>Q^2</i>-independent parametrizations 
 <i>xf(x) = N_ab x^a (1 - x)^b</i>, where <i>N_ab</i> ensures 
@@ -431,37 +487,37 @@ for a LHAPDF6 set, cf. the corresponding proton option.
    
    
  
-<br/><br/><table><tr><td><strong>PDF:PomGluonA </td><td></td><td> <input type="text" name="10" value="0." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.</strong></code>; <code>minimum = -0.5</code>; <code>maximum = 2.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>PDF:PomGluonA </td><td></td><td> <input type="text" name="16" value="0." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.</strong></code>; <code>minimum = -0.5</code>; <code>maximum = 2.</code>)</td></tr></table>
 the parameter <i>a</i> in the ansatz <i>xg(x) = N_ab x^a (1 - x)^b</i> 
 for option 1 above. 
    
  
-<br/><br/><table><tr><td><strong>PDF:PomGluonB </td><td></td><td> <input type="text" name="11" value="3." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>3.</strong></code>; <code>minimum = 0.</code>; <code>maximum = 10.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>PDF:PomGluonB </td><td></td><td> <input type="text" name="17" value="3." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>3.</strong></code>; <code>minimum = 0.</code>; <code>maximum = 10.</code>)</td></tr></table>
 the parameter <i>b</i> in the ansatz <i>xg(x) = N_ab x^a (1 - x)^b</i> 
 for option 1 above. 
    
  
-<br/><br/><table><tr><td><strong>PDF:PomQuarkA </td><td></td><td> <input type="text" name="12" value="0." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.</strong></code>; <code>minimum = -0.5</code>; <code>maximum = 2.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>PDF:PomQuarkA </td><td></td><td> <input type="text" name="18" value="0." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.</strong></code>; <code>minimum = -0.5</code>; <code>maximum = 2.</code>)</td></tr></table>
 the parameter <i>a</i> in the ansatz <i>xq(x) = N_ab x^a (1 - x)^b</i> 
 for option 1 above. 
    
  
-<br/><br/><table><tr><td><strong>PDF:PomQuarkB </td><td></td><td> <input type="text" name="13" value="3." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>3.</strong></code>; <code>minimum = 0.</code>; <code>maximum = 10.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>PDF:PomQuarkB </td><td></td><td> <input type="text" name="19" value="3." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>3.</strong></code>; <code>minimum = 0.</code>; <code>maximum = 10.</code>)</td></tr></table>
 the parameter <i>b</i> in the ansatz <i>xq(x) = N_ab x^a (1 - x)^b</i> 
 for option 1 above. 
    
  
-<br/><br/><table><tr><td><strong>PDF:PomQuarkFrac </td><td></td><td> <input type="text" name="14" value="0.2" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.2</strong></code>; <code>minimum = 0.</code>; <code>maximum = 1.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>PDF:PomQuarkFrac </td><td></td><td> <input type="text" name="20" value="0.2" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.2</strong></code>; <code>minimum = 0.</code>; <code>maximum = 1.</code>)</td></tr></table>
 the fraction of the Pomeron momentum carried by quarks 
 for option 1 above, with the rest carried by gluons. 
    
  
-<br/><br/><table><tr><td><strong>PDF:PomStrangeSupp </td><td></td><td> <input type="text" name="15" value="0.5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.5</strong></code>; <code>minimum = 0.</code>; <code>maximum = 1.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>PDF:PomStrangeSupp </td><td></td><td> <input type="text" name="21" value="0.5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.5</strong></code>; <code>minimum = 0.</code>; <code>maximum = 1.</code>)</td></tr></table>
 the suppression of the <i>s</i> quark density relative to that of the 
 <i>d</i> and <i>u</i> ones for option 1 above. 
    
  
-<br/><br/><table><tr><td><strong>PDF:PomRescale </td><td></td><td> <input type="text" name="16" value="1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.0</strong></code>; <code>minimum = 0.5</code>; <code>maximum = 5.0</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>PDF:PomRescale </td><td></td><td> <input type="text" name="22" value="1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.0</strong></code>; <code>minimum = 0.5</code>; <code>maximum = 5.0</code>)</td></tr></table>
 Rescale the four H1 fits above by this uniform factor, e.g. to bring 
 up their momentum sum to around unity. By default all three have 
 a momentum sum of order 0.5, suggesting that a factor around 2.0 
@@ -478,6 +534,20 @@ diffractive processes.
 <h3>Parton densities for photons</h3> 
  
 Photon PDFs describe the partonic content of the resolved photons and 
+can be used to generate any hard process initiated by quarks and gluons. 
+Currently parton-level generation is not included for photon beams. 
+ 
+There are several PDF sets available for photons, although there have not 
+been much activity recently. Currently only one set is included. 
+ 
+<br/><br/><table><tr><td><strong>PDF:GammaSet  </td><td>  &nbsp;&nbsp;(<code>default = <strong>1</strong></code>)</td></tr></table>
+Parton densities that can be used for photon beams. 
+<br/>
+<input type="radio" name="23" value="1" checked="checked"><strong>1 </strong>:  CJKL, based on <ref>Cor03</ref> but the rescaling  for heavy quarks due to kinematic constraints in DIS is undone to obtain  correct behaviour for photon-photon collisions.<br/>
+ 
+<h3>Parton densities for photons</h3> 
+ 
+Photon PDFs describe the partonic content of the resolved photons and 
 can be used to generate any process initiated by quarks and gluons. 
  
 <p/> 
@@ -489,12 +559,11 @@ In case of photons the parton shower and beam remnant generation
 require additional methods that are provided only for internal sets. 
 Currently no photon PDFs have been included in LHAPDF6. 
  
-<br/><br/><table><tr><td><strong>PDF:GammaSet  </td><td>  &nbsp;&nbsp;(<code>default = <strong>1</strong></code>; <code>minimum = 1</code>; <code>maximum = 1</code>)</td></tr></table>
+<modepick name="PDF:GammaSet" default="1" min="1" max="1"> 
 Parton densities that can be used for resolved photon beams. 
-<br/>
-<input type="radio" name="17" value="1" checked="checked"><strong>1 </strong>:  CJKL, based on <ref>Cor03</ref> but the rescaling  for heavy quarks due to kinematic constraints in DIS is undone to obtain  correct behaviour for photon-photon/hadron collisions.<br/>
+<input type="radio" name="23" value="1" checked="checked"><strong>1 </strong>:  CJKL, based on <ref>Cor03</ref> but the rescaling  for heavy quarks due to kinematic constraints in DIS is undone to obtain  correct behaviour for photon-photon/hadron collisions.<br/>
  
-<br/><br/><table><tr><td><strong>PDF:GammaHardSet  </td><td></td><td> <input type="text" name="18" value="void" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>void</strong></code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>PDF:GammaHardSet  </td><td></td><td> <input type="text" name="24" value="void" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>void</strong></code>)</td></tr></table>
 Parton densities to be used by the beams of the hard process. For photons 
 the other options are the ones provided by LHAPDF5. If this option is set 
 to <code>void</code> then the same PDF set as <code>PDF:GammaSet</code> is 
@@ -510,8 +579,8 @@ However, insofar as e.g. <i>e^+ e^-</i> data often are corrected
 back to a world without any initial-state photon radiation, it is 
 useful to have a corresponding option available here. 
  
-<br/><br/><strong>PDF:lepton</strong>  <input type="radio" name="19" value="on" checked="checked"><strong>On</strong>
-<input type="radio" name="19" value="off"><strong>Off</strong>
+<br/><br/><strong>PDF:lepton</strong>  <input type="radio" name="25" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="25" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 Use parton densities for lepton beams or not. If off the colliding 
 leptons carry the full beam energy, if on part of the energy is 
@@ -537,8 +606,8 @@ the photon flux with the selected photon PDFs. The photon flux
 is modelled according to equivalent photon approximation (EPA) which 
 gives the flux of bremsstrahlung photons. 
  
-<br/><br/><strong>PDF:lepton2gamma</strong>  <input type="radio" name="20" value="on"><strong>On</strong>
-<input type="radio" name="20" value="off" checked="checked"><strong>Off</strong>
+<br/><br/><strong>PDF:lepton2gamma</strong>  <input type="radio" name="26" value="on"><strong>On</strong>
+<input type="radio" name="26" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
 Gives photon beams from leptons. Both, unresolved (direct) and resolved 
 contributions are included, see <?php $filepath = $_GET["filepath"];
@@ -551,10 +620,11 @@ but then additional phase-space cuts (e.g. cut on the invariant mass of the
 photon-photon pair) are not applied. 
    
  
-<br/><br/><table><tr><td><strong>PDF:lepton2gammaSet  </td><td>  &nbsp;&nbsp;(<code>default = <strong>1</strong></code>; <code>minimum = 1</code>; <code>maximum = 1</code>)</td></tr></table>
-The photon flux. Currently one option available. 
+<br/><br/><table><tr><td><strong>PDF:lepton2gammaSet  </td><td>  &nbsp;&nbsp;(<code>default = <strong>1</strong></code>; <code>minimum = 1</code>; <code>maximum = 2</code>)</td></tr></table>
+The type of photon flux. 
 <br/>
-<input type="radio" name="21" value="1" checked="checked"><strong>1 </strong>:  Convolute the photon flux from EPA with the selected photon  PDF set. Convolution integral is performed "on the fly", meaning that the  actual integral is not computed but the <ei>x_gamma</ei> is sampled  event-by-event. Since the final PDF value depends on the sampled value for  <ei>x_gamma</ei> the phase-space sampling is set up using an overestimate for  the PDFs. This makes the process selection somewhat less efficient compared  to the case where the PDFs are fixed (e.g. for protons).<br/>
+<input type="radio" name="27" value="1" checked="checked"><strong>1 </strong>:  Convolute the photon flux from EPA with the selected photon  PDF set. Convolution integral is performed "on the fly", meaning that the  actual integral is not computed but the <ei>x_gamma</ei> is sampled  event-by-event. Since the final PDF value depends on the sampled value for  <ei>x_gamma</ei> the phase-space sampling is set up using an overestimate for  the PDFs. This makes the process selection somewhat less efficient compared  to the case where the PDFs are fixed (e.g. for protons).<br/>
+<input type="radio" name="27" value="2"><strong>2 </strong>:  Uses an approximation of the photon flux to sample  processes and corrects this later with an externally provided flux. For  leptons a bit less efficient than option 1 but allows straightforward  implementation of photon fluxes from different particles. To use this option  user has to provide the external photon flux using method  <code>Pythia::setPhotonFluxPtr(PDF*, PDF*)</code> as demostrated in the  sample program <code>main70.cc</code>. <br/>
  
 <h3>Incoming parton selection</h3> 
  
@@ -564,7 +634,7 @@ only which quarks are allowed to contribute to the hard-process cross
 sections. Note that separate but similarly named modes are available 
 for multiparton interactions and spacelike showers. 
  
-<br/><br/><table><tr><td><strong>PDFinProcess:nQuarkIn  </td><td></td><td> <input type="text" name="22" value="5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>5</strong></code>; <code>minimum = 0</code>; <code>maximum = 5</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>PDFinProcess:nQuarkIn  </td><td></td><td> <input type="text" name="28" value="5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>5</strong></code>; <code>minimum = 0</code>; <code>maximum = 5</code>)</td></tr></table>
 Number of allowed incoming quark flavours in the beams; a change 
 to 4 would thus exclude <i>b</i> and <i>bbar</i> as incoming 
 partons, etc. 
@@ -615,84 +685,114 @@ if($_POST["6"] != "void")
 $data = "PDF:pHardSetB = ".$_POST["6"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["7"] != "1")
+if($_POST["7"] != "off")
 {
-$data = "PDF:piSet = ".$_POST["7"]."\n";
+$data = "PDF:useHardNPDFA = ".$_POST["7"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["8"] != "void")
+if($_POST["8"] != "off")
 {
-$data = "PDF:piSetB = ".$_POST["8"]."\n";
+$data = "PDF:useHardNPDFB = ".$_POST["8"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["9"] != "6")
+if($_POST["9"] != "1")
 {
-$data = "PDF:PomSet = ".$_POST["9"]."\n";
+$data = "PDF:nPDFSetA = ".$_POST["9"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["10"] != "0.")
+if($_POST["10"] != "1")
 {
-$data = "PDF:PomGluonA = ".$_POST["10"]."\n";
+$data = "PDF:nPDFSetB = ".$_POST["10"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["11"] != "3.")
+if($_POST["11"] != "100822080")
 {
-$data = "PDF:PomGluonB = ".$_POST["11"]."\n";
+$data = "PDF:nPDFBeamA = ".$_POST["11"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["12"] != "0.")
+if($_POST["12"] != "100822080")
 {
-$data = "PDF:PomQuarkA = ".$_POST["12"]."\n";
+$data = "PDF:nPDFBeamB = ".$_POST["12"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["13"] != "3.")
+if($_POST["13"] != "1")
 {
-$data = "PDF:PomQuarkB = ".$_POST["13"]."\n";
+$data = "PDF:piSet = ".$_POST["13"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["14"] != "0.2")
+if($_POST["14"] != "void")
 {
-$data = "PDF:PomQuarkFrac = ".$_POST["14"]."\n";
+$data = "PDF:piSetB = ".$_POST["14"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["15"] != "0.5")
+if($_POST["15"] != "6")
 {
-$data = "PDF:PomStrangeSupp = ".$_POST["15"]."\n";
+$data = "PDF:PomSet = ".$_POST["15"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["16"] != "1.0")
+if($_POST["16"] != "0.")
 {
-$data = "PDF:PomRescale = ".$_POST["16"]."\n";
+$data = "PDF:PomGluonA = ".$_POST["16"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["17"] != "1")
+if($_POST["17"] != "3.")
 {
-$data = "PDF:GammaSet = ".$_POST["17"]."\n";
+$data = "PDF:PomGluonB = ".$_POST["17"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["18"] != "void")
+if($_POST["18"] != "0.")
 {
-$data = "PDF:GammaHardSet = ".$_POST["18"]."\n";
+$data = "PDF:PomQuarkA = ".$_POST["18"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["19"] != "on")
+if($_POST["19"] != "3.")
 {
-$data = "PDF:lepton = ".$_POST["19"]."\n";
+$data = "PDF:PomQuarkB = ".$_POST["19"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["20"] != "off")
+if($_POST["20"] != "0.2")
 {
-$data = "PDF:lepton2gamma = ".$_POST["20"]."\n";
+$data = "PDF:PomQuarkFrac = ".$_POST["20"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["21"] != "1")
+if($_POST["21"] != "0.5")
 {
-$data = "PDF:lepton2gammaSet = ".$_POST["21"]."\n";
+$data = "PDF:PomStrangeSupp = ".$_POST["21"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["22"] != "5")
+if($_POST["22"] != "1.0")
 {
-$data = "PDFinProcess:nQuarkIn = ".$_POST["22"]."\n";
+$data = "PDF:PomRescale = ".$_POST["22"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["23"] != "1")
+{
+$data = "PDF:GammaSet = ".$_POST["23"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["24"] != "void")
+{
+$data = "PDF:GammaHardSet = ".$_POST["24"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["25"] != "on")
+{
+$data = "PDF:lepton = ".$_POST["25"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["26"] != "off")
+{
+$data = "PDF:lepton2gamma = ".$_POST["26"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["27"] != "1")
+{
+$data = "PDF:lepton2gammaSet = ".$_POST["27"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["28"] != "5")
+{
+$data = "PDFinProcess:nQuarkIn = ".$_POST["28"]."\n";
 fwrite($handle,$data);
 }
 fclose($handle);

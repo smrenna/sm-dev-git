@@ -104,10 +104,20 @@ public:
         gzstreambase::open( name, mode);
     }
 };
+
+//==========================================================================
+
 #else
 typedef std::ifstream igzstream;
 typedef std::ofstream ogzstream;
 #endif
+
+// Dummy to avoid harmless compiler warning that Streams.o has no symbols.
+class DummyForStreams {
+public:
+  DummyForStreams() {}
+  double xtox(double x);
+};
 
 //==========================================================================
 

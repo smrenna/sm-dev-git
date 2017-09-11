@@ -11,7 +11,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.228: 29 August 2017 
+<li>8.228: 11 September 2017 
 <ul> 
  
 <li>Christian Bierlich joins as co-author.</li> 
@@ -58,6 +58,22 @@ you have used external PDFs for the MPI description. The native LHAPDF6
 interface already froze at borders, but now optionally allows 
 low-<ei>x</ei> extrapolation. Thanks to Radek Zlebcik.</li> 
  
+<li>Implementation of nuclear PDFs for hard processes. See 
+<code><aloc href="PDFSelection">PDF Selection</aloc></code> for more 
+details.</li> 
+ 
+<li>A new method to provide an external photon flux to study 
+photoproduction with different fluxes. Still optimized for lepton beams, 
+but also other fluxes can be studied. See new sample main program 
+<code>main70.cc</code> for examples.</li> 
+ 
+<li>Improved junction colour tracing to fix some problems e.g. in 
+processes with Baryon Number Violation (BNV). Specifically, it is ensured 
+that in- and out-colours are labelled differently for a particle 
+with a BNV vertex both in production and at decay, to avoid colour 
+lines being shortcut. Thanks to A. Monteyx, M. Buckley and F. Jimenez. 
+</li> 
+ 
 <li>Fix minor (order 5%) normalization error of the impact-parameter 
 enhancement factor for two preselected hard processes in the MPI 
 framework, see <code>Info::enhanceMPIavg()</code>.</li> 
@@ -83,13 +99,23 @@ printed of this limit is exceeded. Thanks to Roberto Franceschini.</li>
 <li>Ensure that the "thermal string fragmentation" is not inadvertently 
 used for Hidden Valley fragmentation.</li> 
  
+<li>Correct so that the <code>TimeShower:MEafterFirst</code> option takes 
+effect in <ei>g &rarr; q qbar</ei> branchings. Does not change the default 
+behaviour. Thanks to Keith Hamilton.</li> 
+ 
 <li>New particle methods <code>y( double mCut)</code> and 
 <code>y(double mCut, RotBstMatrix& M)</code> to calculate rapidity 
 assuming a minimum mass, and optionally after a rotation/boost 
 operation.</li> 
  
+<li>A minor bug fix to set up correctly the internal indices for the 
+initiators from emitted photons. Thanks to Aaron Angerami.</li> 
+ 
 <li>New method <code>RotBstMatrix::value(int i, int j)</code> returns the 
 value stored in the <ei>(i,j)</ei> element of the matrix.</li> 
+ 
+<li>Dummy class added in <code>Streams.h</code> and <code>.cc</code> 
+to avoid harmless warning message.</li> 
  
 <li>PYTHIA author list rearranged alphabetically.</li> 
  
