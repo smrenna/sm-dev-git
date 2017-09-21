@@ -135,8 +135,8 @@ public:
   bool initUncertainties();
 
   // Calculate uncertainty-band weights for accepted/rejected trial branching.
-  void calcUncertainties(bool accept, double pAcceptIn, double pT20in,
-    SpaceDipoleEnd* dip, Particle* motherPtr, Particle* sisterPtr);
+  void calcUncertainties(bool accept, double pAcceptIn, double pT20in, double enhance,
+    double vp, SpaceDipoleEnd* dip, Particle* motherPtr, Particle* sisterPtr);
 
   // Tell if latest scattering was a gamma->qqbar.
   bool wasGamma2qqbar() { return gamma2qqbar; }
@@ -255,7 +255,7 @@ private:
          doSecondHard, canVetoEmission, hasUserHooks, alphaSuseCMW,
          singleWeakEmission, vetoWeakJets, weakExternal, doRapidityOrderMPI,
          doUncertainties, uVarMuSoftCorr, uVarMPIshowers, doMPI, gamma2qqbar,
-         doDipoleRecoil, doPartonVertex;
+         doDipoleRecoil, doPartonVertex, doPDFvarPS;
   int    pTmaxMatch, pTdampMatch, alphaSorder, alphaSnfmax, alphaEMorder,
          nQuarkIn, enhanceScreening, weakMode;
   double pTdampFudge, mc, mb, m2c, m2b, renormMultFac, factorMultFac,
@@ -264,7 +264,7 @@ private:
          ecmRef, ecmPow, pTmin, sCM, eCM, pT0, pTminChgQ, pTminChgL, pT20,
          pT2min, pT2minChgQ, pT2minChgL, pTweakCut, pT2weakCut, pTmaxFudgeMPI,
          strengthIntAsym, weakEnhancement, mZ, gammaZ, thetaWRat, mW, gammaW,
-         weakMaxWt, vetoWeakDeltaR2, dASmax, cNSpTmin;
+         weakMaxWt, vetoWeakDeltaR2, dASmax, cNSpTmin, uVarpTmin2;
 
   // alphaStrong and alphaEM calculations.
   AlphaStrong alphaS;

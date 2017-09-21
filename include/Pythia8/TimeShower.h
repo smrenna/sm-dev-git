@@ -148,7 +148,7 @@ public:
   bool initUncertainties();
 
   // Calculate uncertainty-band weights for accepted/rejected trial branching.
-  void calcUncertainties(bool accept, double pAccept,
+  void calcUncertainties(bool accept, double pAccept, double enhance, double vp, 
     TimeDipoleEnd* dip, Particle* radPtr, Particle* emtPtr);
 
   // Tell which system was the last processed one.
@@ -275,7 +275,7 @@ private:
          pTweakCut, pT2weakCut, mMaxGamma, m2MaxGamma, octetOniumFraction,
          octetOniumColFac, mZ, gammaZ, thetaWRat, mW, gammaW, CFHV, nFlavHV,
          alphaHVfix, LambdaHV, pThvCut, pT2hvCut, mHV, pTmaxFudgeMPI,
-         weakEnhancement, vetoWeakDeltaR2, dASmax, cNSpTmin;
+         weakEnhancement, vetoWeakDeltaR2, dASmax, cNSpTmin, uVarpTmin2;
 
   // alphaStrong and alphaEM calculations.
   AlphaStrong alphaS;
