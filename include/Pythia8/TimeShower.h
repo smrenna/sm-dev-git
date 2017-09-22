@@ -263,7 +263,8 @@ private:
          globalRecoil, useLocalRecoilNow, doSecondHard, hasUserHooks,
          singleWeakEmission, alphaSuseCMW, vetoWeakJets, allowMPIdipole,
          weakExternal, recoilDeadCone, doUncertainties, uVarMuSoftCorr,
-         uVarMPIshowers, doDipoleRecoil, doPartonVertex;
+         uVarMPIshowers, doDipoleRecoil, doPartonVertex, noResVariations,
+         noProcVariations;
   int    pTmaxMatch, pTdampMatch, alphaSorder, alphaSnfmax, nGluonToQuark,
          weightGluonToQuark, alphaEMorder, nGammaToQuark, nGammaToLepton,
          nCHV, idHV, alphaHVorder, nMaxGlobalRecoil, weakMode;

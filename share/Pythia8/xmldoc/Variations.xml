@@ -71,15 +71,18 @@ enter in the reweightings.
 <p/> 
 The following parameters allow one to switch off all
 variations below a fixed threshold.  It is specified in terms of
-a multiplier for the standard cutoff squared.  
+a multiplier for the <code>TimeShower:pTmin</code> squared (FSR) or
+<code>SpaceShower:pT0Ref</code> squared (ISR).
 A separate cutoff can be specified for ISR or FSR:
 <parm name="UncertaintyBands:ISRpTmin2Fac" default="4.0" min="0.0" max="100.0"> 
 Variations will not be performed for ISR branchings 
-occurring below this threshold. 
+occurring below the threshold fixed by
+<code>UncertaintyBands:ISRpTmin2Fac</code> times <code> SpaceShower:pT0Ref^2 </code>. 
 </parm> 
 <parm name="UncertaintyBands:FSRpTmin2Fac" default="4.0" min="0.0" max="100.0"> 
 Variations will not be performed for FSR branchings 
-occurring below this threshold. 
+occurring below the threshold fixed by
+<code>UncertaintyBands:FSRpTmin2Fac</code> times <code> TimeShower:pTmin^2 </code>. 
 </parm> 
 
 <p/>
@@ -88,15 +91,15 @@ viable candidate as PDF.    The following option allows for the calculation
 of a PDF uncertainty using the master formula for each parton shower splitting: 
 <flag name="UncertaintyBands:PDFvarPS" default="off"> 
 Flag specifying whether or not to include PDF variations in the parton shower.
+</flag>
 
 <p/>
 The user can control whether the variations are calculated in all or
 specific stages of the event generation:
-<modepick name="UncertaintyBands:type" default="0" min="0" max="3">
-<option value="0">  Variations are calculated where allowed; </li> 
-<option value="1">   only for the process (including ISR and FSR); </li> 
-<option value="2">   only for resonance decay and showering; </li> 
-<option value="3">   only for showering in MPIs.</li>
+<modepick name="UncertaintyBands:type" default="0" min="0" max="2">
+<option value="0">  Variations are calculated where allowed; </option>
+<option value="1">   only for the process (including ISR and FSR); </option> 
+<option value="2">   only for resonance decay and showering; </option> 
 </modepick> 
 
 <p/> 

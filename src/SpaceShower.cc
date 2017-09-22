@@ -272,7 +272,7 @@ void SpaceShower::init( BeamParticle* beamAPtrIn,
   uVarNflavQ         = settingsPtr->mode("UncertaintyBands:nFlavQ");
   uVarMPIshowers     = settingsPtr->flag("UncertaintyBands:MPIshowers");
   cNSpTmin           = settingsPtr->parm("UncertaintyBands:cNSpTmin");
-  uVarpTmin2         = pT2min;
+  uVarpTmin2         = pow2(pT0Ref);
   uVarpTmin2        *= settingsPtr->parm("UncertaintyBands:FSRpTmin2Fac");  
   doPDFvarPS         = settingsPtr->flag("UncertaintyBands:PDFvarPS");  
   

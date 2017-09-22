@@ -273,7 +273,10 @@ void TimeShower::init( BeamParticle* beamAPtrIn,
   uVarMPIshowers     = settingsPtr->flag("UncertaintyBands:MPIshowers");
   cNSpTmin           = settingsPtr->parm("UncertaintyBands:cNSpTmin");
   uVarpTmin2         = pT2colCut;
-  uVarpTmin2        *= settingsPtr->parm("UncertaintyBands:FSRpTmin2Fac");  
+  uVarpTmin2        *= settingsPtr->parm("UncertaintyBands:FSRpTmin2Fac");
+  int varType        = settingsPtr->mode("UncertaintyBands:type");
+  noResVariations    = (varType == 1) ? true: false;
+  noProcVariations   = (varType == 2) ? true: false;
 
   // Possibility to set parton vertex information.
   doPartonVertex     = settingsPtr->flag("PartonVertex:setVertex")
@@ -3241,16 +3244,24 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
   bool acceptEvent = true;
   if (pAccept < 1.0) acceptEvent = (rndmPtr->flat() < pAccept);
 
+  // Determine if this FSR is part of process or resonance showering
+  bool inResonance = (partonSystemsPtr->getInA(iSysSel) == 0) ? true : false;
+  
   // If doing uncertainty variations, calculate accept/reject reweightings.
   doUncertaintiesNow = doUncertainties;
-  if (!uVarMPIshowers && iSysSel != 0
-    && partonSystemsPtr->getInA(iSysSel) != 0) doUncertaintiesNow = false;
+  // Check if variations are allowed in MPIs
+  if (!uVarMPIshowers && iSysSel != 0 && !inResonance) doUncertaintiesNow = false;
 
-  // alternatively, if not better, no uncertainties in resonance decays
-  if ( partonSystemsPtr->getInA(iSysSel) == 0) doUncertaintiesNow = false;
-  // cutoff for calculating variations
+  // Check if to allow variations in resonance decays  
+  if (noResVariations && inResonance) doUncertaintiesNow = false;
+
+  // Check if to allow variations in process    
+  if (noProcVariations && iSysSel==0 && !inResonance) doUncertaintiesNow = false;
+  
+  // Check if below cutoff for calculating variations
   if( dipSel->pT2 < uVarpTmin2 ) doUncertaintiesNow = false;
 
+  // Early return if allowed
   if(!doUncertaintiesNow && !acceptEvent) return false;
 
   // Rescatter: if the recoiling partner is not in the same system
@@ -3354,7 +3365,6 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
   }
 
   // Allow veto of branching. If so restore event record to before emission.
-  bool inResonance = (partonSystemsPtr->getInA(iSysSel) == 0) ? true : false;
   if ( (canVetoEmission && userHooksPtr->doVetoFSREmission( eventSizeOld,
     event, iSysSel, inResonance))
     || (canMergeFirst && mergingHooksPtr->doVetoEmission( event )) ) {

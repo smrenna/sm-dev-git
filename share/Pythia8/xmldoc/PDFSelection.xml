@@ -279,7 +279,6 @@ then the same PDF set as <code>PDF:pHardSet</code> is used.
  
 <h3>Nuclear modifications of parton densities</h3> 
  
-<p> 
 Nuclear modifications of the PDFs are implemented for the hard-process 
 generation only. The final PDF value is calculated for an average nucleon 
 within given nucleus, i.e. 
@@ -495,19 +494,20 @@ Currently parton-level generation is not included for photon beams.
  
 There are several PDF sets available for photons, although there have not 
 been much activity recently. Currently only one set is included. 
- 
+<p/>
+
 <modepick name="PDF:GammaSet" default="1"> 
 Parton densities that can be used for photon beams. 
 <option value="1"> CJKL, based on <ref>Cor03</ref> but the rescaling 
 for heavy quarks due to kinematic constraints in DIS is undone to obtain 
 correct behaviour for photon-photon collisions.</option> 
+</modepick>
  
 <h3>Parton densities for photons</h3> 
  
 Photon PDFs describe the partonic content of the resolved photons and 
 can be used to generate any process initiated by quarks and gluons. 
- 
-<p/> 
+  
 There are several PDF sets available for photons, although there have not 
 been much activity recently. Currently one internal set is included, but 
 more sets are available from LHAPDF5. The sets from LHAPDF5 can only be 
@@ -515,7 +515,8 @@ used as PDFs in the hard process (see <code>PDF:GammaHardSet</code> below).
 In case of photons the parton shower and beam remnant generation 
 require additional methods that are provided only for internal sets. 
 Currently no photon PDFs have been included in LHAPDF6. 
- 
+<p/>
+
 <modepick name="PDF:GammaSet" default="1" min="1" max="1"> 
 Parton densities that can be used for resolved photon beams. 
 <option value="1"> CJKL, based on <ref>Cor03</ref> but the rescaling 
@@ -593,19 +594,19 @@ user has to provide the external photon flux using method
 sample program <code>main70.cc</code>. </option> 
 </modepick> 
  
-<h3>Incoming parton selection</h3> 
+<h3>Incoming parton selection</h3>
  
-There is one useful degree of freedom to restrict the set of incoming 
-quark flavours for hard processes. It does not change the PDF's as such, 
-only which quarks are allowed to contribute to the hard-process cross 
-sections. Note that separate but similarly named modes are available 
-for multiparton interactions and spacelike showers. 
+There is one useful degree of freedom to restrict the set of incoming
+quark flavours for hard processes. It does not change the PDF's as such,
+only which quarks are allowed to contribute to the hard-process cross
+sections. Note that separate but similarly named modes are available
+for multiparton interactions and spacelike showers.
  
-<modeopen name="PDFinProcess:nQuarkIn" default="5" min="0" max="5"> 
-Number of allowed incoming quark flavours in the beams; a change 
-to 4 would thus exclude <ei>b</ei> and <ei>bbar</ei> as incoming 
-partons, etc. 
-</modeopen> 
+<modeopen name="PDFinProcess:nQuarkIn" default="5" min="0" max="5">
+Number of allowed incoming quark flavours in the beams; a change
+to 4 would thus exclude <ei>b</ei> and <ei>bbar</ei> as incoming
+partons, etc.
+</modeopen>
  
 </chapter> 
  

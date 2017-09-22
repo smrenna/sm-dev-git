@@ -32,7 +32,14 @@ ifneq ("$(wildcard ../lib/libpythia8.*)","")
   PREFIX_INCLUDE=../include
 endif
 CXX_COMMON:=-I$(PREFIX_INCLUDE) $(CXX_COMMON)
+
+ifeq ($(LHAPDF6_USE),true)
+   CXX_COMMON+= -I$(LHAPDF6_INCLUDE)
+   CXX_COMMON+= -L$(LHAPDF6_LIB) -Wl,-rpath,$(LHAPDF6_LIB) -lLHAPDF
+endif
+
 CXX_COMMON+= -L$(PREFIX_LIB) -Wl,-rpath,$(PREFIX_LIB) -lpythia8 -ldl 
+
 
 ################################################################################
 # RULES: Definition of the rules used to build the PYTHIA examples.
