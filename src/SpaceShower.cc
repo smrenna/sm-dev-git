@@ -2711,7 +2711,7 @@ bool SpaceShower::branch( Event& event) {
 
     // Set events weights, so that these could be used externally.
     double wtOld = userHooksPtr->getEnhancedEventWeight();
-    if (!doTrialNow && canEnhanceEmission)
+    if (!doTrialNow && canEnhanceEmission && !doUncertaintiesNow)
       userHooksPtr->setEnhancedEventWeight(wtOld*rwgt);
     if ( doTrialNow && canEnhanceTrial)
       userHooksPtr->setEnhancedTrial(sqrt(pT2), weight);
