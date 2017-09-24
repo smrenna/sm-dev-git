@@ -18,7 +18,6 @@ Currently, the list of available automated variations
 <li> The inclusion of non-singular terms in QCD emissions in FSR; </li> 
 <li> The inclusion of non-singular terms in QCD emissions in ISR. </li>
 <li> The PDF members of a PDF family in LHAPDF6. </li>
-<li> The PDF members of a PDF family in LHAPDF6. </li> 
 </ul> 
 Similar variations would be possible for QED emissions, but these have not 
 yet been implemented. 
@@ -279,16 +278,6 @@ Finally, the keywords for PDF variations (plus and minus) is:
 </ul>
 The number is not used.
 
-
-<p/> 
-Finally, the keywords for PDF variations (plus and minus) is: 
-<ul> 
-  <li><code>isr:PDF:plus</code> : any number </li> 
-  <li><code>isr:PDF:minus</code> : any number </li> 
-</ul> 
-The number is not used. 
- 
- 
 </chapter> 
  
 <!-- Copyright (C) 2017 Torbjorn Sjostrand --> 

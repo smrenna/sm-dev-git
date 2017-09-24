@@ -338,7 +338,6 @@ private:
     varX2XGmuRfac;
   map<int,double> varG2GGcNS, varQ2QGcNS, varQ2GQcNS, varG2QQcNS, varX2XGcNS;
   map<int,double> varPDFplus, varPDFminus;
-
   // Find a possible colour partner in the case of dipole recoil.
   int findColPartner(Event& event, int iSideA, int iSideB, int iSystem);
 
