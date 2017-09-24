@@ -274,7 +274,6 @@ void SpaceShower::init( BeamParticle* beamAPtrIn,
   cNSpTmin           = settingsPtr->parm("UncertaintyBands:cNSpTmin");
   uVarpTmin2         = pow2(pT0Ref);
   uVarpTmin2        *= settingsPtr->parm("UncertaintyBands:FSRpTmin2Fac");  
-  doPDFvarPS         = settingsPtr->flag("UncertaintyBands:PDFvarPS");  
   
   // Possibility to set parton vertex information.
   doPartonVertex     = settingsPtr->flag("PartonVertex:setVertex")
@@ -3026,6 +3025,7 @@ bool SpaceShower::initUncertainties() {
   varQ2GQmuRfac.clear();    varQ2GQcNS.clear();
   varX2XGmuRfac.clear();    varX2XGcNS.clear();
   varG2QQmuRfac.clear();    varG2QQcNS.clear();
+  varPDFplus.clear(); varPDFminus.clear();
 
   // Get uncertainty variations from Settings (as list of strings to parse).
   vector<string> uVars = settingsPtr->wvec("UncertaintyBands:List");
@@ -3056,6 +3056,7 @@ bool SpaceShower::initUncertainties() {
   keys.push_back("isr:Q2GQ:cNS");
   keys.push_back("isr:X2XG:cNS");
   keys.push_back("isr:G2QQ:cNS");
+  keys.push_back("isr:PDF");
 
   // Store number of QCD variations (as separator to QED ones).
   int nKeysQCD=keys.size();
@@ -3112,6 +3113,10 @@ bool SpaceShower::initUncertainties() {
         varX2XGcNS[iWeight] = value;
       if (key == "isr:cns" || key == "isr:g2qq:cns")
         varG2QQcNS[iWeight] = value;
+      if (key == "isr:PDF") {
+	varPDFplus[iWeight] = 1;
+	varPDFminus[iWeight] = 1;
+      }
       // Tell that we found at least one recognized and parseable keyword.
       if (iWord < nKeysQCD) nRecognizedQCD++;
     } // End loop over QCD keywords
@@ -3134,38 +3139,6 @@ void SpaceShower::calcUncertainties(bool accept, double pAccept, double pT20in,
   // Sanity check.
   if (!doUncertainties || !doUncertaintiesNow || nUncertaintyVariations <= 0)
     return;
-
-  // Not sure how to add this in a coherent way:
-  if( doPDFvarPS ) {
-    // Evaluation of new daughter and mother PDF's.
-    double scale2 = (useFixedFacScale) ? fixedFacScale2 : factorMultFac * dip->pT2;
-    double xMother = dip->xMo; // momentum fraction
-    double xDau    = dip->z * xMother;
-    BeamParticle& beam  = (abs(dip->side) == 1) ? *beamAPtr : *beamBPtr;
-    int valSea = (beam[iSysSel].isValence()) ? 1 : 0;
-    if( beam[iSysSel].isUnmatched() ) valSea = 2;
-    
-    beam.calcPDFEnvelope(make_pair(dip->idMother,dip->idDaughter),make_pair(xMother,xDau),scale2,valSea);
-    PDF::PDFEnvelope ratioPDFEnv = beam.getPDFEnvelope();
-    double deltaPDFplus = min(ratioPDFEnv.errplusPDF/ratioPDFEnv.centralPDF,0.5);
-    double deltaPDFminus= min(ratioPDFEnv.errminusPDF/ratioPDFEnv.centralPDF,0.5);
-    double wtPlus0 = 1.0 + deltaPDFplus;
-    double wtMinus0= 1.0 - deltaPDFminus;
-    if( true ) {
-      string numformat = "%12.4e%12.4e%12.4e%12.4e%12.4e\n";  
-      cout << " Debugging PDF variations in SpaceShower " << endl;
-      printf(numformat.c_str(), ratioPDFEnv.centralPDF, wtPlus0, wtMinus0, ratioPDFEnv.errplusPDF/ratioPDFEnv.centralPDF,
-	ratioPDFEnv.errminusPDF/ratioPDFEnv.centralPDF);
-      double xPDFmother   = beam.xfISR(dip->system, dip->idMother, xMother, scale2);
-      double xPDFdaughter = max(TINYPDF,beam.xfISR(dip->system, dip->idDaughter, xDau, scale2));
-      double pdfRatio     = xPDFmother/xPDFdaughter;
-      cout << pdfRatio << " ** " << ratioPDFEnv.centralPDF << " *** " << sqrt(scale2) << endl;
-      // End of debugging
-    }
-  }
-
-
-  
 
   // Define pointer and iterator to loop over the contents of each
   // (iWeight,value) map.
@@ -3268,6 +3241,32 @@ void SpaceShower::calcUncertainties(bool accept, double pAccept, double pT20in,
       // Compute reweight ratio.
       double minReWeight =  max( 1. + num / denom, REJECTFACTOR );
       uVarFac[iWeight] *= minReWeight;
+      doVar[iWeight] = true;
+    }
+    // PDF variations
+    varPtr = &varPDFplus;
+    double wtMinus0(1.0);
+    for (itVar = varPtr->begin(); itVar != varPtr->end(); ++itVar) {
+      int iWeight   = itVar->first;
+      // Evaluation of new daughter and mother PDF's.
+      double scale2 = (useFixedFacScale) ? fixedFacScale2 : factorMultFac * dip->pT2;
+      double xMother = dip->xMo; // momentum fraction
+      double xDau    = dip->z * xMother;
+      BeamParticle& beam  = (abs(dip->side) == 1) ? *beamAPtr : *beamBPtr;
+      int valSea = (beam[iSysSel].isValence()) ? 1 : 0;
+      if( beam[iSysSel].isUnmatched() ) valSea = 2;
+      beam.calcPDFEnvelope(make_pair(dip->idMother,dip->idDaughter),make_pair(xMother,xDau),scale2,valSea);
+      PDF::PDFEnvelope ratioPDFEnv = beam.getPDFEnvelope();
+      double deltaPDFplus = min(ratioPDFEnv.errplusPDF/ratioPDFEnv.centralPDF,0.5);
+      double deltaPDFminus= min(ratioPDFEnv.errminusPDF/ratioPDFEnv.centralPDF,0.5);
+      uVarFac[iWeight] *= 1.0 + deltaPDFplus;
+      doVar[iWeight] = true;      
+      wtMinus0= 1.0 - deltaPDFminus;
+    }
+    varPtr = &varPDFminus;
+    for (itVar = varPtr->begin(); itVar != varPtr->end(); ++itVar) {
+      int iWeight   = itVar->first;
+      uVarFac[iWeight] *= wtMinus0;
       doVar[iWeight] = true;
     }
   }
