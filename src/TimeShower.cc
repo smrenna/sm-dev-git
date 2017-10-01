@@ -4025,7 +4025,7 @@ void TimeShower::calcUncertainties(bool accept, double pAccept, double enhance,
   }
 
   // Apply reject or accept reweighting factors according to input decision.
-  for (int iWeight = 1; iWeight <= nUncertaintyVariations; ++iWeight) {
+  for (int iWeight = 0; iWeight <= nUncertaintyVariations; ++iWeight) {
     if (!doVar[iWeight]) continue;
     // If trial accepted: apply ratio of accept probabilities.
     if (accept) infoPtr->reWeight(iWeight, uVarFac[iWeight]/((1.0-vp)*enhance));
