@@ -130,7 +130,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>PDF*</td>
-<td><a href="ProgramFlow.php#anchor37" target="page">getPDFPtr(...)</a></td>
+<td><a href="ProgramFlow.php#anchor39" target="page">getPDFPtr(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
@@ -2865,6 +2865,12 @@ Many of them are only intended for experts, while undocumented ones are only for
 </tr>
 
 <tr>
+<td> </td>
+<td><a href="RandomNumbers.php#anchor1" target="page">MixMaxRndm::MixMaxRndm(...)</a></td>
+<td>Random Numbers</td>
+</tr>
+
+<tr>
 <td>virtual bool</td>
 <td><a href="MatchingAndMerging.php#anchor28" target="page">MyHardProcess::allowCandidates(...)</a></td>
 <td>Matching And Merging</td>
@@ -4780,49 +4786,55 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>CoupSM</td>
-<td><a href="ProgramFlow.php#anchor44" target="page">Pythia::coupSM</a></td>
+<td><a href="ProgramFlow.php#anchor46" target="page">Pythia::coupSM</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>Event</td>
-<td><a href="ProgramFlow.php#anchor39" target="page">Pythia::event</a></td>
+<td><a href="ProgramFlow.php#anchor41" target="page">Pythia::event</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor33" target="page">Pythia::flag(...)</a></td>
+<td><a href="ProgramFlow.php#anchor35" target="page">Pythia::flag(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor27" target="page">Pythia::forceHadronLevel(...)</a></td>
+<td><a href="ProgramFlow.php#anchor29" target="page">Pythia::forceHadronLevel(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor29" target="page">Pythia::forceRHadronDecays()</a></td>
+<td><a href="ProgramFlow.php#anchor31" target="page">Pythia::forceRHadronDecays()</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ProgramFlow.php#anchor26" target="page">Pythia::forceTimeShower(...)</a></td>
+<td><a href="ProgramFlow.php#anchor28" target="page">Pythia::forceTimeShower(...)</a></td>
+<td>Program Flow</td>
+</tr>
+
+<tr>
+<td>HeavyIons*</td>
+<td><a href="ProgramFlow.php#anchor24" target="page">Pythia::getHeavyIonsPtr()</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>Info</td>
-<td><a href="ProgramFlow.php#anchor40" target="page">Pythia::info</a></td>
+<td><a href="ProgramFlow.php#anchor42" target="page">Pythia::info</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor24" target="page">Pythia::init()</a></td>
+<td><a href="ProgramFlow.php#anchor26" target="page">Pythia::init()</a></td>
 <td>Program Flow</td>
 </tr>
 
@@ -4834,55 +4846,55 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>void</td>
-<td><a href="ProgramFlow.php#anchor30" target="page">Pythia::LHAeventList()</a></td>
+<td><a href="ProgramFlow.php#anchor32" target="page">Pythia::LHAeventList()</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor31" target="page">Pythia::LHAeventSkip(...)</a></td>
+<td><a href="ProgramFlow.php#anchor33" target="page">Pythia::LHAeventSkip(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="ProgramFlow.php#anchor34" target="page">Pythia::mode(...)</a></td>
+<td><a href="ProgramFlow.php#anchor36" target="page">Pythia::mode(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor28" target="page">Pythia::moreDecays()</a></td>
+<td><a href="ProgramFlow.php#anchor30" target="page">Pythia::moreDecays()</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor25" target="page">Pythia::next()</a></td>
+<td><a href="ProgramFlow.php#anchor27" target="page">Pythia::next()</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="ProgramFlow.php#anchor35" target="page">Pythia::parm(...)</a></td>
+<td><a href="ProgramFlow.php#anchor37" target="page">Pythia::parm(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>ParticleData</td>
-<td><a href="ProgramFlow.php#anchor42" target="page">Pythia::particleData</a></td>
+<td><a href="ProgramFlow.php#anchor44" target="page">Pythia::particleData</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>PartonSystems</td>
-<td><a href="ProgramFlow.php#anchor46" target="page">Pythia::partonSystems</a></td>
+<td><a href="ProgramFlow.php#anchor48" target="page">Pythia::partonSystems</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>Event</td>
-<td><a href="ProgramFlow.php#anchor38" target="page">Pythia::process</a></td>
+<td><a href="ProgramFlow.php#anchor40" target="page">Pythia::process</a></td>
 <td>Program Flow</td>
 </tr>
 
@@ -4936,7 +4948,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>Rndm</td>
-<td><a href="ProgramFlow.php#anchor43" target="page">Pythia::rndm</a></td>
+<td><a href="ProgramFlow.php#anchor45" target="page">Pythia::rndm</a></td>
 <td>Program Flow</td>
 </tr>
 
@@ -4949,6 +4961,12 @@ Many of them are only intended for experts, while undocumented ones are only for
 <tr>
 <td>bool</td>
 <td><a href="ProgramFlow.php#anchor15" target="page">Pythia::setDecayPtr(...)</a></td>
+<td>Program Flow</td>
+</tr>
+
+<tr>
+<td>bool</td>
+<td><a href="ProgramFlow.php#anchor23" target="page">Pythia::setHeavyIonsPtr(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
@@ -4972,7 +4990,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
-<td><a href="ProgramFlow.php#anchor23" target="page">Pythia::setPartonVertexPtr(...)</a></td>
+<td><a href="ProgramFlow.php#anchor25" target="page">Pythia::setPartonVertexPtr(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
@@ -5014,7 +5032,7 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>Settings</td>
-<td><a href="ProgramFlow.php#anchor41" target="page">Pythia::settings</a></td>
+<td><a href="ProgramFlow.php#anchor43" target="page">Pythia::settings</a></td>
 <td>Program Flow</td>
 </tr>
 
@@ -5026,19 +5044,19 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>SusyLesHouches</td>
-<td><a href="ProgramFlow.php#anchor45" target="page">Pythia::slha</a></td>
+<td><a href="ProgramFlow.php#anchor47" target="page">Pythia::slha</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="ProgramFlow.php#anchor32" target="page">Pythia::stat()</a></td>
+<td><a href="ProgramFlow.php#anchor34" target="page">Pythia::stat()</a></td>
 <td>Program Flow</td>
 </tr>
 
 <tr>
 <td>string</td>
-<td><a href="ProgramFlow.php#anchor36" target="page">Pythia::word(...)</a></td>
+<td><a href="ProgramFlow.php#anchor38" target="page">Pythia::word(...)</a></td>
 <td>Program Flow</td>
 </tr>
 
@@ -5086,79 +5104,79 @@ Many of them are only intended for experts, while undocumented ones are only for
 
 <tr>
 <td>bool</td>
-<td><a href="RandomNumbers.php#anchor11" target="page">Rndm::dumpState(...)</a></td>
+<td><a href="RandomNumbers.php#anchor12" target="page">Rndm::dumpState(...)</a></td>
 <td>Random Numbers</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="RandomNumbers.php#anchor6" target="page">Rndm::exp()</a></td>
+<td><a href="RandomNumbers.php#anchor7" target="page">Rndm::exp()</a></td>
 <td>Random Numbers</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="RandomNumbers.php#anchor5" target="page">Rndm::flat()</a></td>
+<td><a href="RandomNumbers.php#anchor6" target="page">Rndm::flat()</a></td>
 <td>Random Numbers</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="RandomNumbers.php#anchor8" target="page">Rndm::gauss()</a></td>
+<td><a href="RandomNumbers.php#anchor9" target="page">Rndm::gauss()</a></td>
 <td>Random Numbers</td>
 </tr>
 
 <tr>
 <td>pair&lt;double, double&gt;</td>
-<td><a href="RandomNumbers.php#anchor9" target="page">Rndm::gauss2()</a></td>
+<td><a href="RandomNumbers.php#anchor10" target="page">Rndm::gauss2()</a></td>
 <td>Random Numbers</td>
 </tr>
 
 <tr>
 <td>void</td>
-<td><a href="RandomNumbers.php#anchor4" target="page">Rndm::init(...)</a></td>
+<td><a href="RandomNumbers.php#anchor5" target="page">Rndm::init(...)</a></td>
 <td>Random Numbers</td>
 </tr>
 
 <tr>
 <td>int</td>
-<td><a href="RandomNumbers.php#anchor10" target="page">Rndm::pick(...)</a></td>
+<td><a href="RandomNumbers.php#anchor11" target="page">Rndm::pick(...)</a></td>
 <td>Random Numbers</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="RandomNumbers.php#anchor12" target="page">Rndm::readState(...)</a></td>
+<td><a href="RandomNumbers.php#anchor13" target="page">Rndm::readState(...)</a></td>
 <td>Random Numbers</td>
 </tr>
 
 <tr>
 <td> </td>
-<td><a href="RandomNumbers.php#anchor1" target="page">Rndm::Rndm()</a></td>
+<td><a href="RandomNumbers.php#anchor2" target="page">Rndm::Rndm()</a></td>
 <td>Random Numbers</td>
 </tr>
 
 <tr>
 <td> </td>
-<td><a href="RandomNumbers.php#anchor2" target="page">Rndm::Rndm(...)</a></td>
+<td><a href="RandomNumbers.php#anchor3" target="page">Rndm::Rndm(...)</a></td>
 <td>Random Numbers</td>
 </tr>
 
 <tr>
 <td>bool</td>
-<td><a href="RandomNumbers.php#anchor3" target="page">Rndm::rndmEnginePtr(...)</a></td>
+<td><a href="RandomNumbers.php#anchor4" target="page">Rndm::rndmEnginePtr(...)</a></td>
 <td>Random Numbers</td>
 </tr>
 
 <tr>
 <td>double</td>
-<td><a href="RandomNumbers.php#anchor7" target="page">Rndm::xexp()</a></td>
+<td><a href="RandomNumbers.php#anchor8" target="page">Rndm::xexp()</a></td>
 <td>Random Numbers</td>
 </tr>
 
 <tr>
 <td>virtual double</td>
-<td><a href="RandomNumbers.php#anchor13" target="page">RndmEngine::flat()</a></td>
+<td><a href="RandomNumbers.php#anchor14" target="page">RndmEngine::flat()</a></td>
 <td>Random Numbers</td>
 </tr>
 

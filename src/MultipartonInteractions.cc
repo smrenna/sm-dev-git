@@ -556,6 +556,7 @@ bool MultipartonInteractions::init( bool doMPIinit, int iDiffSysIn,
       else eCM = mGmGmMin * pow( mGmGmMax / mGmGmMin, iStep / (nStep - 1.) );
       sCM = eCM * eCM;
 
+
       // MPI for Diffractive events.
       if (!hasGamma) {
         sigmaND = sigmaPomP * pow( eCM / mPomP, pPomP);
@@ -563,6 +564,15 @@ bool MultipartonInteractions::init( bool doMPIinit, int iDiffSysIn,
           << setprecision(3) << setw(9) << eCM << " GeV and sigmaNorm = "
           << fixed << setw(6) << sigmaND << " mb    | \n";
 
+        // Keep track of pomeron momentum fraction.
+        if ( beamAPtr->id() == 990 && beamBPtr->id() == 990 ) {
+          beamAPtr->xPom(eCM/eCMsave);
+          beamBPtr->xPom(eCM/eCMsave);
+        }
+        else if ( beamAPtr->id() == 990 )
+          beamAPtr->xPom(pow2(eCM/eCMsave));
+        else if ( beamBPtr->id() == 990 )
+          beamBPtr->xPom(pow2(eCM/eCMsave));
       // MPI with photons from leptons.
       } else {
 
@@ -686,6 +696,10 @@ bool MultipartonInteractions::init( bool doMPIinit, int iDiffSysIn,
 
   // End of loop over diffractive/invariant gamma+gamma masses.
   }
+
+  // Reset pomeron momentum fraction.
+  beamAPtr->xPom();
+  beamBPtr->xPom();
 
   // Output details for x-dependent matter profile.
   if (bProfile == 4 && showMPI)

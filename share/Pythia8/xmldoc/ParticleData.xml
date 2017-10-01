@@ -9586,6 +9586,29 @@ The meaning of the various properties and the format used are explained
  <channel onMode="1" bRatio="1.0000000" products="200553 21"/> 
 </particle> 
  
+<particle id="1000020040" name="4He" antiName="4Hebar" 
+          spinType="1" chargeType="6" colType="0" m0="3.7284"> 
+</particle> 
+<particle id="1000030060" name="6Li" antiName="6Libar" 
+          spinType="1" chargeType="9" colType="0" m0="5.6030512"> 
+</particle> 
+<particle id="1000060120" name="12C" antiName="12Cbar" 
+          spinType="1" chargeType="18" colType="0" m0="11.177929"> 
+</particle> 
+<particle id="1000080160" name="16O" antiName="16Obar" 
+          spinType="1" chargeType="24" colType="0" m0="14.899168"> 
+</particle> 
+<particle id="1000290630" name="63Cu" antiName="63Cubar" 
+          spinType="2" chargeType="87" colType="0" m0="58.618646"> 
+</particle> 
+<particle id="1000791970" name="197Au" antiName="197Aubar" 
+          spinType="2" chargeType="237" colType="0" m0="183.47319"> 
+</particle> 
+<particle id="1000822080" name="208Pb" antiName="208Pbbar" 
+          spinType="1" chargeType="246" colType="0" m0="193.72902"> 
+</particle> 
+ 
+ 
 </chapter> 
  
 <!-- Copyright (C) 2017 Torbjorn Sjostrand --> 

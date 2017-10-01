@@ -99,6 +99,9 @@ public:
   // Return the sampled value for x_gamma.
   virtual double xGamma(){ return 1.; }
 
+  // Keep track of pomeron momentum fraction.
+  virtual void xPom(double = -1.0) {}
+
   // Return accurate and approximated photon fluxes and PDFs.
   virtual double xfFlux(int , double , double )   { return 0.; }
   virtual double xfApprox(int , double , double ) { return 0.; }
@@ -495,6 +498,42 @@ private:
 
 //==========================================================================
 
+class PomHISASD : public PDF {
+
+public:
+
+  // Basic constructor
+  PomHISASD(int idBeamIn, PDF* ppdf, Settings & settings,Info* infoPtrIn = 0)
+    : PDF(idBeamIn), pPDFPtr(ppdf), xPomNow(-1.0), hixpow(4.0) {
+    infoPtr = infoPtrIn; hixpow = settings.parm("PDF:PomHixSupp"); }
+
+  // Delete also the proton PDF
+  ~PomHISASD() { delete pPDFPtr; }
+
+  // (re-)Set the x_pomeron value.
+  void xPom(double xpom = -1.0) { xPomNow = xpom; }
+
+private:
+
+  // The proton PDF.
+  PDF* pPDFPtr;
+
+  // The momenum fraction if the corresponding pomeron .
+  double xPomNow;
+
+  // The high-x suppression power.
+  double hixpow;
+
+  // Report possible errors.
+  Info* infoPtr;
+
+  // Update PDF values.
+  void xfUpdate(int , double x, double Q2);
+
+};
+
+//==========================================================================
+
 // Gives electron (or muon, or tau) parton distribution.
 
 class Lepton : public PDF {
@@ -783,7 +822,7 @@ private:
 
 // The LHAGrid1 can be used to read files in the LHAPDF6 lhagrid1 format,
 // assuming that the same x grid is used for all Q subgrids.
-// Results are not identical with LHAPDF6, owing do different interpolation.
+// Results are not identical with LHAPDF6, owing to different interpolation.
 
 class LHAGrid1 : public PDF {
 

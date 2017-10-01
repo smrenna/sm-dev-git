@@ -29,7 +29,7 @@ echo "<font color='red'>NO FILE SELECTED YET.. PLEASE DO SO </font><a href='Save
  
 <h2>HepMC Interface</h2> 
  
-An interface to the HepMC [<a href="Bibliography.php" target="page">Dob01</a>] standard event record 
+An interface to the HepMC [<a href="Bibliography.php#refDob01" target="page">Dob01</a>] standard event record 
 format has been provided by M. Kirsanov. The code is stored in 
 <code>include/Pythia8Plugins/HepMC2.h</code>. To use it, 
 the relevant libraries need to be linked, as explained in the 

@@ -30,15 +30,15 @@ echo "<font color='red'>NO FILE SELECTED YET.. PLEASE DO SO </font><a href='Save
 <h2>Spacelike Showers</h2> 
  
 The PYTHIA algorithm for spacelike initial-state showers is 
-based on the article [<a href="Bibliography.php" target="page">Sjo05</a>], where a 
+based on the article [<a href="Bibliography.php#refSjo05" target="page">Sjo05</a>], where a 
 transverse-momentum-ordered backwards evolution scheme is introduced, 
 with the extension to fully interleaved evolution covered in 
-[<a href="Bibliography.php" target="page">Cor10a</a>]. 
+[<a href="Bibliography.php#refCor10a" target="page">Cor10a</a>]. 
 This algorithm is a further development of the virtuality-ordered one 
-presented in [<a href="Bibliography.php" target="page">Sjo85</a>], with matching to first-order matrix 
+presented in [<a href="Bibliography.php#refSjo85" target="page">Sjo85</a>], with matching to first-order matrix 
 element for <i>Z^0</i>, <i>W^+-</i> and Higgs (in the 
 <i>m_t &rarr; infinity</i> limit) production as introduced in 
-[<a href="Bibliography.php" target="page">Miu99</a>]. 
+[<a href="Bibliography.php#refMiu99" target="page">Miu99</a>]. 
  
 <p/> 
 The normal user is not expected to call <code>SpaceShower</code> 
@@ -319,7 +319,7 @@ Each MPI is ordered separately from the others.
 By default the recoil of an ISR emission is taken by the whole final 
 state. The option below gives an alternative approach with local recoils, 
 where only one final-state parton takes the recoil of an emission. 
-See [<a href="Bibliography.php" target="page">Cab17</a>] for further details on the philosophy and 
+See [<a href="Bibliography.php#refCab17" target="page">Cab17</a>] for further details on the philosophy and 
 implementation. 
  
 <p/> 
@@ -478,7 +478,7 @@ evaluation of parton densities if the <code>flag</code> above is on.
 <h3>Technical notes</h3> 
  
 Almost everything is equivalent to the algorithm in 
-[<a href="Bibliography.php" target="page">Sjo05,Cor10a</a>]. Minor changes are as follows. 
+[<a href="Bibliography.php#refSjo05" target="page">Sjo05</a>,<a href="Bibliography.php#refCor10a" target="page">Cor10a</a>]. Minor changes are as follows. 
 <ul> 
 <li> 
 It is now possible to have a second-order running <i>alpha_s</i>, 

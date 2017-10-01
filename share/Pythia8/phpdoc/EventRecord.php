@@ -59,7 +59,7 @@ history tracing works as could be expected. That way unassigned mother
 and daughter indices can be put 0 without ambiguity. Depending on the 
 task at hand, a loop may therefore start at index 1 rather than 0 
 without any loss. Specifically, for translation to other event record 
-formats such as HepMC [<a href="Bibliography.php" target="page">Dob01</a>], where the first index is 1, the 
+formats such as HepMC [<a href="Bibliography.php#refDob01" target="page">Dob01</a>], where the first index is 1, the 
 Pythia entry 0 definitely ought to be skipped in order to minimize the 
 danger of indexing errors. 
  
@@ -166,7 +166,7 @@ so far, so that new ones do not clash.
 <br/><br/><table><tr><td><strong>Event:startColTag  </td><td></td><td> <input type="text" name="1" value="100" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>100</strong></code>; <code>minimum = 0</code>; <code>maximum = 1000</code>)</td></tr></table>
 This sets the initial colour tag value used, so that the first one 
 assigned is <code>startColTag + 1</code>, etc. The Les Houches accord 
-[<a href="Bibliography.php" target="page">Boo01</a>] suggests this number to be 500, but 100 works equally 
+[<a href="Bibliography.php#refBoo01" target="page">Boo01</a>] suggests this number to be 500, but 100 works equally 
 well. 
    
  

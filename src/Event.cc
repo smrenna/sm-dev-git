@@ -710,7 +710,7 @@ void Event::list(bool showScaleAndVertex, bool showMothersAndDaughters,
   // Header.
   cout << "\n --------  PYTHIA Event Listing  " << headerList << "----------"
        << "-------------------------------------------------\n \n    no    "
-       << "    id   name            status     mothers   daughters     colou"
+       << "     id  name            status     mothers   daughters     colou"
        << "rs      p_x        p_y        p_z         e          m \n";
   if (showScaleAndVertex)
     cout << "                                    scale         pol          "
@@ -728,7 +728,7 @@ void Event::list(bool showScaleAndVertex, bool showMothersAndDaughters,
     const Particle& pt = entry[i];
 
     // Basic line for a particle, always printed.
-    cout << setw(6) << i << setw(10) << pt.id() << "   " << left
+    cout << setw(6) << i << setw(11) << pt.id() << "  " << left
          << setw(18) << pt.nameWithStatus(18) << right << setw(4)
          << pt.status() << setw(6) << pt.mother1() << setw(6)
          << pt.mother2() << setw(6) << pt.daughter1() << setw(6)

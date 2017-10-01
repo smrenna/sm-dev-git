@@ -32,7 +32,7 @@ echo "<font color='red'>NO FILE SELECTED YET.. PLEASE DO SO </font><a href='Save
  
 This manual page describes the parton-jet matching interfaces for 
 PYTHIA8. In this approach, usually referred to as MLM matching 
-[<a href="Bibliography.php" target="page">Man02, Man07</a>], the final jets after parton-shower evolution 
+[<a href="Bibliography.php#refMan02" target="page">Man02</a>, <a href="Bibliography.php#refMan07" target="page">Man07</a>], the final jets after parton-shower evolution 
 and jet clustering are matched to the original partons. The event is 
 accepted if a reasonable match is found, and rejected if not. The 
 rejection step in an approximate way introduces a Sudakov form factor 
@@ -40,8 +40,8 @@ on to the hard processes. Notably the parton shower should not generate
 an emission that would doublecount hard activity already included in 
 the matrix-element description. Within this general ansatz, different 
 technical solutions can be adopted. We provide two alternatives, one 
-based on the algorithm used in ALPGEN [<a href="Bibliography.php" target="page">Man03</a>], and another on 
-the one used in Madgraph [<a href="Bibliography.php" target="page">Alw11</a>], both reimplemented from 
+based on the algorithm used in ALPGEN [<a href="Bibliography.php#refMan03" target="page">Man03</a>], and another on 
+the one used in Madgraph [<a href="Bibliography.php#refAlw11" target="page">Alw11</a>], both reimplemented from 
 scratch here. The main points of these two algorithms are outlined 
 further down on this page. 
  
@@ -291,7 +291,7 @@ The <i>coneMatchHeavy</i> parameter used when
 <input type="radio" name="12" value="off" checked="checked"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
 This switch changes the merging prescription to the shower-kT matching scheme 
-outlined in [<a href="Bibliography.php" target="page">Alw08</a>]. This scheme differs from "classical" MLM jet 
+outlined in [<a href="Bibliography.php#refAlw08" target="page">Alw08</a>]. This scheme differs from "classical" MLM jet 
 matching with respect to when the matching veto is checked. The shower-kT 
 scheme considers already immediately after the first shower emission if an 
 event should be discarded. A detailed comparison of the "classical" MLM 
@@ -332,7 +332,7 @@ to perform the necessary vetoes.
  
 <p/> 
 A preliminary implementation of the FxFx prescription for combining multiple 
-NLO calculations [<a href="Bibliography.php" target="page">Fre12</a>] is available. We would like to stress that 
+NLO calculations [<a href="Bibliography.php#refFre12" target="page">Fre12</a>] is available. We would like to stress that 
 this implementation is still undergoing validation. FxFx merging with aMC@NLO 
 shares most parameters with the leading-order (MadGraph-style) MLM 
 prescriptions and can be activated by using the three additional settings 
@@ -363,7 +363,7 @@ differ from the matching scale.
 <h2>Alpgen-style parton-jet matching and merging</h2> 
  
 This section describes the Alpgen-style MLM merging algorithm for PYTHIA8. 
-The most common reference to the algorithm is [<a href="Bibliography.php" target="page">Man02</a>]. In many 
+The most common reference to the algorithm is [<a href="Bibliography.php#refMan02" target="page">Man02</a>]. In many 
 respects, however, the implementation provided in the ALPGEN package should 
 be considered the official description of the MLM merging procedure. 
 Although designed primarily to work with events generated with ALPGEN, it 
@@ -429,7 +429,7 @@ system (ignoring all MPI systems) is then analysed:
         partons. If such a particle is clustered into a jet, the parton 
         and jet are considered to match. The idea of "ghost" particles 
         was originally introduced by FastJet as a way to measure jet 
-        areas [<a href="Bibliography.php" target="page">Cac06</a>] and should not affect clustering with an 
+        areas [<a href="Bibliography.php#refCac06" target="page">Cac06</a>] and should not affect clustering with an 
         infrared-safe jet algorithm. 
       </li> 
     </ul> 

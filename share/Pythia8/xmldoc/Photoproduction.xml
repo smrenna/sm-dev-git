@@ -261,7 +261,7 @@ restrictive unless a very small angle is used.
 As above but for lepton B. 
 </parm> 
  
-<flag name="Photon:sampleQ2" default = "on"> 
+<flag name="Photon:sampleQ2" default="on"> 
 Determines whether the sampling for the photon virtuality is done. This can 
 be used only with <code>PDF:lepton2gammaSet = 2</code> option where 
 <ei>Q^2</ei>-integrated photon is provided by the user with 

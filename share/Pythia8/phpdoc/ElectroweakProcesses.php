@@ -237,7 +237,7 @@ Code 225.
 Note that, in the decay of the two vector bosons produced by an 
 <i>f fbar &rarr; V V</i> process, the full four-fermion correlations 
 from the leading-order <i>f fbar &rarr; V V &rarr; 4f</i> matrix elements 
-are included [<a href="Bibliography.php" target="page">Gun86</a>] (with some extensions by the authors). 
+are included [<a href="Bibliography.php#refGun86" target="page">Gun86</a>] (with some extensions by the authors). 
 The matrix elements are provided in the double-resonant approach, i.e. 
 excludes graph like 
 <i>f fbar &rarr; V &rarr; f fbar &rarr; f fbar V &rarr; 4f</i>. 

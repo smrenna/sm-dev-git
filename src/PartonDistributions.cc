@@ -2212,6 +2212,35 @@ void PomH1Jets::xfUpdate(int , double x, double Q2) {
 
 //==========================================================================
 
+void PomHISASD::xfUpdate(int, double x, double Q2) {
+
+  // Check that pomeron momentum fraction is available.
+  if ( xPomNow < 0.0 || xPomNow > 1.0 || !pPDFPtr )
+    printErr("Error in PonHISASD::xfUpdate: no xPom available.");
+
+  double xx = xPomNow*x;
+
+  double fac = pow(1.0 - x, hixpow)/log(1.0/xx);
+
+  xd = xdbar = fac*pPDFPtr->xfSea(1, xx, Q2);
+  xu = xubar = fac*pPDFPtr->xfSea(2, xx, Q2);
+  xs = xsbar = fac*pPDFPtr->xfSea(3, xx, Q2);
+  xc = fac*pPDFPtr->xfSea(4, xx, Q2);
+  xb = fac*pPDFPtr->xfSea(5, xx, Q2);
+  xg = fac*pPDFPtr->xfSea(21, xx, Q2);
+  xlepton = xgamma = 0.0;
+  // Subdivision of valence and sea.
+  xuVal = 0.;
+  xuSea = xu;
+  xdVal = 0.;
+  xdSea = xd;
+  // idSav = 9 to indicate that all flavours reset.
+  idSav = 9;
+
+}
+
+//==========================================================================
+
 // Gives electron (or muon, or tau) parton distribution.
 
 // Constants: alphaEM(0), m_e, m_mu, m_tau.

@@ -29,7 +29,7 @@ echo "<font color='red'>NO FILE SELECTED YET.. PLEASE DO SO </font><a href='Save
  
 <h2>HelacOnia Processes</h2> 
  
-HelacOnia [<a href="Bibliography.php" target="page">Sha15</a>] is an external package which provides 
+HelacOnia [<a href="Bibliography.php#refSha15" target="page">Sha15</a>] is an external package which provides 
 automated calculations for heavy quarkonia production using NRQCD, 
 similar in style to <?php $filepath = $_GET["filepath"];
 echo "<a href='MadGraph5Processes.php?filepath=".$filepath."' target='page'>";?>MadGraph5</a> 

@@ -437,6 +437,22 @@ derive from the <code>TimeShower</code> base class, and
 <code>spacePtr</code> from <code>SpaceShower</code>. 
 </li> 
  
+<p/> 
+<li> 
+With even bigger expertise you can plug in your own 
+<aloc href="HeavyIons">Heavy Ions</aloc> generator, to replace the 
+default Angantyr one, with 
+<pre> 
+      pythia.setHeavyIonsPtr( heavyIonsPtr); 
+</pre> 
+Maybe more useful is the possibility to get back a pointer to the 
+generator used, e.g. to probe various quantities that are not 
+available with the normal Pythia methods: 
+<pre> 
+      pythia.getHeavyIonsPtr(); 
+</pre> 
+</li> 
+ 
 </ol> 
  
 <p/> 
@@ -888,6 +904,24 @@ the default value 0 then the internal shower routine will be used.
 <note>Note:</note> The method currently always returns true. 
 </method> 
  
+<method name="bool Pythia::setHeavyIonsPtr( HeavyIons* heavyIonsPtr)"> 
+offers the possibility to feed in an external Heavy Ion generator that 
+can use the internal <code>Pythia</code> machinery for its tasks, 
+see further <aloc href="HeavyIons">here</aloc>. 
+<argument name="heavyIonsPtr"> 
+pointer to a <code>HeavyIons</code>-derived object for doing 
+Heavy Ions collisions. 
+</argument> 
+<note>Note:</note> The method currently always returns true. 
+</method> 
+ 
+<method name="HeavyIons* Pythia::getHeavyIonsPtr()"> 
+gives access to the current <aloc href="HeavyIons">Heavy Ions</aloc> 
+generator, either the default internal Angantyr one or an external 
+one fed in by the method above this. This way a number of further 
+event properties can be interrogated. 
+</method> 
+ 
 <method name="bool Pythia::setPartonVertexPtr( PartonVertex* 
 partonVertexPtrIn)"> 
 offers the possibility to set production vertices for the MPI, 
@@ -1094,7 +1128,7 @@ the name of the variable to be read.
 <h3>Get a PDF set</h3> 
  
 <code>Pythia</code> contains an number of parton density sets 
-internally, plus an interface to LHAPDF. With the method below, 
+internally, plus an interface to LHAPDF (5 or 6). With the method below, 
 this machinery is also made available for external usage. 
  
 <method name="PDF* getPDFPtr(int id, int sequence = 1)"> 

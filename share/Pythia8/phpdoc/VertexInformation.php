@@ -77,7 +77,7 @@ Choice between alternative procedures to select vertex.
 <br/><br/><table><tr><td><strong>PartonVertex:ProtonRadius </td><td></td><td> <input type="text" name="3" value="0.7" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.7</strong></code>; <code>minimum = 0.</code>; <code>maximum = 10.</code>)</td></tr></table>
 The proton radius and shape depends on collision energy. At LHC collision 
 energies, say 14 TeV, the profile corresponds roughly to a Gaussian with 
-a with of around 0.7 fm, according to the DIPSY model [<a href="Bibliography.php" target="page">Fle11</a>]. 
+a with of around 0.7 fm, according to the DIPSY model [<a href="Bibliography.php#refFle11" target="page">Fle11</a>]. 
    
  
 <br/><br/><table><tr><td><strong>PartonVertex:EmissionWidth </td><td></td><td> <input type="text" name="4" value="0.1" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.1</strong></code>; <code>minimum = 0.</code>; <code>maximum = 10.</code>)</td></tr></table>

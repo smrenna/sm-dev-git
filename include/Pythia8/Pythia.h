@@ -10,8 +10,8 @@
 #define Pythia8_Pythia_H
 
 // Version number defined for use in macros and for consistency checks.
-#define PYTHIA_VERSION 8.228
-#define PYTHIA_VERSION_INTEGER 8228
+#define PYTHIA_VERSION 8.229
+#define PYTHIA_VERSION_INTEGER 8229
 
 // Header files for the Pythia class and for what else the user may need.
 #include "Pythia8/Analysis.h"
@@ -49,6 +49,9 @@
 namespace Pythia8 {
 
 //==========================================================================
+
+// Forward declaration of HeavyIons class.
+class HeavyIons;
 
 // The Pythia class contains the top-level routines to generate an event.
 
@@ -162,6 +165,14 @@ public:
     { timesDecPtr = timesDecPtrIn; timesPtr = timesPtrIn;
     spacePtr = spacePtrIn; return true;}
 
+  // Possibility to pass in pointer for modelling of heavy ion collisions.
+  bool setHeavyIonsPtr( HeavyIons* heavyIonsPtrIn)
+    { heavyIonsPtr = heavyIonsPtrIn; return true;}
+
+  // Possibility to get the pointer to a object modelling heavy ion
+  // collisions.
+  HeavyIons* getHeavyIonsPtr() { return heavyIonsPtr;}
+
   // Possibility to pass in pointer for setting of parton space-time vertices.
   bool setPartonVertexPtr( PartonVertex* partonVertexPtrIn)
     { partonVertexPtr = partonVertexPtrIn; return true;}
@@ -241,6 +252,9 @@ public:
   // Pointer to MergingHooks object for user interaction with the merging.
   // MergingHooks also more generally steers the matrix element merging.
   MergingHooks*  mergingHooksPtr;
+
+  // Pointer to a HeavyIons object for generating heavy ion collisions
+  HeavyIons* heavyIonsPtr;
 
   // The two incoming beams.
   BeamParticle beamA;
@@ -390,6 +404,9 @@ private:
 
   // The RHadrons class is used both at PartonLevel and HadronLevel.
   RHadrons   rHadrons;
+
+  // Flags for handling generation of heavy ion collisons.
+  bool        hasHeavyIons, hasOwnHeavyIons, doHeavyIons;
 
   // Write the Pythia banner, with symbol and version information.
   void banner();

@@ -130,7 +130,7 @@ R-hadron has passed through part of the detector, and changed its
 momentum and quite possibly its flavour content before it is to 
 decay. Then normal decays should be switched off, and the R-hadron 
 tracked through matter by a program like GEANT 
-[<a href="Bibliography.php" target="page">Kra04,Mac07</a>]. After that, the new R-hadron info can be 
+[<a href="Bibliography.php#refKra04" target="page">Kra04</a>,<a href="Bibliography.php#refMac07" target="page">Mac07</a>]. After that, the new R-hadron info can be 
 overwritten into the event record and the 
 <code>Pythia::forceRHadronDecay()</code> method can be called 
 to force this modified R-hadron to decay. 

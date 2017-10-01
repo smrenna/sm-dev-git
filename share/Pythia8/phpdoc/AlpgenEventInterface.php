@@ -30,7 +30,7 @@ echo "<font color='red'>NO FILE SELECTED YET.. PLEASE DO SO </font><a href='Save
  
 <h2>ALPGEN Event Interface</h2> 
  
-This manual page describes the ALPGEN [<a href="Bibliography.php" target="page">Man03</a>] event interface 
+This manual page describes the ALPGEN [<a href="Bibliography.php#refMan03" target="page">Man03</a>] event interface 
 for PYTHIA8.   While future versions of 
 ALPGEN will be able to write out events in LHEF format, previous 
 versions always output events in an ALPGEN native format (a combination 
@@ -42,7 +42,7 @@ the ALPGEN-style parton-jet matching <code>JetMatchingAlpgen</code>
 described on the <?php $filepath = $_GET["filepath"];
 echo "<a href='JetMatching.php?filepath=".$filepath."' target='page'>";?>Jet Matching</a> 
 page. However, it will also work with a implementation of the 
-Madgraph-style [<a href="Bibliography.php" target="page">Alw11</a>] parton-jet matching 
+Madgraph-style [<a href="Bibliography.php#refAlw11" target="page">Alw11</a>] parton-jet matching 
 <code>JetMatchingMadgraph</code> also described on the 
 <?php $filepath = $_GET["filepath"];
 echo "<a href='JetMatching.php?filepath=".$filepath."' target='page'>";?>Jet Matching</a> page. 

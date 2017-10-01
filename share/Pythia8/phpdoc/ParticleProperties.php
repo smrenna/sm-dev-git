@@ -63,7 +63,7 @@ information:
 <a name="anchor1"></a>
 <p/><strong>int Particle::id() &nbsp;</strong> <br/>
 the identity of a particle, according to the PDG particle codes 
-[<a href="Bibliography.php" target="page">Yao06</a>]. 
+[<a href="Bibliography.php#refYao06" target="page">Yao06</a>]. 
    
  
 <a name="anchor2"></a>
@@ -338,7 +338,7 @@ information).
    
 <a name="anchor8"></a>
 <strong>int Particle::acol() &nbsp;</strong> <br/>
-the colour and anticolour tags, Les Houches Accord [<a href="Bibliography.php" target="page">Boo01</a>] 
+the colour and anticolour tags, Les Houches Accord [<a href="Bibliography.php#refBoo01" target="page">Boo01</a>] 
 style (starting from tag 101 by default, see below). 
 <br/><b>Note:</b> in the preliminary implementation of colour sextets 
 (exotic BSM particles) that exists since PYTHIA 8.150, a negative 

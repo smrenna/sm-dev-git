@@ -92,6 +92,16 @@ MRST/MSTW group that have been implemented.</li>
 CTEQ/CT group that have been implemented.</li> 
 <li><code>NNPDF</code> gives four distributions from the NNPDF 2.3 
 QCD+QED sets that have been implemented.</li> 
+<li><code>LHAGrid1</code> can read and use files in the LHAPDF6 lhagrid1 
+format, assuming that the same x grid is used for all Q subgrids. 
+Results are not exactly identical with LHAPDF6, owing to different 
+interpolation.</li> 
+<li><code>nPDF, Isospin, EPS09</code> three classes allowing to introduce 
+nuclear modifications to a specified proton PDF. The first is base class 
+for the other two, where <code>Isospin</code> only provides the 
+appropriate mix of protons and isospin-conjugate neutrons, while 
+<code>EPS09</code> also contains nuclear modification factors 
+<ref>Esk09</ref>.</li> 
 </ul> 
 The current default is NNPDF 2.3. 
  
@@ -115,10 +125,12 @@ parametrizations.</li>
 For photons: 
 <ul> 
 <li><code>CJKL</code> gives the CJKL parametrization <ref>Cor03</ref>.</li> 
+<li><code>GammaPoint</code> gives the trivial distribution of a 
+pointlike (i.e. unresolved) photon.</li> 
 </ul> 
  
 <p/> 
-For charged leptons (e, mu, tau): 
+For charged leptons (e, mu, tau) and the proton: 
 <ul> 
 <li><code>Lepton</code> gives a QED parametrization <ref>Kle89</ref>. 
 In QED there are not so many ambiguities, so here one set should be 
@@ -130,8 +142,13 @@ made to vanish for <ei>x > 1 - 10^{-10}</ei>, and scaled up in the range
 total area under the pdf is preserved.</li> 
 <li><code>LeptonPoint</code> gives the trivial distribution of a 
 pointlike (i.e. unresolved) charged lepton.</li> 
+<li><code>EPAexternal</code> provides an external photon flux to study 
+photoproduction with different fluxes. Still optimized for lepton beams, 
+but also other fluxes can be studied.</li> 
 <li><code>Lepton2gamma</code> gives the convolution between photon 
 flux from leptons and photon PDFs.</li> 
+<li><code>ProtonPoint</code> gives the equivalent photon spectrum 
+of an unresolved proton.</li> 
 </ul> 
  
 <p/> 

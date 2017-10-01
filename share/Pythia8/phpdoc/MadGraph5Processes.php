@@ -30,7 +30,7 @@ echo "<font color='red'>NO FILE SELECTED YET.. PLEASE DO SO </font><a href='Save
 <h2>MadGraph5 Processes</h2> 
  
 Here we will describe two special ways to make use of MadGraph5 and 
-MadGraph5_aMC@NLO [<a href="Bibliography.php" target="page">Alw11,Alw14</a>]inside PYTHIA, either by exporting 
+MadGraph5_aMC@NLO [<a href="Bibliography.php#refAlw11" target="page">Alw11</a>,<a href="Bibliography.php#refAlw14" target="page">Alw14</a>]inside PYTHIA, either by exporting 
 Madgraph process code or by wrapping the MadGraph5_aMC@NLO generator as 
 a PYTHIA Les Houches interface. 
  
@@ -135,11 +135,11 @@ command line interface.</li>
 Note that in order for PYTHIA 8 to be able to automatically decay any 
 new particles, it is necessary to specify the branching ratios of the 
 particles in the <code>param_card</code> file, see 
-[<a href="Bibliography.php" target="page">Ska04,Alw07</a>] for details. 
+[<a href="Bibliography.php#refSka04" target="page">Ska04</a>,<a href="Bibliography.php#refAlw07" target="page">Alw07</a>] for details. 
  
 <p/> 
 For further technical details, please see the MadGraph5 release paper 
-[<a href="Bibliography.php" target="page">Alw11</a>] and the 
+[<a href="Bibliography.php#refAlw11" target="page">Alw11</a>] and the 
 <?php $filepath = $_GET["filepath"];
 echo "<a href='SemiInternalProcesses.php?filepath=".$filepath."' target='page'>";?>semi-internal</a> processes page. 
  
@@ -153,7 +153,7 @@ PYTHIA processes, and that one needs to regenerate and store large LHEF
 files for different  kinematics cuts or parameter values. 
  
 <p/> 
-Please cite the MadGraph5 release paper [<a href="Bibliography.php" target="page">Alw11</a>] if you use 
+Please cite the MadGraph5 release paper [<a href="Bibliography.php#refAlw11" target="page">Alw11</a>] if you use 
 MadGraph5 to generate process libraries for PYTHIA 8. 
  
 <h3>MadGraph5_aMC@NLO executable inside PYTHIA</h3> 

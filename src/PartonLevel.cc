@@ -1599,6 +1599,12 @@ void PartonLevel::setupResolvedDiff( Event& process) {
   beamAPtr->newPzE(  pzDiff, eDiffA);
   beamBPtr->newPzE( -pzDiff, eDiffB);
 
+  // Keep track of pomeron momentum fraction.
+  if ( beamAPtr->id() == 990 )
+    beamAPtr->xPom(pow2(mDiff/eCMsave));
+  if ( beamBPtr->id() == 990 )
+    beamBPtr->xPom(pow2(mDiff/eCMsave));
+
   // Beams not found in normal slots 1 and 2.
   int beamOffset = (sizeEvent > 0) ? sizeEvent - 1 : 4;
 
@@ -1644,6 +1650,9 @@ void PartonLevel::leaveResolvedDiff( int iHardLoop, Event& process,
   infoPtr->setECM( eCMsave);
   beamAPtr->newPzE( event[1].pz(), event[1].e());
   beamBPtr->newPzE( event[2].pz(), event[2].e());
+  // Keeping track of pomeron momentum fraction.
+  beamAPtr->xPom();
+  beamBPtr->xPom();
 
   // Restore beam pointers to incoming hadrons.
   beamAPtr = beamHadAPtr;

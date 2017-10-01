@@ -19,11 +19,13 @@
 #include <sstream>
 #include <fstream>
 #include <string.h>
+#ifdef GZIPSUPPORT
+#include <zlib.h>
+#endif
 
 namespace Pythia8 {
 
 #ifdef GZIPSUPPORT
-#include <zlib.h>
 
 //==========================================================================
 

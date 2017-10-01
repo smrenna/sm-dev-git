@@ -29,13 +29,13 @@ echo "<font color='red'>NO FILE SELECTED YET.. PLEASE DO SO </font><a href='Save
  
 <h2>Les Houches Accord</h2> 
  
-The Les Houches Accord (LHA) for user processes [<a href="Bibliography.php" target="page">Boo01</a>] is the 
+The Les Houches Accord (LHA) for user processes [<a href="Bibliography.php#refBoo01" target="page">Boo01</a>] is the 
 standard way to input parton-level information from a 
 matrix-elements-based generator into PYTHIA. The conventions for 
 which information should be stored has been defined in a Fortran context, 
 as two commonblocks. Here a C++ equivalent is defined, as a single class. 
 The most common application is to read input from a Les Houches Event File 
-(LHEF) [<a href="Bibliography.php" target="page">Alw06</a>], but it is also possible to have a runtime 
+(LHEF) [<a href="Bibliography.php#refAlw06" target="page">Alw06</a>], but it is also possible to have a runtime 
 interface to another program. 
  
 <p/> 
@@ -132,7 +132,7 @@ sets the event weighting and cross section strategy. The default,
 provided in the class constructor, is 3, which is the natural value 
 e.g. for an LHEF. 
 <br/><code>argument</code><strong> strategy </strong>  :  
-chosen strategy (cf. <code>IDWTUP</code>; see [<a href="Bibliography.php" target="page">Sjo06</a>] 
+chosen strategy (cf. <code>IDWTUP</code>; see [<a href="Bibliography.php#refSjo06" target="page">Sjo06</a>] 
 section 9.9.1 for extensive comments). 
 <br/><code>argumentoption </code><strong> 1</strong> :  events come with non-negative weight, given in units 
 of pb, with an average that converges towards the cross section of the 
@@ -469,7 +469,7 @@ the flavour and <i>x</i> values of the two initiators.
    
  
 <p/> 
-In the LHEF description [<a href="Bibliography.php" target="page">Alw06</a>] an extension to 
+In the LHEF description [<a href="Bibliography.php#refAlw06" target="page">Alw06</a>] an extension to 
 include information on the parton densities of the colliding partons 
 is suggested. This optional further information can be set by 
 <a name="anchor58"></a>
@@ -724,7 +724,7 @@ the <i>+-z</i> axis; else the kinematics construction will fail.
  
 <h3>An interface to Les Houches Event Files</h3> 
  
-The LHEF standard ([<a href="Bibliography.php" target="page">Alw06</a>], [<a href="Bibliography.php" target="page">But14</a>]) specifies a format 
+The LHEF standard ([<a href="Bibliography.php#refAlw06" target="page">Alw06</a>], [<a href="Bibliography.php#refBut14" target="page">But14</a>]) specifies a format 
 where a single file packs initialization and event information. This has 
 become the most frequently used procedure to process external parton-level 
 events in Pythia. To access this, you must set 
@@ -754,7 +754,7 @@ with the beams assigned code 0, and optionally a number of specified
 "processes". 
  
 <p/> 
-The latest update of the LHEF format [<a href="Bibliography.php" target="page">But14</a>] introduced a 
+The latest update of the LHEF format [<a href="Bibliography.php#refBut14" target="page">But14</a>] introduced a 
 multitude of different optional features. This means that apart 
 from the <code>&lt;init&gt;</code> and <code>&lt;event&gt;</code> 
 tags, a plethora of new, optional information is available. 
@@ -922,7 +922,7 @@ These three main methods build on a number of container classes and a
 generic LHEF reader class (called <code>Reader</code>) found in 
 <code>LHEF3.h</code> and <code>LHEF3.cc</code>. The <code>Reader</code> 
 handles all the parsing and storage necessary to adhere with 
-[<a href="Bibliography.php" target="page">But14</a>]. (A matching <code>Writer</code> class is also 
+[<a href="Bibliography.php#refBut14" target="page">But14</a>]. (A matching <code>Writer</code> class is also 
 available; see documentation in <code>LHEF3.h</code> how it can be 
 used.) All parsing that is not strictly part of the LHEF format 
 (e.g. the reading of header information) is instead performed directly in 

@@ -11,7 +11,7 @@
 The PYTHIA 8 program does not contain an internal spectrum calculator 
 (a.k.a. RGE package) to provide supersymmetric couplings, mixing angles, 
 masses and branching ratios. Thus the SUSY Les Houches Accord (SLHA) 
-[<a href="Bibliography.html" target="page">Ska04</a>][<a href="Bibliography.html" target="page">All08</a>] is the only way of 
+[<a href="Bibliography.html#refSka04" target="page">Ska04</a>][<a href="Bibliography.html#refAll08" target="page">All08</a>] is the only way of 
 inputting SUSY models, and SUSY processes (see 
 the <a href="SUSYProcesses.html" target="page">SUSYProcesses</a> page) 
 cannot be run unless such an input has taken place. 
@@ -21,15 +21,15 @@ The SLHA input format can also be extended for use with more general BSM
 models, beyond SUSY. Information specific to  how to use the SLHA 
 interface for generic BSM models is collected below, 
 under <a href="#generic">Using SLHA for generic BSM Models</a>, with 
-more elaborate explanations and examples in [<a href="Bibliography.html" target="page">Des11</a>]. 
+more elaborate explanations and examples in [<a href="Bibliography.html#refDes11" target="page">Des11</a>]. 
  
 <p/> 
 Most of the SUSY implementation in PYTHIA 8 is compatible with both the 
-SLHA1 [<a href="Bibliography.html" target="page">Ska04</a>] and SLHA2 [<a href="Bibliography.html" target="page">All08</a>] 
+SLHA1 [<a href="Bibliography.html#refSka04" target="page">Ska04</a>] and SLHA2 [<a href="Bibliography.html#refAll08" target="page">All08</a>] 
 conventions (with some limitations for the NMSSM 
 in the latter case). Internally, PYTHIA 8 uses the 
 SLHA2 conventions and translates SLHA1 input to these when necessary. 
-See the section on SUSY Processes and [<a href="Bibliography.html" target="page">Des11</a>] for more 
+See the section on SUSY Processes and [<a href="Bibliography.html#refDes11" target="page">Des11</a>] for more 
 information. Note that PYTHIA assumes that a spectrum is either fully SHLA1 
 or fully SLHA2 compliant. Mixing of the two standards is discouraged, as 
 this can lead to ambiguities and inconsistencies. 
@@ -274,7 +274,7 @@ Corresponds to SLHA block MODSEL entry 3.
 <h2>Using SLHA for generic BSM Models</h2> 
  
 <p> 
-Using the <code>QNUMBERS</code> extension [<a href="Bibliography.html" target="page">Alw07</a>], the SLHA 
+Using the <code>QNUMBERS</code> extension [<a href="Bibliography.html#refAlw07" target="page">Alw07</a>], the SLHA 
 can also be used to define new particles, with arbitrary quantum 
 numbers. This already serves as a useful way to introduce new 
 particles and can be combined with <code>MASS</code> and 

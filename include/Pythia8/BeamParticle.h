@@ -235,7 +235,7 @@ public:
   int sizeInit() const {return nInit;}
 
   // Clear list of resolved partons.
-  void clear() {resolved.resize(0); nInit = 0;;}
+  void clear() {resolved.resize(0); nInit = 0;}
 
   // Reset variables related to photon beam.
   void resetGamma() {iGamVal = -1; iPosVal = -1; pT2gm2qqbar = 0.;
@@ -367,6 +367,10 @@ public:
   double gammaKTy() const { return kTgamma*sin(phiGamma); }
   double gammaKT()  const { return kTgamma; }
   double gammaPhi() const { return phiGamma; }
+
+  // Keep track of pomeron momentum fraction.
+  void xPom(double xpom = -1.0)
+    { if ( pdfBeamPtr ) pdfBeamPtr->xPom(xpom); }
 
   // Sample x and Q2 for emitted photons according to flux.
   double sampleXgamma()

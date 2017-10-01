@@ -50,7 +50,7 @@ The management of particle data is based on three classes:
 <ul> 
 <li><code>ParticleData</code>, which is the top-level class, with 
 methods that can be used to interrogate all particle data. It contains 
-a map of PDG particle identity numbers [<a href="Bibliography.php" target="page">Yao06</a>] onto the relevant 
+a map of PDG particle identity numbers [<a href="Bibliography.php#refYao06" target="page">Yao06</a>] onto the relevant 
 <code>ParticleDataEntry</code> objects,</li> 
 <li><code>ParticleDataEntry</code>, which stores the relevant information 
 on an individual particle species, and</li> 

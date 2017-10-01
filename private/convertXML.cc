@@ -752,16 +752,42 @@ bool convertFile(string nameRoot, string convType) {
       line = linetmp;
     }
 
+    
+    // Replace <refit>...</refit> by <dt>...</dt> in Bibliography.xml
+    // and also insert an anchor.
+    int tbeg = 0;
+    while ( (tbeg = line.find("<refit>")) != string::npos) {
+      int tend = line.find("</refit>");
+      string name = line.substr(tbeg + 7, tend - tbeg - 7);
+      string replacement = "<dt><a name=\"ref" + name + "\">" + name
+	+ "</a></dt>";
+      line.replace(tbeg, tend - tbeg + 8, replacement);
+    }
+
     // Replace <ref>...</ref> by [...] for references,
-    // and additionally make them anchors to the reference section.
-    if (toHTML) while (line.find("<ref>") != string::npos)
-      line.replace( line.find("<ref>"), 5,
-      "[<a href=\"Bibliography.html\" target=\"page\">");
-    if (toPHP)  while (line.find("<ref>") != string::npos)
-      line.replace( line.find("<ref>"), 5,
-      "[<a href=\"Bibliography.php\" target=\"page\">");
-    while (line.find("</ref>") != string::npos)
-      line.replace( line.find("</ref>"), 6, "</a>]");
+    // and additionally make them anchors to the correct place in the
+    // reference section.
+    while ( (tbeg = line.find("<ref>")) != string::npos) {
+      string replacement = "[";
+      int tend = line.find("</ref>");
+      string ref;
+      for ( int pos = tbeg + 5; pos < tend + 1; ++pos ) {
+	if ( line[pos] == ' ' || line[pos] == ',' || line[pos] == '<' ) {
+	  if ( !ref.empty() ) {
+	    if (toHTML)
+	      replacement += "<a href=\"Bibliography.html";
+	    if (toPHP)
+	      replacement += "<a href=\"Bibliography.php";
+	    replacement += "#ref" + ref + "\" target=\"page\">" + ref + "</a>";
+	  }
+	  if ( line[pos] != '<' ) replacement += line[pos];
+	  ref = "";
+	} else
+	  ref += line[pos];
+      }
+      replacement += ']';
+      line.replace(tbeg, tend - tbeg + 6, replacement);
+    }
 
     // Replace equations by italics.
     while (line.find("<ei>") != string::npos)

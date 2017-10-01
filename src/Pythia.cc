@@ -6,6 +6,7 @@
 // Function definitions (not found in the header) for the Pythia class.
 
 #include "Pythia8/Pythia.h"
+#include "Pythia8/HeavyIons.h"
 
 // Access time information.
 #include <ctime>
@@ -23,7 +24,7 @@ namespace Pythia8 {
 
 // The current Pythia (sub)version number, to agree with XML version.
 const double Pythia::VERSIONNUMBERHEAD = PYTHIA_VERSION;
-const double Pythia::VERSIONNUMBERCODE = 8.228;
+const double Pythia::VERSIONNUMBERCODE = 8.229;
 
 //--------------------------------------------------------------------------
 
@@ -93,6 +94,8 @@ Pythia::Pythia(string xmlDir, bool printBanner) {
   // Not initialized until at the end of the init() call.
   isInit = false;
   info.addCounter(0);
+
+  HeavyIons::addSpecialSettings(settings);
 
 }
 
@@ -212,6 +215,9 @@ Pythia::~Pythia() {
   // Delete the MergingHooks object created with new.
   if (hasOwnMergingHooks) delete mergingHooksPtr;
 
+  // Delete the HeavyIons object created with new.
+  if (hasOwnHeavyIons) delete heavyIonsPtr;
+
   // Delete the BeamShape object created with new.
   if (useNewBeamShape) delete beamShapePtr;
 
@@ -287,6 +293,12 @@ void Pythia::initPtrs() {
   hasMergingHooks    = false;
   hasOwnMergingHooks = false;
   mergingHooksPtr    = 0;
+
+  // Initial value for pointer to HeavyIons objects.
+  doHeavyIons        = false;
+  hasHeavyIons       = false;
+  hasOwnHeavyIons    = false;
+  heavyIonsPtr       = 0;
 
   // Initial value for pointer to beam shape.
   useNewBeamShape    = false;
@@ -559,6 +571,17 @@ bool Pythia::init() {
     info.errorMsg("Abort from Pythia::init: constructor "
       "initialization failed");
     return false;
+  }
+
+  // Early catching of heavy ion mode.
+  doHeavyIons = HeavyIons::isHeavyIon(settings) ||
+                settings.mode("HeavyIon:mode") == 2;
+  if ( doHeavyIons ) {
+    if ( !heavyIonsPtr ) {
+      heavyIonsPtr = new Angantyr(*this);
+      hasOwnHeavyIons = true;
+    }
+    if ( !heavyIonsPtr->init() ) doHeavyIons = false;
   }
 
   // Early readout, if return false or changed when no beams.
@@ -1530,6 +1553,7 @@ bool Pythia::initPDFs() {
         "could not set up nuclear PDF for beam B");
       return false;
     }
+    useNewPdfHard = true;
   }
 
   // Optionally set up additional unresolved PDFs for photon beams.
@@ -1589,6 +1613,16 @@ bool Pythia::next() {
 
   // Check that constructor worked.
   if (!isConstructed) return false;
+
+  // Check if we the generation is taken over by the HeavyIons object.
+  // Allows HeavyIons::next to call next for this Pythia object
+  // without going into a loop.
+  if ( doHeavyIons ) {
+    doHeavyIons = false;
+    bool ok = heavyIonsPtr->next();
+    doHeavyIons = true;
+    return ok;
+  }
 
   // Regularly print how many events have been generated.
   int nPrevious = info.getCounter(3);
@@ -2106,6 +2140,11 @@ bool Pythia::doRHadronDecays( ) {
 // Print statistics on event generation.
 
 void Pythia::stat() {
+
+  if ( doHeavyIons ) {
+    heavyIonsPtr->stat();
+    return;
+  }
 
   // Read out settings for what to include.
   bool showPrL = settings.flag("Stat:showProcessLevel");
@@ -2772,6 +2811,9 @@ PDF* Pythia::getPDFPtr(int idIn, int sequence, string beam, bool resolved) {
       double pomFluxEps = (pomSet == 10) ? 0.19 : 0.14;
       settings.parm("Diffraction:PomFluxEpsilon", pomFluxEps);
       settings.parm("Diffraction:PomFluxAlphaPrime", 0.25);
+    }
+    else if ( pomSet == 11 ) {
+      tempPDFPtr = new PomHISASD(990, getPDFPtr(2212), settings, &info);
     }
     else tempPDFPtr = 0;
   }

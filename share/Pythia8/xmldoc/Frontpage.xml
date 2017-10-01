@@ -74,7 +74,7 @@ e-mail: nadine.fischer@monash.edu
  
 <p/> 
 <b>Ilkka Helenius</b><br/> 
-Insitute for Theoretical Physics, Tuebingen University, 
+Institute for Theoretical Physics, Tuebingen University, 
 Auf der Morgenstelle 14, D-72076 Tuebingen, Germany<br/> 
 e-mail: ilkka.helenius@uni-tuebingen.de 
  
@@ -167,6 +167,8 @@ by <b>Anil Pratap Singh</b>.
 <b>Gavin Salam</b> and <b>Gregory Soyez</b>. 
 <br/>The initial-final dipole approach has been developed and 
 implemented by <b>Baptiste Cabouat</b>. 
+<br/>The MixMax random number generator has been contributed by 
+<b>Konstantin Savvidy</b> and <b>George Savvidy</b>. 
  
 <br/><b>Note</b>: in several cases modifications have been made to 
 the original code, in order to integrate it with PYTHIA. In these cases 

@@ -34,12 +34,12 @@ all producing Lund strings occupying the same area in transverse space of
 <i>~1</i> fm<i>^2</i>. The Rope Hadronization framework describes the 
 interactions between such overlapping strings, by (a) allowing nearby strings 
 to shove each other with an interaction potential derived from the colour 
-superconductor analogy [<a href="Bibliography.php" target="page">Bie16</a>] and (b) at hadronization time, colour 
+superconductor analogy [<a href="Bibliography.php#refBie16b" target="page">Bie16b</a>] and (b) at hadronization time, colour 
 charges at string endpoints and in gluon "kinks" can act together coherently 
 to form a "rope", which is hadronized with a larger, effective string 
-tension [<a href="Bibliography.php" target="page">Bie14</a>]. 
+tension [<a href="Bibliography.php#refBie14" target="page">Bie14</a>]. 
 This has noticeable effects on the flavour composition of the hadronic final 
-state [<a href="Bibliography.php" target="page">Bie15</a>], and this effect is denoted "flavour ropes" below. 
+state [<a href="Bibliography.php#refBie15" target="page">Bie15</a>], and this effect is denoted "flavour ropes" below. 
  
 <p/> 
 Since both models deal with string overlaps in transverse space, it is 
@@ -97,7 +97,7 @@ composed of massless gluons.
 <h3>String shoving</h3> 
  
 The string shoving mechanism allows strings to push each other, before 
-hadronization, as described in [<a href="Bibliography.php" target="page">Bie16</a>]. 
+hadronization, as described in [<a href="Bibliography.php#refBie16b" target="page">Bie16b</a>]. 
  
 <p/> 
 String shoving divides the event up in many small rapidity slices (in 
@@ -208,13 +208,13 @@ The value of <i>p_\perp</i> at which shoving is turned off, if the flag
  
 The Flavour Ropes mechanism allows strings situated close in impact parameter 
 space to interact coherently, forming a rope, which hadronizes with a larger, 
-effective string tension. The model is described in ref. [<a href="Bibliography.php" target="page">Bie14</a>], 
-building on an older idea by Biro et al. [<a href="Bibliography.php" target="page">Bir84</a>]. 
+effective string tension. The model is described in ref. [<a href="Bibliography.php#refBie14" target="page">Bie14</a>], 
+building on an older idea by Biro et al. [<a href="Bibliography.php#refBir84" target="page">Bir84</a>]. 
  
 <p/> 
 In the flavour rope formalism, a rope is described as an SU(3) multiplet, 
 characterized uniquely by two quantum numbers <i>p</i> and <i>q</i>. 
-The quantum numbers are calculated, following ref. [<a href="Bibliography.php" target="page">Bir84</a>], by 
+The quantum numbers are calculated, following ref. [<a href="Bibliography.php#refBir84" target="page">Bir84</a>], by 
 a random walk procedure in colour space, taking <i>m, n</i> steps, 
 where <i>m</i> and <i>n</i> signify the number of overlapping 
 strings which are respectively parallel or anti-parallel to the 
@@ -223,14 +223,14 @@ hadronizing string.
 <p/> 
 When the rope quantum numbers have been determined, the effective string 
 tension is calculated per individual breaking, using a lattice QCD 
-determination of the string tension [<a href="Bibliography.php" target="page">Bal00</a>]. The effective 
+determination of the string tension [<a href="Bibliography.php#refBal00" target="page">Bal00</a>]. The effective 
 string tension is then used to rescale the hadronization parameters 
 described in the section on <?php $filepath = $_GET["filepath"];
 echo "<a href='Fragmentation.php?filepath=".$filepath."' target='page'>";?>String 
 Fragmentation</a>. One point to note regarding the rescaling is the 
 fragmentation parameter <code>StringFlav:probQQtoQ</code>, describing 
 baryon relative to meson production. Baryon production is, as suggested 
-by eg. the popcorn hadronization model [<a href="Bibliography.php" target="page">Ede97</a>], more complicated 
+by eg. the popcorn hadronization model [<a href="Bibliography.php#refEde97" target="page">Ede97</a>], more complicated 
 than meson production. The current modelling of this in the flavour ropes 
 framework is limited, but intended to be extended in the future. 
  

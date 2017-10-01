@@ -3420,7 +3420,7 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
 
     // Set events weights, so that these could be used externally.
     double wtOld = userHooksPtr->getEnhancedEventWeight();
-    if (!doTrialNow && canEnhanceEmission)
+    if (!doTrialNow && canEnhanceEmission && !doUncertaintiesNow)
       userHooksPtr->setEnhancedEventWeight(wtOld*rwgt);
     if ( doTrialNow && canEnhanceTrial)
       userHooksPtr->setEnhancedTrial(sqrt(dipSel->pT2), weight);
@@ -3430,8 +3430,8 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
   // Emission veto is a phase space restriction, and should not be included in the
   //   uncertainty calculation
   acceptEvent *= !vetoedEnhancedEmission;
-  if (doUncertaintiesNow)
-    calcUncertainties( acceptEvent, pAccept, weight, vp, dipSel, &rad, &emt);
+  if (doUncertaintiesNow) calcUncertainties( acceptEvent, pAccept, weight, vp,
+    dipSel, &rad, &emt, &rec);
 
   // Return false if we decided to reject this branching.  
   // Veto if necessary.
@@ -3802,6 +3802,8 @@ bool TimeShower::initUncertainties() {
   keys.push_back("fsr:Q2QG:cNS");
   keys.push_back("fsr:X2XG:cNS");
   keys.push_back("fsr:G2QQ:cNS");
+  keys.push_back("isr:PDF:plus");
+  keys.push_back("isr:PDF:minus");  
 
   // Store number of QCD variations (as separator to QED ones).
   int nKeysQCD=keys.size();
@@ -3854,6 +3856,8 @@ bool TimeShower::initUncertainties() {
         varX2XGcNS[iWeight] = value;
       if (key == "fsr:cns" || key == "fsr:g2qq:cns")
         varG2QQcNS[iWeight] = value;
+      if (key == "isr:pdf:plus") varPDFplus[iWeight] = 1;
+      if (key == "isr:pdf:minus") varPDFminus[iWeight] = 1;      
       // Tell that we found at least one recognized and parseable keyword.
       if (iWord < nKeysQCD) nRecognizedQCD++;
     } // End loop over QCD keywords
@@ -3872,7 +3876,8 @@ bool TimeShower::initUncertainties() {
 // Calculate uncertainties for the current event.
 
 void TimeShower::calcUncertainties(bool accept, double pAccept, double enhance,
-  double vp, TimeDipoleEnd* dip, Particle* radPtr, Particle* emtPtr) {
+  double vp, TimeDipoleEnd* dip, Particle* radPtr, Particle* emtPtr,
+  Particle* recPtr) {
 
   // Sanity check.
   if (!doUncertainties || !doUncertaintiesNow || nUncertaintyVariations <= 0)
@@ -3973,6 +3978,43 @@ void TimeShower::calcUncertainties(bool accept, double pAccept, double enhance,
       uVarFac[iWeight] *= 1. + num / denom;
       doVar[iWeight] = true;
     }
+
+    // PDF variations for dipoles that connect to the initial state.
+    if ( dip->isrType != 0 ){
+      varPtr = &varPDFplus;
+      double wtMinus0(1.0);
+      for (itVar = varPtr->begin(); itVar != varPtr->end(); ++itVar) {
+        int iWeight   = itVar->first;
+        // Evaluation of new daughter and mother PDF's.
+        BeamParticle& beam  = (dip->isrType == 1) ? *beamAPtr : *beamBPtr;
+        double scale2 = (useFixedFacScale) ? fixedFacScale2
+                      : factorMultFac * dip->pT2;
+        int iSysRec   = dip->systemRec;
+        double xOld   = beam[iSysRec].x();
+        double xNew   = xOld * (1. + (dip->m2 - dip->m2Rad)
+                             / (dip->m2Dip - dip->m2Rad));
+        int idRec     = recPtr->id();
+        int valSea    = (beam[iSysRec].isValence()) ? 1 : 0;
+        if( beam[iSysRec].isUnmatched() ) valSea = 2;
+        beam.calcPDFEnvelope( make_pair(idRec,idRec), make_pair(xNew,xOld),
+          scale2, valSea);
+        PDF::PDFEnvelope ratioPDFEnv = beam.getPDFEnvelope();
+        double deltaPDFplus
+          = min(ratioPDFEnv.errplusPDF/ratioPDFEnv.centralPDF, 0.5);
+        double deltaPDFminus
+          = min(ratioPDFEnv.errminusPDF/ratioPDFEnv.centralPDF, 0.5);
+        uVarFac[iWeight] *= 1.0 + deltaPDFplus;
+        doVar[iWeight] = true;      
+        wtMinus0= 1.0 - deltaPDFminus;
+      }
+      varPtr = &varPDFminus;
+      for (itVar = varPtr->begin(); itVar != varPtr->end(); ++itVar) {
+        int iWeight   = itVar->first;
+        uVarFac[iWeight] *= wtMinus0;
+        doVar[iWeight] = true;
+      }
+    }
+
   }
 
   // Ensure 0 < PacceptPrime < 1 (with small margins).

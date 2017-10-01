@@ -34,7 +34,7 @@ echo "<font color='red'>NO FILE SELECTED YET.. PLEASE DO SO </font><a href='Save
 The <code>AlphaStrong</code> class is used to provide a first- or 
 second-order running <i>alpha_strong</i> (or, trivially, a 
 zeroth-order fixed one). Formulae are the standard ones found in 
-[<a href="Bibliography.php" target="page">Yao06</a>]. The second-order expression used, eq. (9.5), 
+[<a href="Bibliography.php#refYao06" target="page">Yao06</a>]. The second-order expression used, eq. (9.5), 
 may be somewhat different in other approaches (with differences 
 formally of higher order), so do not necessarily expect perfect 
 agreement, especially not at small <i>Q^2</i> scales. The starting 
@@ -87,7 +87,7 @@ below unity, for the second-order terms. This allows a compact handling
 of evolution equations. 
  
 <p/> 
-Resummation arguments [<a href="Bibliography.php" target="page">Cat91</a>] show that a set of 
+Resummation arguments [<a href="Bibliography.php#refCat91" target="page">Cat91</a>] show that a set of 
 universal QCD corrections can be absorbed in coherent parton showers by 
 applying the so-called CMW rescaling of the MSbar value of 
 <i>Lambda_QCD</i>. This can be accomplished via a fourth (optional) 
@@ -128,7 +128,7 @@ The <i>alpha_em</i> value at vanishing momentum transfer
  
 <br/><br/><table><tr><td><strong>StandardModel:alphaEMmZ </td><td></td><td> <input type="text" name="3" value="0.00781751" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.00781751</strong></code>; <code>minimum = 0.00780</code>; <code>maximum = 0.00783</code>)</td></tr></table>
 The <i>alpha_em</i> value at the <i>M_Z</i> mass scale. 
-Default is taken from [<a href="Bibliography.php" target="page">Yao06</a>]. 
+Default is taken from [<a href="Bibliography.php#refYao06" target="page">Yao06</a>]. 
    
  
 <p/> 
@@ -148,14 +148,14 @@ electroweak mixing angle:
 The sine-squared of the weak mixing angle, as used in all <i>Z^0</i> 
 and <i>W^+-</i> masses and couplings, except for the vector couplings 
 of fermions to the <i>Z^0</i>, see below. Default is the MSbar value 
-from [<a href="Bibliography.php" target="page">Yao06</a>]. 
+from [<a href="Bibliography.php#refYao06" target="page">Yao06</a>]. 
    
  
 <br/><br/><table><tr><td><strong>StandardModel:sin2thetaWbar </td><td></td><td> <input type="text" name="5" value="0.2315" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.2315</strong></code>; <code>minimum = 0.225</code>; <code>maximum = 0.240</code>)</td></tr></table>
 The sine-squared of the weak mixing angle, as used to derive the vector 
 couplings of fermions to the <i>Z^0</i>, in the relation 
 <i>v_f = a_f - 4 e_f sin^2(theta_W)bar</i>. Default is the 
-effective-angle value from [<a href="Bibliography.php" target="page">Yao06</a>]. 
+effective-angle value from [<a href="Bibliography.php#refYao06" target="page">Yao06</a>]. 
    
  
 <p/> 
@@ -169,7 +169,7 @@ The Fermi coupling constant, in units of GeV<i>^-2</i>.
 <h3>The quark weak-mixing matrix</h3> 
  
 The absolute values of the Cabibbo-Kobayashi-Maskawa matrix elements are 
-set by the following nine real values taken from [<a href="Bibliography.php" target="page">Yao06</a>] - 
+set by the following nine real values taken from [<a href="Bibliography.php#refYao06" target="page">Yao06</a>] - 
 currently the CP-violating phase is not taken into account in this 
 parametrization. It is up to the user to pick a consistent unitary 
 set of new values whenever changes are made. 

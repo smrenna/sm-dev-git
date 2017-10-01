@@ -154,11 +154,13 @@ implemented as a new class derived from a PYTHIA base class, and be
 used in an external process, both of them handed in for generation 
 as with normal internal classes.</li> 
  
-<li><code>main23.cc</code> : shows how an external beam momentum spread 
-and vertex location generator can be implemented as a new class derived 
-from a PYTHIA base class, and then handed in for internal use. 
-Also how to use an external random-number generator and an external 
-parton distribution set.</li> 
+<li><code>main23.cc</code> : shows how to write external classes, 
+derived from PYTHIA base classes, that can be handed to PYTHIA for 
+internal generation. The MIXMAX random number generator is this 
+way compared with the default PYTHIA one. Explicit implementations 
+are included for the generation of external beam momentum spread 
+and vertex location, and for a simple scaling external parton 
+distribution set.</li> 
  
 <li><code>main24.cc</code> : tests of internally implemented cross sections 
 for Supersymmetric particle production, with SUSY spectrum defined in 
@@ -200,7 +202,7 @@ echo "<a href='POWHEGMerging.php?filepath=".$filepath."' target='page'>";?>POWHE
 The <code>main31.cmnd</code> allows to switch between several 
 different matching options. It also allows to select input process, 
 in this case either for the POWHEG-hvq program applied to top 
-pair production [<a href="Bibliography.php" target="page">Cor10</a>] or for QCD 2+3-jet events. The small 
+pair production [<a href="Bibliography.php#refCor10" target="page">Cor10</a>] or for QCD 2+3-jet events. The small 
 samples of input events are stored in the <code>powheg-hvq.lhe</code> 
 and <code>powheg-dijets.lhe</code> files, respectively. 
 </li> 
@@ -440,6 +442,19 @@ in a program that for the rest is structured like a normal PYTHIA run.
  
 <li><code>main92.cc</code> : shows how PYTHIA events can be stored as 
 ROOT trees.</li> 
+ 
+<li><code>main111.cc</code> : simple pp collisions as in 
+<code>main01.cc</code>, but using the Angantyr model for Heavy Ion 
+collisions. Also shows how Rivet analyses can be set up easily using 
+a special interface.</li> 
+ 
+<li><code>main112.cc</code> : p-Pb collisions at LHC energies, 
+using the Angantyr model for Heavy Ion collisions, and analyzing 
+events by centrality bins.</li> 
+ 
+<li><code>main113.cc</code> : Pb-Pb collisions at LHC energies, 
+using the Angantyr model for Heavy Ion collisions, and analyzing 
+events by centrality bins.</li> 
  
 </ul> 
  

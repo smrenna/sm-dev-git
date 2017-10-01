@@ -248,7 +248,7 @@ of the hard process (diffraction excluded; see below).
 These partons would normally agree with the 
 ones above, the initiators of the <i>2 &rarr; n</i> process, but it 
 does not have to be so. Currently the one counterexample is POWHEG 
-events [<a href="Bibliography.php" target="page">Ali10</a>]. Here the original hard process could be 
+events [<a href="Bibliography.php#refAli10" target="page">Ali10</a>]. Here the original hard process could be 
 <i>2 &rarr; (n-1)</i>. The NLO machinery at times would add an 
 initial-state branching to give a <i>2 &rarr; n</i> process with a 
 changed initial state. In that case the values in this section 
@@ -939,7 +939,7 @@ of an input file can can be accessed by
 <p/> 
 The <code>Info</code> class also provides a suitable interface to 
 the information stored after reading Les Houches Event files in the 
-updated format [<a href="Bibliography.php" target="page">But14</a>]. An example main program using LHEF 3.0 
+updated format [<a href="Bibliography.php#refBut14" target="page">But14</a>]. An example main program using LHEF 3.0 
 information is <code>main38.cc</code>. 
  
 <p/> 

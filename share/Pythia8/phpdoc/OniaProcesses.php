@@ -74,19 +74,19 @@ so isotropic decay is not a bad starting point. Such an event sample
 can afterwards be reweighted at will by the user, to test various 
 assumptions. The expressions for the colour-singlet production of 
 the <i>3S1</i> and <i>3PJ</i> states can be found 
-in [<a href="Bibliography.php" target="page">Bai83</a>] and [<a href="Bibliography.php" target="page">Gas87</a>]. Colour-octet expressions can 
-be found in [<a href="Bibliography.php" target="page">Cho96</a>] for the <i>1S0</i>, <i>3S1</i>, 
+in [<a href="Bibliography.php#refBai83" target="page">Bai83</a>] and [<a href="Bibliography.php#refGas87" target="page">Gas87</a>]. Colour-octet expressions can 
+be found in [<a href="Bibliography.php#refCho96" target="page">Cho96</a>] for the <i>1S0</i>, <i>3S1</i>, 
 and <i>3PJ</i> states, and the matrix elements for the <i>3DJ</i> 
-states are taken from [<a href="Bibliography.php" target="page">Yua98</a>]. 
+states are taken from [<a href="Bibliography.php#refYua98" target="page">Yua98</a>]. 
  
 <p/> 
 The implementation of charmonium and bottomonium production, including 
 the colour-octet production mechanism, requires information on 
 long-distance NRQCD matrix elements for the various wavefunctions 
 involved. Default values for these are encoded in the <i>O</i> 
-parameters and are taken from [<a href="Bibliography.php" target="page">Nas00</a>]; see 
-also [<a href="Bibliography.php" target="page">Bar07</a>]. The <i>3DJ</i> long-distance matrix elements 
-are extracted from [<a href="Bibliography.php" target="page">Yua98</a>]. 
+parameters and are taken from [<a href="Bibliography.php#refNas00" target="page">Nas00</a>]; see 
+also [<a href="Bibliography.php#refBar07" target="page">Bar07</a>]. The <i>3DJ</i> long-distance matrix elements 
+are extracted from [<a href="Bibliography.php#refYua98" target="page">Yua98</a>]. 
  
 <p/> 
 Note that states that differ only by the radial excitation number 
@@ -102,7 +102,7 @@ process on/off switches.
 Double production of charmonium and bottomonium <i>3S1</i> states is 
 also available, but with only the colour-singlet processes 
 included. The short-distance matrix elements for these processes can 
-be found in [<a href="Bibliography.php" target="page">Hum83</a>] and [<a href="Bibliography.php" target="page">Qia02</a>]. Arrays seperate to 
+be found in [<a href="Bibliography.php#refHum83" target="page">Hum83</a>] and [<a href="Bibliography.php#refQia02" target="page">Qia02</a>]. Arrays seperate to 
 those used for single charmonium and bottomonium production set the 
 long-distance NRQCD matrix elements. For consistency these values 
 should be the same as those provided for single charmonium and 
@@ -119,7 +119,7 @@ is in this case based on some further model assumptions.
 Most of the processes below are divergent in the limit <i>pT &rarr; 0</i>, 
 and therefore a <i>pTmin</i> scale should be set. Comparisons with 
 data indicate that this divergence can be tamed the same way as for 
-the normal QCD <i>2 &rarr; 2</i> cross sections [<a href="Bibliography.php" target="page">Bar07,Kra08</a>], 
+the normal QCD <i>2 &rarr; 2</i> cross sections [<a href="Bibliography.php#refBar07" target="page">Bar07</a>,<a href="Bibliography.php#refKra08" target="page">Kra08</a>], 
 which makes sense, since they are all dominated by the same kind of 
 <i>t</i>-channel gluon exchange. It is therefore possible to use the 
 <?php $filepath = $_GET["filepath"];

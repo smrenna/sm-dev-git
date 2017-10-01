@@ -38,7 +38,7 @@ The choice of which PDF to use is made by settings in the
 <code>Pythia</code> class, see <?php $filepath = $_GET["filepath"];
 echo "<a href='PDFSelection.php?filepath=".$filepath."' target='page'>";?>here</a>. 
 These settings also allow to access all the proton PDF's available in the 
-LHAPDF library [<a href="Bibliography.php" target="page">Wha05,Buc15</a>]. Thus there is no need for a normal 
+LHAPDF library [<a href="Bibliography.php#refWha05" target="page">Wha05</a>,<a href="Bibliography.php#refBuc15" target="page">Buc15</a>]. Thus there is no need for a normal 
 user to study the <code>PDF</code> class. The structure must only be 
 understood when interfacing new PDF's, e.g. ones not yet found in LHAPDF. 
  
@@ -108,18 +108,28 @@ number of such classes come with the program:
 For protons: 
 <ul> 
 <li><code>LHAPDF</code> provides a plugin interface class to the 
-LHAPDF library[<a href="Bibliography.php" target="page">Wha05,Buc15</a>]. It loads either the 
+LHAPDF library[<a href="Bibliography.php#refWha05" target="page">Wha05</a>,<a href="Bibliography.php#refBuc15" target="page">Buc15</a>]. It loads either the 
 <code>LHAPDF5</code> or <code>LHAPDF6</code> class.</li> 
 <li><code>GRV94L</code> gives the GRV 94 L parametrization 
-[<a href="Bibliography.php" target="page">Glu95</a>].</li> 
+[<a href="Bibliography.php#refGlu95" target="page">Glu95</a>].</li> 
 <li><code>CTEQ5L</code> gives the CTEQ 5 L parametrization 
-[<a href="Bibliography.php" target="page">Lai00</a>].</li> 
+[<a href="Bibliography.php#refLai00" target="page">Lai00</a>].</li> 
 <li><code>MSTWpdf</code> gives the four distributions of the 
 MRST/MSTW group that have been implemented.</li> 
 <li><code>CTEQ6pdf</code> gives the six distributions of the 
 CTEQ/CT group that have been implemented.</li> 
 <li><code>NNPDF</code> gives four distributions from the NNPDF 2.3 
 QCD+QED sets that have been implemented.</li> 
+<li><code>LHAGrid1</code> can read and use files in the LHAPDF6 lhagrid1 
+format, assuming that the same x grid is used for all Q subgrids. 
+Results are not exactly identical with LHAPDF6, owing to different 
+interpolation.</li> 
+<li><code>nPDF, Isospin, EPS09</code> three classes allowing to introduce 
+nuclear modifications to a specified proton PDF. The first is base class 
+for the other two, where <code>Isospin</code> only provides the 
+appropriate mix of protons and isospin-conjugate neutrons, while 
+<code>EPS09</code> also contains nuclear modification factors 
+[<a href="Bibliography.php#refEsk09" target="page">Esk09</a>].</li> 
 </ul> 
 The current default is NNPDF 2.3. 
  
@@ -142,13 +152,15 @@ parametrizations.</li>
 <p/> 
 For photons: 
 <ul> 
-<li><code>CJKL</code> gives the CJKL parametrization [<a href="Bibliography.php" target="page">Cor03</a>].</li> 
+<li><code>CJKL</code> gives the CJKL parametrization [<a href="Bibliography.php#refCor03" target="page">Cor03</a>].</li> 
+<li><code>GammaPoint</code> gives the trivial distribution of a 
+pointlike (i.e. unresolved) photon.</li> 
 </ul> 
  
 <p/> 
-For charged leptons (e, mu, tau): 
+For charged leptons (e, mu, tau) and the proton: 
 <ul> 
-<li><code>Lepton</code> gives a QED parametrization [<a href="Bibliography.php" target="page">Kle89</a>]. 
+<li><code>Lepton</code> gives a QED parametrization [<a href="Bibliography.php#refKle89" target="page">Kle89</a>]. 
 In QED there are not so many ambiguities, so here one set should be 
 enough. On the other hand, there is the problem that the 
 lepton-inside-lepton pdf is integrably divergent for <i>x &rarr; 1</i>, 
@@ -158,8 +170,13 @@ made to vanish for <i>x > 1 - 10^{-10}</i>, and scaled up in the range
 total area under the pdf is preserved.</li> 
 <li><code>LeptonPoint</code> gives the trivial distribution of a 
 pointlike (i.e. unresolved) charged lepton.</li> 
+<li><code>EPAexternal</code> provides an external photon flux to study 
+photoproduction with different fluxes. Still optimized for lepton beams, 
+but also other fluxes can be studied.</li> 
 <li><code>Lepton2gamma</code> gives the convolution between photon 
 flux from leptons and photon PDFs.</li> 
+<li><code>ProtonPoint</code> gives the equivalent photon spectrum 
+of an unresolved proton.</li> 
 </ul> 
  
 <p/> 

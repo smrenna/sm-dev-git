@@ -109,8 +109,8 @@ masses run.
 <h3>Comments on the data</h3> 
  
 Much of the current data has been updated based on the 2012 Review of Particle 
-Physics [<a href="Bibliography.php" target="page">Ber12</a>], while some is still based on the 2006 RPP 
-[<a href="Bibliography.php" target="page">Yao06</a>]. All known particle masses, widths and lifetimes 
+Physics [<a href="Bibliography.php#refBer12" target="page">Ber12</a>], while some is still based on the 2006 RPP 
+[<a href="Bibliography.php#refYao06" target="page">Yao06</a>]. All known particle masses, widths and lifetimes 
 have been set accordingly, while most not-yet-measured particles are kept at 
 their values from PYTHIA 6. Decay channels and their branching 
 ratios remain a major worry: many particles do not have one single solidly 
@@ -9145,6 +9145,22 @@ echo "<a href='ParticleDecays.php?filepath=".$filepath."' target='page'>";?>here
 <p/>particle: id="9952203" name="Upsilon(3S)[3PJ(8)]" spinType="3" chargeType="0" colType="2" 
           m0="10.5552" mWidth="0.0" mMin="10.5552" mMax="10.5552" 
  <br/>      channel: onMode="1" bRatio="1.0000000" products="200553 21" 
+ 
+<p/>particle: id="1000020040" name="4He" antiName="4Hebar" 
+          spinType="1" chargeType="6" colType="0" m0="3.7284" 
+<p/>particle: id="1000030060" name="6Li" antiName="6Libar" 
+          spinType="1" chargeType="9" colType="0" m0="5.6030512" 
+<p/>particle: id="1000060120" name="12C" antiName="12Cbar" 
+          spinType="1" chargeType="18" colType="0" m0="11.177929" 
+<p/>particle: id="1000080160" name="16O" antiName="16Obar" 
+          spinType="1" chargeType="24" colType="0" m0="14.899168" 
+<p/>particle: id="1000290630" name="63Cu" antiName="63Cubar" 
+          spinType="2" chargeType="87" colType="0" m0="58.618646" 
+<p/>particle: id="1000791970" name="197Au" antiName="197Aubar" 
+          spinType="2" chargeType="237" colType="0" m0="183.47319" 
+<p/>particle: id="1000822080" name="208Pb" antiName="208Pbbar" 
+          spinType="1" chargeType="246" colType="0" m0="193.72902" 
+ 
  
 <input type="hidden" name="saved" value="1"/>
 

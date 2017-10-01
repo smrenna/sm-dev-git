@@ -103,7 +103,7 @@ approaches actively supported is as follows.
 <ul> 
  
 <li>For many/most resonance decays the first branching in the shower is 
-merged with first-order matrix elements [<a href="Bibliography.php" target="page">Ben87, Nor01</a>]. This 
+merged with first-order matrix elements [<a href="Bibliography.php#refBen87" target="page">Ben87</a>, <a href="Bibliography.php#refNor01" target="page">Nor01</a>]. This 
 means that the emission rate is accurate to NLO, similarly to the POWHEG 
 strategy (see below), but built into the 
 <?php $filepath = $_GET["filepath"];
@@ -119,20 +119,20 @@ echo "<a href='SpacelikeShowers.php?filepath=".$filepath."' target='page'>";?>sp
 contain a correction to first-order matrix elements, but only for the 
 one-body-final-state processes 
 <i>q qbar &rarr; gamma^*/Z^0/W^+-/h^0/H^0/A0/Z'0/W'+-/R0</i> 
-[<a href="Bibliography.php" target="page">Miu99</a>] and <i>g g &rarr; h^0/H^0/A0</i>, and only to 
+[<a href="Bibliography.php#refMiu99" target="page">Miu99</a>] and <i>g g &rarr; h^0/H^0/A0</i>, and only to 
 leading order. That is, it is equivalent to the POWHEG formalism for 
 the real emission, but the prefactor "cross section normalization" 
 is LO rather than NLO. Therefore this framework is less relevant, 
 and has been superseded the following ones. 
 </li> 
  
-<li>The POWHEG strategy [<a href="Bibliography.php" target="page">Nas04</a>] provides a cross section 
+<li>The POWHEG strategy [<a href="Bibliography.php#refNas04" target="page">Nas04</a>] provides a cross section 
 accurate to NLO. The hardest emission is constructed with unit 
 probability, based on the ratio of the real-emission matrix element 
 to the Born-level cross section, and with a Sudakov factor derived 
-from this ratio, i.e. the philosophy introduced in [<a href="Bibliography.php" target="page">Ben87</a>]. 
+from this ratio, i.e. the philosophy introduced in [<a href="Bibliography.php#refBen87" target="page">Ben87</a>]. 
 <br/>While POWHEG is a generic strategy, the POWHEG BOX 
-[<a href="Bibliography.php" target="page">Ali10</a>] is an explicit framework, within which several 
+[<a href="Bibliography.php#refAli10" target="page">Ali10</a>] is an explicit framework, within which several 
 processes are available. The code required for merging the PYTHIA 
 showers with POWHEG input can be found in 
 <code>include/Pythia8Plugins/PowHegHooks.h</code>, and is further 
@@ -142,24 +142,24 @@ A user example is found in <code>examples/main31</code>.
 </li> 
  
 <li>The other traditional approach for NLO calculations is the 
-MC@NLO one [<a href="Bibliography.php" target="page">Fri02</a>]. In it the shower emission probability, 
+MC@NLO one [<a href="Bibliography.php#refFri02" target="page">Fri02</a>]. In it the shower emission probability, 
 without its Sudakov factor, is subtracted from the real-emission 
 matrix element to regularize divergences. It therefore requires a 
 analytic knowledge of the way the shower populates phase space. 
-The aMC@NLO package [<a href="Bibliography.php" target="page">Fre11</a>] offers an implementation for 
+The aMC@NLO package [<a href="Bibliography.php#refFre11" target="page">Fre11</a>] offers an implementation for 
 PYTHIA 8, developed by Paolo Torrielli and Stefano Frixione. The 
 global-recoil option of the PYTHIA final-state shower has been 
 constructed to be used for the above-mentioned subtraction. 
 </li> 
  
-<li>Multi-jet merging in the CKKW-L approach [<a href="Bibliography.php" target="page">Lon01</a>] 
+<li>Multi-jet merging in the CKKW-L approach [<a href="Bibliography.php#refLon01" target="page">Lon01</a>] 
 is directly available. Its implementation, relevant parameters 
 and test programs are documented on a 
 <?php $filepath = $_GET["filepath"];
 echo "<a href='CKKWLMerging.php?filepath=".$filepath."' target='page'>";?>separate page</a>. 
 </li> 
  
-<li>Multi-jet matching in the MLM approach [<a href="Bibliography.php" target="page">Man02, Man07</a>] 
+<li>Multi-jet matching in the MLM approach [<a href="Bibliography.php#refMan02" target="page">Man02</a>, <a href="Bibliography.php#refMan07" target="page">Man07</a>] 
 is also available, either based on the ALPGEN or on the Madgraph 
 variant, and with input events either from ALPGEN or from 
 Madgraph. For details see 
@@ -202,8 +202,8 @@ files <code>main89mlm.cmnd</code>, <code>main89fxfx.cmnd</code>,
 on MadGraph, while all other options of <code>main89.cc</code> use aMC@NLO 
 input. 
  
-<code>main89.cc</code> produces HepMC events [<a href="Bibliography.php" target="page">Dob01</a>], that can be 
-histogrammed (e.g. using RIVET [<a href="Bibliography.php" target="page">Buc10</a>]), or used as input for a 
+<code>main89.cc</code> produces HepMC events [<a href="Bibliography.php#refDob01" target="page">Dob01</a>], that can be 
+histogrammed (e.g. using RIVET [<a href="Bibliography.php#refBuc10" target="page">Buc10</a>]), or used as input for a 
 detector simulation. If the user is not familiar with HepMC analysis tools, it 
 is possible to instead use Pythia's histogramming routines. For this, remove 
 the lines referring to HepMC, and histogram events as illustrated (for CKKW-L) 
