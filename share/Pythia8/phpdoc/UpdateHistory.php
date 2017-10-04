@@ -38,7 +38,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.229: 26 September 2017 
+<li>8.229: 3 October 2017 
 <ul> 
  
 <li>Christian Bierlich joins as co-author.</li> 
@@ -132,6 +132,16 @@ low-<i>x</i> extrapolation. Thanks to Radek Zlebcik.</li>
 <code><?php $filepath = $_GET["filepath"];
 echo "<a href='PDFSelection.php?filepath=".$filepath."' target='page'>";?>PDF Selection</a></code> for more 
 details.</li> 
+ 
+<li>A new proton PDF added, which sets out to combine a NNLO behaviour 
+at high <i>x</i> values with a sensible LO low-<i>x</i> one, see 
+<code><?php $filepath = $_GET["filepath"];
+echo "<a href='PDFSelection.php?filepath=".$filepath."' target='page'>";?>PDF Selection</a></code> for more 
+details.</li> 
+ 
+<li>The <code>main51.cc</code>, <code>main52.cc</code> and 
+<code>main53.cc</code> PDF examples have been modified to use 
+LHAPDF6 by default rather than LHAPDF5.</li> 
  
 <li>A new method to provide an external photon flux to study 
 photoproduction with different fluxes. Still optimized for lepton beams, 

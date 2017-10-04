@@ -171,16 +171,26 @@ NLO <i>alpha_s(M_Z) = 0.1180</i> (NLO, see Warning 3 above).
    
 <br/><code>option </code><strong> 16</strong> : NNPDF2.3 QCD+QED NNLO <i>alpha_s(M_Z) = 0.119</i>. 
    
+<br/><b>Warning :</b>the following four NNPDF 3.1 sets are quite 
+different from the NNPDF 2.3 ones, and cannot be used interchangeably, 
+but need retuning of the MPI framework. They also do not contain QED 
+evolution, and are likely to be replaced by ones that do for the next 
+release. 
 <br/><code>option </code><strong> 17</strong> : NNPDF3.1 QCD LO <i>alpha_s(M_Z) = 0.130</i>. 
-<br/><b>Warning :</b>the NNPDF 3.1 sets are quite different from the 
-NNPDF 2.3 ones, and cannot be used interchangeably but need 
-retuning of the MPI framework. 
    
 <br/><code>option </code><strong> 18</strong> : NNPDF3.1 QCD LO <i>alpha_s(M_Z) = 0.118</i>. 
    
 <br/><code>option </code><strong> 19</strong> : NNPDF3.1 QCD NLO <i>alpha_s(M_Z) = 0.118</i>. 
    
 <br/><code>option </code><strong> 20</strong> : NNPDF3.1 QCD NNLO <i>alpha_s(M_Z) = 0.118</i>. 
+   
+<br/><code>option </code><strong> 21</strong> :  modified NNPDF3.1 QCD NNLO. It is highly experimental, 
+as a first attempt to combine a NNLO behaviour at high <i>x</i> 
+with a physical LO-style one at low <i>x</i> and <i>Q</i>, 
+see the presentation by Zahiri Kassabov at the 
+<a href="https://indico.cern.ch/event/647565/" target="page"> 
+September 2017 PDF4LHC meeting</a>, and it is likely to be replaced 
+in future versions. 
    
 <br/><code>option </code><strong> LHAPDF5:set/member</strong> : Use an external LHAPDF set 
 where <code>set</code> is the name of the set to use 
@@ -204,6 +214,9 @@ Other restrictions may also apply, so use with caution.
 If the <code>filename</code> begins with a / it is supposed to contain 
 the absolute path to the file, and if not the file is supposed to be 
 located in the standard <code>share/Pythia8/xmldoc</code> directory. 
+Note that, unlike LHAPDF, there is no explicit hierarchy of a set 
+containing separate members; each <code>.dat</code> file can be used 
+without any reference to the set it is a member of. 
    
 <br/><b>Warning 1:</b> the <i>alpha_s(M_Z)</i> values and the order of the 
 running in the description above is purely informative, and does not 

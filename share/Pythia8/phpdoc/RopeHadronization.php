@@ -38,8 +38,8 @@ superconductor analogy [<a href="Bibliography.php#refBie16b" target="page">Bie16
 charges at string endpoints and in gluon "kinks" can act together coherently 
 to form a "rope", which is hadronized with a larger, effective string 
 tension [<a href="Bibliography.php#refBie14" target="page">Bie14</a>]. 
-This has noticeable effects on the flavour composition of the hadronic final 
-state [<a href="Bibliography.php#refBie15" target="page">Bie15</a>], and this effect is denoted "flavour ropes" below. 
+The latter has noticeable effects on the flavour composition of the hadronic 
+final state [<a href="Bibliography.php#refBie15" target="page">Bie15</a>], and this effect is denoted "flavour ropes" below. 
  
 <p/> 
 Since both models deal with string overlaps in transverse space, it is 
@@ -65,21 +65,21 @@ enabled exists yet. Therefore Rope Hadronization must be explicitly switched
 on, and it is up to the user to provide a sensible tune. 
    
  
-<br/><br/><strong>Ropewalk:doShoving</strong>  <input type="radio" name="2" value="on" checked="checked"><strong>On</strong>
-<input type="radio" name="2" value="off"><strong>Off</strong>
- &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
+<br/><br/><strong>Ropewalk:doShoving</strong>  <input type="radio" name="2" value="on"><strong>On</strong>
+<input type="radio" name="2" value="off" checked="checked"><strong>Off</strong>
+ &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
 Enable the string shoving mechanism. In addition to this, the above 
 <code>Ropewalk:RopeHadronization</code> flag must also be switched on. 
    
  
-<br/><br/><strong>Ropewalk:doFlavour</strong>  <input type="radio" name="3" value="on" checked="checked"><strong>On</strong>
-<input type="radio" name="3" value="off"><strong>Off</strong>
- &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
+<br/><br/><strong>Ropewalk:doFlavour</strong>  <input type="radio" name="3" value="on"><strong>On</strong>
+<input type="radio" name="3" value="off" checked="checked"><strong>Off</strong>
+ &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
 Enable the flavour ropes mechanism. In addition to this, the above 
 <code>Ropewalk:RopeHadronization</code> flag must also be switched on. 
    
  
-<br/><br/><table><tr><td><strong>Ropewalk:r0 </td><td></td><td> <input type="text" name="4" value="1." size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.</strong></code>; <code>minimum = 0.</code>; <code>maximum = 10.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>Ropewalk:r0 </td><td></td><td> <input type="text" name="4" value="0.5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.5</strong></code>; <code>minimum = 0.</code>; <code>maximum = 10.</code>)</td></tr></table>
 The transverse radius of a string, in units of fm. This can be viewed as an 
 overall strength parameter of the Rope Hadronization framework, as all effects 
 scale with increasing string overlap. Notice that the value for the string 
@@ -105,8 +105,8 @@ the lab frame), and all string pieces in all slices are allowed to push
 each other with a force: 
  
 <br/><i> 
-f(d_\perp) = \frac{g_A g_E \kappa d_\perp}{R\sqrt{2\pi}} 
-\exp\left(-\frac{d^2_\perp g^2_E}{2R^2}\right), 
+f(d_\perp) = \frac{g_A \kappa d_\perp}{R^2} 
+\exp\left(-\frac{d^2_\perp }{4R^2}\right), 
 </i><br/> 
  
 where <i>d_\perp</i> is the distance in transverse space between two string 
@@ -118,7 +118,15 @@ radius, and <i>g_E</i>, a parameter dividing the equilibrium string radius
 to account for the effect of strings starting out with a vanishing string 
 radius. 
  
-<br/><br/><table><tr><td><strong>Ropewalk:rCutOff </td><td></td><td> <input type="text" name="6" value="4.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>4.0</strong></code>; <code>minimum = 0.</code>; <code>maximum = 100.</code>)</td></tr></table>
+<p/> 
+The model should be used with some caution. Simply switching it on, one will 
+not retain full description of single particle observables in minimum bias pp 
+collisions, as the excitation gluons will increase multiplicity. Besides normal 
+tuning, one can use the parameter <code>FragmentationSystems:mJoin</code> to 
+join the excitation gluons together, in order to recover single particle 
+observables. 
+ 
+<br/><br/><table><tr><td><strong>Ropewalk:rCutOff </td><td></td><td> <input type="text" name="6" value="6.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>6.0</strong></code>; <code>minimum = 0.</code>; <code>maximum = 100.</code>)</td></tr></table>
 This parameter gives the maximum cut-off radius, at which strings stops 
 interacting. The purpose of the parameter is to decrease computation time by 
 not calculating arbitrarily small pushes. In pp collisions at LHC energies, 
@@ -134,11 +142,10 @@ such, a change of this, in principle warrants a full retuning of the
 MPI framework. 
    
  
-<br/><br/><table><tr><td><strong>Ropewalk:gExponent </td><td></td><td> <input type="text" name="8" value="5.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>5.0</strong></code>; <code>minimum = 0.</code>; <code>maximum = 100.</code>)</td></tr></table>
-This value divides the string radius in the exponent of the shoving 
-force. As the string radius increases from a vanishing size at <i>t=0</i> to 
-its equilibrium size when the string hadronizes, this should in principle be 
-time dependent, but is kept constant here as a first approximation. 
+<br/><br/><table><tr><td><strong>Ropewalk:gExponent </td><td></td><td> <input type="text" name="8" value="1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.0</strong></code>; <code>minimum = 0.</code>; <code>maximum = 100.</code>)</td></tr></table>
+This value multiplies the string radius in the shoving 
+force, allowing for a variation between string radius in the flavour rope 
+treatment and the shoving treatment, if one wishes to run both simultaneously. 
    
  
 <br/><br/><table><tr><td><strong>Ropewalk:deltay </td><td></td><td> <input type="text" name="9" value="0.2" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.2</strong></code>; <code>minimum = 0.01</code>; <code>maximum = 10.</code>)</td></tr></table>
@@ -146,22 +153,25 @@ This value gives the width of the rapidity slices in which the event is
 split before shoving. 
    
  
-<br/><br/><table><tr><td><strong>Ropewalk:tShove </td><td></td><td> <input type="text" name="10" value="1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.0</strong></code>; <code>minimum = 0.</code>; <code>maximum = 10.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>Ropewalk:tShove </td><td></td><td> <input type="text" name="10" value="1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.0</strong></code>; <code>minimum = 0.</code>; <code>maximum = 100.</code>)</td></tr></table>
 The total shoving time in units of fm/c. 
    
  
-<br/><br/><table><tr><td><strong>Ropewalk:deltat </td><td></td><td> <input type="text" name="11" value="0.1" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.1</strong></code>; <code>minimum = 0.01</code>; <code>maximum = 10.0</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>Ropewalk:deltat </td><td></td><td> <input type="text" name="11" value="0.1" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>0.1</strong></code>; <code>minimum = 0.01</code>; <code>maximum = 100.0</code>)</td></tr></table>
 The size of the steps taken in time during shoving. Since the whole 
 event needs to be retraced after every time step, this should not be 
 too small. 
    
  
-<br/><br/><table><tr><td><strong>Ropewalk:tInit </td><td></td><td> <input type="text" name="12" value="1.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.0</strong></code>; <code>minimum = 0.</code>; <code>maximum = 10.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>Ropewalk:tInit </td><td></td><td> <input type="text" name="12" value="1.5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>1.5</strong></code>; <code>minimum = 0.</code>; <code>maximum = 100.</code>)</td></tr></table>
 The strings are allowed to propagate for some time, given in fm/c 
-by this parameter, before shoving takes place. Along with the <i>g_E</i> 
-parameter, this accounts for the fact that the strings are created with a 
-vanishing transverse size, and only shove each other when their transverse 
-size is large enough for interaction. 
+by this parameter, before shoving takes place. This accounts for the 
+fact that the strings are created with a vanishing transverse size, 
+and only shove each other when their transverse size is large enough 
+for interaction. Furthermore, the physical value of this parameter is 
+largely connected to the values set for 
+<?php $filepath = $_GET["filepath"];
+echo "<a href='VetexInformation.php?filepath=".$filepath."' target='page'>";?>Vertex Information</a>. 
    
  
 <br/><br/><strong>Ropewalk:shoveGluonLoops</strong>  <input type="radio" name="13" value="on" checked="checked"><strong>On</strong>
@@ -189,17 +199,16 @@ should be kept switched on, unless the user has a specific intention of
 switching it off. 
    
  
-<br/><br/><strong>Ropewalk:limitMom</strong>  <input type="radio" name="16" value="on"><strong>On</strong>
-<input type="radio" name="16" value="off" checked="checked"><strong>Off</strong>
- &nbsp;&nbsp;(<code>default = <strong>off</strong></code>)<br/>
+<br/><br/><strong>Ropewalk:limitMom</strong>  <input type="radio" name="16" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="16" value="off"><strong>Off</strong>
+ &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 It is possible to switch off shoving for dipoles with a <i>p_\perp</i> 
-above a given value. This is meant as a toy option for a user who wants to 
-study jet quenching effects and interplay between hard and soft effects 
-relevant for heavy ion physics. For a study of soft effects in pp, 
-this should be kept turned off. 
+above a given value. This is intended as a cut-off to disallow string segments 
+moving so fast that they would anyway escape shoving from soft strings to 
+have gluonic excitations added to them. 
    
  
-<br/><br/><table><tr><td><strong>Ropewalk:pTcut </td><td></td><td> <input type="text" name="17" value="3.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>3.0</strong></code>; <code>minimum = 0.</code>; <code>maximum = 1000.</code>)</td></tr></table>
+<br/><br/><table><tr><td><strong>Ropewalk:pTcut </td><td></td><td> <input type="text" name="17" value="2.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>2.0</strong></code>; <code>minimum = 0.</code>; <code>maximum = 1000.</code>)</td></tr></table>
 The value of <i>p_\perp</i> at which shoving is turned off, if the flag 
 <code>Ropewalk:limitMom</code> is on. 
    
@@ -281,17 +290,17 @@ if($_POST["1"] != "off")
 $data = "Ropewalk:RopeHadronization = ".$_POST["1"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["2"] != "on")
+if($_POST["2"] != "off")
 {
 $data = "Ropewalk:doShoving = ".$_POST["2"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["3"] != "on")
+if($_POST["3"] != "off")
 {
 $data = "Ropewalk:doFlavour = ".$_POST["3"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["4"] != "1.")
+if($_POST["4"] != "0.5")
 {
 $data = "Ropewalk:r0 = ".$_POST["4"]."\n";
 fwrite($handle,$data);
@@ -301,7 +310,7 @@ if($_POST["5"] != "0.2")
 $data = "Ropewalk:m0 = ".$_POST["5"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["6"] != "4.0")
+if($_POST["6"] != "6.0")
 {
 $data = "Ropewalk:rCutOff = ".$_POST["6"]."\n";
 fwrite($handle,$data);
@@ -311,7 +320,7 @@ if($_POST["7"] != "5.0")
 $data = "Ropewalk:gAmplitude = ".$_POST["7"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["8"] != "5.0")
+if($_POST["8"] != "1.0")
 {
 $data = "Ropewalk:gExponent = ".$_POST["8"]."\n";
 fwrite($handle,$data);
@@ -331,7 +340,7 @@ if($_POST["11"] != "0.1")
 $data = "Ropewalk:deltat = ".$_POST["11"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["12"] != "1.0")
+if($_POST["12"] != "1.5")
 {
 $data = "Ropewalk:tInit = ".$_POST["12"]."\n";
 fwrite($handle,$data);
@@ -351,12 +360,12 @@ if($_POST["15"] != "on")
 $data = "Ropewalk:shoveMiniStrings = ".$_POST["15"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["16"] != "off")
+if($_POST["16"] != "on")
 {
 $data = "Ropewalk:limitMom = ".$_POST["16"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["17"] != "3.0")
+if($_POST["17"] != "2.0")
 {
 $data = "Ropewalk:pTcut = ".$_POST["17"]."\n";
 fwrite($handle,$data);

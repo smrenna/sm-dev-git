@@ -161,16 +161,26 @@ NLO <ei>alpha_s(M_Z) = 0.1180</ei> (NLO, see Warning 3 above).</option>
 </option> 
 <option value="16">NNPDF2.3 QCD+QED NNLO <ei>alpha_s(M_Z) = 0.119</ei>. 
 </option> 
+<note>Warning :</note>the following four NNPDF 3.1 sets are quite 
+different from the NNPDF 2.3 ones, and cannot be used interchangeably, 
+but need retuning of the MPI framework. They also do not contain QED 
+evolution, and are likely to be replaced by ones that do for the next 
+release. 
 <option value="17">NNPDF3.1 QCD LO <ei>alpha_s(M_Z) = 0.130</ei>. 
-<note>Warning :</note>the NNPDF 3.1 sets are quite different from the 
-NNPDF 2.3 ones, and cannot be used interchangeably but need 
-retuning of the MPI framework. 
 </option> 
 <option value="18">NNPDF3.1 QCD LO <ei>alpha_s(M_Z) = 0.118</ei>. 
 </option> 
 <option value="19">NNPDF3.1 QCD NLO <ei>alpha_s(M_Z) = 0.118</ei>. 
 </option> 
 <option value="20">NNPDF3.1 QCD NNLO <ei>alpha_s(M_Z) = 0.118</ei>. 
+</option> 
+<option value="21"> modified NNPDF3.1 QCD NNLO. It is highly experimental, 
+as a first attempt to combine a NNLO behaviour at high <ei>x</ei> 
+with a physical LO-style one at low <ei>x</ei> and <ei>Q</ei>, 
+see the presentation by Zahiri Kassabov at the 
+<a href="https://indico.cern.ch/event/647565/" target="page"> 
+September 2017 PDF4LHC meeting</a>, and it is likely to be replaced 
+in future versions. 
 </option> 
 <option value="LHAPDF5:set/member">Use an external LHAPDF set 
 where <code>set</code> is the name of the set to use 
@@ -194,6 +204,9 @@ Other restrictions may also apply, so use with caution.
 If the <code>filename</code> begins with a / it is supposed to contain 
 the absolute path to the file, and if not the file is supposed to be 
 located in the standard <code>share/Pythia8/xmldoc</code> directory. 
+Note that, unlike LHAPDF, there is no explicit hierarchy of a set 
+containing separate members; each <code>.dat</code> file can be used 
+without any reference to the set it is a member of. 
 </option> 
 <note>Warning 1:</note> the <ei>alpha_s(M_Z)</ei> values and the order of the 
 running in the description above is purely informative, and does not 

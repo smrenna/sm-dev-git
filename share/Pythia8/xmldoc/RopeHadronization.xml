@@ -11,8 +11,8 @@ superconductor analogy <ref>Bie16b</ref> and (b) at hadronization time, colour
 charges at string endpoints and in gluon "kinks" can act together coherently 
 to form a "rope", which is hadronized with a larger, effective string 
 tension <ref>Bie14</ref>. 
-This has noticeable effects on the flavour composition of the hadronic final 
-state <ref>Bie15</ref>, and this effect is denoted "flavour ropes" below. 
+The latter has noticeable effects on the flavour composition of the hadronic 
+final state <ref>Bie15</ref>, and this effect is denoted "flavour ropes" below. 
  
 <p/> 
 Since both models deal with string overlaps in transverse space, it is 
@@ -35,17 +35,17 @@ enabled exists yet. Therefore Rope Hadronization must be explicitly switched
 on, and it is up to the user to provide a sensible tune. 
 </flag> 
  
-<flag name="Ropewalk:doShoving" default="on"> 
+<flag name="Ropewalk:doShoving" default="off"> 
 Enable the string shoving mechanism. In addition to this, the above 
 <code>Ropewalk:RopeHadronization</code> flag must also be switched on. 
 </flag> 
  
-<flag name="Ropewalk:doFlavour" default="on"> 
+<flag name="Ropewalk:doFlavour" default="off"> 
 Enable the flavour ropes mechanism. In addition to this, the above 
 <code>Ropewalk:RopeHadronization</code> flag must also be switched on. 
 </flag> 
  
-<parm name="Ropewalk:r0" default="1." min="0." max="10."> 
+<parm name="Ropewalk:r0" default="0.5" min="0." max="10."> 
 The transverse radius of a string, in units of fm. This can be viewed as an 
 overall strength parameter of the Rope Hadronization framework, as all effects 
 scale with increasing string overlap. Notice that the value for the string 
@@ -70,8 +70,8 @@ the lab frame), and all string pieces in all slices are allowed to push
 each other with a force: 
  
 <eq> 
-f(d_\perp) = \frac{g_A g_E \kappa d_\perp}{R\sqrt{2\pi}} 
-\exp\left(-\frac{d^2_\perp g^2_E}{2R^2}\right), 
+f(d_\perp) = \frac{g_A \kappa d_\perp}{R^2} 
+\exp\left(-\frac{d^2_\perp }{4R^2}\right), 
 </eq> 
  
 where <ei>d_\perp</ei> is the distance in transverse space between two string 
@@ -82,7 +82,15 @@ radius, and <ei>g_E</ei>, a parameter dividing the equilibrium string radius
 to account for the effect of strings starting out with a vanishing string 
 radius. 
  
-<parm name="Ropewalk:rCutOff" default="4.0" min="0." max="100."> 
+<p/> 
+The model should be used with some caution. Simply switching it on, one will 
+not retain full description of single particle observables in minimum bias pp 
+collisions, as the excitation gluons will increase multiplicity. Besides normal 
+tuning, one can use the parameter <code>FragmentationSystems:mJoin</code> to 
+join the excitation gluons together, in order to recover single particle 
+observables. 
+ 
+<parm name="Ropewalk:rCutOff" default="6.0" min="0." max="100."> 
 This parameter gives the maximum cut-off radius, at which strings stops 
 interacting. The purpose of the parameter is to decrease computation time by 
 not calculating arbitrarily small pushes. In pp collisions at LHC energies, 
@@ -98,11 +106,10 @@ such, a change of this, in principle warrants a full retuning of the
 MPI framework. 
 </parm> 
  
-<parm name="Ropewalk:gExponent" default="5.0" min="0." max="100."> 
-This value divides the string radius in the exponent of the shoving 
-force. As the string radius increases from a vanishing size at <ei>t=0</ei> to 
-its equilibrium size when the string hadronizes, this should in principle be 
-time dependent, but is kept constant here as a first approximation. 
+<parm name="Ropewalk:gExponent" default="1.0" min="0." max="100."> 
+This value multiplies the string radius in the shoving 
+force, allowing for a variation between string radius in the flavour rope 
+treatment and the shoving treatment, if one wishes to run both simultaneously. 
 </parm> 
  
 <parm name="Ropewalk:deltay" default="0.2" min="0.01" max="10."> 
@@ -110,22 +117,24 @@ This value gives the width of the rapidity slices in which the event is
 split before shoving. 
 </parm> 
  
-<parm name="Ropewalk:tShove" default="1.0" min="0." max="10."> 
+<parm name="Ropewalk:tShove" default="1.0" min="0." max="100."> 
 The total shoving time in units of fm/c. 
 </parm> 
  
-<parm name="Ropewalk:deltat" default="0.1" min="0.01" max="10.0"> 
+<parm name="Ropewalk:deltat" default="0.1" min="0.01" max="100.0"> 
 The size of the steps taken in time during shoving. Since the whole 
 event needs to be retraced after every time step, this should not be 
 too small. 
 </parm> 
  
-<parm name="Ropewalk:tInit" default="1.0" min="0." max="10."> 
+<parm name="Ropewalk:tInit" default="1.5" min="0." max="100."> 
 The strings are allowed to propagate for some time, given in fm/c 
-by this parameter, before shoving takes place. Along with the <ei>g_E</ei> 
-parameter, this accounts for the fact that the strings are created with a 
-vanishing transverse size, and only shove each other when their transverse 
-size is large enough for interaction. 
+by this parameter, before shoving takes place. This accounts for the 
+fact that the strings are created with a vanishing transverse size, 
+and only shove each other when their transverse size is large enough 
+for interaction. Furthermore, the physical value of this parameter is 
+largely connected to the values set for 
+<aloc href="VetexInformation">Vertex Information</aloc>. 
 </parm> 
  
 <flag name="Ropewalk:shoveGluonLoops" default="on"> 
@@ -147,15 +156,14 @@ should be kept switched on, unless the user has a specific intention of
 switching it off. 
 </flag> 
  
-<flag name="Ropewalk:limitMom" default="off"> 
+<flag name="Ropewalk:limitMom" default="on"> 
 It is possible to switch off shoving for dipoles with a <ei>p_\perp</ei> 
-above a given value. This is meant as a toy option for a user who wants to 
-study jet quenching effects and interplay between hard and soft effects 
-relevant for heavy ion physics. For a study of soft effects in pp, 
-this should be kept turned off. 
+above a given value. This is intended as a cut-off to disallow string segments 
+moving so fast that they would anyway escape shoving from soft strings to 
+have gluonic excitations added to them. 
 </flag> 
  
-<parm name="Ropewalk:pTcut" default="3.0" min="0." max="1000."> 
+<parm name="Ropewalk:pTcut" default="2.0" min="0." max="1000."> 
 The value of <ei>p_\perp</ei> at which shoving is turned off, if the flag 
 <code>Ropewalk:limitMom</code> is on. 
 </parm> 

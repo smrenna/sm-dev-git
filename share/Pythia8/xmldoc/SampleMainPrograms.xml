@@ -411,6 +411,13 @@ in a program that for the rest is structured like a normal PYTHIA run.
 <li><code>main92.cc</code> : shows how PYTHIA events can be stored as 
 ROOT trees.</li> 
  
+<li><code>main101.cc</code> : shows how the string shoving mechanism, 
+part of the rope hadronization framework, can be set up and used to 
+generate ridge effects.</li> 
+ 
+<li><code>main102.cc</code> : shows how flavour production is changed 
+in the rope hadronization framework.</li> 
+ 
 <li><code>main111.cc</code> : simple pp collisions as in 
 <code>main01.cc</code>, but using the Angantyr model for Heavy Ion 
 collisions. Also shows how Rivet analyses can be set up easily using 

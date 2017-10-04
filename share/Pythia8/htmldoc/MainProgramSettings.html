@@ -123,9 +123,13 @@ identity code. Default means that no particle is printed.
 <a name="anchor9"></a>
 <p/><code>mode&nbsp; </code><strong> Next:numberCount &nbsp;</strong> 
  (<code>default = <strong>1000</strong></code>; <code>minimum = 0</code>)<br/>
-Print a line telling how many events have been generated so far, 
-once every <code>numberCount</code> events. If set zero then no 
-lines are ever printed. 
+Print a line telling how many events have been generated so far, once 
+every <code>numberCount</code> events. If set zero then no lines are 
+ever printed. 
+<br/>In <code>include/Pythia8Plugins/ProgressLog.h</code> an alternative 
+method is implemented that intermittently prints out run progress 
+information, reports on CPU usage and estimates when the run will end. 
+It is used in the <code>main111.cc</code> example. 
    
  
 <a name="anchor10"></a>
