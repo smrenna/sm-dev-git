@@ -90,6 +90,7 @@ private:
   void calcPDFEnvelope(pair<int,int>, pair<double,double>, double, int);
   PDFEnvelope pdfEnvelope;
   PDFEnvelope getPDFEnvelope() { return pdfEnvelope; }
+  static const double PDFMINVALUE;
 
 };
 
@@ -108,6 +109,7 @@ LHAPDF6::~LHAPDF6() {
 
 }
 
+const double LHAPDF6::PDFMINVALUE = 1e-10;
 //--------------------------------------------------------------------------
 
 // Initialize a parton density function from LHAPDF6.
@@ -240,12 +242,12 @@ void LHAPDF6::calcPDFEnvelope(pair<int,int> idNows, pair<double,double> xNows, d
       xfCalc[imem] = pdfInfo.pdfs[imem]->xfxQ2(-idNows.first, x1, Q2Now);
     }
     if( valSea==0 || (idNows.second != 1 && idNows.second != 2 ) ) {
-      xfCalc[imem] /= pdfInfo.pdfs[imem]->xfxQ2(idNows.second, x2, Q2Now);
+      xfCalc[imem] /= max(PDFMINVALUE,pdfInfo.pdfs[imem]->xfxQ2(idNows.second, x2, Q2Now));
     } else if ( valSea==1 && (idNows.second == 1 || idNows.second == 2 ) ) {
-      xfCalc[imem] /= pdfInfo.pdfs[imem]->xfxQ2(idNows.second, x2, Q2Now) -
-	pdfInfo.pdfs[imem]->xfxQ2(-idNows.second, x2, Q2Now);
+      xfCalc[imem] /= max(pdfInfo.pdfs[imem]->xfxQ2(idNows.second, x2, Q2Now) -
+	pdfInfo.pdfs[imem]->xfxQ2(-idNows.second, x2, Q2Now),PDFMINVALUE);
     } else if ( valSea==2 && (idNows.second == 1 || idNows.second == 2 ) ) {
-      xfCalc[imem] /= pdfInfo.pdfs[imem]->xfxQ2(-idNows.second, x2, Q2Now);
+      xfCalc[imem] /= max(pdfInfo.pdfs[imem]->xfxQ2(-idNows.second, x2, Q2Now),PDFMINVALUE);
     }    
   }
   ::LHAPDF::PDFUncertainty xfErr = pdfInfo.pdfSet.uncertainty(xfCalc);
