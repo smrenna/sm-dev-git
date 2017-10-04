@@ -105,7 +105,8 @@ public:
 
   // The RopeDipole constructor makes sure that d1 is always the colored
   // end and d2 the anti-colored.
-  RopeDipole(RopeDipoleEnd d1In, RopeDipoleEnd d2In, Info* infoPtrIn);
+  RopeDipole(RopeDipoleEnd d1In, RopeDipoleEnd d2In, int iSubIn,
+    Info* infoPtrIn);
 
   // Insert an excitation on dipole, if not already there.
   void addExcitation(double ylab, Particle* ex);
@@ -116,12 +117,16 @@ public:
 
   // Get the rotation matrix to go to dipole rest frame.
   RotBstMatrix getDipoleRestFrame();
+  RotBstMatrix getDipoleLabFrame();
+
 
   // Get the dipole momentum four-vector.
   Vec4 dipoleMomentum();
 
   // Get the spatial point interpolated to given rapidity.
   Vec4 bInterpolate(double y, double m0);
+  Vec4 bInterpolate(double y, RotBstMatrix rb, double m0);
+
 
   // Get the quantum numbers m,n characterizing all dipole overlaps
   // at a given rapidity value.
@@ -139,7 +144,7 @@ public:
   void propagateInit(double deltat);
 
   // Propagate both dipole ends as well as all excitations.
-  void propagate(double deltat, double deltay, double m0);
+  void propagate(double deltat, double m0);
 
   // Redistribute momentum to two particles.
   void splitMomentum(Vec4 mom, Particle* p1, Particle* p2, double frac = 0.5);
@@ -149,6 +154,9 @@ public:
 
   // Test if the dipole is hadronized.
   bool hadronized() { return isHadronized; }
+
+  // Get the (event colconfig) index.
+  int index() { return iSub; }
 
   // Recoil the dipole from adding a gluon. If the "dummy" option is set,
   // the recoil will not be added, but only checked.
@@ -163,14 +171,18 @@ public:
 
 private:
 
-  // Constants.
-  static const double SMALLP;
-
   // The ends (ie. particles) of the dipole.
   RopeDipoleEnd d1, d2;
 
   // The propagated positions in the lab frame.
   Vec4 b1, b2;
+
+  // The string index (internal to the event).
+  int iSub;
+
+  // Lorentz matrices to go to and from dipole rest frame.
+  RotBstMatrix rotFrom, rotTo;
+  bool hasRotFrom, hasRotTo;
 
   // The dipoles overlapping with this one.
   vector<OverlappingRopeDipole> overlaps;

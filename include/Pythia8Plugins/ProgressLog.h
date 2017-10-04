@@ -9,20 +9,38 @@ namespace Pythia8 {
 
 using namespace std;
 
+// ProgressLog is a simple helper class to monitor the progress of a run.
+// When used in the main event loop, it will with suitably (logarithmically)
+// spaced intervals, print out one line with information about the number
+// of events generated, two estimates (based on instantaneous and average
+// CPU consumption) of when the run will be completed, the host on which
+// the program is run and its process number.
+
 class ProgressLog {
 
 public:
 
-
-  ProgressLog(long n)
+  /// Create an object for minitoring the progress of a run with NIn
+  /// iterations
+  ProgressLog(long NIn)
   : secstep(0) {
-    init(n);
+    init(NIn);
   }
 
+  /// Itermittently write out a line of progress information, giving
+  /// the current iteration (in the interval [0:N[ ).
+  void operator()(int cnt) {
+    tick(cnt + 1, N);
+  }
+
+  /// Itermittently write out a line of progress information using the
+  /// internal counter.
   void operator()() {
     tick(++count, N);
   }
 
+  /// Itermittently write out a line of progress information giving
+  /// the current iteration and the total number of iterations.
   void tick(long i, long n) {
     if ( !statusTime(i, n) ) return;
 
@@ -79,6 +97,7 @@ public:
 
   }
 
+  /// Interface to the system time information.
   double fclock() {
     struct tms tmsbuf;
     times(&tmsbuf);
@@ -88,6 +107,7 @@ public:
     return d;
   }
 
+  // Check if this is a good time to print out a status line.
   bool statusTime(long i, long n) const {
     if ( i <= 0 ) return false;
     if ( i == n ) return true;
@@ -98,6 +118,7 @@ public:
     return false;
   }
 
+  // Initialise the basic engine.
   void init(long n) {
     N = n;
     count = 0;
@@ -122,49 +143,32 @@ public:
 
 private:
 
-  /**
-   * If larger than 0, a status line will be written every secstep second.
-   */
+  // If larger than 0, a status line will be written every secstep
+  // second.
   int secstep;
 
-  /**
-   * The clock when the run was started.
-   */
+  // The clock when the run was started.
   time_t time0;
 
-  /**
-   * The cpu clock when the run was started.
-   */
+  // The cpu clock when the run was started.
   double fcpu0;
 
-  /**
-   * The clock the last time a status line was written out.
-   */
+  // The clock the last time a status line was written out.
   time_t time1;
 
-  /**
-   * The cpu clock the last time a status line was written out.
-   */
+  // The cpu clock the last time a status line was written out.
   double fcpu1;
 
-  /**
-   * The host on which we are running.
-   */
+  // The host on which we are running.
   string host;
 
-  /**
-   * The pid of the current process.
-   */
+  // The pid of the current process.
   pid_t pid;
 
-  /**
-   * The number of iterations
-   */
+  // The number of iterations
   long N;
 
-  /**
-   * The number of iterations so far
-   */
+  // The number of iterations so far
   long count;
 
 };

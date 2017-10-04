@@ -38,6 +38,9 @@ public:
   // Initialize a few parameters from Settings.
   virtual void init();
 
+  // Select vertex for a Beam Remnant particle.
+  virtual void vertexBeam( int iNow, int iBeam, Event& event);
+
   // Select vertex for an MPI.
   virtual void vertexMPI( int iBeg, int nAdd, double bNowIn, Event& event);
 
