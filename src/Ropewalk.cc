@@ -43,7 +43,7 @@ bool OverlappingRopeDipole::overlap(double y, Vec4 ba, double r0) {
   if (y < min(y1, y2) || y > max(y1, y2)) return false;
   Vec4 bb  = b1 + (b2 - b1) * (y - y1) / (y2 - y1);
   Vec4 tmp = ba - bb;
-  return (tmp.pT() < r0);
+  return (tmp.pT() < 2 * r0);
 
 }
 
@@ -64,18 +64,13 @@ bool OverlappingRopeDipole::hadronized() {
 
 //--------------------------------------------------------------------------
 
-// Constants: could be changed here if desired, but normally should not.
-
-// Small momentum cut-off for miniscule gluons.
-const double RopeDipole::SMALLP = 1e-5;
-
-//--------------------------------------------------------------------------
-
 // The RopeDipole constructor makes sure that d1 is always the colored
 // end and d2 the anti-colored.
 
-RopeDipole::RopeDipole(RopeDipoleEnd d1In, RopeDipoleEnd d2In, Info* infoPtrIn)
-  : d1(d1In), d2(d2In), isHadronized(false), infoPtr(infoPtrIn) {
+RopeDipole::RopeDipole(RopeDipoleEnd d1In, RopeDipoleEnd d2In, int iSubIn,
+  Info* infoPtrIn)
+  : d1(d1In), d2(d2In), iSub(iSubIn), hasRotFrom(false), hasRotTo(false),
+  isHadronized(false), infoPtr(infoPtrIn) {
 
   // Test if d1 is colored end and d2 anti-colored.
   if (d1In.getParticlePtr()->col() == d2In.getParticlePtr()->acol()
@@ -108,14 +103,17 @@ void RopeDipole::propagateInit(double deltat) {
   // Dipole end momenta.
   Vec4 pcm = d1.getParticlePtr()->p();
   Vec4 pam = d2.getParticlePtr()->p();
-  if (pcm.e() == 0 || pam.e() == 0)
+  double mTc = sqrt(pcm.pT2() + pcm.m2Calc());
+  double mTa = sqrt(pam.pT2() + pam.m2Calc());
+  if (mTc == 0 || mTa == 0)
     infoPtr->errorMsg("Error in RopeDipole::propagateInit: Tried to"
-      "propagate a RopeDipoleEnd with energy 0");
+      "propagate a RopeDipoleEnd with mT = 0");
 
   // New vertices in the lab frame.
-  Vec4 newv1 = d1.getParticlePtr()->vProd() + deltat * pcm / pcm.e();
-  Vec4 newv2 = d2.getParticlePtr()->vProd() + deltat * pam / pam.e();
-
+  Vec4 newv1 = Vec4(d1.getParticlePtr()->xProd() + deltat * pcm.px() / mTc,
+                d1.getParticlePtr()->yProd() + deltat * pcm.py() / mTc, 0, 0);
+  Vec4 newv2 = Vec4(d2.getParticlePtr()->xProd() + deltat * pam.px() / mTa,
+                d2.getParticlePtr()->yProd() + deltat * pam.py() / mTa, 0, 0);
   // Set the new vertices deep.
   d1.getParticlePtr()->vProd(newv1);
   d2.getParticlePtr()->vProd(newv2);
@@ -126,19 +124,22 @@ void RopeDipole::propagateInit(double deltat) {
 
 // Propagate both dipole ends as well as all excitations.
 
-void RopeDipole::propagate(double deltat, double deltay, double m0) {
+void RopeDipole::propagate(double deltat, double m0) {
 
   // First propagate the dipole ends.
   propagateInit(deltat);
   for (map<double, Particle*>::iterator eItr = excitations.begin();
     eItr != excitations.end(); ++eItr) {
-    Vec4 em = eItr->second->p();
 
-    // Propagate excitations only in lab frame
-    // and only if it has been pushed.
-    if (em.e() > 0.0)
-      eItr->second->vProd(eItr->second->vProd() +
-        deltat * em / (em.pT() + m0 * deltay * deltay));
+    Vec4 em = eItr->second->p();
+    em.rotbst(getDipoleLabFrame());
+    // Propagate excitations.
+
+    if (em.pT() > 0.0){
+      Vec4 newVert = Vec4(eItr->second->xProd() + deltat * em.px() / em.pT(),
+                eItr->second->yProd() + deltat * em.py() / em.pT(), 0, 0);
+      eItr->second->vProd(newVert);
+    }
     else eItr->second->vProd(bInterpolate(eItr->first,m0));
   }
 
@@ -150,11 +151,10 @@ void RopeDipole::propagate(double deltat, double deltay, double m0) {
 
 void RopeDipole::excitationsToString(double m0, Event& event) {
 
-  // Go through the excitations and sanity check them.
+  // Erase excitations below cut-off.
   for (map<double, Particle*>::iterator itr = excitations.begin();
     itr != excitations.end(); ++itr)
-    if (itr->second->pAbs() < SMALLP) excitations.erase(itr);
-
+    if(itr->second->pAbs() < 1e-6) excitations.erase(itr);
   // We now colour connect the excitations to the dipole.
   // The dipole is connected like this sketch:
   // acol  (d1)  col ------ acol  (d2)  col.
@@ -301,12 +301,31 @@ bool RopeDipole::recoil(Vec4& pg, bool dummy) {
 
 RotBstMatrix RopeDipole::getDipoleRestFrame() {
 
+  if (hasRotTo) return rotTo;
+
   RotBstMatrix r;
   r.toCMframe(d1.getParticlePtr()->p(),d2.getParticlePtr()->p());
-  return r;
+  rotTo = r;
+  hasRotTo = true;
+  return rotTo;
 
 }
 
+//--------------------------------------------------------------------------
+
+// Get the Lorentz matrix to go from the dipole rest frame to lab frame.
+
+RotBstMatrix RopeDipole::getDipoleLabFrame() {
+
+  if(hasRotFrom) return rotFrom;
+
+  RotBstMatrix r;
+  r.fromCMframe(d1.getParticlePtr()->p(),d2.getParticlePtr()->p());
+  rotFrom = r;
+  hasRotFrom = true;
+  return rotFrom;
+
+}
 //--------------------------------------------------------------------------
 
 // The dipole four-momentum.
@@ -334,6 +353,23 @@ Vec4 RopeDipole::bInterpolate(double y, double m0) {
 
 //--------------------------------------------------------------------------
 
+// Interpolate (linear) between dipole ends to get b position in
+// a given frame at given y.
+
+Vec4 RopeDipole::bInterpolate(double y, RotBstMatrix rb, double m0) {
+
+  Vec4 bb1 = d1.getParticlePtr()->vProd();
+  Vec4 bb2 = d2.getParticlePtr()->vProd();
+  bb1.rotbst(rb);
+  bb2.rotbst(rb);
+  double y1 = d1.rap(m0);
+  double y2 = d2.rap(m0);
+  return bb1 + y * (bb2 - bb1) / (y2 - y1);
+
+}
+
+//--------------------------------------------------------------------------
+
 // Calculate the amount of overlapping dipoles at a given rapidity.
 // Return the number of overlapping dipoles to the "left" and "right".
 
@@ -350,7 +386,6 @@ pair<int, int> RopeDipole::getOverlaps(double yfrac, double m0, double r0) {
   return make_pair(m,n);
 
 }
-
 
 //==========================================================================
 
@@ -407,7 +442,10 @@ void shove(double dpx, double dpy) {
 }
 
 // The push direction as a four vector.
-Vec4 direction() { return (pp2->vProd()-pp1->vProd()); }
+Vec4 direction() {
+  return dip1->bInterpolate(y,dip1->getDipoleRestFrame(),m0) -
+    dip2->bInterpolate(y,dip1->getDipoleRestFrame(),m0);
+}
 
 // Member variables, slice rapidity and small cut-off mass.
 double y;
@@ -453,6 +491,7 @@ bool Ropewalk::init(Info* infoPtrIn, Settings settings, Rndm* rndmPtrIn) {
   deltay               = settings.parm("Ropewalk:deltay");
   deltat               = settings.parm("Ropewalk:deltat");
   tShove               = settings.parm("Ropewalk:tShove");
+  tInit                = settings.parm("Ropewalk:tInit");
   showerCut            = settings.parm("TimeShower:pTmin");
 
   // Check consistency.
@@ -647,7 +686,7 @@ void Ropewalk::shoveTheDipoles(Event& event) {
   vector<double> rapidities;
   for (double y = ymin; y < ymax; y += deltay) rapidities.push_back(y);
 
-  // For each value of ySample, we have an excitation pair per dipole.
+  // For each value of ySample, we have a vector of excitation pairs.
   map<double, vector<Exc> > exPairs;
   for (int i = 0, N = eParticles.size(); i < N; ++i) eParticles[i].clear();
   eParticles.clear();
@@ -655,7 +694,7 @@ void Ropewalk::shoveTheDipoles(Event& event) {
   // Construct an empty vector of excitation particles.
   eParticles.push_back( vector<Particle>() );
 
-  // Find dipoles that are sampled here, and store them temporarily.
+  // Find dipoles sampled in this slice, and store them temporarily.
   double ySample = rapidities[i];
   vector<RopeDipole*> tmp;
   for (multimap<double, RopeDipole*>::iterator
@@ -664,24 +703,38 @@ void Ropewalk::shoveTheDipoles(Event& event) {
       tmp.push_back(rItr->second);
   }
 
-  // Construct the excitation particles, one for each sampled dipole.
+  // Construct excitation particles, one for each sampled dipole in this slice.
   vector<int> eraseDipoles;
+
   for (int j = 0, M = tmp.size(); j < M; ++j) {
     Vec4 ex;
-    Particle pp = Particle(21, 22, 0, 0, 0, 0, 0, 0, ex);
-    pp.vProd( tmp[j]->bInterpolate(ySample,m0) );
-    eParticles[i].push_back(pp);
+    // Test if the dipole can bear the excitation.
+    if (!tmp[j]->recoil(ex,true) ) {
+      eraseDipoles.push_back(j);
+    }
   }
   // Erase dipoles which could not bear an excitation.
   for (int j = 0, M = eraseDipoles.size(); j < M; ++j) {
     tmp.erase( tmp.begin() + (eraseDipoles[j]-j) );
   }
-
+  // Add the actual excitations, but only if we can create pairs.
+  if( int(tmp.size()) > 1)
+    for (int j = 0, M = tmp.size(); j < M; ++j) {
+      Vec4 ex;
+      // We boost the excitation back from dipole rest frame.
+      tmp[j]->recoil(ex,false);
+      Particle pp = Particle(21, 22, 0, 0, 0, 0, 0, 0, ex);
+      pp.vProd( tmp[j]->bInterpolate(ySample,m0) );
+      eParticles[i].push_back(pp);
+    }
   // Construct all pairs of possible excitations in this slice.
   exPairs[ySample] = vector<Exc>();
   for (int j = 0, M = tmp.size(); j < M; ++j)
-    for (int k = j + 1; k < M; ++k) {
-      exPairs[ySample].push_back( Exc(ySample, m0, i, j, k, tmp[j], tmp[k]) );
+    for (int k = 0; k < M; ++k) {
+       // Don't allow a string to shove itself.
+       if(j != k && tmp[j]->index() != tmp[k]->index() )
+         exPairs[ySample].push_back( Exc(ySample, m0, i, j, k, tmp[j],
+         tmp[k]) );
     }
   }
 
@@ -709,22 +762,22 @@ void Ropewalk::shoveTheDipoles(Event& event) {
       // Minimal string size is 1 / shower cut-off
       // converted to fm.
       double rt = max(t, 1. / showerCut / 5.068);
-      rt = min(rt, r0);
+      rt = min(rt, r0 * gExponent);
       double dist = direction.pT();
       // Calculate the push, its direction and do the shoving.
       if (dist < rCutOff * rt) {
-        // New gain function
-        double gain = deltay * deltat * gAmplitude * dist / rt / rt
+        // Gain function.
+        double gain = 0.5 * deltay * deltat * gAmplitude * dist / rt / rt
                     * exp( -0.25 * dist * dist / rt / rt);
         double dpx = dist > 0.0 ? gain * direction.px() / dist: 0.0;
         double dpy = dist > 0.0 ? gain * direction.py() / dist: 0.0;
-        ep.shove(dpx,dpy);
+        ep.shove(dpx, dpy);
       }
     }
 
     // Propagate the dipoles.
     for (DMap::iterator dItr = dipoles.begin(); dItr != dipoles.end(); ++dItr)
-      dItr->second.propagate(deltat, deltay, m0);
+      dItr->second.propagate(deltat, m0);
   }
 
   // Add the excitations to the dipoles.
@@ -764,13 +817,13 @@ bool Ropewalk::extractDipoles(Event& event, ColConfig& colConfig) {
           // Get the parton placement in Event Record.
           pair<int,int> dipoleER = make_pair( stringPartons[iPar + 1],
             stringPartons[iPar] );
-          RopeDipole test(previous, next, infoPtr);
+          RopeDipole test(previous, next, iSub, infoPtr);
           if ( limitMom && test.dipoleMomentum().pT() < pTcut)
             dipoles.insert( pair< pair<int, int>, RopeDipole>(dipoleER,
-              RopeDipole( previous, next, infoPtr)) );
+              RopeDipole( previous, next, iSub, infoPtr)) );
           else if (!limitMom)
             dipoles.insert( pair< pair<int, int>, RopeDipole>(dipoleER,
-              RopeDipole( previous, next, infoPtr)));
+              RopeDipole( previous, next, iSub, infoPtr)));
         }
         previous = next;
         stringStart = false;

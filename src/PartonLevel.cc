@@ -224,7 +224,8 @@ bool PartonLevel::init( Info* infoPtrIn, Settings& settings,
     particleDataPtr, rndmPtr, beamPomAPtr, beamPomBPtr, couplingsPtr,
     partonSystemsPtr, sigmaTotPtr, userHooksPtr, partonVertexPtr);
   if (!remnants.init( infoPtr, settings, rndmPtr, beamAPtr, beamBPtr,
-    partonSystemsPtr, particleDataPtr, &colourReconnection)) return false;
+    partonSystemsPtr, partonVertexPtr, particleDataPtr, &colourReconnection))
+    return false;
   resonanceDecays.init( infoPtr, particleDataPtr, rndmPtr);
   colourReconnection.init( infoPtr, settings, rndmPtr, particleDataPtr,
     beamAPtr, beamBPtr, partonSystemsPtr);

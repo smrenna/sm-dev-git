@@ -2216,7 +2216,7 @@ void PomHISASD::xfUpdate(int, double x, double Q2) {
 
   // Check that pomeron momentum fraction is available.
   if ( xPomNow < 0.0 || xPomNow > 1.0 || !pPDFPtr )
-    printErr("Error in PonHISASD::xfUpdate: no xPom available.");
+    printErr("Error in PonHISASD::xfUpdate: no xPom available.", infoPtr);
 
   double xx = xPomNow*x;
 
@@ -3313,11 +3313,12 @@ void LHAGrid1::init(string pdfWord, string xmlPath, Info* infoPtr) {
   if (pdfWord[0] == '/') dataFile = pdfWord;
   else if (pdfSet == 0) dataFile = xmlPath + pdfWord;
 
-  // Input is fit number. Current selection for NNPDF3.1 only.
-  else if (pdfSet == 17) dataFile = xmlPath+"NNPDF31_lo_as_0130_0000.dat";
-  else if (pdfSet == 18) dataFile = xmlPath+"NNPDF31_lo_as_0118_0000.dat";
-  else if (pdfSet == 19) dataFile = xmlPath+"NNPDF31_nlo_as_0118_0000.dat";
-  else if (pdfSet == 20) dataFile = xmlPath+"NNPDF31_nnlo_as_0118_0000.dat";
+  // Input is fit number. Current selection for NNPDF3.1 and modified NNLO.
+  else if (pdfSet == 17) dataFile = xmlPath + "NNPDF31_lo_as_0130_0000.dat";
+  else if (pdfSet == 18) dataFile = xmlPath + "NNPDF31_lo_as_0118_0000.dat";
+  else if (pdfSet == 19) dataFile = xmlPath + "NNPDF31_nlo_as_0118_0000.dat";
+  else if (pdfSet == 20) dataFile = xmlPath + "NNPDF31_nnlo_as_0118_0000.dat";
+  else if (pdfSet == 21) dataFile = xmlPath + "mcpdf_test_replicas_0000.dat";
 
   // Open files from which grids should be read in.
   ifstream is( dataFile.c_str() );

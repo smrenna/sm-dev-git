@@ -488,41 +488,6 @@ bool Angantyr::init() {
     collPtr = new DoubleStrikman(1);
   else
     collPtr = new NaiveSubCollisionModel();
-  if ( print ) {
-    vector<double> sigErr = settings.pvec("HeavyIon:SigFitErr");
-    cout << " *----- Angantyr initializing collision model "
-         << "with cross sections -----* "
-         << fixed << setprecision(2) << endl;
-    cout << " |                    Total: " << setw(9) << sigtot.sigmaTot()
-         << " mb      (+- " << setw(2) << int(100.0*sigErr[0])
-         << "%)                | " << endl
-         << " |          non-diffractive: " << setw(9) << sigtot.sigmaND()
-         << " mb      (+- " << setw(2) << int(100.0*sigErr[1])
-         << "%)                | " << endl
-         << " |           XX diffractive: " << setw(9) << sigtot.sigmaXX()
-         << " mb      (+- " << setw(2) << int(100.0*sigErr[2])
-         << "%)                | " << endl
-         << " |       wounded target (B): " << setw(9)
-         << sigtot.sigmaAX() + sigtot.sigmaND() + sigtot.sigmaXX()
-         << " mb      (+- " << setw(2) << int(100.0*sigErr[3])
-         << "%)                | " << endl
-         << " |   wounded projectile (A): " << setw(9)
-         << sigtot.sigmaXB() + sigtot.sigmaND() + sigtot.sigmaXX()
-         << " mb      (+- " << setw(2) << int(100.0*sigErr[4])
-         << "%)                | " << endl
-         << " |          AXB diffractive: " << setw(9) << sigtot.sigmaAXB()
-         << " mb      (+- " << setw(2) << int(100.0*sigErr[5])
-         << "%)                | " << endl
-         << " |                  elastic: " << setw(9) << sigtot.sigmaEl()
-         << " mb      (+- " << setw(2) << int(100.0*sigErr[6])
-         << "%)                | " << endl
-         << " |          elastic b-slope: " << setw(9) << sigtot.bSlopeEl()
-         << " GeV^-2  (+- " << setw(2) << int(100.0*sigErr[7])
-         << "%)                | " << endl
-         << " *--- End Angantyr initializing collision model "
-         << "with cross sections ---* "
-         << endl;
-  }
 
   collPtr->initPtr(*projPtr, *targPtr, sigtot, settings,
                    info, mainPythiaPtr->rndm);

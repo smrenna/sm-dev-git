@@ -11,6 +11,7 @@
 
 namespace Pythia8 {
 
+
 //==========================================================================
 
 // NucleusModel base class.
@@ -281,21 +282,12 @@ bool SubCollisionModel::init() {
   sigTarg[5] = sigTotPtr->sigmaAXB()*millibarn;
   sigTarg[6] = sigTotPtr->sigmaEl()*millibarn;
   sigTarg[7] = sigTotPtr->bSlopeEl();
-  if ( settingsPtr->isMode("HI:SigFitNInt") ) {
-    NInt = settingsPtr->mode("HI:SigFitNInt");
-    NGen = settingsPtr->mode("HI:SigFitNGen");
-    NPop = settingsPtr->mode("HI:SigFitNPop");
-    sigErr = settingsPtr->pvec("HI:SigFitErr");
-    sigFuzz = settingsPtr->parm("HI:SigFitFuzz");
-    fitPrint = settingsPtr->flag("HI:SigFitPrint");
-  } else {
-    NInt = settingsPtr->mode("HeavyIon:SigFitNInt");
-    NGen = settingsPtr->mode("HeavyIon:SigFitNGen");
-    NPop = settingsPtr->mode("HeavyIon:SigFitNPop");
-    sigErr = settingsPtr->pvec("HeavyIon:SigFitErr");
-    sigFuzz = settingsPtr->parm("HeavyIon:SigFitFuzz");
-    fitPrint = settingsPtr->flag("HeavyIon:SigFitPrint");
-  }
+  NInt = settingsPtr->mode("HeavyIon:SigFitNInt");
+  NGen = settingsPtr->mode("HeavyIon:SigFitNGen");
+  NPop = settingsPtr->mode("HeavyIon:SigFitNPop");
+  sigErr = settingsPtr->pvec("HeavyIon:SigFitErr");
+  sigFuzz = settingsPtr->parm("HeavyIon:SigFitFuzz");
+  fitPrint = settingsPtr->flag("HeavyIon:SigFitPrint");
   return evolve();
 }
 
@@ -317,6 +309,33 @@ double SubCollisionModel::Chi2(const SigEst & se, int npar) const {
   return chi2/double(max(nval - npar, 1));
 }
 
+
+//--------------------------------------------------------------------------
+
+// Anonymous helper function to print out stuff.
+
+namespace {
+
+void printTarget(string name, double sig, double sigerr,
+                 string unit = "mb    ") {
+  cout << " |" << setw(25) << name << ": " << setw(9) << sig << " " << unit;
+  if ( sigerr > 0.0 )
+    cout <<"  (+- " << setw(2) << int(100.0*sigerr)
+         << "%)                | \n";
+  else
+    cout << "  not used                | \n";
+}
+
+void printFit(string name, double fit, double sig, double sigerr,
+                 string unit = "mb    ") {
+  cout << " |" << setw(25) << name << ":  "
+       << setw(8) << fit
+       << (sigerr > 0.0? " *(": "  (")
+       << setw(6) << sig
+       << ") " << unit << "                | " << endl;
+}
+
+}
 //--------------------------------------------------------------------------
 
 // A simple genetic algorithm for fitting the parameters in a subclass
@@ -329,6 +348,18 @@ bool SubCollisionModel::evolve() {
   int dim = minp.size();
   if ( dim == 0 ) return true;
 
+  if ( fitPrint ) {
+    cout << " *------ HeavyIon fitting of SubCollisionModel to "
+         << "cross sections ------* " << endl;
+    printTarget("Total", sigTarg[0]/millibarn, sigErr[0]);
+    printTarget("non-diffractive", sigTarg[1]/millibarn, sigErr[1]);
+    printTarget("XX diffractive", sigTarg[2]/millibarn, sigErr[2]);
+    printTarget("wounded target (B)", sigTarg[3]/millibarn, sigErr[3]);
+    printTarget("wounded projectile (A)", sigTarg[4]/millibarn, sigErr[4]);
+    printTarget("AXB diffractive", sigTarg[5]/millibarn, sigErr[5]);
+    printTarget("elastic", sigTarg[6]/millibarn, sigErr[6]);
+    printTarget("elastic b-slope", sigTarg[7], sigErr[7], "GeV^-2");
+  }
   // We're going to use a home-made genetic algorithm. We start by
   // creating a population of random parameter points.
   vector<Parms> pop(NPop, Parms(dim));
@@ -359,7 +390,19 @@ bool SubCollisionModel::evolve() {
     // kill them if they are too bad.
     multimap<double, Parms>::iterator it  = chi2map.begin();
     pop[0] = it->second;
-    cout << fixed << setprecision(2) << setw(7) << it->first << endl;
+    if ( fitPrint ) {
+      if ( igen == 0 )
+        cout << " |                                      "
+             << "                               | \n"
+             << " |   Using a genetic algorithm          "
+             << "                               | \n"
+             << " |   Generation       best Chi2/Ndf     "
+             << "                               | \n";
+      cout << " |" << setw(13) << igen << fixed << setprecision(2)
+           << setw(20) << it->first
+           << "                                    | " << endl;
+    }
+
     for ( int i = 1; i < NPop; ++i ) {
       pop[i] = (++it)->second;
       if ( it->first > rndPtr->flat()*chi2max ) {
@@ -386,72 +429,45 @@ bool SubCollisionModel::evolve() {
     infoPtr->errorMsg("HeavyIon Warning: Chi^2 in fitting sub-collision "
                       "model to cross sections was high.");
   if ( fitPrint ) {
-    cout << " *--- HeavyIon fitting of parameters in "
-         << "nucleon collision model ----* "
-         << fixed << setprecision(2) << endl;
+    cout << fixed << setprecision(2);
     cout << " |                                      "
-         << "                            | "
+         << "                               | "
          << endl;
     cout << " |     Resulting cross sections (target value) "
-         << "                     | "
+         << "                        | "
          << endl;
-    cout << " |                    Total: "
-         << setw(8) << se.sig[0]/millibarn
-         << (sigErr[0] > 0.0? " *(": "  (")
-         << setw(6) << sigTarg[0]/millibarn
-         << ") mb                  | " << endl;
-    cout << " |          Non-diffractive: "
-         << setw(8) << se.sig[1]/millibarn
-         << (sigErr[1]> 0.0? " *(": "  (")
-         << setw(6) << sigTarg[1]/millibarn
-         << ") mb                  | " << endl;
-    cout << " |         diffractive (XX): "
-         << setw(8) << se.sig[2]/millibarn
-         << (sigErr[2] > 0.0? " *(": "  (")
-         << setw(6) << sigTarg[2]/millibarn
-         << ") mb                  | " << endl;
-    cout << " |       wounded target (B): "
-         << setw(8) << se.sig[3]/millibarn
-         << (sigErr[3] > 0.0? " *(": "  (")
-         << setw(6) << sigTarg[3]/millibarn
-         << ") mb                  | " << endl;
-    cout << " |   wounded projectile (A): "
-         << setw(8) << se.sig[4]/millibarn
-         << (sigErr[4] > 0.0? " *(": "  (")
-         << setw(6) << sigTarg[4]/millibarn
-         << ") mb                  | " << endl;
-    cout << " |        diffractive (AXB): "
-         << setw(8) << se.sig[5]/millibarn
-         << (sigErr[5] > 0.0? " *(": "  (")
-         << setw(6) << sigTarg[5]/millibarn
-         << ") mb                  | " << endl;
-    cout << " |                  Elastic: "
-          << setw(8) << se.sig[6]/millibarn
-         << (sigErr[6] > 0.0? " *(": "  (")
-         << setw(6) << sigTarg[6]/millibarn
-         << ") mb                  | " << endl;
-    cout << " |          Elastic b-slope: "
-         << setw(8) << se.sig[7]
-         << (sigErr[7] > 0.0? " *(": "  (")
-         << setw(6) << sigTarg[7]
-         << ") mb                  | " << endl;
+    printFit("Total", se.sig[0]/millibarn,
+             sigTarg[0]/millibarn, sigErr[0]);
+    printFit("non-diffractive", se.sig[1]/millibarn,
+             sigTarg[1]/millibarn, sigErr[1]);
+    printFit("XX diffractive", se.sig[2]/millibarn,
+             sigTarg[2]/millibarn, sigErr[2]);
+    printFit("wounded target (B)", se.sig[3]/millibarn,
+             sigTarg[3]/millibarn, sigErr[3]);
+    printFit("wounded projectile (A)", se.sig[4]/millibarn,
+             sigTarg[4]/millibarn, sigErr[4]);
+    printFit("AXB diffractive", se.sig[5]/millibarn,
+             sigTarg[5]/millibarn, sigErr[5]);
+    printFit("elastic", se.sig[6]/millibarn,
+             sigTarg[6]/millibarn, sigErr[6]);
+    printFit("elastic b-slope", se.sig[7], sigTarg[7], sigErr[7], "GeV^-2");
     cout << " |                 Chi2/Ndf: "
          << setw(8) << chi2
-         << "                               | " << endl;
-    cout << " |                               "
+         << "                                  | " << endl;
+    cout << " |                                  "
          << "                                   | "
          << endl;
     cout << " |     Resulting parameters:         "
-         << "                               | "
+         << "                                  | "
          << endl;
     for ( int j = 0; j < dim; ++j )
       cout << " |" << setw(20) << j << ":" << setw(9) << pop[0][j]
-           << "                                    | " << endl;
+           << "                                       | " << endl;
     cout << " |                                      "
-         << "                            | "
+         << "                               | "
          << endl;
-    cout << " *- End HeavyIon fitting of parameters in "
-         << "nucleon collision model --* "
+    cout << " *--- End HeavyIon fitting of parameters in "
+         << "nucleon collision model ---* "
          << endl << endl;
     if ( NGen > 0 ) {
       cout << "HeavyIon Info: To avoid refitting, use the following settings "
@@ -557,17 +573,12 @@ getCollisions(vector<Nucleon> & proj, vector<Nucleon> & targ,
 //--------------------------------------------------------------------------
 
 // Anonymous helper functions to simplify calculating elastic
-// amplitudes and cross section deviations.
+// amplitudes.
 
 namespace {
 inline double el(double s1, double s2, double u1, double u2) {
   return s1/u1 > s2/u2? s2*u1: s1*u2;
 }
-
-// Following method not used currently, so commented out for now.
-//inline double dev(double x, double dx2, double t, double dt2) {
-//  return pow2(x - t)/(dx2 + dt2);
-//}
 
 }
 
@@ -650,7 +661,7 @@ SubCollisionModel::SigEst DoubleStrikman::getSig() const {
 
   s.sig[7] /= double(NInt);
   s.dsig2[7] /= double(NInt);
-  double bS = (s.sig[7]/s.sig[5])/(8.0*M_PI*pow2(0.19732697));
+  double bS = (s.sig[7]/s.sig[5])/(16.0*M_PI*pow2(0.19732697));
   double b2S = pow2(bS)*(s.dsig2[7]/pow2(s.sig[7]) - 1.0 +
                         s.dsig2[5]/pow2(s.sig[5]) - 1.0)/double(NInt);
   s.sig[5] = 0.0;
@@ -954,6 +965,7 @@ void HIInfo::addAttempt(double T, double bin, double bweight) {
   sigmaNDSave += delta/double(NSave);
   sigErr2NDSave += (delta*(w - sigmaNDSave) - sigErr2NDSave)/double(NSave);
 }
+
 
 void HIInfo::accept() {
   int pc = primInfo.code();

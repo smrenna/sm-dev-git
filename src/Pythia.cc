@@ -2743,7 +2743,7 @@ PDF* Pythia::getPDFPtr(int idIn, int sequence, string beam, bool resolved) {
       tempPDFPtr = new CTEQ6pdf(idIn, pSet - 6, 1., xmlPath, &info);
     else if (pSet <= 16)
       tempPDFPtr = new NNPDF(idIn, pSet - 12, xmlPath, &info);
-    else if (pSet <= 20)
+    else if (pSet <= 21)
       tempPDFPtr = new LHAGrid1(idIn, pWord, xmlPath, &info);
     else tempPDFPtr = 0;
   }

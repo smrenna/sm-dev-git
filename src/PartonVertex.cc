@@ -30,6 +30,19 @@ void PartonVertex::init() {
 
 //--------------------------------------------------------------------------
 
+// Select vertex for a beam (remnant) particle.
+
+void PartonVertex::vertexBeam( int iNow, int iBeam, Event& event) {
+  if(iBeam == 0)
+    event[iNow].vProd(-bNow/2., 0., 0., 0.);
+  else if(iBeam == 1)
+    event[iNow].vProd(bNow/2., 0. ,0. ,0.);
+  else
+    infoPtr->errorMsg("Error in PartonVertex:vertexBeam: Wrong beam index.");
+}
+
+//--------------------------------------------------------------------------
+
 // Select vertex or vertices for an MPI.
 
 void PartonVertex::vertexMPI( int iBeg, int nAdd, double bNowIn,
@@ -83,15 +96,18 @@ void PartonVertex::vertexFSR( int iNow, Event& event) {
   // Skip if not implemented option.
   if (!doVertex || modeVertex < 1 || modeVertex > 2) return;
 
+  // Mother index.
+  int iMo = event[iNow].mother1();
   // Start from known vertex, or mother one.
   Vec4 vStart = event[iNow].hasVertex() ? event[iNow].vProd()
-              : event[event[iNow].mother1()].vProd();
+              : event[iMo].vProd();
 
   // Add Gaussian smearing.
   double pT = max( event[iNow].pT(), pTmin);
   pair<double, double> xy = rndmPtr->gauss2();
   Vec4 vSmear = (widthEmission / pT) * Vec4( xy.first, xy.second, 0., 0.);
   event[iNow].vProd( vStart + vSmear);
+
 
 }
 
