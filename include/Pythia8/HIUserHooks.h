@@ -27,8 +27,6 @@
 
 namespace Pythia8 {
 
-using std::multiset;
-using std::list;
 class Pythia;
 
 /// Forward declaration.

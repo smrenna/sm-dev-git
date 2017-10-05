@@ -65,6 +65,8 @@ using std::map;
 using std::multimap;
 using std::deque;
 using std::set;
+using std::multiset;
+using std::list;
 
 // Input/output streams.
 using std::cin;

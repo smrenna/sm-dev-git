@@ -476,7 +476,7 @@ RopeDipole* dip2;
 
 // The Ropewalk init function sets parameters and pointers.
 
-bool Ropewalk::init(Info* infoPtrIn, Settings settings, Rndm* rndmPtrIn) {
+bool Ropewalk::init(Info* infoPtrIn, Settings& settings, Rndm* rndmPtrIn) {
 
   // Save pointers.
   infoPtr = infoPtrIn;
@@ -865,13 +865,13 @@ const double RopeFragPars::ZCUT = 1.0e-4;
 
 // The init function sets up initial parameters from settings.
 
-void RopeFragPars::init(Info* infoPtrIn, Settings& set) {
+void RopeFragPars::init(Info* infoPtrIn, Settings& settings) {
 
   // Info pointer.
   infoPtr = infoPtrIn;
 
   // The junction parameter.
-  beta = set.parm("Ropewalk:beta");
+  beta = settings.parm("Ropewalk:beta");
 
   // Initialize default values from input settings.
   const int len = 8;
@@ -880,7 +880,7 @@ void RopeFragPars::init(Info* infoPtrIn, Settings& set) {
   "StringFlav:probSQtoQQ", "StringFlav:probQQ1toQQ0", "StringFlav:probQQtoQ"};
   double* variables[len] = {&sigmaIn, &aIn, &adiqIn, &bIn, &rhoIn, &xIn,
     &yIn, &xiIn};
-  for (int i = 0; i < len; ++i) *variables[i] = set.parm(params[i]);
+  for (int i = 0; i < len; ++i) *variables[i] = settings.parm(params[i]);
 
   // Insert the h = 1 case immediately.
   sigmaEff = sigmaIn, aEff = aIn, adiqEff = adiqIn, bEff = bIn,

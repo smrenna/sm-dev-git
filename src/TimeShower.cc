@@ -3434,7 +3434,7 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
 
   // Emission veto is a phase space restriction, and should not be included
   // in the uncertainty calculation.
-  if (vetoedEnhancedEmission) acceptEvent = false; 
+  if (vetoedEnhancedEmission) acceptEvent = false;
   if (doUncertaintiesNow) calcUncertainties( acceptEvent, pAccept, weight, vp,
     dipSel, &rad, &emt, &rec);
 

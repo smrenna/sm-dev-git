@@ -208,7 +208,7 @@ public:
   Ropewalk() {}
 
   // The Ropewalk init function sets parameters and pointers.
-  bool init(Info* infoPtrIn, Settings settings, Rndm* rndmPtrIn);
+  bool init(Info* infoPtrIn, Settings& settings, Rndm* rndmPtrIn);
 
   // Extract all dipoles from an event.
   bool extractDipoles(Event& event, ColConfig& colConfig);
@@ -303,7 +303,7 @@ public:
   RopeFragPars() {}
 
   // The init function sets up initial parameters from settings.
-  void init(Info* infoPtrIn, Settings& set);
+  void init(Info* infoPtrIn, Settings& settings);
 
   // Return parameters at given string tension, ordered by their
   // name for easy insertion in settings.

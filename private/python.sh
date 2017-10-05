@@ -34,6 +34,7 @@ if [ "$ARCH" == "DARWIN" ]; then SED="sed -r -i .sed"; else SED="sed -r -i"; fi
 # Force "std" prefix for all STL classes used.
 FILES=`ls python/include/*/*.h`
 CLASSES="string vector map deque set ostream ostringstream complex"
+CLASSES+="multiset list"
 for CLASS in $CLASSES; do
     REPLACE="std::$CLASS"
     if [ "$CLASS" == "complex" ]; then REPLACE+="<double> "; fi
@@ -62,6 +63,8 @@ cat > $CFG_FILE << BLOCKTEXT
 %include <std_map.i>
 %include <std_deque.i>
 %include <std_set.i>
+%include <std_multiset.i>
+%include <std_list.i>
 %include <std_ios.i>
 %include <std_iostream.i>
 %include <std_sstream.i>
@@ -164,7 +167,7 @@ BLOCKTEXT
 # Determine the files.
 NAMES=""
 BAN="FJCORE FASTJET3 LHAPDF5 LHAPDF6 EXECINFO EVTGEN HEPMC2 LHAPOWHEG"
-BAN+=" LHAFORTRAN"
+BAN+=" LHAFORTRAN MIXMAX PYTHIA8RIVET"
 for FILE in $FILES; do
     NAME=`basename $FILE .h | awk '{print toupper($0)}'`
     if [[ $BAN =~ (^| )$NAME($| ) ]]; then continue; fi

@@ -2721,7 +2721,7 @@ bool SpaceShower::branch( Event& event) {
     if (vetoedEnhancedEmission && canEnhanceEmission) infoPtr->addCounter(40);
   }
 
-  if (vetoedEnhancedEmission) acceptEvent = false; 
+  if (vetoedEnhancedEmission) acceptEvent = false;
 
   // If doing uncertainty variations, calculate accept/reject reweightings.
   if (doUncertaintiesNow) calcUncertainties( acceptEvent, pAccept, pT20,

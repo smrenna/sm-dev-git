@@ -181,8 +181,8 @@ at TeV Colliders, Les Houches, France, 21 May - 1 Jun 2001
 [arXiv:0704.1826 [hep-ph]]</dd> 
  
 <dt><a name="refBro09">Bro09</a></dt> 
-<dd>W. Broniowski M. Rybczynski and P. Bozek, Comput. Phys. Commun. 180 (2009) 69 
-[arXiv:0710.5731 [nucl-th]]</dd> 
+<dd>W. Broniowski M. Rybczynski and P. Bozek, Comput. Phys. Commun. 
+180 (2009) 69 [arXiv:0710.5731 [nucl-th]]</dd> 
  
 <dt><a name="refBru93">Bru93</a></dt> 
 <dd>P. Bruni and G. Ingelman, Phys. Lett. B311 (1993) 317</dd> 
@@ -203,7 +203,8 @@ at TeV Colliders, Les Houches, France, 21 May - 1 Jun 2001
 <dd>J. Butterworth et al., arXiv:1405.1067 [hep-ph]</dd> 
  
 <dt><a name="refCab17">Cab17</a></dt> 
-<dd>B. Cabouat, LU TP 17-174, arXiv:1708.????? [hep-ph]</dd> 
+<dd>B. Cabouat and T. Sj&ouml;strand, LU TP 17-28, MCnet-17-14, 
+arXiv:1710.00391 [hep-ph]</dd> 
  
 <dt><a name="refCac06">Cac06</a></dt> 
 <dd>M. Cacciari and G.P. Salam, Phys. Lett. B641 (2006) 57 
