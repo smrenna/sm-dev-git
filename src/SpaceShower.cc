@@ -273,8 +273,8 @@ void SpaceShower::init( BeamParticle* beamAPtrIn,
   uVarMPIshowers     = settingsPtr->flag("UncertaintyBands:MPIshowers");
   cNSpTmin           = settingsPtr->parm("UncertaintyBands:cNSpTmin");
   uVarpTmin2         = pow2(pT0Ref);
-  uVarpTmin2        *= settingsPtr->parm("UncertaintyBands:FSRpTmin2Fac");  
-  
+  uVarpTmin2        *= settingsPtr->parm("UncertaintyBands:FSRpTmin2Fac");
+
   // Possibility to set parton vertex information.
   doPartonVertex     = settingsPtr->flag("PartonVertex:setVertex")
                     && (partonVertexPtr != 0);
@@ -2650,6 +2650,7 @@ bool SpaceShower::branch( Event& event) {
       return false;
     }
   }
+
   // Allow veto of branching. If so restore event record to before emission.
   if ( (canVetoEmission
     && userHooksPtr->doVetoISREmission(eventSizeOld, event, iSysSel))
@@ -2667,20 +2668,21 @@ bool SpaceShower::branch( Event& event) {
     return false;
   }
 
-// Recover delayed shower-accept probability for uncertainty variations.
-// This should occur after ISR emission veto, because that is a phase space
-//   restriction
+  // Recover delayed shower-accept probability for uncertainty variations.
+  // This should occur after ISR emission veto, because that is a
+  // phase space restriction.
   double pAccept = dipEndSel->pAccept;
 
   // Decide if we are going to accept or reject this branching.
   // (Without wasting time generating random numbers if pAccept = 1.)
   bool acceptEvent = true;
-  if (pAccept < 1.0) acceptEvent = (rndmPtr->flat() < pAccept);  
+  if (pAccept < 1.0) acceptEvent = (rndmPtr->flat() < pAccept);
 
   // Default values for uncertainty calculations
   double weight = 1.;
   double vp = 0.;
-  bool vetoedEnhancedEmission = false;  
+  bool vetoedEnhancedEmission = false;
+
   // Calculate event weight for enhanced emission rate.
   if (canEnhanceET) {
     // Check if emission weight was enhanced. Get enhance weight factor.
@@ -2716,19 +2718,20 @@ bool SpaceShower::branch( Event& event) {
     if ( doTrialNow && canEnhanceTrial)
       userHooksPtr->setEnhancedTrial(sqrt(pT2), weight);
     // Increment counter of rejected splittings.
-    if (vetoedEnhancedEmission && canEnhanceEmission) infoPtr->addCounter(40);      
+    if (vetoedEnhancedEmission && canEnhanceEmission) infoPtr->addCounter(40);
   }
 
-  acceptEvent *= !vetoedEnhancedEmission;
-  
-  // If doing uncertainty variations, calculate accept/reject reweightings.
-  if (doUncertaintiesNow) calcUncertainties( acceptEvent, pAccept, pT20, weight,
-    vp, dipEndSel, &mother, &sister);
+  if (vetoedEnhancedEmission) acceptEvent = false; 
 
-  // Veto if necessary.  
+  // If doing uncertainty variations, calculate accept/reject reweightings.
+  if (doUncertaintiesNow) calcUncertainties( acceptEvent, pAccept, pT20,
+    weight, vp, dipEndSel, &mother, &sister);
+
+  // Veto if necessary.
   // Return false if we decided to reject this branching.
-  if( (doUncertainties && !acceptEvent) || (vetoedEnhancedEmission && canEnhanceEmission) ) {
-    // Restore kinematics before returning
+  if ( (doUncertainties && !acceptEvent)
+    || (vetoedEnhancedEmission && canEnhanceEmission) ) {
+    // Restore kinematics before returning.
     event.popBack( event.size() - eventSizeOld);
     event[beamOff1].daughter1( ev1Dau1V);
     event[beamOff2].daughter1( ev2Dau1V);
@@ -2741,6 +2744,7 @@ bool SpaceShower::branch( Event& event) {
     return false;
   }
   
+
 
   // Update list of partons in system; adding newly produced one.
   partonSystemsPtr->setInA(iSysSel, eventSizeOld);
@@ -3025,7 +3029,7 @@ bool SpaceShower::initUncertainties() {
   varQ2GQmuRfac.clear();    varQ2GQcNS.clear();
   varX2XGmuRfac.clear();    varX2XGcNS.clear();
   varG2QQmuRfac.clear();    varG2QQcNS.clear();
-  varPDFplus.clear(); varPDFminus.clear();
+  varPDFplus.clear();       varPDFminus.clear();
 
   // Get uncertainty variations from Settings (as list of strings to parse).
   vector<string> uVars = settingsPtr->wvec("UncertaintyBands:List");
@@ -3057,7 +3061,7 @@ bool SpaceShower::initUncertainties() {
   keys.push_back("isr:X2XG:cNS");
   keys.push_back("isr:G2QQ:cNS");
   keys.push_back("isr:PDF:plus");
-  keys.push_back("isr:PDF:minus");  
+  keys.push_back("isr:PDF:minus");
 
   // Store number of QCD variations (as separator to QED ones).
   int nKeysQCD=keys.size();
@@ -3115,7 +3119,7 @@ bool SpaceShower::initUncertainties() {
       if (key == "isr:cns" || key == "isr:g2qq:cns")
         varG2QQcNS[iWeight] = value;
       if (key == "isr:pdf:plus")   varPDFplus[iWeight] = 1;
-      if (key == "isr:pdf:minus")  varPDFminus[iWeight] = 1;      
+      if (key == "isr:pdf:minus")  varPDFminus[iWeight] = 1;
       // Tell that we found at least one recognized and parseable keyword.
       if (iWord < nKeysQCD) nRecognizedQCD++;
     } // End loop over QCD keywords
@@ -3133,7 +3137,8 @@ bool SpaceShower::initUncertainties() {
 // Calculate uncertainties for the current event.
 
 void SpaceShower::calcUncertainties(bool accept, double pAccept, double pT20in,
-  double enhance, double vp, SpaceDipoleEnd* dip, Particle* motPtr, Particle* sisPtr) {
+  double enhance, double vp, SpaceDipoleEnd* dip, Particle* motPtr,
+  Particle* sisPtr) {
 
   // Sanity check.
   if (!doUncertainties || !doUncertaintiesNow || nUncertaintyVariations <= 0)
@@ -3153,7 +3158,7 @@ void SpaceShower::calcUncertainties(bool accept, double pAccept, double pT20in,
   // When performing biasing, the nominal weight need not be unity.
   doVar[0] = true;
   uVarFac[0] = 1.0;
-  
+
   // Extract IDs, with standard ISR nomenclature: mot -> dau(Q2) + sis
   int idSis = sisPtr->id();
   int idMot = motPtr->id();
@@ -3161,20 +3166,22 @@ void SpaceShower::calcUncertainties(bool accept, double pAccept, double pT20in,
   // PDF variations
   double deltaPDFplus(0.0);
   double deltaPDFminus(0.0);
-  if ( !varPDFplus.empty() || !varPDFminus.empty() ) {  
+  if ( !varPDFplus.empty() || !varPDFminus.empty() ) {
     // Evaluation of new daughter and mother PDF's.
-    double scale2 = (useFixedFacScale) ? fixedFacScale2 : factorMultFac * dip->pT2;
-    double xMother = dip->xMo; // momentum fraction
+    double scale2 = (useFixedFacScale) ? fixedFacScale2
+      : factorMultFac * dip->pT2;
+    double xMother = dip->xMo;
     double xDau    = dip->z * xMother;
     BeamParticle& beam  = (abs(dip->side) == 1) ? *beamAPtr : *beamBPtr;
     int valSea = (beam[iSysSel].isValence()) ? 1 : 0;
     if( beam[iSysSel].isUnmatched() ) valSea = 2;
-    beam.calcPDFEnvelope(make_pair(dip->idMother,dip->idDaughter),make_pair(xMother,xDau),scale2,valSea);
+    beam.calcPDFEnvelope( make_pair(dip->idMother,dip->idDaughter),
+      make_pair(xMother,xDau), scale2, valSea);
     PDF::PDFEnvelope ratioPDFEnv = beam.getPDFEnvelope();
     deltaPDFplus = min(ratioPDFEnv.errplusPDF/ratioPDFEnv.centralPDF,0.5);
-    deltaPDFminus= min(ratioPDFEnv.errminusPDF/ratioPDFEnv.centralPDF,0.5);  
+    deltaPDFminus= min(ratioPDFEnv.errminusPDF/ratioPDFEnv.centralPDF,0.5);
   }
-    
+
   // QCD variations.
   if (dip->colType != 0) {
 
@@ -3261,7 +3268,7 @@ void SpaceShower::calcUncertainties(bool accept, double pAccept, double pT20in,
     }
     varPtr = &varPDFplus;
     for (itVar = varPtr->begin(); itVar != varPtr->end(); ++itVar) {
-      int iWeight   = itVar->first;      
+      int iWeight   = itVar->first;
       uVarFac[iWeight] *= 1.0 + deltaPDFplus;
       doVar[iWeight] = true;
     }
@@ -3284,12 +3291,13 @@ void SpaceShower::calcUncertainties(bool accept, double pAccept, double pT20in,
   for (int iWeight = 0; iWeight <= nUncertaintyVariations; ++iWeight) {
     if (!doVar[iWeight]) continue;
     // If trial accepted: apply ratio of accept probabilities.
-    if (accept) infoPtr->reWeight(iWeight, uVarFac[iWeight]/((1.0-vp)*enhance));
+    if (accept) infoPtr->reWeight( iWeight,
+       uVarFac[iWeight] / ((1.0 - vp) * enhance) );
     // If trial rejected : apply Sudakov reweightings.
     else {
       // Check for near-singular denominators (indicates too few failures,
       // and hence would need to increase headroom).
-      double denom = 1. - pAccept*(1.0 - vp);
+      double denom = 1. - pAccept * (1.0 - vp);
       if (denom < REJECTFACTOR) {
         stringstream message;
         message << iWeight;
@@ -3297,7 +3305,8 @@ void SpaceShower::calcUncertainties(bool accept, double pAccept, double pT20in,
           " iWeight = ", message.str());
       }
       // Force reweighting factor > 0.
-      double reWtFail = max(0.01, (1. - uVarFac[iWeight] * pAccept / enhance ) / denom);
+      double reWtFail = max(0.01, (1. - uVarFac[iWeight] * pAccept / enhance )
+        / denom);
       infoPtr->reWeight(iWeight, reWtFail);
     }
   }

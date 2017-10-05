@@ -721,7 +721,10 @@ downwards step above.
 <argoption value="31">  the number of times FSR has been accepted as the 
 downwards step above, after the vetoes. 
 </argoption> 
-<argoption value="40 - 49"> counters that are unused (currently), and 
+<argoption value="40"> keeps track of vetoed emission for shower 
+reweighting. 
+</argoption> 
+<argoption value="41 - 49"> counters that are unused (currently), and 
 that therefore are free to use, with the help of the two methods below. 
 </argoption> 
 </argument> 

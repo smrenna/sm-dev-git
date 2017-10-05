@@ -2183,7 +2183,7 @@ bool SetupContainers::init(vector<ProcessContainer*>& containerPtrs,
                       ? 1000000+2*(idx-1) : 2000000+2*(idx-4));
               int id2 = jso + ((jdx <= 3)
                       ? 1000000+2*(jdx-1) : 2000000+2*(jdx-4));
-              // Skip if outgoing codes not asked for
+              // Skip if outgoing codes not asked for.
               if (!allowIdVals( id1, id2)) continue;
               sigmaPtr = new Sigma2qq2squarksquark(id1,id2,iproc);
               containerPtrs.push_back( new ProcessContainer(sigmaPtr) );
@@ -2911,6 +2911,18 @@ bool SetupContainers::init(vector<ProcessContainer*>& containerPtrs,
   // Set up requested objects for Dark Matter processes.
   if (settings.flag("DM:ffbar2Zp2XX")) {
     sigmaPtr = new Sigma2ffbar2Zp2XX();
+    containerPtrs.push_back( new ProcessContainer(sigmaPtr) );
+  }
+  if (settings.flag("DM:ffbar2Zp2XXj")) {
+    sigmaPtr = new Sigma3ffbar2Zp2XXj();
+    containerPtrs.push_back( new ProcessContainer(sigmaPtr) );
+  }
+  if (settings.flag("DM:gg2S2XX")) {
+    sigmaPtr = new Sigma2gg2S2XX();
+    containerPtrs.push_back( new ProcessContainer(sigmaPtr) );
+  }
+  if (settings.flag("DM:gg2S2XXj")) {
+    sigmaPtr = new Sigma3gg2S2XXj();
     containerPtrs.push_back( new ProcessContainer(sigmaPtr) );
   }
 

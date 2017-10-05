@@ -44,6 +44,7 @@ Currently, the list of available automated variations
 <li> The renormalization scale for QCD emissions in ISR; </li> 
 <li> The inclusion of non-singular terms in QCD emissions in FSR; </li> 
 <li> The inclusion of non-singular terms in QCD emissions in ISR. </li> 
+<li> The PDF members of a PDF family in LHAPDF6. </li> 
 </ul> 
 Similar variations would be possible for QED emissions, but these have not 
 yet been implemented. 
@@ -98,6 +99,34 @@ weight fluctuations must be expected when including shower
 variations for MPI, due to the (many) more systems which then 
 enter in the reweightings. 
    
+ 
+<p/> 
+The following parameters allow one to switch off all 
+variations below a fixed threshold.  It is specified in terms of 
+a multiplier for the <code>TimeShower:pTmin</code> squared (FSR) or 
+<code>SpaceShower:pT0Ref</code> squared (ISR). 
+A separate cutoff can be specified for ISR or FSR: 
+<br/><br/><table><tr><td><strong>UncertaintyBands:ISRpTmin2Fac </td><td></td><td> <input type="text" name="5" value="4.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>4.0</strong></code>; <code>minimum = 0.0</code>; <code>maximum = 100.0</code>)</td></tr></table>
+Variations will not be performed for ISR branchings 
+occurring below the threshold fixed by 
+<code>UncertaintyBands:ISRpTmin2Fac</code> times 
+<code> SpaceShower:pT0Ref^2 </code>. 
+   
+<br/><br/><table><tr><td><strong>UncertaintyBands:FSRpTmin2Fac </td><td></td><td> <input type="text" name="6" value="4.0" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>4.0</strong></code>; <code>minimum = 0.0</code>; <code>maximum = 100.0</code>)</td></tr></table>
+Variations will not be performed for FSR branchings 
+occurring below the threshold fixed by 
+<code>UncertaintyBands:FSRpTmin2Fac</code> times 
+<code> TimeShower:pTmin^2 </code>. 
+   
+ 
+<p/> 
+The user can control whether the variations are calculated in all or 
+specific stages of the event generation: 
+<br/><br/><table><tr><td><strong>UncertaintyBands:type  </td><td>  &nbsp;&nbsp;(<code>default = <strong>0</strong></code>; <code>minimum = 0</code>; <code>maximum = 2</code>)</td></tr></table>
+<br/>
+<input type="radio" name="7" value="0" checked="checked"><strong>0 </strong>:   Variations are calculated where allowed; <br/>
+<input type="radio" name="7" value="1"><strong>1 </strong>:    only for the process (including ISR and FSR); <br/>
+<input type="radio" name="7" value="2"><strong>2 </strong>:    only for resonance decay and showering; <br/>
  
 <p/> 
 <b>UserHooks Warning:</b> the calculation of uncertainty variations 
@@ -207,8 +236,8 @@ can be queried using <code>Pythia::info.nWeights()</code>.
 <h3>NLO Compensation Term for Renormalisation-Scale Variations</h3> 
  
 Additionally, there is a run-time parameter: 
-<br/><br/><strong>UncertaintyBands:muSoftCorr</strong>  <input type="radio" name="5" value="on" checked="checked"><strong>On</strong>
-<input type="radio" name="5" value="off"><strong>Off</strong>
+<br/><br/><strong>UncertaintyBands:muSoftCorr</strong>  <input type="radio" name="8" value="on" checked="checked"><strong>On</strong>
+<input type="radio" name="8" value="off"><strong>Off</strong>
  &nbsp;&nbsp;(<code>default = <strong>on</strong></code>)<br/>
 This flags tells the shower to apply an O(&alpha;S<sup>2</sup>) 
 compensation term to the renormalization-scale variations, which 
@@ -263,6 +292,15 @@ higher ID codes controlled by <code>X2XG</code> keywords. Thus a change to
 values instead of the corresponding <code>Q2QG</code> ones. 
    
  
+<p/> 
+Finally, the keywords for PDF variations (plus and minus) is: 
+<ul> 
+  <li><code>isr:PDF:plus</code> : any number </li> 
+  <li><code>isr:PDF:minus</code> : any number </li> 
+</ul> 
+The number is not used. 
+ 
+ 
 <input type="hidden" name="saved" value="1"/>
 
 <?php
@@ -298,9 +336,24 @@ if($_POST["4"] != "off")
 $data = "UncertaintyBands:MPIshowers = ".$_POST["4"]."\n";
 fwrite($handle,$data);
 }
-if($_POST["5"] != "on")
+if($_POST["5"] != "4.0")
 {
-$data = "UncertaintyBands:muSoftCorr = ".$_POST["5"]."\n";
+$data = "UncertaintyBands:ISRpTmin2Fac = ".$_POST["5"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["6"] != "4.0")
+{
+$data = "UncertaintyBands:FSRpTmin2Fac = ".$_POST["6"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["7"] != "0")
+{
+$data = "UncertaintyBands:type = ".$_POST["7"]."\n";
+fwrite($handle,$data);
+}
+if($_POST["8"] != "on")
+{
+$data = "UncertaintyBands:muSoftCorr = ".$_POST["8"]."\n";
 fwrite($handle,$data);
 }
 fclose($handle);

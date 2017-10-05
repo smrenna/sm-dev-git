@@ -220,6 +220,14 @@ public:
     pdfBeamPtr->calcPDFEnvelope(idNows,xNows,Q2Now,valSea);}  
   PDF::PDFEnvelope getPDFEnvelope() { return pdfBeamPtr->getPDFEnvelope(); }
   
+  // Calculate envelope of PDF predictions
+  void calcPDFEnvelope(int idNow, double xNow, double Q2Now, int valSea) {
+    pdfBeamPtr->calcPDFEnvelope(idNow,xNow,Q2Now,valSea);}
+  void calcPDFEnvelope(pair<int,int> idNows, pair<double,double> xNows,
+    double Q2Now, int valSea) {
+    pdfBeamPtr->calcPDFEnvelope(idNows,xNows,Q2Now,valSea);}
+  PDF::PDFEnvelope getPDFEnvelope() { return pdfBeamPtr->getPDFEnvelope(); }
+
   // Decide whether chosen quark is valence, sea or companion.
   int pickValSeaComp();
 

@@ -148,8 +148,9 @@ public:
   bool initUncertainties();
 
   // Calculate uncertainty-band weights for accepted/rejected trial branching.
-  void calcUncertainties(bool accept, double pAccept, double enhance, double vp, 
-    TimeDipoleEnd* dip, Particle* radPtr, Particle* emtPtr, Particle* recPtr);
+  void calcUncertainties(bool accept, double pAccept, double enhance,
+    double vp, TimeDipoleEnd* dip, Particle* radPtr, Particle* emtPtr,
+    Particle* recPtr);
 
   // Tell which system was the last processed one.
   virtual int system() const {return iSysSel;};
@@ -377,7 +378,7 @@ private:
   map<int,double> varG2GGmuRfac, varQ2QGmuRfac, varG2QQmuRfac, varX2XGmuRfac;
   map<int,double> varG2GGcNS, varQ2QGcNS, varG2QQcNS, varX2XGcNS;
   map<int,double> varPDFplus, varPDFminus;
-  
+
 };
 
 //==========================================================================

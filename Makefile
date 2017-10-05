@@ -109,8 +109,8 @@ $(LOCAL_LIB)/libpythia8$(LIB_SUFFIX): $(OBJECTS)
 
 # LHAPDF (turn off all warnings for readability).
 $(LOCAL_TMP)/LHAPDF%Plugin.o: $(LOCAL_INCLUDE)/Pythia8Plugins/LHAPDF%.h
-	$(CXX) -x c++ $< -o $@ -c -MD -w -I$(LHAPDF$*_INCLUDE)\
-	 -I$(BOOST_INCLUDE) $(CXX_COMMON)
+	$(CXX) -x c++ $< -o $@ -c -MD -w $(CXX_COMMON) -I$(LHAPDF$*_INCLUDE)\
+	 -I$(BOOST_INCLUDE) 
 $(LOCAL_LIB)/libpythia8lhapdf5.so: $(LOCAL_TMP)/LHAPDF5Plugin.o\
 	$(LOCAL_LIB)/libpythia8.a
 	$(CXX) $^ -o $@ $(CXX_COMMON) $(CXX_SHARED) $(CXX_SONAME)$(notdir $@)\

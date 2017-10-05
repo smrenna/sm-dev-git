@@ -152,9 +152,16 @@ void RopeDipole::propagate(double deltat, double m0) {
 void RopeDipole::excitationsToString(double m0, Event& event) {
 
   // Erase excitations below cut-off.
-  for (map<double, Particle*>::iterator itr = excitations.begin();
-    itr != excitations.end(); ++itr)
-    if(itr->second->pAbs() < 1e-6) excitations.erase(itr);
+  map<double, Particle*>::iterator pItr = excitations.begin();
+  while (pItr != excitations.end() ) {
+    if (pItr->second->pAbs() < 1e-6) {
+      map<double, Particle*>::iterator eraseMe = pItr;
+      ++pItr;
+      excitations.erase(eraseMe);
+    }
+    else ++pItr;
+  }
+
   // We now colour connect the excitations to the dipole.
   // The dipole is connected like this sketch:
   // acol  (d1)  col ------ acol  (d2)  col.
@@ -749,31 +756,31 @@ void Ropewalk::shoveTheDipoles(Event& event) {
 
   // Shoving loop.
   for (double t = tInit; t < tShove + tInit; t += deltat) {
-  // For all slices.
-  for (map<double, vector<Exc> >::iterator slItr = exPairs.begin();
-    slItr != exPairs.end(); ++slItr)
-    // For all excitation pairs.
-    for (int i = 0, N = slItr->second.size(); i < N; ++i) {
-      Exc& ep = slItr->second[i];
-      // The direction vector is a space-time four-vector.
-      Vec4 direction = ep.direction();
-      // The string radius is time dependent,
-      // growing with the speed of light.
-      // Minimal string size is 1 / shower cut-off
-      // converted to fm.
-      double rt = max(t, 1. / showerCut / 5.068);
-      rt = min(rt, r0 * gExponent);
-      double dist = direction.pT();
-      // Calculate the push, its direction and do the shoving.
-      if (dist < rCutOff * rt) {
-        // Gain function.
-        double gain = 0.5 * deltay * deltat * gAmplitude * dist / rt / rt
-                    * exp( -0.25 * dist * dist / rt / rt);
-        double dpx = dist > 0.0 ? gain * direction.px() / dist: 0.0;
-        double dpy = dist > 0.0 ? gain * direction.py() / dist: 0.0;
-        ep.shove(dpx, dpy);
+    // For all slices.
+    for (map<double, vector<Exc> >::iterator slItr = exPairs.begin();
+      slItr != exPairs.end(); ++slItr)
+      // For all excitation pairs.
+      for (int i = 0, N = slItr->second.size(); i < N; ++i) {
+        Exc& ep = slItr->second[i];
+        // The direction vector is a space-time four-vector.
+        Vec4 direction = ep.direction();
+        // The string radius is time dependent,
+        // growing with the speed of light.
+        // Minimal string size is 1 / shower cut-off
+        // converted to fm.
+        double rt = max(t, 1. / showerCut / 5.068);
+        rt = min(rt, r0 * gExponent);
+        double dist = direction.pT();
+        // Calculate the push, its direction and do the shoving.
+        if (dist < rCutOff * rt) {
+          // Gain function.
+          double gain = 0.5 * deltay * deltat * gAmplitude * dist / rt / rt
+                      * exp( -0.25 * dist * dist / rt / rt);
+          double dpx = dist > 0.0 ? gain * direction.px() / dist: 0.0;
+          double dpy = dist > 0.0 ? gain * direction.py() / dist: 0.0;
+          ep.shove(dpx, dpy);
+        }
       }
-    }
 
     // Propagate the dipoles.
     for (DMap::iterator dItr = dipoles.begin(); dItr != dipoles.end(); ++dItr)

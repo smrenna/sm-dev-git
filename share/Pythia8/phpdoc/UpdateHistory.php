@@ -38,7 +38,7 @@ but this should only affect a small part of the user code.
  
 <ul> 
  
-<li>8.229: 3 October 2017 
+<li>8.230: 5 October 2017 
 <ul> 
  
 <li>Christian Bierlich joins as co-author.</li> 
@@ -75,7 +75,7 @@ pomeron momentum fractions for such rescaling.</li>
 <li>The new capabilities are illustrated in <code>main111.cc</code>, 
 <code>main112.cc</code> and <code>main113.cc</code>, for pp, pPb and 
 PbPb collisions, respectively.</li> 
-</ul> 
+</ul></li> 
  
 <li>New <?php $filepath = $_GET["filepath"];
 echo "<a href='RopeHadronization.php?filepath=".$filepath."' target='page'>";?>Rope Hadronization</a> 
@@ -148,6 +148,17 @@ photoproduction with different fluxes. Still optimized for lepton beams,
 but also other fluxes can be studied. See new sample main program 
 <code>main70.cc</code> for examples.</li> 
  
+<li>The machinery for 
+<?php $filepath = $_GET["filepath"];
+echo "<a href='Variations.php?filepath=".$filepath."' target='page'>";?>Automated Shower Variations</a> 
+has been extended to also take into account the PDF variations 
+inside a PDF family, using the LHAPDF6 machinery for this. 
+It is now also possible to stop variation uncertainty evaluation 
+below some scale, so as to better correlate the event weighting 
+with the harder part of the event evolution. The new 
+<code>main121.cc</code> example illustrates how to set up the 
+variations.</li> 
+ 
 <li>The MixMax random number generator [<a href="Bibliography.php#refSav15" target="page">Sav15</a>,<a href="Bibliography.php#refSav16" target="page">Sav16</a>] is made 
 available as a plugin distributed with PYTHIA, in the new 
 <code>include/Pythia8Plugin/MixMax.h</code> file, see the 
@@ -166,9 +177,16 @@ lines being shortcut. Further examples have been added to
 <code>main25.lhe</code>. Thanks to A. Monteyx, M. Buckley and F. Jimenez. 
 </li> 
  
+<li>Further processes have been added for Dark Matter production, 
+either by a scalar or by a vector <i>s</i>-channel mediator, see 
+the <?php $filepath = $_GET["filepath"];
+echo "<a href='DarkMatterProcesses.php?filepath=".$filepath."' target='page'>";?>Dark Matter Processes</a> 
+description. Also a new <code>main75.cc</code> example.</li> 
+ 
 <li>Fix minor (order 5%) normalization error of the impact-parameter 
 enhancement factor for two preselected hard processes in the MPI 
-framework, see <code>Info::enhanceMPIavg()</code>.</li> 
+framework, see <code>Info::enhanceMPIavg()</code>. Thanks to Jonathan 
+Gaunt.</li> 
  
 <li>Minor fix in <code>pythia8-config</code> to solve some parsing issues. 
 Thanks to Gavin Salam, Dmitry Konstantinov and Emanuel Hoogeveen.</li> 
@@ -183,7 +201,7 @@ to allow the input particle have a lifetime and thus decay some distance
 away from the origin. Thanks to Graham W. Wilson.</li> 
  
 <li>Maximal number of histogram bins increased to 10000 and a warning is 
-printed of this limit is exceeded. Thanks to Roberto Franceschini.</li> 
+printed if this limit is exceeded. Thanks to Roberto Franceschini.</li> 
  
 <li>Ensure that the "thermal string fragmentation" is not inadvertently 
 used for Hidden Valley fragmentation.</li> 
@@ -205,6 +223,10 @@ found in <code>include/Pythia8Plugins/Pythia8Rivet.h</code> and its
 usage illustrated in the <code>main111.cc</code> example, see 
 <?php $filepath = $_GET["filepath"];
 echo "<a href='RIVETusage.php?filepath=".$filepath."' target='page'>";?>here</a>.</li> 
+ 
+<li>A new utility to keep track of progress and time remaining in a run, 
+see <code>include/Pythia8Plugins/ProgressLog.h</code>, and an example 
+in <code>main111.cc</code>.</li> 
  
 <li>New method <code>RotBstMatrix::value(int i, int j)</code> returns the 
 value stored in the <i>(i,j)</i> element of the matrix.</li> 

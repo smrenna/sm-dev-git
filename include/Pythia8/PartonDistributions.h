@@ -74,16 +74,19 @@ public:
   // Return quark masses used in the PDF fit (LHAPDF6 only).
   virtual double mQuarkPDF(int) { return -1.;}
 
+  // Error envelope from PDF uncertainty.
   struct PDFEnvelope {
     double centralPDF, errplusPDF, errminusPDF, errsymmPDF, scalePDF;
-    PDFEnvelope() : centralPDF(-1.0), errplusPDF(0.0), errminusPDF(0.0), errsymmPDF(0.0), scalePDF(-1.0) {};    
+    PDFEnvelope() : centralPDF(-1.0), errplusPDF(0.0), errminusPDF(0.0),
+    errsymmPDF(0.0), scalePDF(-1.0) {};
   };
-  
-  // Calculate PDF envelope
+
+  // Calculate PDF envelope.
   virtual void calcPDFEnvelope(int, double, double, int) {}
-  virtual void calcPDFEnvelope(pair<int,int>, pair<double,double>, double, int) {}  
+  virtual void calcPDFEnvelope(pair<int,int>, pair<double,double>, double,
+    int) {}
   virtual PDFEnvelope getPDFEnvelope() { return PDFEnvelope(); }
-  
+
   // Approximate photon PDFs by decoupling the scale and x-dependence.
   virtual double gammaPDFxDependence(int, double) { return 0.; }
 
@@ -743,6 +746,15 @@ public:
     if(pdfPtr) pdfPtr->calcPDFEnvelope(idNows,xNows,Q2Now,valSea);}  
   PDFEnvelope getPDFEnvelope() { if (pdfPtr) return pdfPtr->getPDFEnvelope(); else return PDFEnvelope(); }
   
+  // Calculate PDF envelope.
+  void calcPDFEnvelope(int idNow, double xNow, double Q2Now, int valSea) {
+    if (pdfPtr) pdfPtr->calcPDFEnvelope(idNow, xNow, Q2Now, valSea);}
+  void calcPDFEnvelope(pair<int,int> idNows, pair<double,double> xNows,
+    double Q2Now, int valSea) {
+    if (pdfPtr) pdfPtr->calcPDFEnvelope(idNows,xNows,Q2Now,valSea);}
+  PDFEnvelope getPDFEnvelope() { if (pdfPtr) return pdfPtr->getPDFEnvelope();
+    else return PDFEnvelope(); }
+
 private:
 
   // Resolve valence content for assumed meson.

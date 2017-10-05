@@ -1995,7 +1995,8 @@ double TimeShower::pTnext( Event& event, double pTbegAll, double pTendAll,
     // For global recoil, always set the starting scale for first emission.
     bool isFirstWimpy = !useLocalRecoilNow && (pTmaxMatch == 1)
                       && nProposed.find(dip.system) != nProposed.end()
-                      && (nProposed[dip.system]-infoPtr->getCounter(40) == 0 || isFirstTrial);
+                      && (nProposed[dip.system] - infoPtr->getCounter(40) == 0
+                      || isFirstTrial);
     double muQ        = (infoPtr->scalup() > 0.) ? infoPtr->scalup()
                       : infoPtr->QFac();
     if (isFirstWimpy && !limitMUQ) pT2begDip = pow2(muQ);
@@ -2922,7 +2923,7 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
   } else if (globalRecoilMode == 2 && isQCD) {
     useLocalRecoilNow = !(globalRecoil
       && nProposed.find(dipSel->system) != nProposed.end()
-      && nProposed[dipSel->system]-infoPtr->getCounter(40) == 1);
+      && nProposed[dipSel->system] - infoPtr->getCounter(40) == 1);
     // Check if global recoil should be used.
     int nFinal = 0;
     for (int i = 0; i < int(event.size()); ++i)
@@ -3235,7 +3236,7 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
     double pMEC = findMEcorr( dipSel, rad, partner, emt);
     if (dipSel->MEtype >= 200 && dipSel->MEtype <= 210)
       pMEC *= findMEcorrWeak( dipSel, rad.p(), partner.p(), emt.p(),
-	p3weak, p4weak, event[iRadBef].p(), event[iRecBef].p());
+        p3weak, p4weak, event[iRadBef].p(), event[iRecBef].p());
     pAccept *= pMEC;
   }
 
@@ -3246,23 +3247,25 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
 
   // Determine if this FSR is part of process or resonance showering
   bool inResonance = (partonSystemsPtr->getInA(iSysSel) == 0) ? true : false;
-  
+
   // If doing uncertainty variations, calculate accept/reject reweightings.
   doUncertaintiesNow = doUncertainties;
-  // Check if variations are allowed in MPIs
-  if (!uVarMPIshowers && iSysSel != 0 && !inResonance) doUncertaintiesNow = false;
+  // Check if variations are allowed in MPIs.
+  if (!uVarMPIshowers && iSysSel != 0 && !inResonance)
+    doUncertaintiesNow = false;
 
-  // Check if to allow variations in resonance decays  
+  // Check if to allow variations in resonance decays.
   if (noResVariations && inResonance) doUncertaintiesNow = false;
 
-  // Check if to allow variations in process    
-  if (noProcVariations && iSysSel==0 && !inResonance) doUncertaintiesNow = false;
-  
-  // Check if below cutoff for calculating variations
-  if( dipSel->pT2 < uVarpTmin2 ) doUncertaintiesNow = false;
+  // Check if to allow variations in process.
+  if (noProcVariations && iSysSel==0 && !inResonance)
+    doUncertaintiesNow = false;
 
-  // Early return if allowed
-  if(!doUncertaintiesNow && !acceptEvent) return false;
+  // Check if below cutoff for calculating variations
+  if ( dipSel->pT2 < uVarpTmin2 ) doUncertaintiesNow = false;
+
+  // Early return if allowed.
+  if (!doUncertaintiesNow && !acceptEvent) return false;
 
   // Rescatter: if the recoiling partner is not in the same system
   //            as the radiator, fix up intermediate systems (can lead
@@ -3386,10 +3389,11 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
     }
     return false;
   }
-  // Default settings for uncertainty calculations
+  // Default settings for uncertainty calculations.
   double weight = 1.;
   double vp = 0.;
-  bool vetoedEnhancedEmission = false;  
+  bool vetoedEnhancedEmission = false;
+
   // Calculate event weight for enhanced emission rate.
   if (canEnhanceET) {
     // Check if emission weight was enhanced. Get enhance weight factor.
@@ -3424,16 +3428,17 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
       userHooksPtr->setEnhancedEventWeight(wtOld*rwgt);
     if ( doTrialNow && canEnhanceTrial)
       userHooksPtr->setEnhancedTrial(sqrt(dipSel->pT2), weight);
-    // Increment counter to handle counting of rejected emissions
-    if (vetoedEnhancedEmission && canEnhanceEmission) infoPtr->addCounter(40);    
+    // Increment counter to handle counting of rejected emissions.
+    if (vetoedEnhancedEmission && canEnhanceEmission) infoPtr->addCounter(40);
   }
-  // Emission veto is a phase space restriction, and should not be included in the
-  //   uncertainty calculation
-  acceptEvent *= !vetoedEnhancedEmission;
+
+  // Emission veto is a phase space restriction, and should not be included
+  // in the uncertainty calculation.
+  if (vetoedEnhancedEmission) acceptEvent = false; 
   if (doUncertaintiesNow) calcUncertainties( acceptEvent, pAccept, weight, vp,
     dipSel, &rad, &emt, &rec);
 
-  // Return false if we decided to reject this branching.  
+  // Return false if we decided to reject this branching.
   // Veto if necessary.
   if ( (vetoedEnhancedEmission && canEnhanceEmission) || !acceptEvent) {
     event.popBack( event.size() - eventSizeOld);
@@ -3448,8 +3453,8 @@ bool TimeShower::branch( Event& event, bool isInterleaved) {
       if (iRecMot1V == beamOff2) event[beamOff2].daughter1( ev2Dau1V);
     } else {
       for (int iG = 0; iG < int(iGRecBef.size()); ++iG) {
-	event[iGRecBef[iG]].statusPos();
-	event[iGRecBef[iG]].daughters( 0, 0);
+        event[iGRecBef[iG]].statusPos();
+        event[iGRecBef[iG]].daughters( 0, 0);
       }
     }
     return false;
@@ -3803,7 +3808,7 @@ bool TimeShower::initUncertainties() {
   keys.push_back("fsr:X2XG:cNS");
   keys.push_back("fsr:G2QQ:cNS");
   keys.push_back("isr:PDF:plus");
-  keys.push_back("isr:PDF:minus");  
+  keys.push_back("isr:PDF:minus");
 
   // Store number of QCD variations (as separator to QED ones).
   int nKeysQCD=keys.size();
@@ -3857,7 +3862,7 @@ bool TimeShower::initUncertainties() {
       if (key == "fsr:cns" || key == "fsr:g2qq:cns")
         varG2QQcNS[iWeight] = value;
       if (key == "isr:pdf:plus") varPDFplus[iWeight] = 1;
-      if (key == "isr:pdf:minus") varPDFminus[iWeight] = 1;      
+      if (key == "isr:pdf:minus") varPDFminus[iWeight] = 1;
       // Tell that we found at least one recognized and parseable keyword.
       if (iWord < nKeysQCD) nRecognizedQCD++;
     } // End loop over QCD keywords
@@ -3894,10 +3899,10 @@ void TimeShower::calcUncertainties(bool accept, double pAccept, double enhance,
   // Make vector sizes + 1 since 0 = default and variations start at 1.
   vector<double> uVarFac(nUncertaintyVariations + 1, 1.0);
   vector<bool> doVar(nUncertaintyVariations + 1, false);
-  // For the case of biasing, the nominal weight might not be unity
+  // For the case of biasing, the nominal weight might not be unity.
   doVar[0] = true;
   uVarFac[0] = 1.0;
-  
+
   // Extract relevant quantities.
   int idEmt = emtPtr->id();
   int idRad = radPtr->id();
@@ -4004,7 +4009,7 @@ void TimeShower::calcUncertainties(bool accept, double pAccept, double enhance,
         double deltaPDFminus
           = min(ratioPDFEnv.errminusPDF/ratioPDFEnv.centralPDF, 0.5);
         uVarFac[iWeight] *= 1.0 + deltaPDFplus;
-        doVar[iWeight] = true;      
+        doVar[iWeight] = true;
         wtMinus0= 1.0 - deltaPDFminus;
       }
       varPtr = &varPDFminus;
@@ -4028,7 +4033,8 @@ void TimeShower::calcUncertainties(bool accept, double pAccept, double enhance,
   for (int iWeight = 0; iWeight <= nUncertaintyVariations; ++iWeight) {
     if (!doVar[iWeight]) continue;
     // If trial accepted: apply ratio of accept probabilities.
-    if (accept) infoPtr->reWeight(iWeight, uVarFac[iWeight]/((1.0-vp)*enhance));
+    if (accept) infoPtr->reWeight(iWeight,
+      uVarFac[iWeight] / ((1.0 - vp) * enhance) );
     // If trial rejected : apply Sudakov reweightings.
     else {
       // Check for near-singular denominators (indicates too few failures,
@@ -4041,7 +4047,8 @@ void TimeShower::calcUncertainties(bool accept, double pAccept, double enhance,
           message.str());
       }
       // Force reweighting factor > 0.
-      double reWtFail = max(0.01, (1. - uVarFac[iWeight] * pAccept / enhance) / denom);
+      double reWtFail = max(0.01, (1. - uVarFac[iWeight] * pAccept / enhance)
+        / denom);
       infoPtr->reWeight(iWeight, reWtFail);
     }
   }

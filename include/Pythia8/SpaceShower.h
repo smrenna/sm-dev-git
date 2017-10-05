@@ -135,8 +135,9 @@ public:
   bool initUncertainties();
 
   // Calculate uncertainty-band weights for accepted/rejected trial branching.
-  void calcUncertainties(bool accept, double pAcceptIn, double pT20in, double enhance,
-    double vp, SpaceDipoleEnd* dip, Particle* motherPtr, Particle* sisterPtr);
+  void calcUncertainties(bool accept, double pAcceptIn, double pT20in,
+    double enhance, double vp, SpaceDipoleEnd* dip, Particle* motherPtr,
+    Particle* sisterPtr);
 
   // Tell if latest scattering was a gamma->qqbar.
   bool wasGamma2qqbar() { return gamma2qqbar; }
@@ -337,7 +338,7 @@ private:
     varX2XGmuRfac;
   map<int,double> varG2GGcNS, varQ2QGcNS, varQ2GQcNS, varG2QQcNS, varX2XGcNS;
   map<int,double> varPDFplus, varPDFminus;
-  
+
   // Find a possible colour partner in the case of dipole recoil.
   int findColPartner(Event& event, int iSideA, int iSideB, int iSystem);
 
