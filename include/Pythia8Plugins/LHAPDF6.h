@@ -18,7 +18,7 @@ namespace Pythia8 {
 // Global tracking of opened PDF sets.
 
 //--------------------------------------------------------------------------
-  
+
 namespace LHAPDF6Interface {
 
   // Structure to hold all of the data needed to reproduce a set.
@@ -50,7 +50,7 @@ public:
 
   // Allow extrapolation beyond boundaries (not implemented).
   void setExtrapolate(bool extrapolIn) {extrapol = extrapolIn;}
-  
+
 private:
 
   // The LHAPDF objects.
@@ -109,7 +109,6 @@ LHAPDF6::~LHAPDF6() {
 
 }
 
-const double LHAPDF6::PDFMINVALUE = 1e-10;
 //--------------------------------------------------------------------------
 
 const double LHAPDF6::PDFMINVALUE = 1e-10;
@@ -120,7 +119,7 @@ const double LHAPDF6::PDFMINVALUE = 1e-10;
 
 void LHAPDF6::init(string setName, int member, Info *info) {
   isSet = false;
-  
+
   // Initialize the set if not initialized.
   id = ::LHAPDF::lookupLHAPDFID(setName, member);
   if (id < 0) {

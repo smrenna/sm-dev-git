@@ -274,6 +274,7 @@ void SpaceShower::init( BeamParticle* beamAPtrIn,
   cNSpTmin           = settingsPtr->parm("UncertaintyBands:cNSpTmin");
   uVarpTmin2         = pow2(pT0Ref);
   uVarpTmin2        *= settingsPtr->parm("UncertaintyBands:FSRpTmin2Fac");
+  overFactor         = settingsPtr->parm("UncertaintyBands:overSampleISR");
 
   // Possibility to set parton vertex information.
   doPartonVertex     = settingsPtr->flag("PartonVertex:setVertex")
@@ -722,7 +723,7 @@ void SpaceShower::pT2nextQCD( double pT2begDip, double pT2endDip) {
   // (to ensure at least a minimal number of failed branchings).
   doUncertaintiesNow    = doUncertainties;
   if (!uVarMPIshowers && iSysNow != 0) doUncertaintiesNow = false;
-  double overFac        = doUncertaintiesNow ? 2.0 : 1.0;
+  double overFac        = doUncertaintiesNow ? overFactor : 1.0;
 
   // For dipole recoil: other-end colour factor correction in q-g dipole.
   double coefColRec = (iColPartner != 0 && idColPartner == 21) ? 9./8. : 1.;

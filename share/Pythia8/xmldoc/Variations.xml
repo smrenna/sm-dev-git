@@ -88,6 +88,20 @@ occurring below the threshold fixed by
 <code>UncertaintyBands:FSRpTmin2Fac</code> times 
 <code> TimeShower:pTmin^2 </code>. 
 </parm> 
+<p/>
+
+To ensure coverage of the phase space for the variations, the overestimate of the
+Sudakov used in the veto algorithm is artifically increased, which is compensated in
+the rejection factor.    A larger factor reduces fluctuations at the cost of a longer
+generation time.  The default parameters chosen are a compromise between time and 
+fluctuations.
+<parm name="UncertaintyBands:overSampleFSR" default="3.0" min="1.0" max="10.0"> 
+The QCD FSR Sudakov is artificially increased by this factor.   The increase is
+compensated for in the veto algorithm.
+</parm> 
+<parm name="UncertaintyBands:overSampleISR" default="2.0" min="1.0" max="10.0"> 
+The similar parameter for the QCD ISR Sudakov.
+</parm> 
  
 <p/> 
 The user can control whether the variations are calculated in all or 

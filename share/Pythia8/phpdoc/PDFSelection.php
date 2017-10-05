@@ -559,8 +559,7 @@ the power in the suppression of the high-x PDF for option 11 above.
  
 Photon PDFs describe the partonic content of the resolved photons and 
 can be used to generate any process initiated by quarks and gluons. 
- 
-<p/> 
+  
 There are several PDF sets available for photons, although there have not 
 been much activity recently. Currently one internal set is included, but 
 more sets are available from LHAPDF5. The sets from LHAPDF5 can only be 
@@ -568,7 +567,8 @@ used as PDFs in the hard process (see <code>PDF:GammaHardSet</code> below).
 In case of photons the parton shower and beam remnant generation 
 require additional methods that are provided only for internal sets. 
 Currently no photon PDFs have been included in LHAPDF6. 
- 
+<p/>
+
 <br/><br/><table><tr><td><strong>PDF:GammaSet  </td><td>  &nbsp;&nbsp;(<code>default = <strong>1</strong></code>; <code>minimum = 1</code>; <code>maximum = 1</code>)</td></tr></table>
 Parton densities that can be used for resolved photon beams. 
 <br/>
@@ -637,19 +637,19 @@ The type of photon flux.
 <input type="radio" name="28" value="1" checked="checked"><strong>1 </strong>:  Convolute the photon flux from EPA with the selected photon  PDF set. Convolution integral is performed "on the fly", meaning that the  actual integral is not computed but the <ei>x_gamma</ei> is sampled  event-by-event. Since the final PDF value depends on the sampled value for  <ei>x_gamma</ei> the phase-space sampling is set up using an overestimate for  the PDFs. This makes the process selection somewhat less efficient compared  to the case where the PDFs are fixed (e.g. for protons).<br/>
 <input type="radio" name="28" value="2"><strong>2 </strong>:  Uses an approximation of the photon flux to sample  processes and corrects this later with an externally provided flux. For  leptons a bit less efficient than option 1 but allows straightforward  implementation of photon fluxes from different particles. To use this option  user has to provide the external photon flux using method  <code>Pythia::setPhotonFluxPtr(PDF*, PDF*)</code> as demostrated in the  sample program <code>main70.cc</code>. <br/>
  
-<h3>Incoming parton selection</h3> 
+<h3>Incoming parton selection</h3>
  
-There is one useful degree of freedom to restrict the set of incoming 
-quark flavours for hard processes. It does not change the PDF's as such, 
-only which quarks are allowed to contribute to the hard-process cross 
-sections. Note that separate but similarly named modes are available 
-for multiparton interactions and spacelike showers. 
+There is one useful degree of freedom to restrict the set of incoming
+quark flavours for hard processes. It does not change the PDF's as such,
+only which quarks are allowed to contribute to the hard-process cross
+sections. Note that separate but similarly named modes are available
+for multiparton interactions and spacelike showers.
  
 <br/><br/><table><tr><td><strong>PDFinProcess:nQuarkIn  </td><td></td><td> <input type="text" name="29" value="5" size="20"/>  &nbsp;&nbsp;(<code>default = <strong>5</strong></code>; <code>minimum = 0</code>; <code>maximum = 5</code>)</td></tr></table>
-Number of allowed incoming quark flavours in the beams; a change 
-to 4 would thus exclude <i>b</i> and <i>bbar</i> as incoming 
-partons, etc. 
-   
+Number of allowed incoming quark flavours in the beams; a change
+to 4 would thus exclude <i>b</i> and <i>bbar</i> as incoming
+partons, etc.
+  
  
 <input type="hidden" name="saved" value="1"/>
 

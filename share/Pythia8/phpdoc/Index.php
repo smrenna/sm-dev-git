@@ -38,6 +38,7 @@ echo "<font color='red'>NO FILE SELECTED YET.. PLEASE DO SO </font><a href='Save
   <input id="search-input" type="search" placeholder="Search" 
          style="color:#000000"/> 
   <ul id="search-result" style="list-style-type:none;padding:0"></ul> 
+  </input>
 </form> 
  
 <h4>Program Overview</h4> 

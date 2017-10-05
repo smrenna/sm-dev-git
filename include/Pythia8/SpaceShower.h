@@ -265,7 +265,7 @@ private:
          ecmRef, ecmPow, pTmin, sCM, eCM, pT0, pTminChgQ, pTminChgL, pT20,
          pT2min, pT2minChgQ, pT2minChgL, pTweakCut, pT2weakCut, pTmaxFudgeMPI,
          strengthIntAsym, weakEnhancement, mZ, gammaZ, thetaWRat, mW, gammaW,
-         weakMaxWt, vetoWeakDeltaR2, dASmax, cNSpTmin, uVarpTmin2;
+         weakMaxWt, vetoWeakDeltaR2, dASmax, cNSpTmin, uVarpTmin2, overFactor;
 
   // alphaStrong and alphaEM calculations.
   AlphaStrong alphaS;

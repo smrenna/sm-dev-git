@@ -277,6 +277,7 @@ void TimeShower::init( BeamParticle* beamAPtrIn,
   int varType        = settingsPtr->mode("UncertaintyBands:type");
   noResVariations    = (varType == 1) ? true: false;
   noProcVariations   = (varType == 2) ? true: false;
+  overFactor         = settingsPtr->parm("UncertaintyBands:overSampleFSR");
 
   // Possibility to set parton vertex information.
   doPartonVertex     = settingsPtr->flag("PartonVertex:setVertex")
@@ -2094,7 +2095,7 @@ void TimeShower::pT2nextQCD(double pT2begDip, double pT2sel,
   doUncertaintiesNow   = doUncertainties;
   if (!uVarMPIshowers && dip.system != 0
     && partonSystemsPtr->getInA(dip.system) != 0) doUncertaintiesNow = false;
-  double overFac       = doUncertaintiesNow ? 3.0 : 1.0;
+  double overFac       = doUncertaintiesNow ? overFactor : 1.0;
 
   // Set default values for enhanced emissions.
   bool isEnhancedQ2QG, isEnhancedG2QQ, isEnhancedG2GG;

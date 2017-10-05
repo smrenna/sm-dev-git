@@ -33,8 +33,9 @@ namespace Pythia8 {
 //==========================================================================
 
 // Base class for parton distribution functions.
+
 class PDF {
-  
+
 public:
 
   // Constructor.
@@ -739,13 +740,7 @@ public:
   // Return quark masses used in the PDF fit (LHAPDF6 only).
   double mQuarkPDF(int idIn) {
     if(pdfPtr) return pdfPtr->mQuarkPDF(idIn); else return -1.;}
-  
-  void calcPDFEnvelope(int idNow, double xNow, double Q2Now, int valSea) {
-    if(pdfPtr) pdfPtr->calcPDFEnvelope(idNow, xNow, Q2Now, valSea);}
-  void calcPDFEnvelope(pair<int,int> idNows, pair<double,double> xNows, double Q2Now, int valSea) {
-    if(pdfPtr) pdfPtr->calcPDFEnvelope(idNows,xNows,Q2Now,valSea);}  
-  PDFEnvelope getPDFEnvelope() { if (pdfPtr) return pdfPtr->getPDFEnvelope(); else return PDFEnvelope(); }
-  
+
   // Calculate PDF envelope.
   void calcPDFEnvelope(int idNow, double xNow, double Q2Now, int valSea) {
     if (pdfPtr) pdfPtr->calcPDFEnvelope(idNow, xNow, Q2Now, valSea);}

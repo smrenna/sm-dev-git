@@ -277,7 +277,8 @@ private:
          pTweakCut, pT2weakCut, mMaxGamma, m2MaxGamma, octetOniumFraction,
          octetOniumColFac, mZ, gammaZ, thetaWRat, mW, gammaW, CFHV, nFlavHV,
          alphaHVfix, LambdaHV, pThvCut, pT2hvCut, mHV, pTmaxFudgeMPI,
-         weakEnhancement, vetoWeakDeltaR2, dASmax, cNSpTmin, uVarpTmin2;
+         weakEnhancement, vetoWeakDeltaR2, dASmax, cNSpTmin, uVarpTmin2,
+         overFactor;
 
   // alphaStrong and alphaEM calculations.
   AlphaStrong alphaS;
